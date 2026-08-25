@@ -1,0 +1,2117 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Paseo Altozano · Sistema de Navegación A*</title>
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Anime.js Animation Engine -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.2/anime.min.js"></script>
+  <!-- Font Awesome Icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    body {
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      background-color: #080e18;
+      color: #e2e8f0;
+      overflow-x: hidden;
+    }
+    .totem-screen {
+      background: radial-gradient(circle at 50% 0%, #06402b 0%, #041f17 35%, #05141c 100%);
+      box-shadow: 0 25px 60px -15px rgba(0, 0, 0, 0.9), 0 0 35px rgba(16, 185, 129, 0.12);
+    }
+    .ad-card {
+      background: linear-gradient(180deg, rgba(6, 64, 43, 0.85) 0%, rgba(3, 30, 22, 0.95) 100%);
+    }
+
+    /* Clean Google Maps Route Flow Styling (Crisp & High Contrast) */
+    .stream-water-glow {
+      stroke: #3b82f6;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+    }
+    .stream-chevrons {
+      stroke-dasharray: 8 16;
+      animation: flowChevrons 1.2s linear infinite;
+    }
+    @keyframes flowChevrons {
+      from {
+        stroke-dashoffset: 48;
+      }
+      to {
+        stroke-dashoffset: 0;
+      }
+    }
+
+    /* Google Maps Blue Nav Puck Pulse */
+    .nav-puck-pulse {
+      animation: puckPulse 1.8s ease-out infinite;
+      transform-origin: center;
+    }
+    @keyframes puckPulse {
+      0% { r: 12; opacity: 0.8; }
+      100% { r: 32; opacity: 0; }
+    }
+
+    /* Hardware-Accelerated Nav Arrow Cursor & Camera Stage (Driven by Anime.js) */
+    #svg-nav-arrow-cursor {
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+    #map-camera-stage {
+      transform-origin: 0 0;
+      will-change: transform;
+    }
+
+    /* Graph Nodes & Edges Layer Smooth Fade */
+    #svg-edges-layer, #svg-nodes-layer {
+      transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    .graph-nav-hidden {
+      opacity: 0 !important;
+      pointer-events: none !important;
+    }
+
+    /* Custom scrollbar */
+    ::-webkit-scrollbar { width: 6px; height: 6px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+  </style>
+</head>
+<body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+
+  <!-- TOP APP BAR -->
+  <header class="border-b border-slate-800/80 bg-slate-950/85 sticky top-0 z-50 backdrop-blur-md px-6 py-3.5 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center shadow-lg shadow-blue-500/25">
+        <i class="fa-solid fa-location-arrow text-white text-base"></i>
+      </div>
+      <div>
+        <h1 class="text-sm font-bold text-white tracking-wide flex items-center gap-2">
+          PASEO ALTOZANO <span class="text-[11px] font-semibold px-2 py-0.5 bg-blue-500/20 text-sky-400 rounded-full border border-blue-500/30">Navegación GPS / A*</span>
+        </h1>
+      </div>
+    </div>
+
+    <!-- Totem Location Indicator -->
+    <div class="flex items-center gap-3 text-xs">
+      <div class="flex px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 items-center gap-2">
+        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
+        <span class="text-slate-400">Tótem:</span>
+        <span class="text-rose-400 font-bold">Punto 12 · Nivel 1 (Pasillo Chedraui / M-Caps)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- MAIN WORKSPACE -->
+  <main class="flex-1 max-w-[1750px] w-full mx-auto p-4 md:p-6 grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+    <!-- LEFT: TOTEM KIOSK SCREEN (MATCHING MOCKUP) -->
+    <div class="lg:col-span-4 xl:col-span-4 flex flex-col items-center justify-start">
+      <div class="w-full max-w-[390px] sticky top-20">
+        
+        <div class="flex items-center justify-between mb-2.5 px-1">
+          <span class="text-xs font-bold uppercase tracking-wider text-slate-400 flex items-center gap-1.5">
+            <i class="fa-solid fa-mobile-screen text-sky-400"></i> Pantalla del Tótem
+          </span>
+          <span class="text-[10px] bg-rose-950 text-rose-300 border border-rose-800 px-2 py-0.5 rounded font-mono font-bold">Punto 12</span>
+        </div>
+
+        <!-- MOBILE DEVICE CONTAINER -->
+        <div class="totem-screen w-full rounded-[42px] border-[5px] border-slate-800 p-4 shadow-2xl relative overflow-hidden flex flex-col justify-between" style="min-height: 720px;">
+          
+          <!-- Top Dynamic Island & Status Bar -->
+          <div class="flex justify-between items-center px-3 pt-0.5 pb-2 text-white text-xs">
+            <span class="font-bold">9:41</span>
+            <div class="w-24 h-4 bg-black rounded-full mx-auto"></div>
+            <div class="flex items-center gap-1.5 text-[11px]">
+              <i class="fa-solid fa-signal"></i>
+              <i class="fa-solid fa-wifi"></i>
+              <i class="fa-solid fa-battery-full"></i>
+            </div>
+          </div>
+
+          <!-- TOP ADVERTISING BANNER -->
+          <div class="ad-card rounded-2xl p-4 text-white relative overflow-hidden border border-emerald-500/20 mt-1 shadow-lg">
+            <div class="flex justify-between items-start">
+              <div class="z-10 max-w-[70%]">
+                <span class="text-[10px] font-bold tracking-widest uppercase text-emerald-300/80">ANUNCIO · STARBUCKS 1N-66</span>
+                <h3 class="text-lg font-extrabold leading-tight mt-1">Tu momento.<br>Tu Starbucks.</h3>
+                <p class="text-xs font-semibold text-emerald-400 mt-1">2x1 hasta las 6 pm · Nivel 1</p>
+                <p class="text-[11px] text-emerald-200/80 mt-0.5 font-medium">
+                  <i class="fa-solid fa-location-crosshairs text-rose-400 mr-1"></i>Tótem 1 · Punto 12 (Nivel 1)
+                </p>
+              </div>
+              <div class="w-11 h-11 rounded-full bg-emerald-900/90 border border-emerald-400/40 flex items-center justify-center p-1 shadow-inner">
+                <i class="fa-solid fa-mug-hot text-emerald-300 text-lg"></i>
+              </div>
+            </div>
+
+            <!-- Ad Product Visual -->
+            <div class="mt-3 flex items-center justify-center gap-3 bg-emerald-950/60 rounded-xl p-2.5 border border-emerald-800/40">
+              <div class="text-center">
+                <span class="text-2xl">☕</span>
+                <p class="text-[10px] text-emerald-300 font-medium">Caramel Macchiato</p>
+              </div>
+              <div class="text-center">
+                <span class="text-2xl">🥤</span>
+                <p class="text-[10px] text-emerald-300 font-medium">Frappuccino</p>
+              </div>
+              <div class="text-center">
+                <span class="text-2xl">🍵</span>
+                <p class="text-[10px] text-emerald-300 font-medium">Iced Matcha</p>
+              </div>
+            </div>
+          </div>
+
+          <!-- STEP PROGRESS BARS -->
+          <div class="my-2.5 px-1">
+            <div class="grid grid-cols-4 gap-2" id="step-progress-bars">
+              <div class="h-1.5 rounded-full bg-blue-500"></div>
+              <div class="h-1.5 rounded-full bg-blue-500"></div>
+              <div class="h-1.5 rounded-full bg-slate-700"></div>
+              <div class="h-1.5 rounded-full bg-slate-700"></div>
+            </div>
+          </div>
+
+          <!-- DYNAMIC LIVE PLACE & LANDMARK PREVIEW CARD (Photo / Visual Indicator of Current Point) -->
+          <div id="live-place-card" class="mb-2.5 p-3 rounded-2xl bg-slate-900/95 border border-sky-500/30 shadow-xl flex items-center gap-3 transition-all duration-300">
+            <div id="place-icon-box" class="w-12 h-12 rounded-xl bg-gradient-to-tr from-sky-600 to-blue-700 flex items-center justify-center text-2xl shadow-md flex-shrink-0 transition-all">
+              <span id="place-emoji">📍</span>
+            </div>
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center justify-between gap-1">
+                <span id="place-category-tag" class="text-[9px] uppercase font-extrabold text-sky-400 tracking-wider truncate">TÓTEM INTERACTIVO</span>
+                <span id="place-status-tag" class="text-[9px] px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-800 rounded font-semibold flex-shrink-0">📍 UBICACIÓN ACTUAL</span>
+              </div>
+              <h5 id="place-title" class="text-sm font-extrabold text-white truncate mt-0.5 leading-tight">Tótem (Punto 12)</h5>
+              <p id="place-detail" class="text-[11px] text-slate-300 truncate mt-0.5 font-medium">Pasillo Chedraui Selecto · Nivel 1</p>
+            </div>
+          </div>
+
+          <!-- MAIN NAVIGATION INSTRUCTION CARD -->
+          <div class="bg-[#0b1c26]/90 backdrop-blur-md border border-sky-400/25 rounded-3xl p-4 shadow-2xl relative">
+            <div class="flex items-center justify-between text-xs font-bold text-sky-400/80 mb-2 uppercase tracking-wider">
+              <span id="step-number-tag">PASO 1 DE 3</span>
+              <span class="text-[11px] px-2 py-0.5 bg-sky-950 text-sky-300 rounded-full border border-sky-800" id="step-level-tag">Nivel 1</span>
+            </div>
+
+            <div class="flex items-start gap-3.5">
+              <!-- Direction Icon Box -->
+              <div id="step-icon-container" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 flex items-center justify-center shadow-lg shadow-blue-600/30 flex-shrink-0">
+                <i id="step-icon" class="fa-solid fa-arrow-turn-up text-white text-xl" style="transform: rotate(90deg);"></i>
+              </div>
+
+              <!-- Direction Texts -->
+              <div class="flex-1 min-w-0">
+                <h4 id="step-instruction-main" class="text-sm font-extrabold text-white leading-snug truncate">Inicia tu recorrido</h4>
+                <p id="step-instruction-context" class="text-xs text-slate-300 font-medium mt-0.5 leading-relaxed truncate">
+                  Avanza por el pasillo principal
+                </p>
+              </div>
+            </div>
+          </div>
+
+          <!-- USER INTERACTION BUTTONS -->
+          <div class="mt-3 mb-1 flex items-center gap-2">
+            <button id="step-action-btn" onclick="nextNavStep()" class="flex-1 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-bold text-sm transition-all border border-blue-400/30 active:scale-[0.98] shadow-lg shadow-blue-600/25 flex items-center justify-center gap-2">
+              <span id="step-action-text">Paso siguiente</span>
+              <i class="fa-solid fa-chevron-right text-xs text-sky-200"></i>
+            </button>
+            <button id="sim-walk-btn" onclick="toggleWalkSimulation()" title="Animar y recorrer con la flecha de navegación" class="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-base transition-all flex items-center justify-center border border-slate-700 shadow-lg">
+              <i id="sim-icon" class="fa-solid fa-play"></i>
+            </button>
+          </div>
+
+          <!-- BOTTOM METRICS & DESTINATION BAR -->
+          <div class="pt-3 pb-1 border-t border-slate-800/80 flex items-center justify-between text-xs font-medium text-slate-300 px-1">
+            <div class="flex items-center gap-2 text-emerald-400 font-bold">
+              <i class="fa-solid fa-person-walking text-sm"></i>
+              <span id="route-time-dist">1 min · 90 m</span>
+            </div>
+            <div class="flex items-center gap-1.5 text-sky-400 font-bold truncate max-w-[200px]">
+              <span>a</span>
+              <span id="route-dest-name" class="truncate">Sfera · Nivel 1</span>
+            </div>
+          </div>
+
+          <!-- Home Indicator Bar -->
+          <div class="w-32 h-1 bg-slate-700/80 rounded-full mx-auto mt-2"></div>
+        </div>
+
+      </div>
+    </div>
+
+    <!-- RIGHT: 2D MAP & ROUTE PLANNER WITH DYNAMIC ZOOM CAMERA -->
+    <div class="lg:col-span-8 xl:col-span-8 flex flex-col gap-4">
+      
+      <!-- CONTROLS & ROUTE SELECTOR -->
+      <div class="bg-slate-900/85 backdrop-blur-xl rounded-2xl p-4 md:p-5 border border-slate-800 shadow-xl">
+        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-3 border-b border-slate-800">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-route text-sky-400 text-base"></i>
+            <span class="text-sm font-bold text-white uppercase tracking-wider">Planificador de Rutas</span>
+          </div>
+
+          <!-- Floor Level Switcher -->
+          <div class="flex items-center gap-2">
+            <span class="text-xs font-bold text-slate-400 uppercase mr-1">Planta:</span>
+            <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800">
+              <button onclick="switchLevel(1)" id="btn-lvl-1" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white">
+                PB (Inferior)
+              </button>
+              <button onclick="switchLevel(2)" id="btn-lvl-2" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-md">
+                Nivel 1 (Principal)
+              </button>
+              <button onclick="switchLevel(3)" id="btn-lvl-3" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white">
+                Nivel 2 (Superior)
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Origin, Swap and Destination Inputs -->
+        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mt-3 items-center">
+          <!-- Origin -->
+          <div class="md:col-span-5">
+            <label for="origin-select" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              <i class="fa-solid fa-location-crosshairs text-rose-400 mr-1"></i> Origen:
+            </label>
+            <select id="origin-select" name="origin" aria-label="Punto de origen" onchange="calculateRoute()" class="w-full bg-slate-900 border border-rose-500/40 text-white text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none font-bold">
+              <option value="">Cargando locales...</option>
+            </select>
+          </div>
+
+          <!-- Swap Button & Transit Mode Toggle -->
+          <div class="md:col-span-2 flex flex-col items-center justify-center gap-1 mt-1 md:mt-4">
+            <button onclick="swapEndpoints()" title="Invertir origen y destino" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition-all">
+              <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
+            </button>
+            <label class="cursor-pointer flex items-center gap-1 text-[10px] text-slate-400 mt-0.5">
+              <input type="checkbox" id="prefer-elevator-chk" onchange="calculateRoute()" class="rounded bg-slate-800 border-slate-700 text-blue-500 focus:ring-0 w-3 h-3">
+              <span>Usar Elevador</span>
+            </label>
+          </div>
+
+          <!-- Destination -->
+          <div class="md:col-span-5">
+            <label for="dest-select" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
+              <i class="fa-solid fa-flag-checkered text-sky-400 mr-1"></i> Destino:
+            </label>
+            <select id="dest-select" name="destination" aria-label="Punto de destino" onchange="calculateRoute()" class="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium">
+              <option value="">Cargando locales...</option>
+            </select>
+          </div>
+        </div>
+
+        <!-- Multi-floor Segment Chips (Tramos por Planta) -->
+        <div id="route-segments-bar" class="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-800/80 text-xs" style="display: none;">
+          <span class="text-slate-400 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-sky-400"></i> Tramos de la Ruta:
+          </span>
+          <div id="segments-container" class="flex flex-wrap gap-2">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+        <!-- Route Summary Chips -->
+        <div class="flex flex-wrap items-center gap-3 mt-3 pt-2 text-xs">
+          <span class="text-slate-400 font-medium">Resumen:</span>
+          <span id="chip-dist" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-emerald-400 font-bold">
+            <i class="fa-solid fa-ruler-horizontal mr-1"></i> 90 m
+          </span>
+          <span id="chip-time" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-sky-400 font-bold">
+            <i class="fa-solid fa-clock mr-1"></i> 1 min a pie
+          </span>
+          <span id="chip-floors" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-blue-400 font-bold">
+            <i class="fa-solid fa-stairs mr-1"></i> Mismo nivel
+          </span>
+          <span id="chip-steps-count" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-purple-400 font-bold">
+            <i class="fa-solid fa-shoe-prints mr-1"></i> 4 pasos guiados
+          </span>
+        </div>
+      </div>
+
+      <!-- 2D MAP CANVAS WITH DYNAMIC CAMERA ZOOM -->
+      <div class="bg-slate-900/85 backdrop-blur-xl rounded-2xl p-4 border border-slate-800 relative flex-1 flex flex-col min-h-[550px]">
+        
+        <!-- Header Bar with Map Level & Controls -->
+        <div class="flex items-center justify-between mb-2.5 text-xs flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <span class="font-bold text-white text-sm" id="map-level-title">Planta 1 · Nivel Principal</span>
+            <span class="text-slate-500">|</span>
+            <span class="text-slate-400" id="map-nodes-count">63 locales · 12 islas</span>
+          </div>
+
+          <div class="flex items-center gap-3 text-[11px] flex-wrap">
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500 border border-white"></span> 📍 Tótem (Punto 12)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 border border-white"></span> ➤ Flecha GPS</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Tienda</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Isla</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 🪜 Escaleras</span>
+            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> 🛗 Elevador</span>
+          </div>
+        </div>
+
+        <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage) -->
+        <div id="map-container" class="relative w-full bg-[#080d16] rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center flex-1 select-none cursor-grab" style="aspect-ratio: 1536 / 718; max-height: 560px;">
+          
+          <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
+          <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
+            <!-- Background Floor Plan PNG (Google Maps Dark Theme) -->
+            <img id="floor-plan-img" src="planta-uno-dark.png" alt="Plano Paseo Altozano" class="absolute inset-0 w-full h-full object-contain pointer-events-none opacity-95 transition-opacity duration-300">
+            
+            <!-- Interactive SVG Overlay Layer -->
+            <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
+              <defs>
+                <!-- Google Maps Blue Glow -->
+                <filter id="googleBlueGlow" x="-20%" y="-20%" width="140%" height="140%">
+                  <feGaussianBlur in="SourceGraphic" stdDeviation="3" result="blur" />
+                  <feMerge>
+                    <feMergeNode in="blur" />
+                    <feMergeNode in="SourceGraphic" />
+                  </feMerge>
+                </filter>
+              </defs>
+
+              <!-- Walkway Corridors (Subtle background paths) -->
+              <g id="svg-edges-layer" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-linecap="round"></g>
+              
+              <!-- LAYER 1: Dark Casing Border for High Contrast -->
+              <path id="svg-water-bed" d="" fill="none" stroke="rgba(11, 18, 30, 0.85)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"></path>
+
+              <!-- LAYER 2: Main Clean Blue Navigation Path (Google Maps Style) -->
+              <path id="svg-active-route" d="" fill="none" stroke="#2563eb" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" class="stream-water-glow"></path>
+
+              <!-- LAYER 3: Crisp White Marching Direction Chevrons -->
+              <path id="svg-chevrons-path" d="" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" class="stream-chevrons"></path>
+
+              <!-- Interactive Nodes & Badges -->
+              <g id="svg-nodes-layer"></g>
+
+              <!-- Totem Fixed Marker (📍 Punto 12 on Nivel 1) -->
+              <g id="svg-totem-marker" style="display: none;">
+                <circle cx="960" cy="510" r="14" fill="#ef4444" stroke="#ffffff" stroke-width="2.5" style="filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));"></circle>
+                <text x="960" y="514.5" font-size="10" font-weight="extrabold" fill="#ffffff" text-anchor="middle">📍</text>
+              </g>
+
+              <!-- Destination Target Pin -->
+              <g id="svg-dest-pin" style="display: none;">
+                <circle id="dest-pin-outer" cx="0" cy="0" r="16" fill="#f97316" stroke="#ffffff" stroke-width="2.5" style="filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));"></circle>
+                <circle id="dest-pin-inner" cx="0" cy="0" r="5" fill="#ffffff"></circle>
+                <text id="dest-pin-label" x="0" y="-20" font-size="11" font-weight="extrabold" fill="#fdba74" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.9);">🎯 DESTINO</text>
+              </g>
+
+              <!-- ICONIC GOOGLE MAPS NAVIGATION ARROW (Blue Puck with Directional Chevron & Heading Beam) -->
+              <g id="svg-nav-arrow-cursor" style="display: none;" transform="translate(0,0)">
+                <!-- Pulsing GPS Radar Ring -->
+                <circle cx="0" cy="0" r="14" fill="none" stroke="#38bdf8" stroke-width="2.5" class="nav-puck-pulse"></circle>
+                <!-- Heading Beam Cone -->
+                <path d="M 0 0 L -22 -48 L 22 -48 Z" fill="rgba(56, 189, 248, 0.22)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"></path>
+                <!-- Outer Blue Puck Circle with White Border & Shadow -->
+                <circle cx="0" cy="0" r="14" fill="#1d4ed8" stroke="#ffffff" stroke-width="3" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
+                <!-- Central Crisp Navigation Chevron Arrow (Google Maps Style) -->
+                <path d="M 0 -10 L 7 7 L 0 3.5 L -7 7 Z" fill="#ffffff"></path>
+              </g>
+            </svg>
+          </div>
+
+          <!-- Floating Camera Controls Toolbar (Top-Right) -->
+          <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 shadow-xl">
+            <button onclick="toggleZoomOverview()" id="btn-zoom-toggle" title="Ver Ruta Completa / Acercar" class="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
+              <i id="zoom-toggle-icon" class="fa-solid fa-expand text-xs"></i>
+              <span id="zoom-toggle-text">Ver Todo</span>
+            </button>
+            <button onclick="centerOnNavArrow()" title="Centrar en la Flecha GPS" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-all">
+              <i class="fa-solid fa-crosshairs text-xs"></i>
+            </button>
+            <button onclick="toggleGraphPoints()" title="Mostrar/Ocultar todos los nodos" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all">
+              <i class="fa-solid fa-circle-nodes text-xs"></i>
+            </button>
+            <button onclick="manualZoom(1.2)" title="Acercar (Zoom In)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-all">
+              <i class="fa-solid fa-plus text-xs"></i>
+            </button>
+            <button onclick="manualZoom(0.8)" title="Alejar (Zoom Out)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-all">
+              <i class="fa-solid fa-minus text-xs"></i>
+            </button>
+          </div>
+
+          <!-- Floating Bottom-Right Play Button -->
+          <div class="absolute bottom-3 right-4 z-20">
+            <button onclick="toggleWalkSimulation()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl shadow-blue-600/30 flex items-center gap-2 transition-all active:scale-95 border border-blue-400/40">
+              <i id="hud-sim-icon" class="fa-solid fa-location-arrow text-sm"></i>
+              <span id="hud-sim-btn-text">Recorrer con Flecha GPS</span>
+            </button>
+          </div>
+
+        </div>
+
+        <!-- Step By Step List Below Map -->
+        <div class="mt-3 bg-slate-900/90 rounded-xl p-3 border border-slate-800">
+          <div class="flex items-center justify-between mb-2">
+            <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">
+              <i class="fa-solid fa-list-ol text-sky-400 mr-1"></i> Guía Visual Paso a Paso
+            </span>
+            <span class="text-[11px] text-slate-400">Puntos de control y cambios de dirección</span>
+          </div>
+          <div class="grid grid-cols-1 md:grid-cols-4 gap-2" id="route-steps-grid">
+            <!-- Populated by JS -->
+          </div>
+        </div>
+
+      </div>
+
+      <!-- OFFICIAL FLOOR LEGEND ACCORDION / EXPLORER -->
+      <div class="bg-slate-900/85 backdrop-blur-xl rounded-2xl p-4 md:p-5 border border-slate-800 shadow-xl">
+        <div class="flex items-center justify-between mb-3 flex-wrap gap-2">
+          <div class="flex items-center gap-2">
+            <i class="fa-solid fa-book-open text-sky-400 text-sm"></i>
+            <h3 class="text-xs font-bold text-white uppercase tracking-wide">
+              Directorio de Locales & Leyenda (<span id="legend-floor-title" class="text-sky-400">Nivel 1</span>)
+            </h3>
+          </div>
+          <span class="text-[11px] text-slate-400">Haz clic en cualquier comercio para trazar la ruta</span>
+        </div>
+
+        <!-- Search / Filter in Legend -->
+        <div class="mb-2.5">
+          <input type="text" id="legend-search-input" name="search_store" aria-label="Buscar local por nombre" onkeyup="filterLegendList()" placeholder="🔍 Buscar local por nombre..." class="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-500">
+        </div>
+        <!-- Legend Items Container -->
+        <div class="max-h-52 overflow-y-auto pr-1">
+          <div id="legend-items-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
+            <!-- Populated dynamically by JS -->
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <!-- JAVASCRIPT: DYNAMIC ZOOM CAMERA & NAVIGATION ENGINE (POWERED BY ANIME.JS) -->
+  <script>
+    let mallGraph = null;
+    let mallLegends = null;
+    let currentLevel = 2;
+    
+    // Subgraphs per floor
+    let levelGraphs = { 1: {}, 2: {}, 3: {} };
+    let levelNodes = { 1: {}, 2: {}, 3: {} };
+
+    // Multi-floor route segments and steps
+    let routeSegments = [];
+    let currentSteps = [];
+    let currentStepIndex = 0;
+    const TOTEM_NODE_ID = "n_totem_12";
+
+    // Dynamic Camera State (Google Maps Zoom & Follow)
+    let currentCamera = {
+      scale: 1.0,
+      panX: 0,
+      panY: 0,
+      isZoomed: false
+    };
+
+    // Navigation Arrow Walkthrough Simulation
+    let isSimulating = false;
+    let simInterval = null;
+    let simNodeIndex = 0;
+    let simSegIndex = 0;
+    let isTransitioningFloor = false;
+
+    const FLOOR_SPECS = {
+      1: { name: "Planta Baja · Nivel Inferior", img: "planta-baja-dark.png", count: "28 locales · 3 islas", width: 1536, height: 727, legendKey: "nivel_inferior" },
+      2: { name: "Planta 1 · Nivel Principal (Ubicación del Tótem 📍)", img: "planta-uno-dark.png", count: "63 locales · 12 islas · 1 Tótem", width: 1536, height: 718, legendKey: "nivel_principal" },
+      3: { name: "Planta 2 · Nivel Superior", img: "planta-dos-dark.png", count: "28 locales · Restaurantes / Cines", width: 1536, height: 669, legendKey: "nivel_superior" }
+    };
+
+    // Explicit vertical portals linking floors
+    const PORTALS = [
+      { id: "p_liverpool_esc", type: "escalator", name: "Escaleras Eléctricas Plaza Liverpool", 1: "n_lvl1_portal_esc_liverpool", 2: "n_lvl2_portal_esc_liverpool" },
+      { id: "p_liverpool_elev", type: "elevator", name: "Elevador Plaza Liverpool", 1: "n_lvl1_portal_elev_liverpool", 2: "n_lvl2_portal_elev_liverpool" },
+      { id: "p_central_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Central", 1: "n_lvl1_portal_esc_central", 2: "n_lvl2_portal_esc_rotunda_left" },
+      { id: "p_oval_sanborns_esc", type: "escalator", name: "Escaleras Eléctricas Plaza Oval / Sanborns", 1: "n_lvl1_portal_esc_oval", 2: "n_lvl2_portal_esc_sanborns" },
+      { id: "p_sears_cinelia_esc", type: "escalator", name: "Escaleras Eléctricas Sears / Cinelia", 2: "n_lvl2_portal_esc_sears", 3: "n_lvl3_portal_esc_cinelia" },
+      { id: "p_chedraui_cinelia_elev", type: "elevator", name: "Elevador Chedraui / Cinelia", 2: "n_lvl2_portal_elev_chedraui", 3: "n_lvl3_portal_elev_cinelia" },
+      { id: "p_rotunda_top_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Norte", 2: "n_lvl2_portal_esc_rotunda_right", 3: "n_lvl3_portal_esc_central_top" },
+      { id: "p_rotunda_bot_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Sur", 2: "n_lvl2_portal_esc_rotunda_bot", 3: "n_lvl3_portal_esc_central_bot" },
+      { id: "p_sanborns_terrace_esc", type: "escalator", name: "Escaleras Eléctricas Terraza", 2: "n_lvl2_portal_esc_sanborns", 3: "n_lvl3_portal_esc_terrace" },
+      { id: "p_auto_anytime_esc", type: "escalator", name: "Escaleras Eléctricas Autos / Anytime", 2: "n_lvl2_portal_esc_automotive", 3: "n_lvl3_portal_esc_anytime" }
+    ];
+
+    // --- ANIME.JS HARDWARE-ACCELERATED ANIMATION MODULE (Raspberry Pi 5 Optimized) ---
+    const NavAnimator = {
+      activeCameraAnim: null,
+      activeArrowAnim: null,
+      arrowState: { x: 0, y: 0, angle: 0 },
+
+      // 1. Line Drawing Animation on SVG Route Paths
+      animateRoutePath: function() {
+        const pathEl = document.getElementById('svg-active-route');
+        const waterBedEl = document.getElementById('svg-water-bed');
+        if (!pathEl || typeof anime === 'undefined') return;
+
+        let pathLength = 0;
+        try {
+          pathLength = pathEl.getTotalLength ? pathEl.getTotalLength() : 0;
+        } catch (e) {
+          pathLength = 0;
+        }
+        if (pathLength <= 0) return;
+
+        anime.remove([pathEl, waterBedEl]);
+        
+        pathEl.style.strokeDasharray = pathLength;
+        waterBedEl.style.strokeDasharray = pathLength;
+
+        anime({
+          targets: [pathEl, waterBedEl],
+          strokeDashoffset: [pathLength, 0],
+          duration: Math.min(1000, Math.max(450, pathLength * 0.7)),
+          easing: 'easeOutCubic',
+          complete: function() {
+            pathEl.style.strokeDasharray = 'none';
+            waterBedEl.style.strokeDasharray = 'none';
+          }
+        });
+      },
+
+      // Destination Target Pin Elastic Pop-in
+      popInDestinationPin: function() {
+        const destPin = document.getElementById('svg-dest-pin');
+        if (!destPin || typeof anime === 'undefined') return;
+        anime.remove(destPin);
+        anime({
+          targets: destPin,
+          scale: [0.3, 1],
+          opacity: [0, 1],
+          duration: 650,
+          easing: 'easeOutElastic(1, .6)'
+        });
+      },
+
+      // 2. Smooth Navigation Arrow Motion & Tangent Rotation
+      animateArrowTo: function(targetX, targetY, targetAngle, duration = 950, onComplete) {
+        const arrow = document.getElementById('svg-nav-arrow-cursor');
+        if (!arrow || typeof anime === 'undefined') return;
+
+        if (this.activeArrowAnim) this.activeArrowAnim.pause();
+
+        // Calculate shortest rotation path to avoid 360 wrap-arounds
+        let diffAngle = (targetAngle - (this.arrowState.angle % 360));
+        while (diffAngle < -180) diffAngle += 360;
+        while (diffAngle > 180) diffAngle -= 360;
+        const finalAngle = this.arrowState.angle + diffAngle;
+
+        const state = this.arrowState;
+        this.activeArrowAnim = anime({
+          targets: state,
+          x: targetX,
+          y: targetY,
+          angle: finalAngle,
+          duration: duration,
+          easing: 'easeInOutQuad',
+          update: function() {
+            arrow.setAttribute('transform', `translate(${state.x}, ${state.y}) rotate(${state.angle})`);
+          },
+          complete: function() {
+            state.angle = finalAngle % 360;
+            if (onComplete) onComplete();
+          }
+        });
+      },
+
+      // Instant arrow position (without animation)
+      setArrowInstant: function(x, y, angle) {
+        const arrow = document.getElementById('svg-nav-arrow-cursor');
+        if (!arrow) return;
+        if (this.activeArrowAnim) this.activeArrowAnim.pause();
+        this.arrowState.x = x;
+        this.arrowState.y = y;
+        this.arrowState.angle = angle;
+        arrow.setAttribute('transform', `translate(${x}, ${y}) rotate(${angle})`);
+      },
+
+      // 3. Smooth Camera Zoom & Pan (Hardware-Accelerated)
+      animateCameraTo: function(targetPanX, targetPanY, targetScale, duration = 600) {
+        const stage = document.getElementById('map-camera-stage');
+        if (!stage || typeof anime === 'undefined') {
+          if (stage) stage.style.transform = `translate(${targetPanX}px, ${targetPanY}px) scale(${targetScale})`;
+          return;
+        }
+
+        if (this.activeCameraAnim) this.activeCameraAnim.pause();
+
+        this.activeCameraAnim = anime({
+          targets: currentCamera,
+          panX: targetPanX,
+          panY: targetPanY,
+          scale: targetScale,
+          duration: duration,
+          easing: 'easeOutCubic',
+          update: function() {
+            stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+          },
+          complete: function() {
+            currentCamera.isZoomed = currentCamera.scale > 1.1;
+            updateZoomButtonUI();
+          }
+        });
+      },
+
+      // 4. Totem UI Micro-interactions (Step changes, icons, cards)
+      animateTotemStep: function() {
+        if (typeof anime === 'undefined') return;
+
+        // Animate Step Direction Icon Box
+        anime({
+          targets: '#step-icon-container',
+          scale: [0.85, 1],
+          rotate: ['-12deg', '0deg'],
+          duration: 380,
+          easing: 'easeOutBack'
+        });
+
+        // Slide in Instruction Text
+        anime({
+          targets: ['#step-instruction-main', '#step-instruction-context'],
+          translateX: [10, 0],
+          opacity: [0, 1],
+          delay: anime.stagger(45),
+          duration: 320,
+          easing: 'easeOutQuad'
+        });
+      },
+
+      // Place / Landmark Card Elastic Pulse
+      animatePlaceCard: function(isDestination = false) {
+        if (typeof anime === 'undefined') return;
+        anime({
+          targets: '#place-icon-box',
+          scale: isDestination ? [0.8, 1.25, 1] : [0.88, 1.1, 1],
+          duration: 520,
+          easing: 'easeOutElastic(1, .6)'
+        });
+      },
+
+      // 5. Staggered Cascades (Directory, Step Cards, Segments)
+      staggerLegend: function() {
+        if (typeof anime === 'undefined') return;
+        anime({
+          targets: '#legend-items-container > div',
+          opacity: [0, 1],
+          translateY: [8, 0],
+          delay: anime.stagger(12, { start: 20 }),
+          duration: 260,
+          easing: 'easeOutQuad'
+        });
+      },
+
+      staggerSteps: function() {
+        if (typeof anime === 'undefined') return;
+        anime({
+          targets: '#route-steps-grid > div',
+          opacity: [0, 1],
+          translateY: [10, 0],
+          delay: anime.stagger(30),
+          duration: 300,
+          easing: 'easeOutQuad'
+        });
+      },
+
+      staggerSegments: function() {
+        if (typeof anime === 'undefined') return;
+        anime({
+          targets: '#segments-container > button',
+          scale: [0.9, 1],
+          opacity: [0, 1],
+          delay: anime.stagger(40),
+          duration: 280,
+          easing: 'easeOutBack'
+        });
+      }
+    };
+
+    // Initialize application
+    async function initApp() {
+      try {
+        const [resGraph, resLegends] = await Promise.all([
+          fetch('mall_graph.json'),
+          fetch('gemini-code-1787086839436.json')
+        ]);
+        
+        mallGraph = await resGraph.json();
+        const legData = await resLegends.json();
+        mallLegends = legData.mall_legends;
+        
+        buildFloorSubgraphs();
+        populateSelects();
+        renderLegendList();
+        setupInteractiveCameraPan();
+        
+        // Initial Route: Tótem Punto 12 -> Sfera (Nivel 1)
+        setTotemRoute("n_lvl2_store_17");
+      } catch (err) {
+        console.error("Error loading graph/legend data:", err);
+      }
+    }
+
+    // --- DYNAMIC CAMERA ZOOM & PAN ENGINE ---
+    const NAVIGATION_ZOOM_LEVEL = 1.85;
+    let showGraphClutter = false;
+
+    function toggleGraphPoints() {
+      showGraphClutter = !showGraphClutter;
+      const nodesLayer = document.getElementById('svg-nodes-layer');
+      const edgesLayer = document.getElementById('svg-edges-layer');
+      if (showGraphClutter) {
+        nodesLayer.classList.remove('graph-nav-hidden');
+        edgesLayer.classList.remove('graph-nav-hidden');
+      } else {
+        nodesLayer.classList.add('graph-nav-hidden');
+        edgesLayer.classList.add('graph-nav-hidden');
+      }
+    }
+
+    function zoomToCoordinates(x, y, targetScale = NAVIGATION_ZOOM_LEVEL, animate = true) {
+      const container = document.getElementById('map-container');
+      const stage = document.getElementById('map-camera-stage');
+      if (!container || !stage) return;
+
+      // Smoothly fade out inactive graph clutter during navigation / zoom
+      if (!showGraphClutter) {
+        document.getElementById('svg-nodes-layer').classList.add('graph-nav-hidden');
+        document.getElementById('svg-edges-layer').classList.add('graph-nav-hidden');
+      }
+
+      const spec = FLOOR_SPECS[currentLevel];
+      const cw = container.clientWidth;
+      const ch = container.clientHeight;
+
+      const u = x / spec.width;
+      const v = y / spec.height;
+
+      const imgAspect = spec.width / spec.height;
+      const containerAspect = cw / ch;
+
+      let renderW, renderH, offsetX, offsetY;
+      if (containerAspect > imgAspect) {
+        renderH = ch;
+        renderW = ch * imgAspect;
+        offsetX = (cw - renderW) / 2;
+        offsetY = 0;
+      } else {
+        renderW = cw;
+        renderH = cw / imgAspect;
+        offsetX = 0;
+        offsetY = (ch - renderH) / 2;
+      }
+
+      const pixelX = offsetX + u * renderW;
+      const pixelY = offsetY + v * renderH;
+
+      const panX = (cw / 2) - (pixelX * targetScale);
+      const panY = (ch / 2) - (pixelY * targetScale);
+
+      if (animate) {
+        NavAnimator.animateCameraTo(panX, panY, targetScale, 600);
+      } else {
+        currentCamera.scale = targetScale;
+        currentCamera.panX = panX;
+        currentCamera.panY = panY;
+        currentCamera.isZoomed = targetScale > 1.1;
+        stage.style.transform = `translate(${panX}px, ${panY}px) scale(${targetScale})`;
+        updateZoomButtonUI();
+      }
+    }
+
+    function zoomToOverview(animate = true) {
+      const stage = document.getElementById('map-camera-stage');
+      if (!stage) return;
+
+      if (animate) {
+        NavAnimator.animateCameraTo(0, 0, 1.0, 600);
+      } else {
+        currentCamera.scale = 1.0;
+        currentCamera.panX = 0;
+        currentCamera.panY = 0;
+        currentCamera.isZoomed = false;
+        stage.style.transform = 'translate(0px, 0px) scale(1)';
+        updateZoomButtonUI();
+      }
+    }
+
+    function toggleZoomOverview() {
+      if (currentCamera.isZoomed) {
+        zoomToOverview(true);
+      } else {
+        centerOnNavArrow();
+      }
+    }
+
+    function centerOnNavArrow() {
+      if (currentSteps.length > 0 && currentSteps[currentStepIndex]) {
+        const node = currentSteps[currentStepIndex].node;
+        if (node && node.level === currentLevel) {
+          zoomToCoordinates(node.coordinates.x, node.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+        }
+      }
+    }
+
+    function manualZoom(factor) {
+      const newScale = Math.min(6.5, Math.max(0.7, currentCamera.scale * factor));
+      if (currentSteps.length > 0 && currentSteps[currentStepIndex]) {
+        const node = currentSteps[currentStepIndex].node;
+        if (node && node.level === currentLevel) {
+          zoomToCoordinates(node.coordinates.x, node.coordinates.y, newScale, true);
+          return;
+        }
+      }
+      const stage = document.getElementById('map-camera-stage');
+      currentCamera.scale = newScale;
+      currentCamera.isZoomed = newScale > 1.1;
+      stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${newScale})`;
+      updateZoomButtonUI();
+    }
+
+    function updateZoomButtonUI() {
+      const btn = document.getElementById('btn-zoom-toggle');
+      const text = document.getElementById('zoom-toggle-text');
+      const icon = document.getElementById('zoom-toggle-icon');
+      if (currentCamera.isZoomed) {
+        text.innerText = "Ver Todo";
+        icon.className = "fa-solid fa-expand text-xs";
+        btn.className = "px-2.5 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700";
+      } else {
+        text.innerText = "Acercar";
+        icon.className = "fa-solid fa-magnifying-glass-plus text-xs";
+        btn.className = "px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md";
+      }
+    }
+
+    function setupInteractiveCameraPan() {
+      const container = document.getElementById('map-container');
+      const stage = document.getElementById('map-camera-stage');
+      let isDragging = false;
+      let startX = 0;
+      let startY = 0;
+
+      container.addEventListener('mousedown', (e) => {
+        if (e.button !== 0) return;
+        isDragging = true;
+        if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
+        startX = e.clientX - currentCamera.panX;
+        startY = e.clientY - currentCamera.panY;
+        container.style.cursor = 'grabbing';
+      });
+
+      window.addEventListener('mousemove', (e) => {
+        if (!isDragging) return;
+        currentCamera.panX = e.clientX - startX;
+        currentCamera.panY = e.clientY - startY;
+        stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+      });
+
+      window.addEventListener('mouseup', () => {
+        if (isDragging) {
+          isDragging = false;
+          container.style.cursor = 'grab';
+        }
+      });
+
+      container.addEventListener('wheel', (e) => {
+        e.preventDefault();
+        const factor = e.deltaY < 0 ? 1.12 : 0.88;
+        manualZoom(factor);
+      }, { passive: false });
+    }
+
+    // --- MULTI-FLOOR NAVIGATION ARROW SIMULATION (GPS Style) ---
+    function toggleWalkSimulation() {
+      if (isSimulating) {
+        stopWalkSimulation();
+      } else {
+        startWalkSimulation();
+      }
+    }
+
+    function startWalkSimulation() {
+      if (routeSegments.length === 0) return;
+
+      // If already at the end of the route, restart cleanly from step 0
+      const isAtEnd = currentStepIndex >= currentSteps.length - 1 || 
+                      (simSegIndex >= routeSegments.length - 1 && simNodeIndex >= (routeSegments[simSegIndex]?.path?.length || 0));
+      
+      if (isAtEnd) {
+        simSegIndex = 0;
+        simNodeIndex = 0;
+        currentStepIndex = 0;
+        if (currentLevel !== routeSegments[0].level) {
+          switchLevel(routeSegments[0].level);
+        }
+      }
+
+      isSimulating = true;
+      isTransitioningFloor = false;
+      document.getElementById('hud-sim-icon').className = "fa-solid fa-pause";
+      document.getElementById('hud-sim-btn-text').innerText = "Pausar";
+
+      // Ensure current level matches the current segment
+      if (currentLevel !== routeSegments[simSegIndex].level) {
+        switchLevel(routeSegments[simSegIndex].level);
+      }
+
+      // Initial Zoom to starting node of the walk
+      const seg = routeSegments[simSegIndex];
+      if (seg && seg.path.length > 0) {
+        const startNode = seg.path[Math.min(simNodeIndex, seg.path.length - 1)];
+        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+      }
+
+      clearInterval(simInterval);
+      runSimulationStep();
+      simInterval = setInterval(runSimulationStep, 1200);
+    }
+
+    function runSimulationStep() {
+      if (!isSimulating || isTransitioningFloor) return;
+
+      if (simSegIndex >= routeSegments.length) {
+        stopWalkSimulation();
+        simSegIndex = 0;
+        simNodeIndex = 0;
+        return;
+      }
+
+      const seg = routeSegments[simSegIndex];
+      const pathNodes = seg.path;
+
+      if (simNodeIndex >= pathNodes.length) {
+        // Reached end of current floor segment!
+        if (simSegIndex < routeSegments.length - 1) {
+          // Cross-floor transition (Escalator / Elevator)
+          isTransitioningFloor = true;
+          const nextSeg = routeSegments[simSegIndex + 1];
+          
+          // Find transition step in currentSteps
+          const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
+          if (transStepIdx !== -1) {
+            currentStepIndex = transStepIdx;
+            updateTotemUI(false);
+          }
+
+          // Pause 1.4 seconds on the portal, then switch floor
+          setTimeout(() => {
+            if (!isSimulating) return;
+            simSegIndex++;
+            simNodeIndex = 0;
+            isTransitioningFloor = false;
+            switchLevel(nextSeg.level);
+            // Zoom to first node of new floor
+            if (nextSeg.path.length > 0) {
+              const startN = nextSeg.path[0];
+              updatePlaceCard(startN);
+              zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+            }
+          }, 1400);
+          return;
+        } else {
+          // Reached final destination!
+          currentStepIndex = currentSteps.length - 1;
+          const destN = seg.path[seg.path.length - 1];
+          updatePlaceCard(destN, true);
+          updateTotemUI(false);
+          isTransitioningFloor = true;
+
+          // Pause 2.2s on destination, then continuously loop back to start unless paused by user
+          setTimeout(() => {
+            if (!isSimulating) return;
+
+            // Loop back to Step 1 & Segment 0
+            simSegIndex = 0;
+            simNodeIndex = 0;
+            currentStepIndex = 0;
+            isTransitioningFloor = false;
+
+            // Switch back to origin floor
+            if (currentLevel !== routeSegments[0].level) {
+              switchLevel(routeSegments[0].level);
+            }
+            updateTotemUI(false);
+
+            // Re-zoom to starting node
+            if (routeSegments[0] && routeSegments[0].path.length > 0) {
+              const startNode = routeSegments[0].path[0];
+              updatePlaceCard(startNode);
+              zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+            }
+          }, 2200);
+          return;
+        }
+      }
+
+      const curr = pathNodes[simNodeIndex];
+      const next = pathNodes[Math.min(pathNodes.length - 1, simNodeIndex + 1)];
+
+      // Position & Smoothly Glide Nav Arrow
+      positionNavArrowOnNode(curr, next, true);
+
+      // Smooth Camera Tracking (Keep GPS Arrow Centered in Zoomed Mode)
+      zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+
+      // Update Live Place & Landmark Preview Card
+      const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex === pathNodes.length - 1);
+      updatePlaceCard(curr, isDestinationNode);
+
+      // Sync closest step in Totem UI
+      const matchingStepIdx = currentSteps.findIndex((s, idx) => s.node && s.node.id === curr.id && s.level === seg.level);
+      if (matchingStepIdx !== -1 && matchingStepIdx !== currentStepIndex) {
+        currentStepIndex = matchingStepIdx;
+        updateTotemUI(false);
+      }
+
+      simNodeIndex++;
+    }
+
+    function stopWalkSimulation() {
+      isSimulating = false;
+      isTransitioningFloor = false;
+      clearInterval(simInterval);
+      document.getElementById('hud-sim-icon').className = "fa-solid fa-location-arrow";
+      document.getElementById('hud-sim-btn-text').innerText = "Recorrer con Flecha GPS";
+    }
+
+    // --- VISUAL PLACE & LANDMARK RECOGNITION ENGINE ---
+    function getPlaceVisualInfo(node) {
+      if (!node) return { emoji: '📍', category: 'PUNTO DE CONTROL', bgGradient: 'from-blue-600 to-sky-500', name: 'Pasillo Principal', detail: 'Conector de pasillo abierto' };
+
+      const name = (node.name || node.context_element || '').toLowerCase();
+      const type = node.type || '';
+      const id = node.id || '';
+
+      // Escalators & Elevators
+      if (type === 'portal_escalator' || name.includes('escalera')) {
+        return { emoji: '🪜', category: 'CONEXIÓN VERTICAL', bgGradient: 'from-cyan-600 to-teal-800', name: node.name || 'Escaleras Eléctricas', detail: `Conecta con Nivel ${node.level === 1 ? '1' : (node.level === 2 ? 'PB / 2' : '1')}` };
+      }
+      if (type === 'portal_elevator' || name.includes('elevador')) {
+        return { emoji: '🛗', category: 'ELEVADOR PANORÁMICO', bgGradient: 'from-blue-600 to-indigo-800', name: node.name || 'Elevador Panorámico', detail: 'Acceso accesible y directo entre niveles' };
+      }
+      if (id === TOTEM_NODE_ID || name.includes('tótem')) {
+        return { emoji: '📍', category: 'TÓTEM INTERACTIVO', bgGradient: 'from-rose-600 to-red-800', name: 'Tótem Principal (Punto 12)', detail: 'Ubicado en pasillo frente a Chedraui / M-Caps' };
+      }
+
+      // Food & Cafes
+      if (name.includes('starbucks')) return { emoji: '☕', category: 'CAFETERÍA & BEBIDAS', bgGradient: 'from-emerald-700 to-green-900', name: 'Starbucks Coffee', detail: 'Bebidas artesanales y café de especialidad' };
+      if (name.includes('sanborns')) return { emoji: '🍽️', category: 'RESTAURANTE & TIENDA', bgGradient: 'from-sky-700 to-blue-900', name: 'Sanborns Altozano', detail: 'Restaurante tradicional, panadería y tienda' };
+      if (name.includes('moyo') || name.includes('nutrisa') || name.includes('ice') || name.includes('helad') || name.includes('crepe') || name.includes('dairy') || name.includes('chocolat')) {
+        return { emoji: '🍦', category: 'POSTRES & HELADOS', bgGradient: 'from-pink-600 to-rose-800', name: node.name || 'Postres & Helados', detail: 'Isla de snacks y postres en el pasillo' };
+      }
+      if (name.includes('burger') || name.includes('carl') || name.includes('domino') || name.includes('pizza') || name.includes('wing') || name.includes('infierno') || name.includes('taco') || name.includes('chilim')) {
+        return { emoji: '🍔', category: 'COMIDA RÁPIDA & SNACKS', bgGradient: 'from-amber-600 to-orange-800', name: node.name, detail: 'Área gastronómica y antojos' };
+      }
+      if (name.includes('fisher') || name.includes('unagi') || name.includes('jana') || name.includes('mammut') || name.includes('bistrot') || name.includes('restauran')) {
+        return { emoji: '🍣', category: 'RESTAURANTE & TERRAZA', bgGradient: 'from-teal-600 to-emerald-900', name: node.name, detail: 'Restaurante con vista panorámica en Terraza' };
+      }
+
+      // Anchor Stores
+      if (name.includes('liverpool')) return { emoji: '🛍️', category: 'TIENDA DEPARTAMENTAL ANCLA', bgGradient: 'from-pink-700 to-fuchsia-900', name: 'Liverpool', detail: 'Gran tienda departamental de moda y hogar' };
+      if (name.includes('sears')) return { emoji: '🛍️', category: 'TIENDA DEPARTAMENTAL ANCLA', bgGradient: 'from-red-700 to-rose-900', name: 'Sears', detail: 'Tienda departamental multimarca' };
+      if (name.includes('chedraui')) return { emoji: '🛒', category: 'SUPERMERCADO SELECTO', bgGradient: 'from-emerald-600 to-teal-800', name: 'Chedraui Selecto', detail: 'Supermercado gourmet e importaciones' };
+      if (name.includes('cinelia') || name.includes('cine')) return { emoji: '🎬', category: 'SALAS DE CINE & VIP', bgGradient: 'from-purple-700 to-indigo-950', name: 'Cinelia Altozano', detail: 'Estrenos, salas tradicionales y salas VIP' };
+
+      // Entertainment & Sports
+      if (name.includes('gokart')) return { emoji: '🏎️', category: 'PISTA DE GO KARTS', bgGradient: 'from-orange-600 to-red-800', name: 'Gokart Mania', detail: 'Pista de carreras bajo techo' };
+      if (name.includes('bowling') || name.includes('monkey')) return { emoji: '🎳', category: 'BOLICHE & ENTRETENIMIENTO', bgGradient: 'from-sky-600 to-indigo-800', name: 'Monkey Bowling', detail: 'Líneas de boliche y zona arcade' };
+      if (name.includes('casino') || name.includes('crown')) return { emoji: '🎰', category: 'CASINO & JUEGOS', bgGradient: 'from-amber-700 to-yellow-900', name: 'Crown City Casino', detail: 'Casino y juegos de azar autorizados' };
+      if (name.includes('gym') || name.includes('fitness') || name.includes('anytime')) return { emoji: '🏋️', category: 'GIMNASIO & FITNESS', bgGradient: 'from-rose-700 to-red-900', name: 'Anytime Fitness', detail: 'Club deportivo y entrenamiento 24/7' };
+
+      // Fashion & Shoes
+      if (name.includes('sfera') || name.includes('zara') || name.includes('h&m') || name.includes('c&a') || name.includes('gap') || name.includes('studio') || name.includes('guess') || name.includes('eagle') || name.includes('tommy') || name.includes('springfield') || name.includes('women')) {
+        return { emoji: '👗', category: 'MODA & VESTIMENTA', bgGradient: 'from-violet-600 to-purple-800', name: node.name, detail: 'Ropa, tendencias y moda internacional' };
+      }
+      if (name.includes('flexi') || name.includes('adidas') || name.includes('salomon') || name.includes('sport') || name.includes('dpstreet') || name.includes('dportenis')) {
+        return { emoji: '👟', category: 'CALZADO & DEPORTES', bgGradient: 'from-blue-600 to-cyan-800', name: node.name, detail: 'Tenis, calzado de confort y ropa deportiva' };
+      }
+
+      // Beauty & Jewelry
+      if (name.includes('sephora') || name.includes('mac') || name.includes('natura') || name.includes('belleza') || name.includes('cosmetic') || name.includes('perfum')) {
+        return { emoji: '💄', category: 'BELLEZA & COSMÉTICA', bgGradient: 'from-pink-600 to-rose-700', name: node.name, detail: 'Maquillaje, fragancias y cuidado de la piel' };
+      }
+      if (name.includes('pandora') || name.includes('bizzarro') || name.includes('joya') || name.includes('plata') || name.includes('oro')) {
+        return { emoji: '💍', category: 'JOYERÍA & RELOJERÍA', bgGradient: 'from-amber-500 to-yellow-700', name: node.name, detail: 'Joyería fina, dijes y accesorios de lujo' };
+      }
+
+      // Technology & Books
+      if (name.includes('macstore') || name.includes('apple')) return { emoji: '💻', category: 'TECNOLOGÍA & APPLE', bgGradient: 'from-slate-600 to-slate-800', name: 'MacStore Altozano', detail: 'Distribuidores autorizados de Apple' };
+      if (name.includes('steren') || name.includes('at&t') || name.includes('telcel') || name.includes('movistar') || name.includes('tech')) return { emoji: '📱', category: 'TELEFONÍA & ELECTRÓNICA', bgGradient: 'from-blue-700 to-sky-900', name: node.name, detail: 'Accesorios tecnológicos y planes celulares' };
+      if (name.includes('porrúa') || name.includes('libro')) return { emoji: '📚', category: 'LIBRERÍA & CULTURA', bgGradient: 'from-emerald-700 to-teal-900', name: 'Librería Porrúa', detail: 'Libros, literatura, novedades y papelería' };
+      if (name.includes('carcasa') || name.includes('m-caps') || name.includes('gorra')) return { emoji: '🧢', category: 'ACCESORIOS & GORRAS', bgGradient: 'from-sky-600 to-blue-800', name: node.name, detail: 'Gorras exclusivas y protectores de smartphone' };
+
+      // Landmarks & Common Areas
+      if (name.includes('fuente')) return { emoji: '⛲', category: 'PLAZA & FUENTE CENTRAL', bgGradient: 'from-cyan-600 to-blue-800', name: 'Fuente Central', detail: 'Punto de encuentro y referencia visual' };
+      if (name.includes('rotonda')) return { emoji: '⭕', category: 'ROTONDA DE PASILLOS', bgGradient: 'from-slate-700 to-slate-900', name: 'Rotonda Central', detail: 'Confluencia principal de pasillos del mall' };
+      if (name.includes('fiesta inn') || name.includes('hotel')) return { emoji: '🏨', category: 'HOTEL EJECUTIVO', bgGradient: 'from-indigo-700 to-blue-950', name: 'Hotel Fiesta Inn', detail: 'Acceso directo al hotel business class' };
+
+      // Corridor Islands
+      if (type === 'island' || id.includes('island')) {
+        return { emoji: '🏝️', category: 'ISLA DE PASILLO', bgGradient: 'from-sky-600 to-cyan-800', name: node.name || 'Isla Comercial', detail: 'Kiosco comercial en el centro del pasillo' };
+      }
+
+      return {
+        emoji: '🏬',
+        category: 'LOCAL COMERCIAL',
+        bgGradient: 'from-blue-600 to-slate-800',
+        name: node.name || `Punto en ${node.level === 1 ? 'PB' : (node.level === 2 ? 'Nivel 1' : 'Nivel 2')}`,
+        detail: node.context_element ? `A la altura de ${node.context_element}` : `Nivel ${node.level === 1 ? 'PB' : (node.level === 2 ? '1' : '2')}`
+      };
+    }
+
+    function updatePlaceCard(node, isDestination = false) {
+      const card = document.getElementById('live-place-card');
+      const emojiEl = document.getElementById('place-emoji');
+      const catEl = document.getElementById('place-category-tag');
+      const titleEl = document.getElementById('place-title');
+      const detailEl = document.getElementById('place-detail');
+      const statusEl = document.getElementById('place-status-tag');
+      const iconBox = document.getElementById('place-icon-box');
+
+      if (!card || !node) return;
+
+      const info = getPlaceVisualInfo(node);
+
+      emojiEl.innerText = info.emoji;
+      catEl.innerText = info.category;
+      titleEl.innerText = info.name;
+      detailEl.innerText = info.detail;
+
+      iconBox.className = `w-12 h-12 rounded-xl bg-gradient-to-tr ${info.bgGradient} flex items-center justify-center text-2xl shadow-md flex-shrink-0 transition-all duration-300`;
+
+      if (isDestination) {
+        statusEl.className = "text-[9px] px-1.5 py-0.2 bg-amber-950 text-amber-300 border border-amber-800 rounded font-bold flex-shrink-0 animate-pulse";
+        statusEl.innerText = "🎯 DESTINO ALCANZADO";
+      } else if (node.id === TOTEM_NODE_ID) {
+        statusEl.className = "text-[9px] px-1.5 py-0.2 bg-rose-950 text-rose-300 border border-rose-800 rounded font-semibold flex-shrink-0";
+        statusEl.innerText = "📍 PUNTO DE ORIGEN";
+      } else {
+        statusEl.className = "text-[9px] px-1.5 py-0.2 bg-emerald-950 text-emerald-300 border border-emerald-800 rounded font-semibold flex-shrink-0";
+        statusEl.innerText = "🚶 EN TRAYECTO";
+      }
+
+      NavAnimator.animatePlaceCard(isDestination);
+    }
+
+    // Position Navigation Arrow on specific step node
+    function positionNavArrowOnNode(currNode, nextNode, animate = false) {
+      const navArrow = document.getElementById('svg-nav-arrow-cursor');
+      if (!currNode || currNode.level !== currentLevel) {
+        navArrow.style.display = 'none';
+        return;
+      }
+
+      navArrow.style.display = 'block';
+      let angleDeg = 0;
+      if (nextNode && (nextNode.coordinates.x !== currNode.coordinates.x || nextNode.coordinates.y !== currNode.coordinates.y)) {
+        const dx = nextNode.coordinates.x - currNode.coordinates.x;
+        const dy = nextNode.coordinates.y - currNode.coordinates.y;
+        angleDeg = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+      }
+
+      if (animate) {
+        NavAnimator.animateArrowTo(currNode.coordinates.x, currNode.coordinates.y, angleDeg, 950);
+      } else {
+        NavAnimator.setArrowInstant(currNode.coordinates.x, currNode.coordinates.y, angleDeg);
+      }
+    }
+
+    // --- SUBGRAPHS & MULTI-FLOOR ROUTING ---
+    function buildFloorSubgraphs() {
+      levelGraphs = { 1: {}, 2: {}, 3: {} };
+      levelNodes = { 1: {}, 2: {}, 3: {} };
+
+      mallGraph.nodes.forEach(n => {
+        levelNodes[n.level][n.id] = n;
+      });
+
+      mallGraph.edges.forEach(e => {
+        const u = mallGraph.nodes.find(n => n.id === e.from);
+        const v = mallGraph.nodes.find(n => n.id === e.to);
+        if (u && v && u.level === v.level) {
+          const lvl = u.level;
+          levelGraphs[lvl][e.from] = levelGraphs[lvl][e.from] || [];
+          levelGraphs[lvl][e.from].push(e);
+          levelGraphs[lvl][e.to] = levelGraphs[lvl][e.to] || [];
+          levelGraphs[lvl][e.to].push({ from: e.to, to: e.from, weight: e.weight });
+        }
+      });
+    }
+
+    function aStarSingleFloor(lvl, startId, goalId) {
+      const adj = levelGraphs[lvl] || {};
+      const nodesLvl = levelNodes[lvl] || {};
+
+      if (!nodesLvl[startId] || !nodesLvl[goalId]) return [];
+
+      function heuristic(a, b) {
+        const na = nodesLvl[a];
+        const nb = nodesLvl[b];
+        const dx = na.coordinates.x - nb.coordinates.x;
+        const dy = na.coordinates.y - nb.coordinates.y;
+        return Math.sqrt(dx*dx + dy*dy);
+      }
+
+      const openSet = new Set([startId]);
+      const cameFrom = {};
+      const gScore = {};
+      const fScore = {};
+
+      Object.keys(nodesLvl).forEach(nid => {
+        gScore[nid] = Infinity;
+        fScore[nid] = Infinity;
+      });
+
+      gScore[startId] = 0;
+      fScore[startId] = heuristic(startId, goalId);
+
+      while (openSet.size > 0) {
+        let current = null;
+        let lowestF = Infinity;
+        for (const nid of openSet) {
+          if (fScore[nid] < lowestF) {
+            lowestF = fScore[nid];
+            current = nid;
+          }
+        }
+
+        if (current === goalId) {
+          const path = [current];
+          while (cameFrom[current]) {
+            current = cameFrom[current];
+            path.unshift(current);
+          }
+          return path.map(id => nodesLvl[id]);
+        }
+
+        openSet.delete(current);
+
+        const neighbors = adj[current] || [];
+        for (const edge of neighbors) {
+          const neighbor = edge.to;
+          const tentativeG = gScore[current] + edge.weight;
+
+          if (tentativeG < gScore[neighbor]) {
+            cameFrom[neighbor] = current;
+            gScore[neighbor] = tentativeG;
+            fScore[neighbor] = tentativeG + heuristic(neighbor, goalId);
+            openSet.add(neighbor);
+          }
+        }
+      }
+
+      return [];
+    }
+
+    function calculateMultiFloorRoute(startId, goalId) {
+      const startNode = mallGraph.nodes.find(n => n.id === startId);
+      const goalNode = mallGraph.nodes.find(n => n.id === goalId);
+
+      if (!startNode || !goalNode) return [];
+
+      const startLvl = startNode.level;
+      const goalLvl = goalNode.level;
+      const preferElevator = document.getElementById('prefer-elevator-chk').checked;
+
+      // Same Floor Route
+      if (startLvl === goalLvl) {
+        const path = aStarSingleFloor(startLvl, startId, goalId);
+        return [{
+          level: startLvl,
+          title: `Planta ${startLvl === 1 ? 'Baja' : (startLvl === 2 ? '1' : '2')}`,
+          subtitle: `Ruta directa en el mismo nivel`,
+          path: path,
+          start: startNode,
+          goal: goalNode,
+          isFinal: true
+        }];
+      }
+
+      // Adjacent Floors
+      if (Math.abs(startLvl - goalLvl) === 1) {
+        let candidatePortals = [];
+        PORTALS.forEach(p => {
+          if (p[startLvl] && p[goalLvl]) {
+            if (preferElevator && p.type !== 'elevator') return;
+            candidatePortals.push(p);
+          }
+        });
+
+        if (candidatePortals.length === 0) {
+          candidatePortals = PORTALS.filter(p => p[startLvl] && p[goalLvl]);
+        }
+
+        let bestRoute = null;
+        let minTotalDist = Infinity;
+
+        candidatePortals.forEach(portal => {
+          const startPortalId = portal[startLvl];
+          const goalPortalId = portal[goalLvl];
+
+          const path1 = aStarSingleFloor(startLvl, startId, startPortalId);
+          const path2 = aStarSingleFloor(goalLvl, goalPortalId, goalId);
+
+          if (path1.length > 0 && path2.length > 0) {
+            let dist1 = 0;
+            for (let i = 0; i < path1.length - 1; i++) {
+              dist1 += Math.hypot(path1[i].coordinates.x - path1[i+1].coordinates.x, path1[i].coordinates.y - path1[i+1].coordinates.y);
+            }
+            let dist2 = 0;
+            for (let i = 0; i < path2.length - 1; i++) {
+              dist2 += Math.hypot(path2[i].coordinates.x - path2[i+1].coordinates.x, path2[i].coordinates.y - path2[i+1].coordinates.y);
+            }
+            const portalPenalty = portal.type === 'elevator' ? (preferElevator ? 0 : 30) : 10;
+            const totalScore = dist1 + dist2 + portalPenalty;
+
+            if (totalScore < minTotalDist) {
+              minTotalDist = totalScore;
+              bestRoute = [
+                {
+                  level: startLvl,
+                  title: `Tramo 1: Planta ${startLvl === 1 ? 'Baja' : (startLvl === 2 ? '1' : '2')}`,
+                  subtitle: `Hacia ${portal.name}`,
+                  path: path1,
+                  start: startNode,
+                  goal: levelNodes[startLvl][startPortalId],
+                  isFinal: false,
+                  portalName: portal.name,
+                  portalType: portal.type,
+                  targetLevel: goalLvl,
+                  transitionText: `Toma ${portal.name} hacia Nivel ${goalLvl === 1 ? 'PB' : (goalLvl === 2 ? '1' : '2')}`
+                },
+                {
+                  level: goalLvl,
+                  title: `Tramo 2: Planta ${goalLvl === 1 ? 'Baja' : (goalLvl === 2 ? '1' : '2')}`,
+                  subtitle: `Desde ${portal.name} hacia ${goalNode.name}`,
+                  path: path2,
+                  start: levelNodes[goalLvl][goalPortalId],
+                  goal: goalNode,
+                  isFinal: true
+                }
+              ];
+            }
+          }
+        });
+
+        if (bestRoute) return bestRoute;
+      }
+
+      // Two Floors Apart (Level 1 <-> Level 3 via Level 2)
+      if (Math.abs(startLvl - goalLvl) === 2) {
+        const midLvl = 2;
+        let bestRoute = null;
+        let minTotalDist = Infinity;
+
+        PORTALS.forEach(p1 => {
+          if (!p1[startLvl] || !p1[midLvl]) return;
+          PORTALS.forEach(p2 => {
+            if (!p2[midLvl] || !p2[goalLvl]) return;
+
+            const path1 = aStarSingleFloor(startLvl, startId, p1[startLvl]);
+            const path2 = aStarSingleFloor(midLvl, p1[midLvl], p2[midLvl]);
+            const path3 = aStarSingleFloor(goalLvl, p2[goalLvl], goalId);
+
+            if (path1.length > 0 && path2.length > 0 && path3.length > 0) {
+              let score = path1.length * 10 + path2.length * 10 + path3.length * 10;
+              if (score < minTotalDist) {
+                minTotalDist = score;
+                bestRoute = [
+                  {
+                    level: startLvl,
+                    title: `Tramo 1: Planta ${startLvl === 1 ? 'Baja' : '2'}`,
+                    subtitle: `Hacia ${p1.name}`,
+                    path: path1,
+                    start: startNode,
+                    goal: levelNodes[startLvl][p1[startLvl]],
+                    isFinal: false,
+                    portalName: p1.name,
+                    portalType: p1.type,
+                    targetLevel: midLvl,
+                    transitionText: `Toma ${p1.name} al Nivel 1`
+                  },
+                  {
+                    level: midLvl,
+                    title: `Tramo 2: Planta 1 (Conexión)`,
+                    subtitle: `Transbordo por Nivel 1`,
+                    path: path2,
+                    start: levelNodes[midLvl][p1[midLvl]],
+                    goal: levelNodes[midLvl][p2[midLvl]],
+                    isFinal: false,
+                    portalName: p2.name,
+                    portalType: p2.type,
+                    targetLevel: goalLvl,
+                    transitionText: `Toma ${p2.name} hacia Nivel ${goalLvl === 1 ? 'PB' : '2'}`
+                  },
+                  {
+                    level: goalLvl,
+                    title: `Tramo 3: Planta ${goalLvl === 1 ? 'Baja' : '2'}`,
+                    subtitle: `Hacia ${goalNode.name}`,
+                    path: path3,
+                    start: levelNodes[goalLvl][p2[goalLvl]],
+                    goal: goalNode,
+                    isFinal: true
+                  }
+                ];
+              }
+            }
+          });
+        });
+
+        if (bestRoute) return bestRoute;
+      }
+
+      return [];
+    }
+
+    // Populate dropdown selects
+    function populateSelects() {
+      const originSel = document.getElementById('origin-select');
+      const destSel = document.getElementById('dest-select');
+      
+      originSel.innerHTML = '';
+      destSel.innerHTML = '';
+
+      const totemOpt = new Option("📍 Tótem Principal (Punto 12 - Nivel 1)", TOTEM_NODE_ID);
+      originSel.appendChild(totemOpt);
+
+      const levels = {
+        1: { name: "Planta Baja (Nivel Inferior)", nodes: [] },
+        2: { name: "Planta 1 (Nivel Principal)", nodes: [] },
+        3: { name: "Planta 2 (Nivel Superior)", nodes: [] }
+      };
+
+      mallGraph.nodes.forEach(n => {
+        if (n.name && (n.type === 'store' || n.type === 'anchor_store' || n.type === 'island' || n.type.startsWith('portal_') || n.type === 'service' || n.type === 'restroom')) {
+          levels[n.level].nodes.push(n);
+        }
+      });
+
+      [1, 2, 3].forEach(lvl => {
+        const og1 = document.createElement('optgroup');
+        og1.label = `--- ${levels[lvl].name} ---`;
+        const og2 = document.createElement('optgroup');
+        og2.label = `--- ${levels[lvl].name} ---`;
+
+        levels[lvl].nodes.sort((a, b) => a.name.localeCompare(b.name)).forEach(n => {
+          const opt1 = new Option(`${n.name} (Nivel ${n.level === 1 ? 'PB' : (n.level === 2 ? '1' : '2')})`, n.id);
+          const opt2 = new Option(`${n.name} (Nivel ${n.level === 1 ? 'PB' : (n.level === 2 ? '1' : '2')})`, n.id);
+          og1.appendChild(opt1);
+          og2.appendChild(opt2);
+        });
+
+        originSel.appendChild(og1);
+        destSel.appendChild(og2);
+      });
+
+      originSel.value = TOTEM_NODE_ID;
+    }
+
+    function setTotemRoute(destId) {
+      document.getElementById('origin-select').value = TOTEM_NODE_ID;
+      document.getElementById('dest-select').value = destId;
+      calculateRoute();
+    }
+
+    function swapEndpoints() {
+      const orig = document.getElementById('origin-select').value;
+      const dest = document.getElementById('dest-select').value;
+      document.getElementById('origin-select').value = dest;
+      document.getElementById('dest-select').value = orig;
+      calculateRoute();
+    }
+
+    function switchLevel(lvl) {
+      currentLevel = lvl;
+      const spec = FLOOR_SPECS[lvl];
+      
+      const img = document.getElementById('floor-plan-img');
+      const title = document.getElementById('map-level-title');
+      const count = document.getElementById('map-nodes-count');
+      const container = document.getElementById('map-container');
+      const svgOverlay = document.getElementById('map-svg-overlay');
+
+      [1, 2, 3].forEach(l => {
+        const btn = document.getElementById(`btn-lvl-${l}`);
+        if (l === lvl) {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-md";
+        } else {
+          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white";
+        }
+      });
+
+      img.src = spec.img;
+      title.innerText = spec.name;
+      count.innerText = spec.count;
+      
+      container.style.aspectRatio = `${spec.width} / ${spec.height}`;
+      svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
+
+      renderLegendList();
+      renderMapOverlay();
+      updateSegmentButtons();
+    }
+
+    // Calculate Route & Generate Steps
+    function calculateRoute() {
+      stopWalkSimulation();
+      simSegIndex = 0;
+      simNodeIndex = 0;
+      currentStepIndex = 0;
+
+      const origId = document.getElementById('origin-select').value;
+      const destId = document.getElementById('dest-select').value;
+
+      if (!origId || !destId || !mallGraph) return;
+
+      routeSegments = calculateMultiFloorRoute(origId, destId);
+
+      if (routeSegments.length === 0) return;
+
+      const origNode = routeSegments[0].start;
+      const destNode = routeSegments[routeSegments.length - 1].goal;
+
+      // Calculate total distance
+      let totalDistMeters = 0;
+      routeSegments.forEach(seg => {
+        for (let i = 0; i < seg.path.length - 1; i++) {
+          totalDistMeters += Math.hypot(
+            seg.path[i].coordinates.x - seg.path[i+1].coordinates.x,
+            seg.path[i].coordinates.y - seg.path[i+1].coordinates.y
+          ) * 0.28;
+        }
+        if (!seg.isFinal) totalDistMeters += 20;
+      });
+
+      const distMeters = Math.max(15, Math.round(totalDistMeters));
+      const walkMinutes = Math.max(1, Math.round(distMeters / 75));
+
+      // Update Summary Chips
+      document.getElementById('chip-dist').innerHTML = `<i class="fa-solid fa-ruler-horizontal mr-1"></i> ${distMeters} m`;
+      document.getElementById('chip-time').innerHTML = `<i class="fa-solid fa-clock mr-1"></i> ${walkMinutes} min a pie`;
+      document.getElementById('chip-floors').innerHTML = origNode.level === destNode.level ? 
+        `<i class="fa-solid fa-circle-check mr-1"></i> Mismo nivel (${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')})` : 
+        `<i class="fa-solid fa-stairs mr-1"></i> Nivel ${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')} → Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+
+      // Update Totem Bottom Bar
+      document.getElementById('route-time-dist').innerText = `${walkMinutes} min · ${distMeters} m`;
+      document.getElementById('route-dest-name').innerText = `a ${destNode.name || 'Destino'} · Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+
+      // Build Step-by-Step Navigation with visual distance-based waypoints
+      buildStepByStepList();
+      currentStepIndex = 0;
+
+      // Render Tramos bar
+      renderRouteSegmentsBar();
+
+      // Automatically show the floor of the initial step
+      if (routeSegments.length > 0 && routeSegments[0].level !== currentLevel) {
+        switchLevel(routeSegments[0].level);
+      } else {
+        renderMapOverlay();
+      }
+
+      updateTotemUI(false);
+      zoomToOverview(false);
+    }
+
+    // Render Multi-Floor Tramos Buttons
+    function renderRouteSegmentsBar() {
+      const bar = document.getElementById('route-segments-bar');
+      const container = document.getElementById('segments-container');
+      
+      if (routeSegments.length <= 1) {
+        bar.style.display = 'none';
+        return;
+      }
+
+      bar.style.display = 'flex';
+      container.innerHTML = '';
+
+      routeSegments.forEach((seg, idx) => {
+        const btn = document.createElement('button');
+        const isActive = seg.level === currentLevel;
+        btn.id = `seg-btn-${idx}`;
+        btn.className = `px-3 py-1 rounded-lg text-xs font-bold transition-all border ${
+          isActive ? 'bg-blue-600 text-white border-blue-400 shadow-md' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'
+        }`;
+        btn.innerHTML = `<i class="fa-solid fa-layer-group mr-1 text-[10px]"></i> ${seg.title}`;
+        btn.onclick = () => {
+          switchLevel(seg.level);
+          zoomToOverview(true);
+        };
+        container.appendChild(btn);
+      });
+
+      NavAnimator.staggerSegments();
+    }
+
+    function updateSegmentButtons() {
+      routeSegments.forEach((seg, idx) => {
+        const btn = document.getElementById(`seg-btn-${idx}`);
+        if (btn) {
+          const isActive = seg.level === currentLevel;
+          btn.className = `px-3 py-1 rounded-lg text-xs font-bold transition-all border ${
+            isActive ? 'bg-blue-600 text-white border-blue-400 shadow-md' : 'bg-slate-900 text-slate-300 border-slate-700 hover:border-slate-500'
+          }`;
+        }
+      });
+    }
+
+    // Build step by step list with visual distance-based sampling and landmarks
+    function buildStepByStepList() {
+      currentSteps = [];
+      if (routeSegments.length === 0) return;
+
+      routeSegments.forEach((seg, sIdx) => {
+        const p = seg.path;
+        if (p.length === 0) return;
+
+        // Step 1: Start
+        if (sIdx === 0) {
+          const startNode = p[0];
+          const nextNode = p.length > 1 ? p[1] : p[0];
+          const startMsg = startNode.id === TOTEM_NODE_ID 
+            ? "Inicia tu recorrido desde este Tótem (Punto 12)" 
+            : `Inicia tu recorrido desde ${startNode.name}`;
+
+          currentSteps.push({
+            level: seg.level,
+            title: startMsg,
+            context: nextNode.context_element ? `Avanza hacia ${nextNode.context_element}` : "Avanza por el pasillo principal",
+            icon: "fa-location-arrow",
+            actionText: "Comenzar recorrido",
+            node: startNode,
+            nextNode: nextNode
+          });
+        }
+
+        // Distance & Angle sampled waypoints
+        let accumulatedDist = 0;
+        for (let i = 1; i < p.length - 1; i++) {
+          const prev = p[i - 1];
+          const curr = p[i];
+          const next = p[i + 1];
+
+          const d = Math.hypot(curr.coordinates.x - prev.coordinates.x, curr.coordinates.y - prev.coordinates.y) * 0.28;
+          accumulatedDist += d;
+
+          const dx1 = curr.coordinates.x - prev.coordinates.x;
+          const dy1 = curr.coordinates.y - prev.coordinates.y;
+          const dx2 = next.coordinates.x - curr.coordinates.x;
+          const dy2 = next.coordinates.y - curr.coordinates.y;
+
+          const angle1 = Math.atan2(dy1, dx1) * 180 / Math.PI;
+          const angle2 = Math.atan2(dy2, dx2) * 180 / Math.PI;
+          let diff = angle2 - angle1;
+          while (diff < -180) diff += 360;
+          while (diff > 180) diff -= 360;
+
+          const isSharpTurn = Math.abs(diff) > 28;
+          const isDistanceTrigger = accumulatedDist >= 35;
+          const isKeyLandmark = curr.context_element && (
+            curr.context_element.includes("Sanborns") || 
+            curr.context_element.includes("Starbucks") || 
+            curr.context_element.includes("Rotonda") || 
+            curr.context_element.includes("Fuente") || 
+            curr.context_element.includes("Cinelia") || 
+            curr.context_element.includes("Liverpool") || 
+            curr.context_element.includes("Sears") ||
+            curr.context_element.includes("Chedraui")
+          );
+
+          if (isSharpTurn || isDistanceTrigger || isKeyLandmark) {
+            let turnTitle = "Continúa recto por el pasillo";
+            let turnIcon = "fa-arrow-up";
+
+            if (diff > 25) {
+              turnTitle = "Gira a la derecha";
+              turnIcon = "fa-arrow-turn-up text-rotate-90";
+            } else if (diff < -25) {
+              turnTitle = "Gira a la izquierda";
+              turnIcon = "fa-arrow-turn-up text-flip-x";
+            }
+
+            let contextMsg = curr.context_element 
+              ? `A la altura de ${curr.context_element}` 
+              : `Avanza ${Math.round(accumulatedDist)} m por el pasillo`;
+
+            if (curr.context_element && curr.context_element.includes("Sanborns")) {
+              contextMsg = "Justo pasando Sanborns · verás la fuente a tu izquierda";
+            } else if (curr.context_element && curr.context_element.includes("Starbucks")) {
+              contextMsg = "Pasando frente a Starbucks en la rotonda central";
+            } else if (curr.context_element && curr.context_element.includes("Rotonda")) {
+              contextMsg = "Sigue la curva de la rotonda central";
+            }
+
+            currentSteps.push({
+              level: seg.level,
+              title: turnTitle,
+              context: contextMsg,
+              icon: turnIcon,
+              actionText: `Ya pasé ${curr.context_element || 'este tramo'}`,
+              node: curr,
+              nextNode: next
+            });
+
+            accumulatedDist = 0;
+          }
+        }
+
+        // Inter-floor portal transition step
+        if (!seg.isFinal) {
+          const portalNode = p[p.length - 1];
+          const icon = seg.portalType === 'elevator' ? 'fa-elevator' : 'fa-stairs';
+          currentSteps.push({
+            level: seg.level,
+            title: seg.transitionText,
+            context: `Toma ${portalNode.name} para cambiar de nivel`,
+            icon: icon,
+            actionText: `Ya cambié al Nivel ${seg.targetLevel === 1 ? 'PB' : (seg.targetLevel === 2 ? '1' : '2')}`,
+            node: portalNode,
+            nextNode: portalNode,
+            isTransition: true,
+            nextLevel: seg.targetLevel
+          });
+        } else {
+          // Final Destination Arrival
+          const destNode = p[p.length - 1];
+          currentSteps.push({
+            level: seg.level,
+            title: `¡Has llegado a ${destNode.name}!`,
+            context: `Tu destino está frente a ti en el Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`,
+            icon: 'fa-location-dot',
+            actionText: 'Finalizar recorrido',
+            node: destNode,
+            nextNode: null
+          });
+        }
+      });
+
+      document.getElementById('chip-steps-count').innerHTML = `<i class="fa-solid fa-shoe-prints mr-1"></i> ${currentSteps.length} pasos guiados`;
+      renderStepsList();
+    }
+
+    // Render Steps in Bottom List
+    function renderStepsList() {
+      const container = document.getElementById('route-steps-grid');
+      container.innerHTML = '';
+      currentSteps.forEach((step, idx) => {
+        const isCurrent = idx === currentStepIndex;
+        const div = document.createElement('div');
+        div.className = `p-2.5 rounded-xl border text-xs cursor-pointer transition-all ${
+          isCurrent ? 'bg-blue-600/20 border-blue-500 text-white shadow-lg' : 'bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700'
+        }`;
+        div.onclick = () => {
+          stopWalkSimulation();
+          currentStepIndex = idx;
+          if (step) {
+            const sIdx = routeSegments.findIndex(s => s.level === step.level);
+            if (sIdx !== -1) {
+              simSegIndex = sIdx;
+              if (step.node) {
+                const nIdx = routeSegments[sIdx].path.findIndex(n => n.id === step.node.id);
+                simNodeIndex = nIdx !== -1 ? nIdx : 0;
+              }
+            }
+          }
+          updateTotemUI(true);
+        };
+        div.innerHTML = `
+          <div class="flex items-center justify-between font-bold mb-1">
+            <span class="text-[10px] uppercase text-sky-400">Paso ${idx + 1}</span>
+            <span class="text-[10px] px-1.5 py-0.2 bg-slate-800 rounded">Nivel ${step.level === 1 ? 'PB' : (step.level === 2 ? '1' : '2')}</span>
+          </div>
+          <p class="font-semibold text-white truncate">${step.title}</p>
+          <p class="text-[11px] text-slate-400 truncate mt-0.5">${step.context}</p>
+        `;
+        container.appendChild(div);
+      });
+
+      NavAnimator.staggerSteps();
+    }
+
+    // Update Totem UI and sync map floor & camera zoom
+    function updateTotemUI(syncMap = true) {
+      if (currentSteps.length === 0) return;
+      const step = currentSteps[currentStepIndex];
+
+      document.getElementById('step-number-tag').innerText = `PASO ${currentStepIndex + 1} DE ${currentSteps.length}`;
+      document.getElementById('step-level-tag').innerText = `Nivel ${step.level === 1 ? 'PB' : (step.level === 2 ? '1' : '2')}`;
+      document.getElementById('step-instruction-main').innerText = step.title;
+      document.getElementById('step-instruction-context').innerText = step.context;
+      document.getElementById('step-action-text').innerText = step.actionText;
+
+      // Update progress bar segments
+      const barContainer = document.getElementById('step-progress-bars');
+      barContainer.innerHTML = '';
+      barContainer.style.gridTemplateColumns = `repeat(${currentSteps.length}, minmax(0, 1fr))`;
+      for (let i = 0; i < currentSteps.length; i++) {
+        const seg = document.createElement('div');
+        seg.className = `h-1.5 rounded-full transition-all duration-300 ${i <= currentStepIndex ? 'bg-blue-500' : 'bg-slate-700'}`;
+        barContainer.appendChild(seg);
+      }
+
+      // Update bottom steps list highlight
+      const stepCards = document.querySelectorAll('#route-steps-grid > div');
+      stepCards.forEach((card, idx) => {
+        if (idx === currentStepIndex) {
+          card.className = "p-2.5 rounded-xl border text-xs cursor-pointer transition-all bg-blue-600/20 border-blue-500 text-white shadow-lg";
+        } else {
+          card.className = "p-2.5 rounded-xl border text-xs cursor-pointer transition-all bg-slate-950/60 border-slate-800 text-slate-400 hover:border-slate-700";
+        }
+      });
+
+      // Micro-interactions with Anime.js
+      NavAnimator.animateTotemStep();
+
+      // Update Live Place Preview Card
+      if (step.node) {
+        updatePlaceCard(step.node, currentStepIndex === currentSteps.length - 1);
+      }
+
+      if (syncMap) {
+        // Auto switch map floor to match current step floor
+        if (step.level !== currentLevel) {
+          switchLevel(step.level);
+        } else {
+          renderMapOverlay();
+        }
+        // Position the Iconic Google Maps Navigation Arrow on the active step
+        positionNavArrowOnNode(step.node, step.nextNode, false);
+
+        // Zoom & center camera on active step waypoint
+        if (step.node && step.node.level === currentLevel) {
+          zoomToCoordinates(step.node.coordinates.x, step.node.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+        }
+      }
+    }
+
+    function nextNavStep() {
+      stopWalkSimulation();
+      if (currentStepIndex < currentSteps.length - 1) {
+        currentStepIndex++;
+      } else {
+        // Finished - cleanly reset back to Step 1 on the origin floor
+        currentStepIndex = 0;
+        simSegIndex = 0;
+        simNodeIndex = 0;
+        if (routeSegments.length > 0 && currentLevel !== routeSegments[0].level) {
+          switchLevel(routeSegments[0].level);
+        }
+      }
+      updateTotemUI(true);
+    }
+
+    // Render Map SVG Overlay with Google Maps Blue Route & Navigation Arrow
+    function renderMapOverlay() {
+      if (!mallGraph) return;
+
+      const nodesLayer = document.getElementById('svg-nodes-layer');
+      const edgesLayer = document.getElementById('svg-edges-layer');
+      const waterBedEl = document.getElementById('svg-water-bed');
+      const pathEl = document.getElementById('svg-active-route');
+      const chevronsEl = document.getElementById('svg-chevrons-path');
+      const destPinEl = document.getElementById('svg-dest-pin');
+      const totemMarkerEl = document.getElementById('svg-totem-marker');
+
+      nodesLayer.innerHTML = '';
+      edgesLayer.innerHTML = '';
+
+      // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
+      if (currentLevel === 2) {
+        totemMarkerEl.style.display = 'block';
+      } else {
+        totemMarkerEl.style.display = 'none';
+      }
+
+      // Draw Walkable Corridors for current level
+      const drawn = new Set();
+      const floorEdges = levelGraphs[currentLevel] || {};
+      Object.values(floorEdges).forEach(edgeList => {
+        edgeList.forEach(e => {
+          const u = levelNodes[currentLevel][e.from];
+          const v = levelNodes[currentLevel][e.to];
+          if (u && v) {
+            const key = [u.id, v.id].sort().join('--');
+            if (!drawn.has(key)) {
+              drawn.add(key);
+              const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              line.setAttribute('x1', u.coordinates.x);
+              line.setAttribute('y1', u.coordinates.y);
+              line.setAttribute('x2', v.coordinates.x);
+              line.setAttribute('y2', v.coordinates.y);
+              edgesLayer.appendChild(line);
+            }
+          }
+        });
+      });
+
+      // Draw Nodes for current level
+      const currentFloorNodes = levelNodes[currentLevel] || {};
+      Object.values(currentFloorNodes).forEach(n => {
+        if (n.type !== 'totem' && !n.id.startsWith('n_lvl1_c_') && !n.id.startsWith('n_lvl2_c_') && !n.id.startsWith('n_lvl3_c_')) {
+          const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+          g.setAttribute('class', 'cursor-pointer group');
+          g.onclick = () => {
+            document.getElementById('dest-select').value = n.id;
+            calculateRoute();
+          };
+
+          if (n.type === 'portal_escalator' || n.type === 'portal_elevator') {
+            const isEsc = n.type === 'portal_escalator';
+            const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            rect.setAttribute('x', n.coordinates.x - 9);
+            rect.setAttribute('y', n.coordinates.y - 9);
+            rect.setAttribute('width', 18);
+            rect.setAttribute('height', 18);
+            rect.setAttribute('rx', 4);
+            rect.setAttribute('fill', isEsc ? '#0891b2' : '#2563eb');
+            rect.setAttribute('stroke', '#ffffff');
+            rect.setAttribute('stroke-width', '1.5');
+
+            const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+            text.setAttribute('x', n.coordinates.x);
+            text.setAttribute('y', n.coordinates.y + 3.5);
+            text.setAttribute('font-size', '9');
+            text.setAttribute('font-weight', 'bold');
+            text.setAttribute('fill', '#ffffff');
+            text.setAttribute('text-anchor', 'middle');
+            text.textContent = isEsc ? '🪜' : '🛗';
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `${n.name} (${isEsc ? 'Escaleras Eléctricas' : 'Elevador'})`;
+            g.appendChild(title);
+            g.appendChild(rect);
+            g.appendChild(text);
+          } else {
+            const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+            circle.setAttribute('cx', n.coordinates.x);
+            circle.setAttribute('cy', n.coordinates.y);
+
+            let r = 5;
+            let fill = '#10b981';
+            if (n.type === 'anchor_store') { r = 8.5; fill = '#f97316'; }
+            else if (n.type === 'island') { r = 5.5; fill = '#38bdf8'; }
+
+            circle.setAttribute('r', r);
+            circle.setAttribute('fill', fill);
+            circle.setAttribute('stroke', '#ffffff');
+            circle.setAttribute('stroke-width', '1.5');
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `${n.name || n.id}`;
+            g.appendChild(title);
+            g.appendChild(circle);
+          }
+
+          nodesLayer.appendChild(g);
+        }
+      });
+
+      // Draw Google Maps Blue River Route & Animated Chevrons
+      const activeSeg = routeSegments.find(s => s.level === currentLevel);
+      if (activeSeg && activeSeg.path.length > 0) {
+        let d = '';
+        activeSeg.path.forEach((node, i) => {
+          d += (i === 0 ? 'M ' : 'L ') + `${node.coordinates.x} ${node.coordinates.y} `;
+        });
+
+        waterBedEl.setAttribute('d', d);
+        pathEl.setAttribute('d', d);
+        chevronsEl.setAttribute('d', d);
+
+        // Animate line drawing with Anime.js
+        NavAnimator.animateRoutePath();
+
+        // Position Destination Target Pin on last node of this segment
+        const lastNode = activeSeg.path[activeSeg.path.length - 1];
+        destPinEl.style.display = 'block';
+        document.getElementById('dest-pin-outer').setAttribute('cx', lastNode.coordinates.x);
+        document.getElementById('dest-pin-outer').setAttribute('cy', lastNode.coordinates.y);
+        document.getElementById('dest-pin-inner').setAttribute('cx', lastNode.coordinates.x);
+        document.getElementById('dest-pin-inner').setAttribute('cy', lastNode.coordinates.y);
+        document.getElementById('dest-pin-label').setAttribute('x', lastNode.coordinates.x);
+        document.getElementById('dest-pin-label').setAttribute('y', lastNode.coordinates.y - 14);
+        document.getElementById('dest-pin-label').textContent = lastNode.name || 'Destino';
+
+        NavAnimator.popInDestinationPin();
+      } else {
+        waterBedEl.setAttribute('d', '');
+        pathEl.setAttribute('d', '');
+        chevronsEl.setAttribute('d', '');
+        destPinEl.style.display = 'none';
+      }
+
+      // Position Navigation Arrow if on active step
+      if (currentSteps.length > 0 && currentSteps[currentStepIndex]) {
+        const step = currentSteps[currentStepIndex];
+        positionNavArrowOnNode(step.node, step.nextNode, false);
+      }
+    }
+
+    // Render Official Legend in Bottom Drawer
+    function renderLegendList() {
+      if (!mallLegends) return;
+      const spec = FLOOR_SPECS[currentLevel];
+      const legendFloor = mallLegends[spec.legendKey];
+      if (!legendFloor) return;
+
+      document.getElementById('legend-floor-title').innerText = legendFloor.nombre;
+      const container = document.getElementById('legend-items-container');
+      container.innerHTML = '';
+
+      legendFloor.stores.forEach(s => {
+        const nodeId = `n_lvl${currentLevel}_store_${s.id}`;
+        const div = document.createElement('div');
+        div.className = "p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all flex items-center gap-2 group";
+        div.onclick = () => setTotemRoute(nodeId);
+        div.innerHTML = `
+          <span class="w-5 h-5 rounded-full ${s.type === 'anchor_store' ? 'bg-blue-600 text-white' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-[10px] font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">${s.id}</span>
+          <span class="text-xs text-slate-200 group-hover:text-white font-medium truncate">${s.name}</span>
+        `;
+        container.appendChild(div);
+      });
+
+      (legendFloor.islas || []).forEach(isl => {
+        const nodeId = `n_lvl${currentLevel}_island_${isl.id}`;
+        const div = document.createElement('div');
+        div.className = "p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 cursor-pointer transition-all flex items-center gap-2 group";
+        div.onclick = () => setTotemRoute(nodeId);
+        div.innerHTML = `
+          <span class="w-5 h-5 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-[10px] font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0">I${isl.id}</span>
+          <span class="text-xs text-sky-200 group-hover:text-white font-medium truncate">${isl.name}</span>
+        `;
+        container.appendChild(div);
+      });
+
+      NavAnimator.staggerLegend();
+    }
+
+    function filterLegendList() {
+      const q = document.getElementById('legend-search-input').value.toLowerCase().trim();
+      const items = document.querySelectorAll('#legend-items-container > div');
+      items.forEach(el => {
+        const text = el.innerText.toLowerCase();
+        el.style.display = text.includes(q) ? 'flex' : 'none';
+      });
+    }
+
+    window.addEventListener('DOMContentLoaded', initApp);
+  </script>
+</body>
+</html>

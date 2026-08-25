@@ -1,0 +1,8 @@
+{
+  "name": "navegacion-paseo-altozano",
+  "version": "1.0.0",
+  "description": "Sistema de Navegacion Interactiva Turn-by-Turn para Paseo Altozano",
+  "scripts": {
+    "start": "npx serve ."
+  }
+}

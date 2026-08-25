@@ -1,0 +1,718 @@
+{
+  "mall_legends": {
+    "nivel_inferior": {
+      "level": 1,
+      "nombre": "Planta Baja (Nivel Inferior)",
+      "stores": [
+        {
+          "id": 1,
+          "name": "Liverpool",
+          "type": "anchor_store"
+        },
+        {
+          "id": 2,
+          "name": "Women'secret",
+          "type": "store"
+        },
+        {
+          "id": 3,
+          "name": "Springfield",
+          "type": "store"
+        },
+        {
+          "id": 4,
+          "name": "DpStreet",
+          "type": "store"
+        },
+        {
+          "id": 5,
+          "name": "Guess",
+          "type": "store"
+        },
+        {
+          "id": 6,
+          "name": "Studio F",
+          "type": "store"
+        },
+        {
+          "id": 7,
+          "name": "Natura",
+          "type": "store"
+        },
+        {
+          "id": 8,
+          "name": "American Eagle",
+          "type": "store"
+        },
+        {
+          "id": 9,
+          "name": "H&M",
+          "type": "anchor_store"
+        },
+        {
+          "id": 10,
+          "name": "Porrúa",
+          "type": "store"
+        },
+        {
+          "id": 11,
+          "name": "Adolfo Domínguez",
+          "type": "store"
+        },
+        {
+          "id": 12,
+          "name": "Pandora",
+          "type": "store"
+        },
+        {
+          "id": 13,
+          "name": "Tommy Hilfiger",
+          "type": "store"
+        },
+        {
+          "id": 14,
+          "name": "MAJA Sportwear",
+          "type": "store"
+        },
+        {
+          "id": 15,
+          "name": "Adidas",
+          "type": "store"
+        },
+        {
+          "id": 16,
+          "name": "Daily Pick",
+          "type": "store"
+        },
+        {
+          "id": 17,
+          "name": "Le Lieu",
+          "type": "store"
+        },
+        {
+          "id": 18,
+          "name": "AT&T",
+          "type": "store"
+        },
+        {
+          "id": 19,
+          "name": "Salomon",
+          "type": "store"
+        },
+        {
+          "id": 20,
+          "name": "BYD",
+          "type": "store"
+        },
+        {
+          "id": 21,
+          "name": "Banamex",
+          "type": "store"
+        },
+        {
+          "id": 22,
+          "name": "MacStore",
+          "type": "store"
+        },
+        {
+          "id": 23,
+          "name": "Fiesta Inn",
+          "type": "anchor_store"
+        },
+        {
+          "id": 24,
+          "name": "Crown City Casino",
+          "type": "anchor_store"
+        },
+        {
+          "id": 25,
+          "name": "Honda",
+          "type": "store"
+        },
+        {
+          "id": 26,
+          "name": "Geely",
+          "type": "store"
+        }
+      ],
+      "islas": [
+        {
+          "id": 1,
+          "name": "Casa Carcasa",
+          "type": "island"
+        },
+        {
+          "id": 2,
+          "name": "Jurassic Ride",
+          "type": "island"
+        },
+        {
+          "id": 3,
+          "name": "Flabelus",
+          "type": "island"
+        }
+      ],
+      "proximamente": [
+        {
+          "id": 1,
+          "name": "Bath & Body Works",
+          "type": "store"
+        },
+        {
+          "id": 2,
+          "name": "Sephora",
+          "type": "store"
+        }
+      ]
+    },
+    "nivel_principal": {
+      "level": 2,
+      "nombre": "Planta 1 (Nivel Principal)",
+      "stores": [
+        {
+          "id": 1,
+          "name": "Liverpool",
+          "type": "anchor_store"
+        },
+        {
+          "id": 2,
+          "name": "5.11 Outdoor and Adventure",
+          "type": "store"
+        },
+        {
+          "id": 3,
+          "name": "Fame",
+          "type": "store"
+        },
+        {
+          "id": 4,
+          "name": "Telcel",
+          "type": "store"
+        },
+        {
+          "id": 5,
+          "name": "Watch 2 Go",
+          "type": "store"
+        },
+        {
+          "id": 6,
+          "name": "GNC",
+          "type": "store"
+        },
+        {
+          "id": 7,
+          "name": "Lids",
+          "type": "store"
+        },
+        {
+          "id": 8,
+          "name": "Hey Guapa",
+          "type": "store"
+        },
+        {
+          "id": 9,
+          "name": "La Casa de las Carcasas",
+          "type": "store"
+        },
+        {
+          "id": 10,
+          "name": "Urani",
+          "type": "store"
+        },
+        {
+          "id": 11,
+          "name": "Miniso",
+          "type": "store"
+        },
+        {
+          "id": 12,
+          "name": "Zanati",
+          "type": "store"
+        },
+        {
+          "id": 13,
+          "name": "Dportenis",
+          "type": "store"
+        },
+        {
+          "id": 14,
+          "name": "Sally Beauty",
+          "type": "store"
+        },
+        {
+          "id": 15,
+          "name": "Mi Cha",
+          "type": "store"
+        },
+        {
+          "id": 16,
+          "name": "Dairy Queen",
+          "type": "store"
+        },
+        {
+          "id": 17,
+          "name": "Sfera",
+          "type": "store"
+        },
+        {
+          "id": 18,
+          "name": "Honda",
+          "type": "store"
+        },
+        {
+          "id": 19,
+          "name": "Geely",
+          "type": "store"
+        },
+        {
+          "id": 20,
+          "name": "Smart Trampoline",
+          "type": "store"
+        },
+        {
+          "id": 21,
+          "name": "Taller Creativo de Oscar Torres",
+          "type": "store"
+        },
+        {
+          "id": 22,
+          "name": "Floristorio",
+          "type": "store"
+        },
+        {
+          "id": 23,
+          "name": "Estrella Dorada",
+          "type": "store"
+        },
+        {
+          "id": 24,
+          "name": "Showroom Fame",
+          "type": "store"
+        },
+        {
+          "id": 25,
+          "name": "Toyota",
+          "type": "store"
+        },
+        {
+          "id": 26,
+          "name": "Taller BYD",
+          "type": "store"
+        },
+        {
+          "id": 27,
+          "name": "KIA",
+          "type": "store"
+        },
+        {
+          "id": 28,
+          "name": "Sears",
+          "type": "anchor_store"
+        },
+        {
+          "id": 29,
+          "name": "Chedraui Selecto",
+          "type": "anchor_store"
+        },
+        {
+          "id": 30,
+          "name": "Palet",
+          "type": "store"
+        },
+        {
+          "id": 31,
+          "name": "Dolphy",
+          "type": "store"
+        },
+        {
+          "id": 32,
+          "name": "Flexi",
+          "type": "store"
+        },
+        {
+          "id": 33,
+          "name": "New York Coffee",
+          "type": "store"
+        },
+        {
+          "id": 34,
+          "name": "Café Europa",
+          "type": "store"
+        },
+        {
+          "id": 35,
+          "name": "Vía Uno",
+          "type": "store"
+        },
+        {
+          "id": 36,
+          "name": "Beau",
+          "type": "store"
+        },
+        {
+          "id": 37,
+          "name": "Sanborns",
+          "type": "anchor_store"
+        },
+        {
+          "id": 38,
+          "name": "Ópticas Kauffman",
+          "type": "store"
+        },
+        {
+          "id": 39,
+          "name": "Hill's Collection",
+          "type": "store"
+        },
+        {
+          "id": 40,
+          "name": "Nutrisa",
+          "type": "store"
+        },
+        {
+          "id": 41,
+          "name": "Ópticas Lux",
+          "type": "store"
+        },
+        {
+          "id": 42,
+          "name": "H&M",
+          "type": "anchor_store"
+        },
+        {
+          "id": 43,
+          "name": "Inter Home",
+          "type": "anchor_store"
+        },
+        {
+          "id": 44,
+          "name": "Banana Republic",
+          "type": "store"
+        },
+        {
+          "id": 45,
+          "name": "Fabletics",
+          "type": "store"
+        },
+        {
+          "id": 46,
+          "name": "GAP",
+          "type": "store"
+        },
+        {
+          "id": 47,
+          "name": "Steren",
+          "type": "store"
+        },
+        {
+          "id": 48,
+          "name": "Luuna",
+          "type": "store"
+        },
+        {
+          "id": 49,
+          "name": "Havoc",
+          "type": "store"
+        },
+        {
+          "id": 50,
+          "name": "Axen Health",
+          "type": "store"
+        },
+        {
+          "id": 51,
+          "name": "Starbucks Coffee",
+          "type": "store"
+        },
+        {
+          "id": 52,
+          "name": "Enki's Barbería",
+          "type": "store"
+        },
+        {
+          "id": 53,
+          "name": "Todomoda",
+          "type": "store"
+        },
+        {
+          "id": 54,
+          "name": "Studio Mix",
+          "type": "store"
+        },
+        {
+          "id": 55,
+          "name": "Bizzarro",
+          "type": "store"
+        },
+        {
+          "id": 56,
+          "name": "Ben & Frank",
+          "type": "store"
+        },
+        {
+          "id": 57,
+          "name": "Yuscase",
+          "type": "store"
+        },
+        {
+          "id": 58,
+          "name": "Sunglass Hut",
+          "type": "store"
+        },
+        {
+          "id": 59,
+          "name": "Adidas",
+          "type": "store"
+        },
+        {
+          "id": 60,
+          "name": "Crocs",
+          "type": "store"
+        },
+        {
+          "id": 61,
+          "name": "Taste Top",
+          "type": "store"
+        },
+        {
+          "id": 62,
+          "name": "Di Luca Gelato Gourmet",
+          "type": "store"
+        },
+        {
+          "id": 63,
+          "name": "Pies & Salud",
+          "type": "store"
+        }
+      ],
+      "islas": [
+        {
+          "id": 1,
+          "name": "De Regil Chocolat",
+          "type": "island"
+        },
+        {
+          "id": 2,
+          "name": "Elotería La Cerrada",
+          "type": "island"
+        },
+        {
+          "id": 3,
+          "name": "Casa Carcasa",
+          "type": "island"
+        },
+        {
+          "id": 4,
+          "name": "Mingos",
+          "type": "island"
+        },
+        {
+          "id": 5,
+          "name": "Straight A Head",
+          "type": "island"
+        },
+        {
+          "id": 6,
+          "name": "Olivia",
+          "type": "island"
+        },
+        {
+          "id": 7,
+          "name": "Obey Yourr Body",
+          "type": "island"
+        },
+        {
+          "id": 8,
+          "name": "M&L Joyas",
+          "type": "island"
+        },
+        {
+          "id": 9,
+          "name": "Delicrepé",
+          "type": "island"
+        },
+        {
+          "id": 10,
+          "name": "Moyo",
+          "type": "island"
+        },
+        {
+          "id": 11,
+          "name": "La Casa de las Carcasas",
+          "type": "island"
+        },
+        {
+          "id": 12,
+          "name": "M-Caps",
+          "type": "island"
+        }
+      ],
+      "proximamente": [
+        {
+          "id": 1,
+          "name": "Coven",
+          "type": "store"
+        },
+        {
+          "id": 2,
+          "name": "Telcel Centro de Atención a Clientes",
+          "type": "store"
+        }
+      ]
+    },
+    "nivel_superior": {
+      "level": 3,
+      "nombre": "Planta 2 (Nivel Superior)",
+      "stores": [
+        {
+          "id": 1,
+          "name": "Scio México",
+          "type": "store"
+        },
+        {
+          "id": 2,
+          "name": "GoKartManía",
+          "type": "anchor_store"
+        },
+        {
+          "id": 3,
+          "name": "Cinelia",
+          "type": "anchor_store"
+        },
+        {
+          "id": 4,
+          "name": "Julio Cepeda Jugueterías",
+          "type": "store"
+        },
+        {
+          "id": 5,
+          "name": "Monkey Bowling Bar",
+          "type": "store"
+        },
+        {
+          "id": 6,
+          "name": "Anytime Fitness",
+          "type": "anchor_store"
+        },
+        {
+          "id": 7,
+          "name": "Fisher's",
+          "type": "anchor_store"
+        },
+        {
+          "id": 8,
+          "name": "UNAGI Teppan-Yaki & Sushi Bar",
+          "type": "store"
+        },
+        {
+          "id": 9,
+          "name": "G-Work Space",
+          "type": "store"
+        },
+        {
+          "id": 10,
+          "name": "Mammut Pizza",
+          "type": "store"
+        },
+        {
+          "id": 11,
+          "name": "Jana",
+          "type": "store"
+        },
+        {
+          "id": 12,
+          "name": "Casa Paula",
+          "type": "store"
+        },
+        {
+          "id": 13,
+          "name": "Funki Squad",
+          "type": "store"
+        },
+        {
+          "id": 14,
+          "name": "Carl's Jr.",
+          "type": "store"
+        },
+        {
+          "id": 15,
+          "name": "Taquería El Infierno",
+          "type": "store"
+        },
+        {
+          "id": 16,
+          "name": "Inn Salata Express",
+          "type": "store"
+        },
+        {
+          "id": 17,
+          "name": "Mikono Sushi Bar",
+          "type": "store"
+        },
+        {
+          "id": 18,
+          "name": "La Cueva de Chucho",
+          "type": "store"
+        },
+        {
+          "id": 19,
+          "name": "Domino's Pizza",
+          "type": "store"
+        },
+        {
+          "id": 20,
+          "name": "Hong Kong Express",
+          "type": "store"
+        },
+        {
+          "id": 21,
+          "name": "Intelisis",
+          "type": "store"
+        },
+        {
+          "id": 22,
+          "name": "Grupo Altozano",
+          "type": "store"
+        },
+        {
+          "id": 23,
+          "name": "Showroom",
+          "type": "store"
+        },
+        {
+          "id": 24,
+          "name": "Erre Media",
+          "type": "store"
+        },
+        {
+          "id": 25,
+          "name": "Centro de Negocios",
+          "type": "store"
+        },
+        {
+          "id": 26,
+          "name": "Raspados Jalisco",
+          "type": "store"
+        },
+        {
+          "id": 27,
+          "name": "La Gofrera",
+          "type": "store"
+        },
+        {
+          "id": 28,
+          "name": "Wingstop",
+          "type": "store"
+        }
+      ],
+      "islas": [],
+      "proximamente": [
+        {
+          "id": 1,
+          "name": "A Mar y Pasta",
+          "type": "store"
+        }
+      ]
+    }
+  }
+}

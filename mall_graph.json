@@ -1,0 +1,5259 @@
+{
+  "mall": "Paseo Altozano",
+  "total_nodes": 210,
+  "total_edges": 592,
+  "nodes": [
+    {
+      "id": "n_lvl1_store_1",
+      "level": 1,
+      "type": "anchor_store",
+      "name": "Liverpool",
+      "coordinates": {
+        "x": 383,
+        "y": 472
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_2",
+      "level": 1,
+      "type": "store",
+      "name": "Women'secret",
+      "coordinates": {
+        "x": 499,
+        "y": 421
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_3",
+      "level": 1,
+      "type": "store",
+      "name": "Springfield",
+      "coordinates": {
+        "x": 528,
+        "y": 405
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_4",
+      "level": 1,
+      "type": "store",
+      "name": "DpStreet",
+      "coordinates": {
+        "x": 555,
+        "y": 392
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_5",
+      "level": 1,
+      "type": "store",
+      "name": "Guess",
+      "coordinates": {
+        "x": 641,
+        "y": 370
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_6",
+      "level": 1,
+      "type": "store",
+      "name": "Studio F",
+      "coordinates": {
+        "x": 680,
+        "y": 351
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_7",
+      "level": 1,
+      "type": "store",
+      "name": "Natura",
+      "coordinates": {
+        "x": 712,
+        "y": 338
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_8",
+      "level": 1,
+      "type": "store",
+      "name": "American Eagle",
+      "coordinates": {
+        "x": 758,
+        "y": 308
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_9",
+      "level": 1,
+      "type": "anchor_store",
+      "name": "H&M",
+      "coordinates": {
+        "x": 897,
+        "y": 470
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_10",
+      "level": 1,
+      "type": "store",
+      "name": "Porrúa",
+      "coordinates": {
+        "x": 813,
+        "y": 389
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_11",
+      "level": 1,
+      "type": "store",
+      "name": "Adolfo Domínguez",
+      "coordinates": {
+        "x": 786,
+        "y": 382
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_12",
+      "level": 1,
+      "type": "store",
+      "name": "Pandora",
+      "coordinates": {
+        "x": 749,
+        "y": 393
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_13",
+      "level": 1,
+      "type": "store",
+      "name": "Tommy Hilfiger",
+      "coordinates": {
+        "x": 727,
+        "y": 405
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_14",
+      "level": 1,
+      "type": "store",
+      "name": "MAJA Sportwear",
+      "coordinates": {
+        "x": 701,
+        "y": 420
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_15",
+      "level": 1,
+      "type": "store",
+      "name": "Adidas",
+      "coordinates": {
+        "x": 666,
+        "y": 443
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_16",
+      "level": 1,
+      "type": "store",
+      "name": "Daily Pick",
+      "coordinates": {
+        "x": 625,
+        "y": 461
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_17",
+      "level": 1,
+      "type": "store",
+      "name": "Le Lieu",
+      "coordinates": {
+        "x": 605,
+        "y": 477
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_18",
+      "level": 1,
+      "type": "store",
+      "name": "AT&T",
+      "coordinates": {
+        "x": 621,
+        "y": 532
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_19",
+      "level": 1,
+      "type": "store",
+      "name": "Salomon",
+      "coordinates": {
+        "x": 633,
+        "y": 554
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_20",
+      "level": 1,
+      "type": "store",
+      "name": "BYD",
+      "coordinates": {
+        "x": 689,
+        "y": 557
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_21",
+      "level": 1,
+      "type": "store",
+      "name": "Banamex",
+      "coordinates": {
+        "x": 564,
+        "y": 611
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_22",
+      "level": 1,
+      "type": "store",
+      "name": "MacStore",
+      "coordinates": {
+        "x": 565,
+        "y": 560
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_23",
+      "level": 1,
+      "type": "anchor_store",
+      "name": "Fiesta Inn",
+      "coordinates": {
+        "x": 680,
+        "y": 239
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_24",
+      "level": 1,
+      "type": "anchor_store",
+      "name": "Crown City Casino",
+      "coordinates": {
+        "x": 1077,
+        "y": 82
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_25",
+      "level": 1,
+      "type": "store",
+      "name": "Honda",
+      "coordinates": {
+        "x": 1129,
+        "y": 82
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_26",
+      "level": 1,
+      "type": "store",
+      "name": "Geely",
+      "coordinates": {
+        "x": 1205,
+        "y": 81
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_island_1",
+      "level": 1,
+      "type": "island",
+      "name": "Casa Carcasa",
+      "coordinates": {
+        "x": 612,
+        "y": 390
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_island_2",
+      "level": 1,
+      "type": "island",
+      "name": "Jurassic Ride",
+      "coordinates": {
+        "x": 584,
+        "y": 388
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_island_3",
+      "level": 1,
+      "type": "island",
+      "name": "Flabelus",
+      "coordinates": {
+        "x": 783,
+        "y": 342
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_27",
+      "level": 1,
+      "type": "store",
+      "name": "Bath & Body Works (Próximamente)",
+      "coordinates": {
+        "x": 890,
+        "y": 215
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_store_28",
+      "level": 1,
+      "type": "store",
+      "name": "Sephora (Próximamente)",
+      "coordinates": {
+        "x": 885,
+        "y": 261
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl1_portal_esc_liverpool",
+      "name": "Escaleras Eléctricas Plaza Liverpool (PB)",
+      "type": "portal_escalator",
+      "level": 1,
+      "coordinates": {
+        "x": 562,
+        "y": 489
+      }
+    },
+    {
+      "id": "n_lvl1_portal_elev_liverpool",
+      "name": "Elevador Plaza Liverpool (PB)",
+      "type": "portal_elevator",
+      "level": 1,
+      "coordinates": {
+        "x": 574,
+        "y": 524
+      }
+    },
+    {
+      "id": "n_lvl1_portal_esc_central",
+      "name": "Escaleras Eléctricas Fiesta Inn / Central (PB)",
+      "type": "portal_escalator",
+      "level": 1,
+      "coordinates": {
+        "x": 788,
+        "y": 341
+      }
+    },
+    {
+      "id": "n_lvl1_portal_elev_central",
+      "name": "Elevador Central / Fiesta Inn (PB)",
+      "type": "portal_elevator",
+      "level": 1,
+      "coordinates": {
+        "x": 792,
+        "y": 248
+      }
+    },
+    {
+      "id": "n_lvl1_portal_esc_oval",
+      "name": "Escaleras Eléctricas Plaza Oval (PB)",
+      "type": "portal_escalator",
+      "level": 1,
+      "coordinates": {
+        "x": 832,
+        "y": 334
+      }
+    },
+    {
+      "id": "n_lvl1_restroom_1",
+      "level": 1,
+      "type": "restroom",
+      "name": "Sanitarios PB Central",
+      "coordinates": {
+        "x": 714,
+        "y": 318
+      },
+      "context_element": "Natura"
+    },
+    {
+      "id": "n_lvl1_service_maint",
+      "level": 1,
+      "type": "service",
+      "name": "Mantenimiento",
+      "coordinates": {
+        "x": 968,
+        "y": 181
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_1",
+      "level": 2,
+      "type": "anchor_store",
+      "name": "Liverpool",
+      "coordinates": {
+        "x": 190,
+        "y": 490
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_28",
+      "level": 2,
+      "type": "anchor_store",
+      "name": "Sears",
+      "coordinates": {
+        "x": 1350,
+        "y": 480
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_29",
+      "level": 2,
+      "type": "anchor_store",
+      "name": "Chedraui Selecto",
+      "coordinates": {
+        "x": 1070,
+        "y": 420
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_37",
+      "level": 2,
+      "type": "anchor_store",
+      "name": "Sanborns",
+      "coordinates": {
+        "x": 815,
+        "y": 478
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_42",
+      "level": 2,
+      "type": "anchor_store",
+      "name": "H&M",
+      "coordinates": {
+        "x": 674,
+        "y": 455
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_43",
+      "level": 2,
+      "type": "anchor_store",
+      "name": "Inter Home",
+      "coordinates": {
+        "x": 525,
+        "y": 560
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_2",
+      "level": 2,
+      "type": "store",
+      "name": "5.11 Outdoor and Adventure",
+      "coordinates": {
+        "x": 303,
+        "y": 422
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_3",
+      "level": 2,
+      "type": "store",
+      "name": "Fame",
+      "coordinates": {
+        "x": 312,
+        "y": 342
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_4",
+      "level": 2,
+      "type": "store",
+      "name": "Telcel",
+      "coordinates": {
+        "x": 412,
+        "y": 380
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_5",
+      "level": 2,
+      "type": "store",
+      "name": "Watch 2 Go",
+      "coordinates": {
+        "x": 428,
+        "y": 368
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_6",
+      "level": 2,
+      "type": "store",
+      "name": "GNC",
+      "coordinates": {
+        "x": 448,
+        "y": 355
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_7",
+      "level": 2,
+      "type": "store",
+      "name": "Lids",
+      "coordinates": {
+        "x": 466,
+        "y": 342
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_8",
+      "level": 2,
+      "type": "store",
+      "name": "Hey Guapa",
+      "coordinates": {
+        "x": 484,
+        "y": 330
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_9",
+      "level": 2,
+      "type": "store",
+      "name": "La Casa de las Carcasas",
+      "coordinates": {
+        "x": 501,
+        "y": 318
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_10",
+      "level": 2,
+      "type": "store",
+      "name": "Urani",
+      "coordinates": {
+        "x": 522,
+        "y": 308
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_11",
+      "level": 2,
+      "type": "store",
+      "name": "Miniso",
+      "coordinates": {
+        "x": 565,
+        "y": 305
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_12",
+      "level": 2,
+      "type": "store",
+      "name": "Zanati",
+      "coordinates": {
+        "x": 594,
+        "y": 238
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_13",
+      "level": 2,
+      "type": "store",
+      "name": "Dportenis",
+      "coordinates": {
+        "x": 704,
+        "y": 238
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_14",
+      "level": 2,
+      "type": "store",
+      "name": "Sally Beauty",
+      "coordinates": {
+        "x": 725,
+        "y": 242
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_15",
+      "level": 2,
+      "type": "store",
+      "name": "Mi Cha",
+      "coordinates": {
+        "x": 740,
+        "y": 242
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_16",
+      "level": 2,
+      "type": "store",
+      "name": "Dairy Queen",
+      "coordinates": {
+        "x": 796,
+        "y": 245
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_17",
+      "level": 2,
+      "type": "store",
+      "name": "Sfera",
+      "coordinates": {
+        "x": 855,
+        "y": 175
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_18",
+      "level": 2,
+      "type": "store",
+      "name": "Honda",
+      "coordinates": {
+        "x": 938,
+        "y": 178
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_19",
+      "level": 2,
+      "type": "store",
+      "name": "Geely",
+      "coordinates": {
+        "x": 968,
+        "y": 92
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_20",
+      "level": 2,
+      "type": "store",
+      "name": "Smart Trampoline",
+      "coordinates": {
+        "x": 1055,
+        "y": 148
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_21",
+      "level": 2,
+      "type": "store",
+      "name": "Taller Creativo de Oscar Torres",
+      "coordinates": {
+        "x": 1119,
+        "y": 175
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_22",
+      "level": 2,
+      "type": "store",
+      "name": "Floristorio",
+      "coordinates": {
+        "x": 1119,
+        "y": 158
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_23",
+      "level": 2,
+      "type": "store",
+      "name": "Estrella Dorada",
+      "coordinates": {
+        "x": 1189,
+        "y": 208
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_24",
+      "level": 2,
+      "type": "store",
+      "name": "Showroom Fame",
+      "coordinates": {
+        "x": 1255,
+        "y": 170
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_25",
+      "level": 2,
+      "type": "store",
+      "name": "Toyota",
+      "coordinates": {
+        "x": 1348,
+        "y": 235
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_26",
+      "level": 2,
+      "type": "store",
+      "name": "Taller BYD",
+      "coordinates": {
+        "x": 1380,
+        "y": 260
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_27",
+      "level": 2,
+      "type": "store",
+      "name": "KIA",
+      "coordinates": {
+        "x": 1316,
+        "y": 278
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_30",
+      "level": 2,
+      "type": "store",
+      "name": "Palet",
+      "coordinates": {
+        "x": 1078,
+        "y": 290
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_31",
+      "level": 2,
+      "type": "store",
+      "name": "Dolphy",
+      "coordinates": {
+        "x": 992,
+        "y": 348
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_32",
+      "level": 2,
+      "type": "store",
+      "name": "Flexi",
+      "coordinates": {
+        "x": 912,
+        "y": 470
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_33",
+      "level": 2,
+      "type": "store",
+      "name": "New York Coffee",
+      "coordinates": {
+        "x": 912,
+        "y": 440
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_34",
+      "level": 2,
+      "type": "store",
+      "name": "Café Europa",
+      "coordinates": {
+        "x": 916,
+        "y": 418
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_35",
+      "level": 2,
+      "type": "store",
+      "name": "Vía Uno",
+      "coordinates": {
+        "x": 900,
+        "y": 418
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_36",
+      "level": 2,
+      "type": "store",
+      "name": "Beau",
+      "coordinates": {
+        "x": 880,
+        "y": 418
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_38",
+      "level": 2,
+      "type": "store",
+      "name": "Ópticas Kauffman",
+      "coordinates": {
+        "x": 805,
+        "y": 390
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_39",
+      "level": 2,
+      "type": "store",
+      "name": "Hill's Collection",
+      "coordinates": {
+        "x": 776,
+        "y": 385
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_40",
+      "level": 2,
+      "type": "store",
+      "name": "Nutrisa",
+      "coordinates": {
+        "x": 755,
+        "y": 380
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_41",
+      "level": 2,
+      "type": "store",
+      "name": "Ópticas Lux",
+      "coordinates": {
+        "x": 732,
+        "y": 372
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_44",
+      "level": 2,
+      "type": "store",
+      "name": "Banana Republic",
+      "coordinates": {
+        "x": 580,
+        "y": 462
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_45",
+      "level": 2,
+      "type": "store",
+      "name": "Fabletics",
+      "coordinates": {
+        "x": 580,
+        "y": 400
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_46",
+      "level": 2,
+      "type": "store",
+      "name": "GAP",
+      "coordinates": {
+        "x": 535,
+        "y": 438
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_47",
+      "level": 2,
+      "type": "store",
+      "name": "Steren",
+      "coordinates": {
+        "x": 490,
+        "y": 450
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_48",
+      "level": 2,
+      "type": "store",
+      "name": "Luuna",
+      "coordinates": {
+        "x": 465,
+        "y": 468
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_49",
+      "level": 2,
+      "type": "store",
+      "name": "Havoc",
+      "coordinates": {
+        "x": 428,
+        "y": 482
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_50",
+      "level": 2,
+      "type": "store",
+      "name": "Axen Health",
+      "coordinates": {
+        "x": 366,
+        "y": 580
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_51",
+      "level": 2,
+      "type": "store",
+      "name": "Starbucks Coffee",
+      "coordinates": {
+        "x": 725,
+        "y": 310
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_52",
+      "level": 2,
+      "type": "store",
+      "name": "Enki's Barbería",
+      "coordinates": {
+        "x": 768,
+        "y": 328
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_53",
+      "level": 2,
+      "type": "store",
+      "name": "Todomoda",
+      "coordinates": {
+        "x": 786,
+        "y": 330
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_54",
+      "level": 2,
+      "type": "store",
+      "name": "Studio Mix",
+      "coordinates": {
+        "x": 810,
+        "y": 335
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_55",
+      "level": 2,
+      "type": "store",
+      "name": "Bizzarro",
+      "coordinates": {
+        "x": 838,
+        "y": 340
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_56",
+      "level": 2,
+      "type": "store",
+      "name": "Ben & Frank",
+      "coordinates": {
+        "x": 866,
+        "y": 346
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_57",
+      "level": 2,
+      "type": "store",
+      "name": "Yuscase",
+      "coordinates": {
+        "x": 892,
+        "y": 350
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_58",
+      "level": 2,
+      "type": "store",
+      "name": "Sunglass Hut",
+      "coordinates": {
+        "x": 918,
+        "y": 355
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_59",
+      "level": 2,
+      "type": "store",
+      "name": "Adidas",
+      "coordinates": {
+        "x": 912,
+        "y": 318
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_60",
+      "level": 2,
+      "type": "store",
+      "name": "Crocs",
+      "coordinates": {
+        "x": 885,
+        "y": 315
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_61",
+      "level": 2,
+      "type": "store",
+      "name": "Taste Top",
+      "coordinates": {
+        "x": 862,
+        "y": 308
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_62",
+      "level": 2,
+      "type": "store",
+      "name": "Di Luca Gelato Gourmet",
+      "coordinates": {
+        "x": 840,
+        "y": 308
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_63",
+      "level": 2,
+      "type": "store",
+      "name": "Pies & Salud",
+      "coordinates": {
+        "x": 818,
+        "y": 305
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_1",
+      "level": 2,
+      "type": "island",
+      "name": "De Regil Chocolat",
+      "coordinates": {
+        "x": 580,
+        "y": 348
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_2",
+      "level": 2,
+      "type": "island",
+      "name": "Elotería La Cerrada",
+      "coordinates": {
+        "x": 632,
+        "y": 242
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_3",
+      "level": 2,
+      "type": "island",
+      "name": "Casa Carcasa",
+      "coordinates": {
+        "x": 714,
+        "y": 345
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_4",
+      "level": 2,
+      "type": "island",
+      "name": "Mingos",
+      "coordinates": {
+        "x": 755,
+        "y": 355
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_5",
+      "level": 2,
+      "type": "island",
+      "name": "Straight A Head",
+      "coordinates": {
+        "x": 785,
+        "y": 362
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_6",
+      "level": 2,
+      "type": "island",
+      "name": "Olivia",
+      "coordinates": {
+        "x": 845,
+        "y": 372
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_7",
+      "level": 2,
+      "type": "island",
+      "name": "Obey Yourr Body",
+      "coordinates": {
+        "x": 875,
+        "y": 380
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_8",
+      "level": 2,
+      "type": "island",
+      "name": "M&L Joyas",
+      "coordinates": {
+        "x": 915,
+        "y": 390
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_9",
+      "level": 2,
+      "type": "island",
+      "name": "Delicrepé",
+      "coordinates": {
+        "x": 960,
+        "y": 325
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_10",
+      "level": 2,
+      "type": "island",
+      "name": "Moyo",
+      "coordinates": {
+        "x": 960,
+        "y": 380
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_11",
+      "level": 2,
+      "type": "island",
+      "name": "La Casa de las Carcasas",
+      "coordinates": {
+        "x": 960,
+        "y": 435
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_island_12",
+      "level": 2,
+      "type": "island",
+      "name": "M-Caps",
+      "coordinates": {
+        "x": 960,
+        "y": 490
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_64",
+      "level": 2,
+      "type": "store",
+      "name": "Coven (Próximamente)",
+      "coordinates": {
+        "x": 455,
+        "y": 472
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_store_65",
+      "level": 2,
+      "type": "store",
+      "name": "Telcel CAC (Próximamente)",
+      "coordinates": {
+        "x": 992,
+        "y": 290
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_portal_esc_liverpool",
+      "name": "Escaleras Eléctricas Plaza Liverpool (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 339,
+        "y": 512
+      }
+    },
+    {
+      "id": "n_lvl2_portal_elev_liverpool",
+      "name": "Elevador Plaza Liverpool (N1)",
+      "type": "portal_elevator",
+      "level": 2,
+      "coordinates": {
+        "x": 411,
+        "y": 519
+      }
+    },
+    {
+      "id": "n_lvl2_portal_esc_rotunda_left",
+      "name": "Escaleras Eléctricas Rotonda Poniente (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 601,
+        "y": 318
+      }
+    },
+    {
+      "id": "n_lvl2_portal_esc_rotunda_bot",
+      "name": "Escaleras Eléctricas Rotonda Sur (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 619,
+        "y": 353
+      }
+    },
+    {
+      "id": "n_lvl2_portal_esc_rotunda_right",
+      "name": "Escaleras Eléctricas Rotonda Norte (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 672,
+        "y": 353
+      }
+    },
+    {
+      "id": "n_lvl2_portal_esc_sanborns",
+      "name": "Escaleras Eléctricas Sanborns (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 634,
+        "y": 550
+      }
+    },
+    {
+      "id": "n_lvl2_portal_esc_sears",
+      "name": "Escaleras Eléctricas Sears / Cinelia (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 1181,
+        "y": 450
+      }
+    },
+    {
+      "id": "n_lvl2_portal_elev_chedraui",
+      "name": "Elevador Chedraui / Sears (N1)",
+      "type": "portal_elevator",
+      "level": 2,
+      "coordinates": {
+        "x": 1150,
+        "y": 500
+      }
+    },
+    {
+      "id": "n_lvl2_restroom_1",
+      "level": 2,
+      "type": "restroom",
+      "name": "Sanitarios Fiesta Inn / Urani",
+      "coordinates": {
+        "x": 515,
+        "y": 325
+      },
+      "context_element": "Urani"
+    },
+    {
+      "id": "n_lvl2_restroom_2",
+      "level": 2,
+      "type": "restroom",
+      "name": "Sanitarios Plaza Sears",
+      "coordinates": {
+        "x": 1119,
+        "y": 138
+      },
+      "context_element": "Plaza Sears"
+    },
+    {
+      "id": "n_totem_12",
+      "level": 2,
+      "type": "totem",
+      "name": "📍 Tótem Punto 12",
+      "coordinates": {
+        "x": 960,
+        "y": 510
+      },
+      "context_element": "M-Caps / Chedraui"
+    },
+    {
+      "id": "n_lvl3_store_1",
+      "level": 3,
+      "type": "store",
+      "name": "Scio México",
+      "coordinates": {
+        "x": 618,
+        "y": 208
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_2",
+      "level": 3,
+      "type": "anchor_store",
+      "name": "GoKartManía",
+      "coordinates": {
+        "x": 744,
+        "y": 106
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_3",
+      "level": 3,
+      "type": "anchor_store",
+      "name": "Cinelia",
+      "coordinates": {
+        "x": 889,
+        "y": 104
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_4",
+      "level": 3,
+      "type": "store",
+      "name": "Julio Cepeda Jugueterías",
+      "coordinates": {
+        "x": 891,
+        "y": 229
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_5",
+      "level": 3,
+      "type": "store",
+      "name": "Monkey Bowling Bar",
+      "coordinates": {
+        "x": 1024,
+        "y": 123
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_6",
+      "level": 3,
+      "type": "anchor_store",
+      "name": "Anytime Fitness",
+      "coordinates": {
+        "x": 1149,
+        "y": 163
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_7",
+      "level": 3,
+      "type": "anchor_store",
+      "name": "Fisher's",
+      "coordinates": {
+        "x": 1279,
+        "y": 311
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_8",
+      "level": 3,
+      "type": "store",
+      "name": "UNAGI Teppan-Yaki & Sushi Bar",
+      "coordinates": {
+        "x": 1197,
+        "y": 259
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_9",
+      "level": 3,
+      "type": "store",
+      "name": "G-Work Space",
+      "coordinates": {
+        "x": 1016,
+        "y": 350
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_10",
+      "level": 3,
+      "type": "store",
+      "name": "Mammut Pizza",
+      "coordinates": {
+        "x": 1016,
+        "y": 456
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_11",
+      "level": 3,
+      "type": "store",
+      "name": "Jana",
+      "coordinates": {
+        "x": 969,
+        "y": 457
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_12",
+      "level": 3,
+      "type": "store",
+      "name": "Casa Paula",
+      "coordinates": {
+        "x": 935,
+        "y": 458
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_13",
+      "level": 3,
+      "type": "store",
+      "name": "Funki Squad",
+      "coordinates": {
+        "x": 774,
+        "y": 453
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_14",
+      "level": 3,
+      "type": "store",
+      "name": "Carl's Jr.",
+      "coordinates": {
+        "x": 749,
+        "y": 339
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_15",
+      "level": 3,
+      "type": "store",
+      "name": "Taquería El Infierno",
+      "coordinates": {
+        "x": 623,
+        "y": 338
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_16",
+      "level": 3,
+      "type": "store",
+      "name": "Inn Salata Express",
+      "coordinates": {
+        "x": 615,
+        "y": 384
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_17",
+      "level": 3,
+      "type": "store",
+      "name": "Mikono Sushi Bar",
+      "coordinates": {
+        "x": 605,
+        "y": 401
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_18",
+      "level": 3,
+      "type": "store",
+      "name": "La Cueva de Chucho",
+      "coordinates": {
+        "x": 593,
+        "y": 415
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_19",
+      "level": 3,
+      "type": "store",
+      "name": "Domino's Pizza",
+      "coordinates": {
+        "x": 578,
+        "y": 427
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_20",
+      "level": 3,
+      "type": "store",
+      "name": "Hong Kong Express",
+      "coordinates": {
+        "x": 563,
+        "y": 437
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_21",
+      "level": 3,
+      "type": "store",
+      "name": "Intelisis",
+      "coordinates": {
+        "x": 552,
+        "y": 532
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_22",
+      "level": 3,
+      "type": "store",
+      "name": "Grupo Altozano",
+      "coordinates": {
+        "x": 647,
+        "y": 460
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_23",
+      "level": 3,
+      "type": "store",
+      "name": "Showroom",
+      "coordinates": {
+        "x": 688,
+        "y": 512
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_24",
+      "level": 3,
+      "type": "store",
+      "name": "Erre Media",
+      "coordinates": {
+        "x": 776,
+        "y": 510
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_25",
+      "level": 3,
+      "type": "store",
+      "name": "Centro de Negocios",
+      "coordinates": {
+        "x": 684,
+        "y": 236
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_26",
+      "level": 3,
+      "type": "store",
+      "name": "Raspados Jalisco",
+      "coordinates": {
+        "x": 901,
+        "y": 343
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_27",
+      "level": 3,
+      "type": "store",
+      "name": "La Gofrera",
+      "coordinates": {
+        "x": 950,
+        "y": 501
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_28",
+      "level": 3,
+      "type": "store",
+      "name": "Wingstop",
+      "coordinates": {
+        "x": 975,
+        "y": 501
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_store_29",
+      "level": 3,
+      "type": "store",
+      "name": "A Mar y Pasta (Próximamente)",
+      "coordinates": {
+        "x": 942,
+        "y": 356
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_portal_esc_cinelia",
+      "name": "Escaleras Eléctricas Cinelia / Sears (N2)",
+      "type": "portal_escalator",
+      "level": 3,
+      "coordinates": {
+        "x": 999,
+        "y": 208
+      }
+    },
+    {
+      "id": "n_lvl3_portal_elev_cinelia",
+      "name": "Elevador Cinelia (N2)",
+      "type": "portal_elevator",
+      "level": 3,
+      "coordinates": {
+        "x": 996,
+        "y": 173
+      }
+    },
+    {
+      "id": "n_lvl3_portal_esc_anytime",
+      "name": "Escaleras Eléctricas Anytime Fitness (N2)",
+      "type": "portal_escalator",
+      "level": 3,
+      "coordinates": {
+        "x": 1221,
+        "y": 301
+      }
+    },
+    {
+      "id": "n_lvl3_portal_esc_central_top",
+      "name": "Escaleras Eléctricas Central Norte (N2)",
+      "type": "portal_escalator",
+      "level": 3,
+      "coordinates": {
+        "x": 820,
+        "y": 338
+      }
+    },
+    {
+      "id": "n_lvl3_portal_esc_central_bot",
+      "name": "Escaleras Eléctricas Central Sur (N2)",
+      "type": "portal_escalator",
+      "level": 3,
+      "coordinates": {
+        "x": 847,
+        "y": 383
+      }
+    },
+    {
+      "id": "n_lvl3_portal_esc_terrace",
+      "name": "Escaleras Eléctricas Terraza (N2)",
+      "type": "portal_escalator",
+      "level": 3,
+      "coordinates": {
+        "x": 1025,
+        "y": 497
+      }
+    },
+    {
+      "id": "n_lvl3_restroom_1",
+      "level": 3,
+      "type": "restroom",
+      "name": "Sanitarios Cinelia",
+      "coordinates": {
+        "x": 996,
+        "y": 173
+      },
+      "context_element": "Cinelia"
+    },
+    {
+      "id": "n_lvl3_restroom_2",
+      "level": 3,
+      "type": "restroom",
+      "name": "Sanitarios Estacionamiento",
+      "coordinates": {
+        "x": 540,
+        "y": 487
+      },
+      "context_element": "Estacionamiento"
+    },
+    {
+      "id": "n_lvl3_service_admin",
+      "level": 3,
+      "type": "service",
+      "name": "Administración",
+      "coordinates": {
+        "x": 577,
+        "y": 470
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_service_parking",
+      "level": 3,
+      "type": "service",
+      "name": "Estacionamiento",
+      "coordinates": {
+        "x": 536,
+        "y": 460
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl3_games_zone",
+      "level": 3,
+      "type": "service",
+      "name": "Zona de Juegos",
+      "coordinates": {
+        "x": 948,
+        "y": 400
+      },
+      "context_element": null
+    },
+    {
+      "id": "n_lvl2_portal_esc_automotive",
+      "name": "Escaleras Pasillo Automotriz (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 1228,
+        "y": 301
+      }
+    },
+    {
+      "id": "n_lvl1_c_liv",
+      "name": "Pasillo Liverpool PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 480,
+        "y": 500
+      },
+      "context_element": "Liverpool PB"
+    },
+    {
+      "id": "n_lvl1_c_liv_esc",
+      "name": "Pasillo Escaleras Liverpool PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 530,
+        "y": 450
+      },
+      "context_element": "Escaleras Liverpool PB"
+    },
+    {
+      "id": "n_lvl1_c_mid_1",
+      "name": "Pasillo Central Poniente PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 670,
+        "y": 370
+      },
+      "context_element": "Studio F"
+    },
+    {
+      "id": "n_lvl1_c_mid_2",
+      "name": "Pasillo Central PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 720,
+        "y": 350
+      },
+      "context_element": "American Eagle"
+    },
+    {
+      "id": "n_lvl1_c_oval",
+      "name": "Pasillo Plaza Oval PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 830,
+        "y": 330
+      },
+      "context_element": "H&M PB"
+    },
+    {
+      "id": "n_lvl1_c_fountain",
+      "name": "Pasillo Fuente Central PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 880,
+        "y": 250
+      },
+      "context_element": "Hotel Fiesta Inn"
+    },
+    {
+      "id": "n_lvl1_c_macstore",
+      "name": "Pasillo MacStore PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 930,
+        "y": 190
+      },
+      "context_element": "MacStore"
+    },
+    {
+      "id": "n_lvl1_c_casino",
+      "name": "Pasillo Casino PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 990,
+        "y": 150
+      },
+      "context_element": "Crown City Casino"
+    },
+    {
+      "id": "n_lvl1_c_auto",
+      "name": "Pasillo Autos Honda/Geely PB",
+      "type": "corridor_waypoint",
+      "level": 1,
+      "coordinates": {
+        "x": 1050,
+        "y": 130
+      },
+      "context_element": "Honda / Geely"
+    },
+    {
+      "id": "n_lvl2_c_liv_door",
+      "name": "Acceso Liverpool N1",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 300,
+        "y": 510
+      },
+      "context_element": "Liverpool"
+    },
+    {
+      "id": "n_lvl2_c_liv_plaza",
+      "name": "Plaza Liverpool N1",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 360,
+        "y": 490
+      },
+      "context_element": "Escaleras Liverpool"
+    },
+    {
+      "id": "n_lvl2_c_gap",
+      "name": "Pasillo GAP / Aeropostale",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 430,
+        "y": 440
+      },
+      "context_element": "Aeropostale"
+    },
+    {
+      "id": "n_lvl2_c_steren",
+      "name": "Pasillo Steren / Innovasport",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 490,
+        "y": 410
+      },
+      "context_element": "Innovasport"
+    },
+    {
+      "id": "n_lvl2_c_loccitane",
+      "name": "Pasillo L'Occitane",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 540,
+        "y": 370
+      },
+      "context_element": "L'Occitane"
+    },
+    {
+      "id": "n_lvl2_c_rot_w",
+      "name": "Rotonda Poniente",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 600,
+        "y": 340
+      },
+      "context_element": "Rotonda Poniente"
+    },
+    {
+      "id": "n_lvl2_c_rot_nw",
+      "name": "Rotonda Norponiente",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 605,
+        "y": 290
+      },
+      "context_element": "Miniso"
+    },
+    {
+      "id": "n_lvl2_c_rot_n",
+      "name": "Rotonda Norte",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 660,
+        "y": 250
+      },
+      "context_element": "Zanati"
+    },
+    {
+      "id": "n_lvl2_c_rot_ne",
+      "name": "Rotonda Nororiente",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 710,
+        "y": 270
+      },
+      "context_element": "Dportenis"
+    },
+    {
+      "id": "n_lvl2_c_rot_s",
+      "name": "Rotonda Sur",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 650,
+        "y": 370
+      },
+      "context_element": "Starbucks Coffee"
+    },
+    {
+      "id": "n_lvl2_c_north_1",
+      "name": "Pasillo Norte Dportenis",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 760,
+        "y": 260
+      },
+      "context_element": "Dairy Queen"
+    },
+    {
+      "id": "n_lvl2_c_north_2",
+      "name": "Pasillo C&A Poniente",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 820,
+        "y": 255
+      },
+      "context_element": "C&A"
+    },
+    {
+      "id": "n_lvl2_c_sfera_front",
+      "name": "Pasillo Frente a Sfera",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 880,
+        "y": 250
+      },
+      "context_element": "Sfera"
+    },
+    {
+      "id": "n_lvl2_c_sephora_front",
+      "name": "Pasillo Frente a Sephora",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 960,
+        "y": 250
+      },
+      "context_element": "Sephora"
+    },
+    {
+      "id": "n_lvl2_c_interhome",
+      "name": "Pasillo Inter Home / H&M",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 1050,
+        "y": 250
+      },
+      "context_element": "H&M N1"
+    },
+    {
+      "id": "n_lvl2_c_sears_north",
+      "name": "Plaza Norte Sears",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 1140,
+        "y": 260
+      },
+      "context_element": "Sears Norte"
+    },
+    {
+      "id": "n_lvl2_c_sanborns_junc",
+      "name": "Pasillo Sanborns / Nutrisa",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 680,
+        "y": 360
+      },
+      "context_element": "Nutrisa"
+    },
+    {
+      "id": "n_lvl2_c_chedraui_hall",
+      "name": "Pasillo Chedraui Sur",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 960,
+        "y": 520
+      },
+      "context_element": "Chedraui Selecto Sur"
+    },
+    {
+      "id": "n_lvl2_c_sears_south_1",
+      "name": "Pasillo Sears Sur Poniente",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 1040,
+        "y": 475
+      },
+      "context_element": "Flexi"
+    },
+    {
+      "id": "n_lvl2_c_sears_south_2",
+      "name": "Plaza Sears Sur",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 1120,
+        "y": 465
+      },
+      "context_element": "Sears Sur"
+    },
+    {
+      "id": "n_lvl2_c_sears_mid",
+      "name": "Pasillo Conector Sears",
+      "type": "corridor_waypoint",
+      "level": 2,
+      "coordinates": {
+        "x": 1190,
+        "y": 350
+      },
+      "context_element": "Pasillo Sears"
+    },
+    {
+      "id": "n_lvl3_c_food_1",
+      "name": "Pasillo Comida Rápida Poniente",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 580,
+        "y": 380
+      },
+      "context_element": "Carl's Jr."
+    },
+    {
+      "id": "n_lvl3_c_food_2",
+      "name": "Pasillo Zona de Comida",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 650,
+        "y": 370
+      },
+      "context_element": "Domino's / El Infierno"
+    },
+    {
+      "id": "n_lvl3_c_food_3",
+      "name": "Pasillo Monkey Bowling",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 730,
+        "y": 360
+      },
+      "context_element": "Monkey Bowling"
+    },
+    {
+      "id": "n_lvl3_c_central_hub",
+      "name": "Pasillo Central Nivel 2",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 800,
+        "y": 340
+      },
+      "context_element": "Escaleras Centrales N2"
+    },
+    {
+      "id": "n_lvl3_c_cinelia_junc",
+      "name": "Cruce Cinelia / Restaurantes",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 860,
+        "y": 300
+      },
+      "context_element": "Fisher's / UNAGI"
+    },
+    {
+      "id": "n_lvl3_c_cinelia_1",
+      "name": "Pasillo Acceso Cinelia",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 910,
+        "y": 240
+      },
+      "context_element": "Taquilla Cinelia"
+    },
+    {
+      "id": "n_lvl3_c_cinelia_2",
+      "name": "Frente a Salas Cinelia",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 970,
+        "y": 220
+      },
+      "context_element": "Cinelia"
+    },
+    {
+      "id": "n_lvl3_c_cinelia_3",
+      "name": "Plaza Cinelia Oriente",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 1020,
+        "y": 210
+      },
+      "context_element": "Salas VIP"
+    },
+    {
+      "id": "n_lvl3_c_terrace_1",
+      "name": "Pasillo Terraza Poniente",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 920,
+        "y": 420
+      },
+      "context_element": "Mammut Pizza"
+    },
+    {
+      "id": "n_lvl3_c_terrace_2",
+      "name": "Pasillo Terraza Central",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 1000,
+        "y": 460
+      },
+      "context_element": "Jana / Casa Paula"
+    },
+    {
+      "id": "n_lvl3_c_terrace_3",
+      "name": "Plaza Terraza Oriente",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 1050,
+        "y": 480
+      },
+      "context_element": "Escaleras Terraza"
+    },
+    {
+      "id": "n_lvl3_c_biz_1",
+      "name": "Pasillo Centro de Negocios",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 1100,
+        "y": 310
+      },
+      "context_element": "Centro de Negocios"
+    },
+    {
+      "id": "n_lvl3_c_fitness",
+      "name": "Pasillo Anytime Fitness",
+      "type": "corridor_waypoint",
+      "level": 3,
+      "coordinates": {
+        "x": 1180,
+        "y": 300
+      },
+      "context_element": "Anytime Fitness"
+    }
+  ],
+  "edges": [
+    {
+      "from": "n_lvl1_c_liv",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 70.7
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_c_liv",
+      "weight": 70.7
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_island_2",
+      "weight": 82.2
+    },
+    {
+      "from": "n_lvl1_island_2",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 82.2
+    },
+    {
+      "from": "n_lvl1_island_2",
+      "to": "n_lvl1_island_1",
+      "weight": 28.1
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_island_2",
+      "weight": 28.1
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 61.4
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_island_1",
+      "weight": 61.4
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 53.9
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 53.9
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_island_3",
+      "weight": 63.5
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 63.5
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_c_oval",
+      "weight": 48.5
+    },
+    {
+      "from": "n_lvl1_c_oval",
+      "to": "n_lvl1_island_3",
+      "weight": 48.5
+    },
+    {
+      "from": "n_lvl1_c_oval",
+      "to": "n_lvl1_c_fountain",
+      "weight": 94.3
+    },
+    {
+      "from": "n_lvl1_c_fountain",
+      "to": "n_lvl1_c_oval",
+      "weight": 94.3
+    },
+    {
+      "from": "n_lvl1_c_fountain",
+      "to": "n_lvl1_c_macstore",
+      "weight": 78.1
+    },
+    {
+      "from": "n_lvl1_c_macstore",
+      "to": "n_lvl1_c_fountain",
+      "weight": 78.1
+    },
+    {
+      "from": "n_lvl1_c_macstore",
+      "to": "n_lvl1_c_casino",
+      "weight": 72.1
+    },
+    {
+      "from": "n_lvl1_c_casino",
+      "to": "n_lvl1_c_macstore",
+      "weight": 72.1
+    },
+    {
+      "from": "n_lvl1_c_casino",
+      "to": "n_lvl1_c_auto",
+      "weight": 63.2
+    },
+    {
+      "from": "n_lvl1_c_auto",
+      "to": "n_lvl1_c_casino",
+      "weight": 63.2
+    },
+    {
+      "from": "n_lvl1_portal_esc_liverpool",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 50.4
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_portal_esc_liverpool",
+      "weight": 50.4
+    },
+    {
+      "from": "n_lvl1_portal_elev_liverpool",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 86.1
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_portal_elev_liverpool",
+      "weight": 86.1
+    },
+    {
+      "from": "n_lvl1_portal_esc_central",
+      "to": "n_lvl1_c_fountain",
+      "weight": 129.4
+    },
+    {
+      "from": "n_lvl1_c_fountain",
+      "to": "n_lvl1_portal_esc_central",
+      "weight": 129.4
+    },
+    {
+      "from": "n_lvl1_portal_elev_central",
+      "to": "n_lvl1_c_fountain",
+      "weight": 88.0
+    },
+    {
+      "from": "n_lvl1_c_fountain",
+      "to": "n_lvl1_portal_elev_central",
+      "weight": 88.0
+    },
+    {
+      "from": "n_lvl1_portal_esc_oval",
+      "to": "n_lvl1_c_oval",
+      "weight": 4.5
+    },
+    {
+      "from": "n_lvl1_c_oval",
+      "to": "n_lvl1_portal_esc_oval",
+      "weight": 4.5
+    },
+    {
+      "from": "n_lvl2_c_liv_door",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 63.2
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_c_liv_door",
+      "weight": 63.2
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_c_gap",
+      "weight": 86.0
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 86.0
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_c_steren",
+      "weight": 67.1
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_c_gap",
+      "weight": 67.1
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 64.0
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_c_steren",
+      "weight": 64.0
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_island_1",
+      "weight": 45.7
+    },
+    {
+      "from": "n_lvl2_island_1",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 45.7
+    },
+    {
+      "from": "n_lvl2_island_1",
+      "to": "n_lvl2_c_rot_w",
+      "weight": 21.5
+    },
+    {
+      "from": "n_lvl2_c_rot_w",
+      "to": "n_lvl2_island_1",
+      "weight": 21.5
+    },
+    {
+      "from": "n_lvl2_c_rot_w",
+      "to": "n_lvl2_c_rot_nw",
+      "weight": 50.2
+    },
+    {
+      "from": "n_lvl2_c_rot_nw",
+      "to": "n_lvl2_c_rot_w",
+      "weight": 50.2
+    },
+    {
+      "from": "n_lvl2_c_rot_nw",
+      "to": "n_lvl2_island_2",
+      "weight": 55.1
+    },
+    {
+      "from": "n_lvl2_island_2",
+      "to": "n_lvl2_c_rot_nw",
+      "weight": 55.1
+    },
+    {
+      "from": "n_lvl2_island_2",
+      "to": "n_lvl2_c_rot_n",
+      "weight": 29.1
+    },
+    {
+      "from": "n_lvl2_c_rot_n",
+      "to": "n_lvl2_island_2",
+      "weight": 29.1
+    },
+    {
+      "from": "n_lvl2_c_rot_n",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 53.9
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_c_rot_n",
+      "weight": 53.9
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_c_rot_s",
+      "weight": 116.6
+    },
+    {
+      "from": "n_lvl2_c_rot_s",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 116.6
+    },
+    {
+      "from": "n_lvl2_c_rot_s",
+      "to": "n_lvl2_c_rot_w",
+      "weight": 58.3
+    },
+    {
+      "from": "n_lvl2_c_rot_w",
+      "to": "n_lvl2_c_rot_s",
+      "weight": 58.3
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_c_north_1",
+      "weight": 51.0
+    },
+    {
+      "from": "n_lvl2_c_north_1",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 51.0
+    },
+    {
+      "from": "n_lvl2_c_north_1",
+      "to": "n_lvl2_c_north_2",
+      "weight": 60.2
+    },
+    {
+      "from": "n_lvl2_c_north_2",
+      "to": "n_lvl2_c_north_1",
+      "weight": 60.2
+    },
+    {
+      "from": "n_lvl2_c_north_2",
+      "to": "n_lvl2_c_sfera_front",
+      "weight": 60.2
+    },
+    {
+      "from": "n_lvl2_c_sfera_front",
+      "to": "n_lvl2_c_north_2",
+      "weight": 60.2
+    },
+    {
+      "from": "n_lvl2_c_sfera_front",
+      "to": "n_lvl2_c_sephora_front",
+      "weight": 80.0
+    },
+    {
+      "from": "n_lvl2_c_sephora_front",
+      "to": "n_lvl2_c_sfera_front",
+      "weight": 80.0
+    },
+    {
+      "from": "n_lvl2_c_sephora_front",
+      "to": "n_lvl2_c_interhome",
+      "weight": 90.0
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_c_sephora_front",
+      "weight": 90.0
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 90.6
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_c_interhome",
+      "weight": 90.6
+    },
+    {
+      "from": "n_lvl2_c_rot_s",
+      "to": "n_lvl2_c_sanborns_junc",
+      "weight": 31.6
+    },
+    {
+      "from": "n_lvl2_c_sanborns_junc",
+      "to": "n_lvl2_c_rot_s",
+      "weight": 31.6
+    },
+    {
+      "from": "n_lvl2_c_sanborns_junc",
+      "to": "n_lvl2_island_3",
+      "weight": 37.2
+    },
+    {
+      "from": "n_lvl2_island_3",
+      "to": "n_lvl2_c_sanborns_junc",
+      "weight": 37.2
+    },
+    {
+      "from": "n_lvl2_island_3",
+      "to": "n_lvl2_island_4",
+      "weight": 42.2
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_island_3",
+      "weight": 42.2
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_island_5",
+      "weight": 30.8
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_island_4",
+      "weight": 30.8
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_island_6",
+      "weight": 60.8
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_island_5",
+      "weight": 60.8
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_island_7",
+      "weight": 31.0
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_island_6",
+      "weight": 31.0
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_island_8",
+      "weight": 41.2
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_island_7",
+      "weight": 41.2
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_island_9",
+      "weight": 79.1
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_island_8",
+      "weight": 79.1
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_island_10",
+      "weight": 55.0
+    },
+    {
+      "from": "n_lvl2_island_10",
+      "to": "n_lvl2_island_9",
+      "weight": 55.0
+    },
+    {
+      "from": "n_lvl2_island_10",
+      "to": "n_lvl2_island_11",
+      "weight": 55.0
+    },
+    {
+      "from": "n_lvl2_island_11",
+      "to": "n_lvl2_island_10",
+      "weight": 55.0
+    },
+    {
+      "from": "n_lvl2_island_11",
+      "to": "n_lvl2_island_12",
+      "weight": 55.0
+    },
+    {
+      "from": "n_lvl2_island_12",
+      "to": "n_lvl2_island_11",
+      "weight": 55.0
+    },
+    {
+      "from": "n_lvl2_island_12",
+      "to": "n_totem_12",
+      "weight": 8.0
+    },
+    {
+      "from": "n_totem_12",
+      "to": "n_lvl2_island_12",
+      "weight": 8.0
+    },
+    {
+      "from": "n_totem_12",
+      "to": "n_lvl2_c_chedraui_hall",
+      "weight": 10.0
+    },
+    {
+      "from": "n_lvl2_c_chedraui_hall",
+      "to": "n_totem_12",
+      "weight": 10.0
+    },
+    {
+      "from": "n_lvl2_island_12",
+      "to": "n_lvl2_c_chedraui_hall",
+      "weight": 30.0
+    },
+    {
+      "from": "n_lvl2_c_chedraui_hall",
+      "to": "n_lvl2_island_12",
+      "weight": 30.0
+    },
+    {
+      "from": "n_lvl2_c_sephora_front",
+      "to": "n_lvl2_island_9",
+      "weight": 75.0
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_c_sephora_front",
+      "weight": 75.0
+    },
+    {
+      "from": "n_lvl2_c_chedraui_hall",
+      "to": "n_lvl2_c_sears_south_1",
+      "weight": 91.8
+    },
+    {
+      "from": "n_lvl2_c_sears_south_1",
+      "to": "n_lvl2_c_chedraui_hall",
+      "weight": 91.8
+    },
+    {
+      "from": "n_lvl2_c_sears_south_1",
+      "to": "n_lvl2_c_sears_south_2",
+      "weight": 80.6
+    },
+    {
+      "from": "n_lvl2_c_sears_south_2",
+      "to": "n_lvl2_c_sears_south_1",
+      "weight": 80.6
+    },
+    {
+      "from": "n_lvl2_c_sears_south_2",
+      "to": "n_lvl2_portal_esc_sears",
+      "weight": 62.8
+    },
+    {
+      "from": "n_lvl2_portal_esc_sears",
+      "to": "n_lvl2_c_sears_south_2",
+      "weight": 62.8
+    },
+    {
+      "from": "n_lvl2_portal_esc_sears",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 100.4
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_portal_esc_sears",
+      "weight": 100.4
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 103.0
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 103.0
+    },
+    {
+      "from": "n_lvl2_portal_esc_liverpool",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 30.4
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_portal_esc_liverpool",
+      "weight": 30.4
+    },
+    {
+      "from": "n_lvl2_portal_elev_liverpool",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 58.7
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_portal_elev_liverpool",
+      "weight": 58.7
+    },
+    {
+      "from": "n_lvl2_portal_esc_rotunda_left",
+      "to": "n_lvl2_c_rot_w",
+      "weight": 22.0
+    },
+    {
+      "from": "n_lvl2_c_rot_w",
+      "to": "n_lvl2_portal_esc_rotunda_left",
+      "weight": 22.0
+    },
+    {
+      "from": "n_lvl2_portal_esc_rotunda_right",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 91.3
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_portal_esc_rotunda_right",
+      "weight": 91.3
+    },
+    {
+      "from": "n_lvl2_portal_esc_rotunda_bot",
+      "to": "n_lvl2_c_rot_s",
+      "weight": 35.4
+    },
+    {
+      "from": "n_lvl2_c_rot_s",
+      "to": "n_lvl2_portal_esc_rotunda_bot",
+      "weight": 35.4
+    },
+    {
+      "from": "n_lvl2_portal_esc_sanborns",
+      "to": "n_lvl2_c_sanborns_junc",
+      "weight": 195.5
+    },
+    {
+      "from": "n_lvl2_c_sanborns_junc",
+      "to": "n_lvl2_portal_esc_sanborns",
+      "weight": 195.5
+    },
+    {
+      "from": "n_lvl2_portal_elev_chedraui",
+      "to": "n_lvl2_island_11",
+      "weight": 200.8
+    },
+    {
+      "from": "n_lvl2_island_11",
+      "to": "n_lvl2_portal_elev_chedraui",
+      "weight": 200.8
+    },
+    {
+      "from": "n_lvl2_portal_esc_automotive",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 62.0
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_portal_esc_automotive",
+      "weight": 62.0
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_c_food_2",
+      "weight": 70.7
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_c_food_1",
+      "weight": 70.7
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_c_food_3",
+      "weight": 80.6
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_c_food_2",
+      "weight": 80.6
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_c_central_hub",
+      "weight": 72.8
+    },
+    {
+      "from": "n_lvl3_c_central_hub",
+      "to": "n_lvl3_c_food_3",
+      "weight": 72.8
+    },
+    {
+      "from": "n_lvl3_c_central_hub",
+      "to": "n_lvl3_c_cinelia_junc",
+      "weight": 72.1
+    },
+    {
+      "from": "n_lvl3_c_cinelia_junc",
+      "to": "n_lvl3_c_central_hub",
+      "weight": 72.1
+    },
+    {
+      "from": "n_lvl3_c_cinelia_junc",
+      "to": "n_lvl3_c_cinelia_1",
+      "weight": 78.1
+    },
+    {
+      "from": "n_lvl3_c_cinelia_1",
+      "to": "n_lvl3_c_cinelia_junc",
+      "weight": 78.1
+    },
+    {
+      "from": "n_lvl3_c_cinelia_1",
+      "to": "n_lvl3_c_cinelia_2",
+      "weight": 63.2
+    },
+    {
+      "from": "n_lvl3_c_cinelia_2",
+      "to": "n_lvl3_c_cinelia_1",
+      "weight": 63.2
+    },
+    {
+      "from": "n_lvl3_c_cinelia_2",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 51.0
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_c_cinelia_2",
+      "weight": 51.0
+    },
+    {
+      "from": "n_lvl3_c_cinelia_junc",
+      "to": "n_lvl3_c_terrace_1",
+      "weight": 134.2
+    },
+    {
+      "from": "n_lvl3_c_terrace_1",
+      "to": "n_lvl3_c_cinelia_junc",
+      "weight": 134.2
+    },
+    {
+      "from": "n_lvl3_c_terrace_1",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 89.4
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_c_terrace_1",
+      "weight": 89.4
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_c_terrace_3",
+      "weight": 53.9
+    },
+    {
+      "from": "n_lvl3_c_terrace_3",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 53.9
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_c_biz_1",
+      "weight": 128.1
+    },
+    {
+      "from": "n_lvl3_c_biz_1",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 128.1
+    },
+    {
+      "from": "n_lvl3_c_biz_1",
+      "to": "n_lvl3_c_fitness",
+      "weight": 80.6
+    },
+    {
+      "from": "n_lvl3_c_fitness",
+      "to": "n_lvl3_c_biz_1",
+      "weight": 80.6
+    },
+    {
+      "from": "n_lvl3_c_terrace_3",
+      "to": "n_lvl3_c_biz_1",
+      "weight": 177.2
+    },
+    {
+      "from": "n_lvl3_c_biz_1",
+      "to": "n_lvl3_c_terrace_3",
+      "weight": 177.2
+    },
+    {
+      "from": "n_lvl3_portal_esc_cinelia",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 21.1
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_portal_esc_cinelia",
+      "weight": 21.1
+    },
+    {
+      "from": "n_lvl3_portal_elev_cinelia",
+      "to": "n_lvl3_c_cinelia_2",
+      "weight": 53.7
+    },
+    {
+      "from": "n_lvl3_c_cinelia_2",
+      "to": "n_lvl3_portal_elev_cinelia",
+      "weight": 53.7
+    },
+    {
+      "from": "n_lvl3_portal_esc_central_top",
+      "to": "n_lvl3_c_central_hub",
+      "weight": 20.1
+    },
+    {
+      "from": "n_lvl3_c_central_hub",
+      "to": "n_lvl3_portal_esc_central_top",
+      "weight": 20.1
+    },
+    {
+      "from": "n_lvl3_portal_esc_central_bot",
+      "to": "n_lvl3_c_central_hub",
+      "weight": 63.7
+    },
+    {
+      "from": "n_lvl3_c_central_hub",
+      "to": "n_lvl3_portal_esc_central_bot",
+      "weight": 63.7
+    },
+    {
+      "from": "n_lvl3_portal_esc_terrace",
+      "to": "n_lvl3_c_terrace_3",
+      "weight": 30.2
+    },
+    {
+      "from": "n_lvl3_c_terrace_3",
+      "to": "n_lvl3_portal_esc_terrace",
+      "weight": 30.2
+    },
+    {
+      "from": "n_lvl3_portal_esc_anytime",
+      "to": "n_lvl3_c_fitness",
+      "weight": 41.0
+    },
+    {
+      "from": "n_lvl3_c_fitness",
+      "to": "n_lvl3_portal_esc_anytime",
+      "weight": 41.0
+    },
+    {
+      "from": "n_lvl1_store_1",
+      "to": "n_lvl1_c_liv",
+      "weight": 100.96038827183659
+    },
+    {
+      "from": "n_lvl1_c_liv",
+      "to": "n_lvl1_store_1",
+      "weight": 100.96038827183659
+    },
+    {
+      "from": "n_lvl1_store_2",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 42.44997055358225
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_2",
+      "weight": 42.44997055358225
+    },
+    {
+      "from": "n_lvl1_store_3",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 45.044422518220834
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_3",
+      "weight": 45.044422518220834
+    },
+    {
+      "from": "n_lvl1_store_3",
+      "to": "n_lvl1_island_2",
+      "weight": 58.52349955359813
+    },
+    {
+      "from": "n_lvl1_island_2",
+      "to": "n_lvl1_store_3",
+      "weight": 58.52349955359813
+    },
+    {
+      "from": "n_lvl1_store_4",
+      "to": "n_lvl1_island_2",
+      "weight": 29.274562336608895
+    },
+    {
+      "from": "n_lvl1_island_2",
+      "to": "n_lvl1_store_4",
+      "weight": 29.274562336608895
+    },
+    {
+      "from": "n_lvl1_store_5",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 29.0
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_5",
+      "weight": 29.0
+    },
+    {
+      "from": "n_lvl1_store_5",
+      "to": "n_lvl1_island_1",
+      "weight": 35.22782990761707
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_store_5",
+      "weight": 35.22782990761707
+    },
+    {
+      "from": "n_lvl1_store_6",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 21.470910553583888
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_6",
+      "weight": 21.470910553583888
+    },
+    {
+      "from": "n_lvl1_store_7",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 14.422205101855956
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_store_7",
+      "weight": 14.422205101855956
+    },
+    {
+      "from": "n_lvl1_store_8",
+      "to": "n_lvl1_island_3",
+      "weight": 42.20189569201838
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_store_8",
+      "weight": 42.20189569201838
+    },
+    {
+      "from": "n_lvl1_store_9",
+      "to": "n_lvl1_c_oval",
+      "weight": 155.2063143045411
+    },
+    {
+      "from": "n_lvl1_c_oval",
+      "to": "n_lvl1_store_9",
+      "weight": 155.2063143045411
+    },
+    {
+      "from": "n_lvl1_store_9",
+      "to": "n_lvl1_island_3",
+      "weight": 171.40595088852663
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_store_9",
+      "weight": 171.40595088852663
+    },
+    {
+      "from": "n_lvl1_store_10",
+      "to": "n_lvl1_island_3",
+      "weight": 55.758407437802596
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_store_10",
+      "weight": 55.758407437802596
+    },
+    {
+      "from": "n_lvl1_store_10",
+      "to": "n_lvl1_c_oval",
+      "weight": 61.40032573203501
+    },
+    {
+      "from": "n_lvl1_c_oval",
+      "to": "n_lvl1_store_10",
+      "weight": 61.40032573203501
+    },
+    {
+      "from": "n_lvl1_store_11",
+      "to": "n_lvl1_island_3",
+      "weight": 40.11234224026316
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_store_11",
+      "weight": 40.11234224026316
+    },
+    {
+      "from": "n_lvl1_store_12",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 51.86520991955976
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_store_12",
+      "weight": 51.86520991955976
+    },
+    {
+      "from": "n_lvl1_store_12",
+      "to": "n_lvl1_island_3",
+      "weight": 61.29437168288782
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_store_12",
+      "weight": 61.29437168288782
+    },
+    {
+      "from": "n_lvl1_store_13",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 55.44366510251645
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_store_13",
+      "weight": 55.44366510251645
+    },
+    {
+      "from": "n_lvl1_store_13",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 66.88796603276258
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_13",
+      "weight": 66.88796603276258
+    },
+    {
+      "from": "n_lvl1_store_14",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 58.83026432033091
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_14",
+      "weight": 58.83026432033091
+    },
+    {
+      "from": "n_lvl1_store_14",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 72.53275122315436
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_store_14",
+      "weight": 72.53275122315436
+    },
+    {
+      "from": "n_lvl1_store_15",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 73.10950690573696
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_15",
+      "weight": 73.10950690573696
+    },
+    {
+      "from": "n_lvl1_store_15",
+      "to": "n_lvl1_island_1",
+      "weight": 75.66372975210778
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_store_15",
+      "weight": 75.66372975210778
+    },
+    {
+      "from": "n_lvl1_store_16",
+      "to": "n_lvl1_island_1",
+      "weight": 72.18032973047436
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_store_16",
+      "weight": 72.18032973047436
+    },
+    {
+      "from": "n_lvl1_store_16",
+      "to": "n_lvl1_island_2",
+      "weight": 83.72574275573791
+    },
+    {
+      "from": "n_lvl1_island_2",
+      "to": "n_lvl1_store_16",
+      "weight": 83.72574275573791
+    },
+    {
+      "from": "n_lvl1_store_17",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 79.71198153351854
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_17",
+      "weight": 79.71198153351854
+    },
+    {
+      "from": "n_lvl1_store_17",
+      "to": "n_lvl1_island_1",
+      "weight": 87.28115489611719
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_store_17",
+      "weight": 87.28115489611719
+    },
+    {
+      "from": "n_lvl1_store_18",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 122.494897852931
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_18",
+      "weight": 122.494897852931
+    },
+    {
+      "from": "n_lvl1_store_18",
+      "to": "n_lvl1_island_1",
+      "weight": 142.28492541376264
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_store_18",
+      "weight": 142.28492541376264
+    },
+    {
+      "from": "n_lvl1_store_19",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 146.37281168304446
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_19",
+      "weight": 146.37281168304446
+    },
+    {
+      "from": "n_lvl1_store_19",
+      "to": "n_lvl1_c_liv",
+      "weight": 162.24980739587951
+    },
+    {
+      "from": "n_lvl1_c_liv",
+      "to": "n_lvl1_store_19",
+      "weight": 162.24980739587951
+    },
+    {
+      "from": "n_lvl1_store_20",
+      "to": "n_lvl1_island_1",
+      "weight": 183.89671013914307
+    },
+    {
+      "from": "n_lvl1_island_1",
+      "to": "n_lvl1_store_20",
+      "weight": 183.89671013914307
+    },
+    {
+      "from": "n_lvl1_store_20",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 187.9627622695517
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_20",
+      "weight": 187.9627622695517
+    },
+    {
+      "from": "n_lvl1_store_21",
+      "to": "n_lvl1_c_liv",
+      "weight": 139.20129309744217
+    },
+    {
+      "from": "n_lvl1_c_liv",
+      "to": "n_lvl1_store_21",
+      "weight": 139.20129309744217
+    },
+    {
+      "from": "n_lvl1_store_21",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 164.55090397806995
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_21",
+      "weight": 164.55090397806995
+    },
+    {
+      "from": "n_lvl1_store_22",
+      "to": "n_lvl1_c_liv",
+      "weight": 104.04326023342406
+    },
+    {
+      "from": "n_lvl1_c_liv",
+      "to": "n_lvl1_store_22",
+      "weight": 104.04326023342406
+    },
+    {
+      "from": "n_lvl1_store_22",
+      "to": "n_lvl1_c_liv_esc",
+      "weight": 115.43396380615195
+    },
+    {
+      "from": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_store_22",
+      "weight": 115.43396380615195
+    },
+    {
+      "from": "n_lvl1_store_23",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 117.98728745080972
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_store_23",
+      "weight": 117.98728745080972
+    },
+    {
+      "from": "n_lvl1_store_23",
+      "to": "n_lvl1_c_mid_1",
+      "weight": 131.38112497615478
+    },
+    {
+      "from": "n_lvl1_c_mid_1",
+      "to": "n_lvl1_store_23",
+      "weight": 131.38112497615478
+    },
+    {
+      "from": "n_lvl1_store_24",
+      "to": "n_lvl1_c_auto",
+      "weight": 55.072679252057455
+    },
+    {
+      "from": "n_lvl1_c_auto",
+      "to": "n_lvl1_store_24",
+      "weight": 55.072679252057455
+    },
+    {
+      "from": "n_lvl1_store_25",
+      "to": "n_lvl1_c_auto",
+      "weight": 92.43916918709297
+    },
+    {
+      "from": "n_lvl1_c_auto",
+      "to": "n_lvl1_store_25",
+      "weight": 92.43916918709297
+    },
+    {
+      "from": "n_lvl1_store_26",
+      "to": "n_lvl1_c_auto",
+      "weight": 162.5607578722491
+    },
+    {
+      "from": "n_lvl1_c_auto",
+      "to": "n_lvl1_store_26",
+      "weight": 162.5607578722491
+    },
+    {
+      "from": "n_lvl1_store_27",
+      "to": "n_lvl1_c_fountain",
+      "weight": 36.40054944640259
+    },
+    {
+      "from": "n_lvl1_c_fountain",
+      "to": "n_lvl1_store_27",
+      "weight": 36.40054944640259
+    },
+    {
+      "from": "n_lvl1_store_27",
+      "to": "n_lvl1_c_macstore",
+      "weight": 47.16990566028302
+    },
+    {
+      "from": "n_lvl1_c_macstore",
+      "to": "n_lvl1_store_27",
+      "weight": 47.16990566028302
+    },
+    {
+      "from": "n_lvl1_store_28",
+      "to": "n_lvl1_c_fountain",
+      "weight": 12.083045973594572
+    },
+    {
+      "from": "n_lvl1_c_fountain",
+      "to": "n_lvl1_store_28",
+      "weight": 12.083045973594572
+    },
+    {
+      "from": "n_lvl1_restroom_1",
+      "to": "n_lvl1_c_mid_2",
+      "weight": 32.55764119219941
+    },
+    {
+      "from": "n_lvl1_c_mid_2",
+      "to": "n_lvl1_restroom_1",
+      "weight": 32.55764119219941
+    },
+    {
+      "from": "n_lvl1_service_maint",
+      "to": "n_lvl1_c_casino",
+      "weight": 38.01315561749642
+    },
+    {
+      "from": "n_lvl1_c_casino",
+      "to": "n_lvl1_service_maint",
+      "weight": 38.01315561749642
+    },
+    {
+      "from": "n_lvl1_service_maint",
+      "to": "n_lvl1_c_macstore",
+      "weight": 39.05124837953327
+    },
+    {
+      "from": "n_lvl1_c_macstore",
+      "to": "n_lvl1_service_maint",
+      "weight": 39.05124837953327
+    },
+    {
+      "from": "n_lvl2_store_1",
+      "to": "n_lvl2_c_liv_door",
+      "weight": 111.80339887498948
+    },
+    {
+      "from": "n_lvl2_c_liv_door",
+      "to": "n_lvl2_store_1",
+      "weight": 111.80339887498948
+    },
+    {
+      "from": "n_lvl2_store_28",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 206.15528128088303
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_store_28",
+      "weight": 206.15528128088303
+    },
+    {
+      "from": "n_lvl2_store_28",
+      "to": "n_lvl2_c_sears_south_2",
+      "weight": 230.4886114323222
+    },
+    {
+      "from": "n_lvl2_c_sears_south_2",
+      "to": "n_lvl2_store_28",
+      "weight": 230.4886114323222
+    },
+    {
+      "from": "n_lvl2_store_29",
+      "to": "n_lvl2_c_sears_south_1",
+      "weight": 62.64982043070834
+    },
+    {
+      "from": "n_lvl2_c_sears_south_1",
+      "to": "n_lvl2_store_29",
+      "weight": 62.64982043070834
+    },
+    {
+      "from": "n_lvl2_store_29",
+      "to": "n_lvl2_c_sears_south_2",
+      "weight": 67.26812023536856
+    },
+    {
+      "from": "n_lvl2_c_sears_south_2",
+      "to": "n_lvl2_store_29",
+      "weight": 67.26812023536856
+    },
+    {
+      "from": "n_lvl2_store_37",
+      "to": "n_lvl2_island_6",
+      "weight": 110.16351483136329
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_store_37",
+      "weight": 110.16351483136329
+    },
+    {
+      "from": "n_lvl2_store_37",
+      "to": "n_lvl2_island_7",
+      "weight": 114.9086593777858
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_store_37",
+      "weight": 114.9086593777858
+    },
+    {
+      "from": "n_lvl2_store_42",
+      "to": "n_lvl2_c_rot_s",
+      "weight": 88.32326986700618
+    },
+    {
+      "from": "n_lvl2_c_rot_s",
+      "to": "n_lvl2_store_42",
+      "weight": 88.32326986700618
+    },
+    {
+      "from": "n_lvl2_store_42",
+      "to": "n_lvl2_c_sanborns_junc",
+      "weight": 95.1892851112981
+    },
+    {
+      "from": "n_lvl2_c_sanborns_junc",
+      "to": "n_lvl2_store_42",
+      "weight": 95.1892851112981
+    },
+    {
+      "from": "n_lvl2_store_43",
+      "to": "n_lvl2_c_gap",
+      "weight": 153.05227865013967
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_43",
+      "weight": 153.05227865013967
+    },
+    {
+      "from": "n_lvl2_store_43",
+      "to": "n_lvl2_c_steren",
+      "weight": 154.02921800749363
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_43",
+      "weight": 154.02921800749363
+    },
+    {
+      "from": "n_lvl2_store_2",
+      "to": "n_lvl2_c_liv_door",
+      "weight": 88.05112151472007
+    },
+    {
+      "from": "n_lvl2_c_liv_door",
+      "to": "n_lvl2_store_2",
+      "weight": 88.05112151472007
+    },
+    {
+      "from": "n_lvl2_store_2",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 88.72992730753249
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_store_2",
+      "weight": 88.72992730753249
+    },
+    {
+      "from": "n_lvl2_store_3",
+      "to": "n_lvl2_c_gap",
+      "weight": 153.3883959105121
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_3",
+      "weight": 153.3883959105121
+    },
+    {
+      "from": "n_lvl2_store_3",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 155.58920271021378
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_store_3",
+      "weight": 155.58920271021378
+    },
+    {
+      "from": "n_lvl2_store_4",
+      "to": "n_lvl2_c_gap",
+      "weight": 62.6418390534633
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_4",
+      "weight": 62.6418390534633
+    },
+    {
+      "from": "n_lvl2_store_5",
+      "to": "n_lvl2_c_gap",
+      "weight": 72.02777242147643
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_5",
+      "weight": 72.02777242147643
+    },
+    {
+      "from": "n_lvl2_store_5",
+      "to": "n_lvl2_c_steren",
+      "weight": 74.88658090739622
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_5",
+      "weight": 74.88658090739622
+    },
+    {
+      "from": "n_lvl2_store_6",
+      "to": "n_lvl2_c_steren",
+      "weight": 69.20260110718382
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_6",
+      "weight": 69.20260110718382
+    },
+    {
+      "from": "n_lvl2_store_6",
+      "to": "n_lvl2_c_gap",
+      "weight": 86.88498144098322
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_6",
+      "weight": 86.88498144098322
+    },
+    {
+      "from": "n_lvl2_store_7",
+      "to": "n_lvl2_c_steren",
+      "weight": 72.11102550927978
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_7",
+      "weight": 72.11102550927978
+    },
+    {
+      "from": "n_lvl2_store_7",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 79.12016177940993
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_7",
+      "weight": 79.12016177940993
+    },
+    {
+      "from": "n_lvl2_store_8",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 68.81860213634101
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_8",
+      "weight": 68.81860213634101
+    },
+    {
+      "from": "n_lvl2_store_8",
+      "to": "n_lvl2_c_steren",
+      "weight": 80.22468448052632
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_8",
+      "weight": 80.22468448052632
+    },
+    {
+      "from": "n_lvl2_store_9",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 65.0
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_9",
+      "weight": 65.0
+    },
+    {
+      "from": "n_lvl2_store_10",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 64.5600495662759
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_10",
+      "weight": 64.5600495662759
+    },
+    {
+      "from": "n_lvl2_store_10",
+      "to": "n_lvl2_island_1",
+      "weight": 70.45565981523414
+    },
+    {
+      "from": "n_lvl2_island_1",
+      "to": "n_lvl2_store_10",
+      "weight": 70.45565981523414
+    },
+    {
+      "from": "n_lvl2_store_11",
+      "to": "n_lvl2_c_rot_nw",
+      "weight": 42.720018726587654
+    },
+    {
+      "from": "n_lvl2_c_rot_nw",
+      "to": "n_lvl2_store_11",
+      "weight": 42.720018726587654
+    },
+    {
+      "from": "n_lvl2_store_11",
+      "to": "n_lvl2_island_1",
+      "weight": 45.5411901469428
+    },
+    {
+      "from": "n_lvl2_island_1",
+      "to": "n_lvl2_store_11",
+      "weight": 45.5411901469428
+    },
+    {
+      "from": "n_lvl2_store_12",
+      "to": "n_lvl2_island_2",
+      "weight": 38.2099463490856
+    },
+    {
+      "from": "n_lvl2_island_2",
+      "to": "n_lvl2_store_12",
+      "weight": 38.2099463490856
+    },
+    {
+      "from": "n_lvl2_store_13",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 32.55764119219941
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_store_13",
+      "weight": 32.55764119219941
+    },
+    {
+      "from": "n_lvl2_store_14",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 31.76476034853718
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_store_14",
+      "weight": 31.76476034853718
+    },
+    {
+      "from": "n_lvl2_store_14",
+      "to": "n_lvl2_c_north_1",
+      "weight": 39.35733730830886
+    },
+    {
+      "from": "n_lvl2_c_north_1",
+      "to": "n_lvl2_store_14",
+      "weight": 39.35733730830886
+    },
+    {
+      "from": "n_lvl2_store_15",
+      "to": "n_lvl2_c_north_1",
+      "weight": 26.90724809414742
+    },
+    {
+      "from": "n_lvl2_c_north_1",
+      "to": "n_lvl2_store_15",
+      "weight": 26.90724809414742
+    },
+    {
+      "from": "n_lvl2_store_16",
+      "to": "n_lvl2_c_north_2",
+      "weight": 26.0
+    },
+    {
+      "from": "n_lvl2_c_north_2",
+      "to": "n_lvl2_store_16",
+      "weight": 26.0
+    },
+    {
+      "from": "n_lvl2_store_17",
+      "to": "n_lvl2_c_sfera_front",
+      "weight": 79.05694150420949
+    },
+    {
+      "from": "n_lvl2_c_sfera_front",
+      "to": "n_lvl2_store_17",
+      "weight": 79.05694150420949
+    },
+    {
+      "from": "n_lvl2_store_17",
+      "to": "n_lvl2_c_north_2",
+      "weight": 87.32124598286491
+    },
+    {
+      "from": "n_lvl2_c_north_2",
+      "to": "n_lvl2_store_17",
+      "weight": 87.32124598286491
+    },
+    {
+      "from": "n_lvl2_store_18",
+      "to": "n_lvl2_c_sephora_front",
+      "weight": 75.28612089887484
+    },
+    {
+      "from": "n_lvl2_c_sephora_front",
+      "to": "n_lvl2_store_18",
+      "weight": 75.28612089887484
+    },
+    {
+      "from": "n_lvl2_store_18",
+      "to": "n_lvl2_c_sfera_front",
+      "weight": 92.45539465060976
+    },
+    {
+      "from": "n_lvl2_c_sfera_front",
+      "to": "n_lvl2_store_18",
+      "weight": 92.45539465060976
+    },
+    {
+      "from": "n_lvl2_store_19",
+      "to": "n_lvl2_c_sephora_front",
+      "weight": 158.2024020045208
+    },
+    {
+      "from": "n_lvl2_c_sephora_front",
+      "to": "n_lvl2_store_19",
+      "weight": 158.2024020045208
+    },
+    {
+      "from": "n_lvl2_store_19",
+      "to": "n_lvl2_c_interhome",
+      "weight": 178.01123560045303
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_store_19",
+      "weight": 178.01123560045303
+    },
+    {
+      "from": "n_lvl2_store_20",
+      "to": "n_lvl2_c_interhome",
+      "weight": 102.12247548899312
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_store_20",
+      "weight": 102.12247548899312
+    },
+    {
+      "from": "n_lvl2_store_21",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 87.55569655939013
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_21",
+      "weight": 87.55569655939013
+    },
+    {
+      "from": "n_lvl2_store_21",
+      "to": "n_lvl2_c_interhome",
+      "weight": 101.91172650877817
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_store_21",
+      "weight": 101.91172650877817
+    },
+    {
+      "from": "n_lvl2_store_22",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 104.1393297462587
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_22",
+      "weight": 104.1393297462587
+    },
+    {
+      "from": "n_lvl2_store_22",
+      "to": "n_lvl2_c_interhome",
+      "weight": 115.0
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_store_22",
+      "weight": 115.0
+    },
+    {
+      "from": "n_lvl2_store_23",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 71.449282711585
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_23",
+      "weight": 71.449282711585
+    },
+    {
+      "from": "n_lvl2_store_24",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 146.03081866510234
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_24",
+      "weight": 146.03081866510234
+    },
+    {
+      "from": "n_lvl2_store_25",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 195.420060382756
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_store_25",
+      "weight": 195.420060382756
+    },
+    {
+      "from": "n_lvl2_store_25",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 209.49701668520245
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_25",
+      "weight": 209.49701668520245
+    },
+    {
+      "from": "n_lvl2_store_26",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 210.23796041628637
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_store_26",
+      "weight": 210.23796041628637
+    },
+    {
+      "from": "n_lvl2_store_26",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 240.0
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_26",
+      "weight": 240.0
+    },
+    {
+      "from": "n_lvl2_store_27",
+      "to": "n_lvl2_c_sears_mid",
+      "weight": 145.12063946937388
+    },
+    {
+      "from": "n_lvl2_c_sears_mid",
+      "to": "n_lvl2_store_27",
+      "weight": 145.12063946937388
+    },
+    {
+      "from": "n_lvl2_store_27",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 176.91806012954132
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_store_27",
+      "weight": 176.91806012954132
+    },
+    {
+      "from": "n_lvl2_store_30",
+      "to": "n_lvl2_c_interhome",
+      "weight": 48.82622246293481
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_store_30",
+      "weight": 48.82622246293481
+    },
+    {
+      "from": "n_lvl2_store_31",
+      "to": "n_lvl2_island_9",
+      "weight": 39.408120990476064
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_store_31",
+      "weight": 39.408120990476064
+    },
+    {
+      "from": "n_lvl2_store_31",
+      "to": "n_lvl2_island_10",
+      "weight": 45.254833995939045
+    },
+    {
+      "from": "n_lvl2_island_10",
+      "to": "n_lvl2_store_31",
+      "weight": 45.254833995939045
+    },
+    {
+      "from": "n_lvl2_store_32",
+      "to": "n_lvl2_island_12",
+      "weight": 52.0
+    },
+    {
+      "from": "n_lvl2_island_12",
+      "to": "n_lvl2_store_32",
+      "weight": 52.0
+    },
+    {
+      "from": "n_lvl2_store_32",
+      "to": "n_lvl2_island_11",
+      "weight": 59.405386961116584
+    },
+    {
+      "from": "n_lvl2_island_11",
+      "to": "n_lvl2_store_32",
+      "weight": 59.405386961116584
+    },
+    {
+      "from": "n_lvl2_store_33",
+      "to": "n_lvl2_island_11",
+      "weight": 48.25971404805462
+    },
+    {
+      "from": "n_lvl2_island_11",
+      "to": "n_lvl2_store_33",
+      "weight": 48.25971404805462
+    },
+    {
+      "from": "n_lvl2_store_33",
+      "to": "n_lvl2_island_8",
+      "weight": 50.08991914547278
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_store_33",
+      "weight": 50.08991914547278
+    },
+    {
+      "from": "n_lvl2_store_34",
+      "to": "n_lvl2_island_8",
+      "weight": 28.0178514522438
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_store_34",
+      "weight": 28.0178514522438
+    },
+    {
+      "from": "n_lvl2_store_35",
+      "to": "n_lvl2_island_8",
+      "weight": 31.76476034853718
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_store_35",
+      "weight": 31.76476034853718
+    },
+    {
+      "from": "n_lvl2_store_36",
+      "to": "n_lvl2_island_7",
+      "weight": 38.3275357934736
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_store_36",
+      "weight": 38.3275357934736
+    },
+    {
+      "from": "n_lvl2_store_36",
+      "to": "n_lvl2_island_8",
+      "weight": 44.82186966202994
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_store_36",
+      "weight": 44.82186966202994
+    },
+    {
+      "from": "n_lvl2_store_38",
+      "to": "n_lvl2_island_5",
+      "weight": 34.40930106817051
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_store_38",
+      "weight": 34.40930106817051
+    },
+    {
+      "from": "n_lvl2_store_38",
+      "to": "n_lvl2_island_6",
+      "weight": 43.86342439892262
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_store_38",
+      "weight": 43.86342439892262
+    },
+    {
+      "from": "n_lvl2_store_39",
+      "to": "n_lvl2_island_5",
+      "weight": 24.698178070456937
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_store_39",
+      "weight": 24.698178070456937
+    },
+    {
+      "from": "n_lvl2_store_40",
+      "to": "n_lvl2_island_4",
+      "weight": 25.0
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_store_40",
+      "weight": 25.0
+    },
+    {
+      "from": "n_lvl2_store_41",
+      "to": "n_lvl2_island_4",
+      "weight": 28.600699292150182
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_store_41",
+      "weight": 28.600699292150182
+    },
+    {
+      "from": "n_lvl2_store_41",
+      "to": "n_lvl2_island_3",
+      "weight": 32.449961479175904
+    },
+    {
+      "from": "n_lvl2_island_3",
+      "to": "n_lvl2_store_41",
+      "weight": 32.449961479175904
+    },
+    {
+      "from": "n_lvl2_store_44",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 100.31948963187563
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_44",
+      "weight": 100.31948963187563
+    },
+    {
+      "from": "n_lvl2_store_44",
+      "to": "n_lvl2_c_steren",
+      "weight": 103.94229168149026
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_44",
+      "weight": 103.94229168149026
+    },
+    {
+      "from": "n_lvl2_store_45",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 50.0
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_45",
+      "weight": 50.0
+    },
+    {
+      "from": "n_lvl2_store_45",
+      "to": "n_lvl2_island_1",
+      "weight": 52.0
+    },
+    {
+      "from": "n_lvl2_island_1",
+      "to": "n_lvl2_store_45",
+      "weight": 52.0
+    },
+    {
+      "from": "n_lvl2_store_46",
+      "to": "n_lvl2_c_steren",
+      "weight": 53.0
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_46",
+      "weight": 53.0
+    },
+    {
+      "from": "n_lvl2_store_46",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 68.18357573492314
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_store_46",
+      "weight": 68.18357573492314
+    },
+    {
+      "from": "n_lvl2_store_47",
+      "to": "n_lvl2_c_steren",
+      "weight": 40.0
+    },
+    {
+      "from": "n_lvl2_c_steren",
+      "to": "n_lvl2_store_47",
+      "weight": 40.0
+    },
+    {
+      "from": "n_lvl2_store_48",
+      "to": "n_lvl2_c_gap",
+      "weight": 44.82186966202994
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_48",
+      "weight": 44.82186966202994
+    },
+    {
+      "from": "n_lvl2_store_49",
+      "to": "n_lvl2_c_gap",
+      "weight": 42.04759208325728
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_49",
+      "weight": 42.04759208325728
+    },
+    {
+      "from": "n_lvl2_store_50",
+      "to": "n_lvl2_c_liv_plaza",
+      "weight": 90.19977827023745
+    },
+    {
+      "from": "n_lvl2_c_liv_plaza",
+      "to": "n_lvl2_store_50",
+      "weight": 90.19977827023745
+    },
+    {
+      "from": "n_lvl2_store_50",
+      "to": "n_lvl2_c_liv_door",
+      "weight": 96.20810776644555
+    },
+    {
+      "from": "n_lvl2_c_liv_door",
+      "to": "n_lvl2_store_50",
+      "weight": 96.20810776644555
+    },
+    {
+      "from": "n_lvl2_store_51",
+      "to": "n_lvl2_island_3",
+      "weight": 36.68787265568828
+    },
+    {
+      "from": "n_lvl2_island_3",
+      "to": "n_lvl2_store_51",
+      "weight": 36.68787265568828
+    },
+    {
+      "from": "n_lvl2_store_51",
+      "to": "n_lvl2_c_rot_ne",
+      "weight": 42.720018726587654
+    },
+    {
+      "from": "n_lvl2_c_rot_ne",
+      "to": "n_lvl2_store_51",
+      "weight": 42.720018726587654
+    },
+    {
+      "from": "n_lvl2_store_52",
+      "to": "n_lvl2_island_4",
+      "weight": 29.966648127543394
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_store_52",
+      "weight": 29.966648127543394
+    },
+    {
+      "from": "n_lvl2_store_52",
+      "to": "n_lvl2_island_5",
+      "weight": 38.01315561749642
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_store_52",
+      "weight": 38.01315561749642
+    },
+    {
+      "from": "n_lvl2_store_53",
+      "to": "n_lvl2_island_5",
+      "weight": 32.01562118716424
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_store_53",
+      "weight": 32.01562118716424
+    },
+    {
+      "from": "n_lvl2_store_53",
+      "to": "n_lvl2_island_4",
+      "weight": 39.824615503479755
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_store_53",
+      "weight": 39.824615503479755
+    },
+    {
+      "from": "n_lvl2_store_54",
+      "to": "n_lvl2_island_5",
+      "weight": 36.796738985948195
+    },
+    {
+      "from": "n_lvl2_island_5",
+      "to": "n_lvl2_store_54",
+      "weight": 36.796738985948195
+    },
+    {
+      "from": "n_lvl2_store_55",
+      "to": "n_lvl2_island_6",
+      "weight": 32.7566787083184
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_store_55",
+      "weight": 32.7566787083184
+    },
+    {
+      "from": "n_lvl2_store_56",
+      "to": "n_lvl2_island_6",
+      "weight": 33.421549934136806
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_store_56",
+      "weight": 33.421549934136806
+    },
+    {
+      "from": "n_lvl2_store_56",
+      "to": "n_lvl2_island_7",
+      "weight": 35.17101079013795
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_store_56",
+      "weight": 35.17101079013795
+    },
+    {
+      "from": "n_lvl2_store_57",
+      "to": "n_lvl2_island_7",
+      "weight": 34.48187929913333
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_store_57",
+      "weight": 34.48187929913333
+    },
+    {
+      "from": "n_lvl2_store_58",
+      "to": "n_lvl2_island_8",
+      "weight": 35.12833614050059
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_store_58",
+      "weight": 35.12833614050059
+    },
+    {
+      "from": "n_lvl2_store_59",
+      "to": "n_lvl2_island_9",
+      "weight": 48.507731342539614
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_store_59",
+      "weight": 48.507731342539614
+    },
+    {
+      "from": "n_lvl2_store_60",
+      "to": "n_lvl2_c_sfera_front",
+      "weight": 65.19202405202648
+    },
+    {
+      "from": "n_lvl2_c_sfera_front",
+      "to": "n_lvl2_store_60",
+      "weight": 65.19202405202648
+    },
+    {
+      "from": "n_lvl2_store_60",
+      "to": "n_lvl2_island_7",
+      "weight": 65.76473218982953
+    },
+    {
+      "from": "n_lvl2_island_7",
+      "to": "n_lvl2_store_60",
+      "weight": 65.76473218982953
+    },
+    {
+      "from": "n_lvl2_store_61",
+      "to": "n_lvl2_c_sfera_front",
+      "weight": 60.728905802755904
+    },
+    {
+      "from": "n_lvl2_c_sfera_front",
+      "to": "n_lvl2_store_61",
+      "weight": 60.728905802755904
+    },
+    {
+      "from": "n_lvl2_store_61",
+      "to": "n_lvl2_island_6",
+      "weight": 66.21933252457322
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_store_61",
+      "weight": 66.21933252457322
+    },
+    {
+      "from": "n_lvl2_store_62",
+      "to": "n_lvl2_c_north_2",
+      "weight": 56.64803615307419
+    },
+    {
+      "from": "n_lvl2_c_north_2",
+      "to": "n_lvl2_store_62",
+      "weight": 56.64803615307419
+    },
+    {
+      "from": "n_lvl2_store_62",
+      "to": "n_lvl2_island_6",
+      "weight": 64.19501538281614
+    },
+    {
+      "from": "n_lvl2_island_6",
+      "to": "n_lvl2_store_62",
+      "weight": 64.19501538281614
+    },
+    {
+      "from": "n_lvl2_store_63",
+      "to": "n_lvl2_c_north_2",
+      "weight": 50.039984012787215
+    },
+    {
+      "from": "n_lvl2_c_north_2",
+      "to": "n_lvl2_store_63",
+      "weight": 50.039984012787215
+    },
+    {
+      "from": "n_lvl2_store_64",
+      "to": "n_lvl2_c_gap",
+      "weight": 40.607881008493905
+    },
+    {
+      "from": "n_lvl2_c_gap",
+      "to": "n_lvl2_store_64",
+      "weight": 40.607881008493905
+    },
+    {
+      "from": "n_lvl2_store_65",
+      "to": "n_lvl2_island_9",
+      "weight": 47.4236228055175
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_store_65",
+      "weight": 47.4236228055175
+    },
+    {
+      "from": "n_lvl2_store_65",
+      "to": "n_lvl2_c_sephora_front",
+      "weight": 51.22499389946279
+    },
+    {
+      "from": "n_lvl2_c_sephora_front",
+      "to": "n_lvl2_store_65",
+      "weight": 51.22499389946279
+    },
+    {
+      "from": "n_lvl2_restroom_1",
+      "to": "n_lvl2_c_loccitane",
+      "weight": 51.478150704935004
+    },
+    {
+      "from": "n_lvl2_c_loccitane",
+      "to": "n_lvl2_restroom_1",
+      "weight": 51.478150704935004
+    },
+    {
+      "from": "n_lvl2_restroom_2",
+      "to": "n_lvl2_c_sears_north",
+      "weight": 123.79418403139947
+    },
+    {
+      "from": "n_lvl2_c_sears_north",
+      "to": "n_lvl2_restroom_2",
+      "weight": 123.79418403139947
+    },
+    {
+      "from": "n_lvl2_restroom_2",
+      "to": "n_lvl2_c_interhome",
+      "weight": 131.54847015454038
+    },
+    {
+      "from": "n_lvl2_c_interhome",
+      "to": "n_lvl2_restroom_2",
+      "weight": 131.54847015454038
+    },
+    {
+      "from": "n_lvl3_store_1",
+      "to": "n_lvl3_c_food_2",
+      "weight": 165.13025161974412
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_1",
+      "weight": 165.13025161974412
+    },
+    {
+      "from": "n_lvl3_store_1",
+      "to": "n_lvl3_c_food_1",
+      "weight": 176.14766532656628
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_1",
+      "weight": 176.14766532656628
+    },
+    {
+      "from": "n_lvl3_store_2",
+      "to": "n_lvl3_c_cinelia_1",
+      "weight": 213.33541665649423
+    },
+    {
+      "from": "n_lvl3_c_cinelia_1",
+      "to": "n_lvl3_store_2",
+      "weight": 213.33541665649423
+    },
+    {
+      "from": "n_lvl3_store_2",
+      "to": "n_lvl3_c_cinelia_junc",
+      "weight": 226.03539545832197
+    },
+    {
+      "from": "n_lvl3_c_cinelia_junc",
+      "to": "n_lvl3_store_2",
+      "weight": 226.03539545832197
+    },
+    {
+      "from": "n_lvl3_store_3",
+      "to": "n_lvl3_c_cinelia_1",
+      "weight": 137.6117727521886
+    },
+    {
+      "from": "n_lvl3_c_cinelia_1",
+      "to": "n_lvl3_store_3",
+      "weight": 137.6117727521886
+    },
+    {
+      "from": "n_lvl3_store_3",
+      "to": "n_lvl3_c_cinelia_2",
+      "weight": 141.4814475470194
+    },
+    {
+      "from": "n_lvl3_c_cinelia_2",
+      "to": "n_lvl3_store_3",
+      "weight": 141.4814475470194
+    },
+    {
+      "from": "n_lvl3_store_4",
+      "to": "n_lvl3_c_cinelia_1",
+      "weight": 21.95449840010015
+    },
+    {
+      "from": "n_lvl3_c_cinelia_1",
+      "to": "n_lvl3_store_4",
+      "weight": 21.95449840010015
+    },
+    {
+      "from": "n_lvl3_store_5",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 87.09190547921202
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_store_5",
+      "weight": 87.09190547921202
+    },
+    {
+      "from": "n_lvl3_store_5",
+      "to": "n_lvl3_c_cinelia_2",
+      "weight": 111.01801655587259
+    },
+    {
+      "from": "n_lvl3_c_cinelia_2",
+      "to": "n_lvl3_store_5",
+      "weight": 111.01801655587259
+    },
+    {
+      "from": "n_lvl3_store_6",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 137.2953021774598
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_store_6",
+      "weight": 137.2953021774598
+    },
+    {
+      "from": "n_lvl3_store_6",
+      "to": "n_lvl3_c_fitness",
+      "weight": 140.46351839534705
+    },
+    {
+      "from": "n_lvl3_c_fitness",
+      "to": "n_lvl3_store_6",
+      "weight": 140.46351839534705
+    },
+    {
+      "from": "n_lvl3_store_7",
+      "to": "n_lvl3_c_fitness",
+      "weight": 99.60923651951158
+    },
+    {
+      "from": "n_lvl3_c_fitness",
+      "to": "n_lvl3_store_7",
+      "weight": 99.60923651951158
+    },
+    {
+      "from": "n_lvl3_store_8",
+      "to": "n_lvl3_c_fitness",
+      "weight": 44.384682042344295
+    },
+    {
+      "from": "n_lvl3_c_fitness",
+      "to": "n_lvl3_store_8",
+      "weight": 44.384682042344295
+    },
+    {
+      "from": "n_lvl3_store_9",
+      "to": "n_lvl3_c_biz_1",
+      "weight": 93.03762679690406
+    },
+    {
+      "from": "n_lvl3_c_biz_1",
+      "to": "n_lvl3_store_9",
+      "weight": 93.03762679690406
+    },
+    {
+      "from": "n_lvl3_store_9",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 111.15754585272202
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_store_9",
+      "weight": 111.15754585272202
+    },
+    {
+      "from": "n_lvl3_store_10",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 16.492422502470642
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_store_10",
+      "weight": 16.492422502470642
+    },
+    {
+      "from": "n_lvl3_store_11",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 31.144823004794873
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_store_11",
+      "weight": 31.144823004794873
+    },
+    {
+      "from": "n_lvl3_store_12",
+      "to": "n_lvl3_c_terrace_1",
+      "weight": 40.85339643163099
+    },
+    {
+      "from": "n_lvl3_c_terrace_1",
+      "to": "n_lvl3_store_12",
+      "weight": 40.85339643163099
+    },
+    {
+      "from": "n_lvl3_store_13",
+      "to": "n_lvl3_c_food_3",
+      "weight": 102.88342918079665
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_store_13",
+      "weight": 102.88342918079665
+    },
+    {
+      "from": "n_lvl3_store_13",
+      "to": "n_lvl3_c_central_hub",
+      "weight": 115.95257651298655
+    },
+    {
+      "from": "n_lvl3_c_central_hub",
+      "to": "n_lvl3_store_13",
+      "weight": 115.95257651298655
+    },
+    {
+      "from": "n_lvl3_store_14",
+      "to": "n_lvl3_c_food_3",
+      "weight": 28.319604517012593
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_store_14",
+      "weight": 28.319604517012593
+    },
+    {
+      "from": "n_lvl3_store_15",
+      "to": "n_lvl3_c_food_2",
+      "weight": 41.86884283091664
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_15",
+      "weight": 41.86884283091664
+    },
+    {
+      "from": "n_lvl3_store_16",
+      "to": "n_lvl3_c_food_1",
+      "weight": 35.22782990761707
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_16",
+      "weight": 35.22782990761707
+    },
+    {
+      "from": "n_lvl3_store_16",
+      "to": "n_lvl3_c_food_2",
+      "weight": 37.69615364994153
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_16",
+      "weight": 37.69615364994153
+    },
+    {
+      "from": "n_lvl3_store_17",
+      "to": "n_lvl3_c_food_1",
+      "weight": 32.64965543462902
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_17",
+      "weight": 32.64965543462902
+    },
+    {
+      "from": "n_lvl3_store_18",
+      "to": "n_lvl3_c_food_1",
+      "weight": 37.33630940518894
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_18",
+      "weight": 37.33630940518894
+    },
+    {
+      "from": "n_lvl3_store_19",
+      "to": "n_lvl3_c_food_1",
+      "weight": 47.042533945356304
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_19",
+      "weight": 47.042533945356304
+    },
+    {
+      "from": "n_lvl3_store_20",
+      "to": "n_lvl3_c_food_1",
+      "weight": 59.481089431852205
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_20",
+      "weight": 59.481089431852205
+    },
+    {
+      "from": "n_lvl3_store_21",
+      "to": "n_lvl3_c_food_1",
+      "weight": 154.55743269089325
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_21",
+      "weight": 154.55743269089325
+    },
+    {
+      "from": "n_lvl3_store_21",
+      "to": "n_lvl3_c_food_2",
+      "weight": 189.33568073662187
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_21",
+      "weight": 189.33568073662187
+    },
+    {
+      "from": "n_lvl3_store_22",
+      "to": "n_lvl3_c_food_2",
+      "weight": 90.0499861188218
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_22",
+      "weight": 90.0499861188218
+    },
+    {
+      "from": "n_lvl3_store_22",
+      "to": "n_lvl3_c_food_1",
+      "weight": 104.35037134576953
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_store_22",
+      "weight": 104.35037134576953
+    },
+    {
+      "from": "n_lvl3_store_23",
+      "to": "n_lvl3_c_food_2",
+      "weight": 146.99659860010368
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_23",
+      "weight": 146.99659860010368
+    },
+    {
+      "from": "n_lvl3_store_23",
+      "to": "n_lvl3_c_food_3",
+      "weight": 157.69590990257166
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_store_23",
+      "weight": 157.69590990257166
+    },
+    {
+      "from": "n_lvl3_store_24",
+      "to": "n_lvl3_c_food_3",
+      "weight": 156.8948692596415
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_store_24",
+      "weight": 156.8948692596415
+    },
+    {
+      "from": "n_lvl3_store_24",
+      "to": "n_lvl3_c_terrace_1",
+      "weight": 169.81166037701888
+    },
+    {
+      "from": "n_lvl3_c_terrace_1",
+      "to": "n_lvl3_store_24",
+      "weight": 169.81166037701888
+    },
+    {
+      "from": "n_lvl3_store_25",
+      "to": "n_lvl3_c_food_3",
+      "weight": 132.25732493892352
+    },
+    {
+      "from": "n_lvl3_c_food_3",
+      "to": "n_lvl3_store_25",
+      "weight": 132.25732493892352
+    },
+    {
+      "from": "n_lvl3_store_25",
+      "to": "n_lvl3_c_food_2",
+      "weight": 138.24615727028365
+    },
+    {
+      "from": "n_lvl3_c_food_2",
+      "to": "n_lvl3_store_25",
+      "weight": 138.24615727028365
+    },
+    {
+      "from": "n_lvl3_store_26",
+      "to": "n_lvl3_c_cinelia_junc",
+      "weight": 59.413803110051795
+    },
+    {
+      "from": "n_lvl3_c_cinelia_junc",
+      "to": "n_lvl3_store_26",
+      "weight": 59.413803110051795
+    },
+    {
+      "from": "n_lvl3_store_27",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 64.66065264130884
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_store_27",
+      "weight": 64.66065264130884
+    },
+    {
+      "from": "n_lvl3_store_28",
+      "to": "n_lvl3_c_terrace_2",
+      "weight": 48.02082881417188
+    },
+    {
+      "from": "n_lvl3_c_terrace_2",
+      "to": "n_lvl3_store_28",
+      "weight": 48.02082881417188
+    },
+    {
+      "from": "n_lvl3_store_29",
+      "to": "n_lvl3_c_terrace_1",
+      "weight": 67.67569726275453
+    },
+    {
+      "from": "n_lvl3_c_terrace_1",
+      "to": "n_lvl3_store_29",
+      "weight": 67.67569726275453
+    },
+    {
+      "from": "n_lvl3_restroom_1",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 44.10215414239989
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_restroom_1",
+      "weight": 44.10215414239989
+    },
+    {
+      "from": "n_lvl3_restroom_1",
+      "to": "n_lvl3_c_cinelia_2",
+      "weight": 53.71219600798314
+    },
+    {
+      "from": "n_lvl3_c_cinelia_2",
+      "to": "n_lvl3_restroom_1",
+      "weight": 53.71219600798314
+    },
+    {
+      "from": "n_lvl3_restroom_2",
+      "to": "n_lvl3_c_food_1",
+      "weight": 114.23221962301179
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_restroom_2",
+      "weight": 114.23221962301179
+    },
+    {
+      "from": "n_lvl3_service_admin",
+      "to": "n_lvl3_c_food_1",
+      "weight": 90.0499861188218
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_service_admin",
+      "weight": 90.0499861188218
+    },
+    {
+      "from": "n_lvl3_service_parking",
+      "to": "n_lvl3_c_food_1",
+      "weight": 91.30169768410661
+    },
+    {
+      "from": "n_lvl3_c_food_1",
+      "to": "n_lvl3_service_parking",
+      "weight": 91.30169768410661
+    },
+    {
+      "from": "n_lvl3_games_zone",
+      "to": "n_lvl3_c_terrace_1",
+      "weight": 34.40930106817051
+    },
+    {
+      "from": "n_lvl3_c_terrace_1",
+      "to": "n_lvl3_games_zone",
+      "weight": 34.40930106817051
+    },
+    {
+      "from": "n_lvl1_portal_esc_liverpool",
+      "to": "n_lvl2_portal_esc_liverpool",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_liverpool",
+      "to": "n_lvl1_portal_esc_liverpool",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl1_portal_elev_liverpool",
+      "to": "n_lvl2_portal_elev_liverpool",
+      "weight": 80
+    },
+    {
+      "from": "n_lvl2_portal_elev_liverpool",
+      "to": "n_lvl1_portal_elev_liverpool",
+      "weight": 80
+    },
+    {
+      "from": "n_lvl1_portal_esc_central",
+      "to": "n_lvl2_portal_esc_rotunda_left",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_rotunda_left",
+      "to": "n_lvl1_portal_esc_central",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl1_portal_elev_central",
+      "to": "n_lvl2_portal_elev_chedraui",
+      "weight": 80
+    },
+    {
+      "from": "n_lvl2_portal_elev_chedraui",
+      "to": "n_lvl1_portal_elev_central",
+      "weight": 80
+    },
+    {
+      "from": "n_lvl1_portal_esc_oval",
+      "to": "n_lvl2_portal_esc_sanborns",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_sanborns",
+      "to": "n_lvl1_portal_esc_oval",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_sears",
+      "to": "n_lvl3_portal_esc_cinelia",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl3_portal_esc_cinelia",
+      "to": "n_lvl2_portal_esc_sears",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_elev_chedraui",
+      "to": "n_lvl3_portal_elev_cinelia",
+      "weight": 80
+    },
+    {
+      "from": "n_lvl3_portal_elev_cinelia",
+      "to": "n_lvl2_portal_elev_chedraui",
+      "weight": 80
+    },
+    {
+      "from": "n_lvl2_portal_esc_rotunda_right",
+      "to": "n_lvl3_portal_esc_central_top",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl3_portal_esc_central_top",
+      "to": "n_lvl2_portal_esc_rotunda_right",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_rotunda_bot",
+      "to": "n_lvl3_portal_esc_central_bot",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl3_portal_esc_central_bot",
+      "to": "n_lvl2_portal_esc_rotunda_bot",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_sanborns",
+      "to": "n_lvl3_portal_esc_terrace",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl3_portal_esc_terrace",
+      "to": "n_lvl2_portal_esc_sanborns",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl2_portal_esc_automotive",
+      "to": "n_lvl3_portal_esc_anytime",
+      "weight": 50
+    },
+    {
+      "from": "n_lvl3_portal_esc_anytime",
+      "to": "n_lvl2_portal_esc_automotive",
+      "weight": 50
+    }
+  ]
+}

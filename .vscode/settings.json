@@ -1,0 +1,9 @@
+{
+  "css.lint.unknownProperties": "ignore",
+  "css.lint.vendorPrefix": "ignore",
+  "scss.lint.unknownProperties": "ignore",
+  "less.lint.unknownProperties": "ignore",
+  "html.validate.styles": true,
+  "html.validate.scripts": true,
+  "html.format.enable": true
+}
