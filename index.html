@@ -221,26 +221,10 @@
           </button>
         </div>
 
-        <!-- Big Touch Search Input -->
+        <!-- Big Touch Search Input for entire mall -->
         <div class="mt-4 relative">
           <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-          <input type="text" id="legend-search-input" name="search_store" aria-label="Buscar tienda o café" onkeyup="filterLegendList()" placeholder="Toca aquí para buscar tienda, café o servicio..." class="w-full bg-slate-950/90 border-2 border-slate-700 focus:border-blue-500 text-white text-sm rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none placeholder:text-slate-500 shadow-inner font-medium">
-        </div>
-
-        <!-- Floor Switcher Buttons -->
-        <div class="mt-3.5 flex items-center justify-between flex-wrap gap-2 pt-3 border-t border-slate-800/80">
-          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Seleccionar Planta:</span>
-          <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
-            <button onclick="switchLevel(1)" id="btn-lvl-1" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
-              PB (Inferior)
-            </button>
-            <button onclick="switchLevel(2)" id="btn-lvl-2" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md">
-              Nivel 1 (Principal)
-            </button>
-            <button onclick="switchLevel(3)" id="btn-lvl-3" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
-              Nivel 2 (Superior)
-            </button>
-          </div>
+          <input type="text" id="legend-search-input" name="search_store" aria-label="Buscar tienda o café" onkeyup="filterLegendList()" placeholder="Buscar en toda la plaza (ej. Starbucks, Liverpool, Cine, Baños)..." class="w-full bg-slate-950/90 border-2 border-slate-700 focus:border-blue-500 text-white text-sm rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none placeholder:text-slate-500 shadow-inner font-medium">
         </div>
       </div>
 
@@ -464,6 +448,9 @@
 
           <!-- Floating Camera Controls Toolbar (Top-Right) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 shadow-xl">
+            <button onclick="resetCameraRotation()" id="btn-compass" title="Restablecer al Norte (0°)" class="hidden w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 shadow-md">
+              <i id="compass-needle" class="fa-solid fa-compass text-rose-400 text-sm transition-transform duration-75"></i>
+            </button>
             <button onclick="toggle3DMode()" id="btn-3d-toggle" title="Perspectiva 3D / 2D" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-extrabold text-[10px] flex items-center gap-1 transition-all border border-slate-700">
               <i class="fa-solid fa-cube text-[10px] text-indigo-400"></i>
               <span>3D</span>
@@ -733,11 +720,12 @@
     let currentStepIndex = 0;
     const TOTEM_NODE_ID = "n_totem_12";
 
-    // Dynamic Camera State (Google Maps Zoom & Follow)
+    // Dynamic Camera State (Google Maps Zoom, Pan & 2-finger Rotation)
     let currentCamera = {
       scale: 1.0,
       panX: 0,
       panY: 0,
+      rotation: 0,
       isZoomed: false
     };
 
@@ -861,11 +849,14 @@
         arrow.setAttribute('transform', `translate(${x}, ${y}) rotate(${angle})`);
       },
 
-      // 3. Smooth Camera Zoom & Pan (Hardware-Accelerated)
+      // 3. Smooth Camera Zoom & Pan with Rotation (Hardware-Accelerated)
       animateCameraTo: function(targetPanX, targetPanY, targetScale, duration = 600) {
         const stage = document.getElementById('map-camera-stage');
         if (!stage || typeof anime === 'undefined') {
-          if (stage) stage.style.transform = `translate(${targetPanX}px, ${targetPanY}px) scale(${targetScale})`;
+          if (stage) {
+            const rot = currentCamera.rotation || 0;
+            stage.style.transform = `translate(${targetPanX}px, ${targetPanY}px) scale(${targetScale}) rotate(${rot}deg)`;
+          }
           return;
         }
 
@@ -879,7 +870,8 @@
           duration: duration,
           easing: 'easeOutCubic',
           update: function() {
-            stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+            const rot = currentCamera.rotation || 0;
+            stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale}) rotate(${rot}deg)`;
             updatePopupPosition();
           },
           complete: function() {
@@ -1034,6 +1026,48 @@
       triggerHaptic('light');
     }
 
+    function updateCameraTransform() {
+      const stage = document.getElementById('map-camera-stage');
+      if (!stage) return;
+      const rot = currentCamera.rotation || 0;
+      stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale}) rotate(${rot}deg)`;
+    }
+
+    function resetCameraRotation() {
+      if (typeof anime !== 'undefined') {
+        anime({
+          targets: currentCamera,
+          rotation: 0,
+          duration: 350,
+          easing: 'easeOutQuad',
+          update: () => {
+            updateCameraTransform();
+            updateCompassUI();
+          }
+        });
+      } else {
+        currentCamera.rotation = 0;
+        updateCameraTransform();
+        updateCompassUI();
+      }
+      triggerHaptic('light');
+    }
+
+    function updateCompassUI() {
+      const compassBtn = document.getElementById('btn-compass');
+      const compassNeedle = document.getElementById('compass-needle');
+      if (!compassBtn) return;
+      const rot = currentCamera.rotation || 0;
+      if (Math.abs(rot) > 2) {
+        compassBtn.classList.remove('hidden');
+        if (compassNeedle) {
+          compassNeedle.style.transform = `rotate(${-rot}deg)`;
+        }
+      } else {
+        compassBtn.classList.add('hidden');
+      }
+    }
+
     function zoomToCoordinates(x, y, targetScale = null, animate = true) {
       const container = document.getElementById('map-container');
       const stage = document.getElementById('map-camera-stage');
@@ -1079,7 +1113,7 @@
         currentCamera.panX = panX;
         currentCamera.panY = panY;
         currentCamera.isZoomed = targetScale > 1.1;
-        stage.style.transform = `translate(${panX}px, ${panY}px) scale(${targetScale})`;
+        updateCameraTransform();
         updateZoomButtonUI();
       }
     }
@@ -1088,6 +1122,9 @@
       const stage = document.getElementById('map-camera-stage');
       if (!stage) return;
 
+      currentCamera.rotation = 0;
+      updateCompassUI();
+
       if (animate) {
         NavAnimator.animateCameraTo(0, 0, 1.0, 600);
       } else {
@@ -1095,7 +1132,7 @@
         currentCamera.panX = 0;
         currentCamera.panY = 0;
         currentCamera.isZoomed = false;
-        stage.style.transform = 'translate(0px, 0px) scale(1)';
+        updateCameraTransform();
         updateZoomButtonUI();
       }
     }
@@ -1267,9 +1304,11 @@
         updateZoomButtonUI();
       }, { passive: false });
 
-      // Multi-Touch (Touchpad / Touchscreen) Pinch-to-Zoom & Two-finger Pan
+      // Multi-Touch (Touchscreen / Mobile) Pinch-to-Zoom, Two-finger Pan & Google Maps Style Rotation
       let initialTouchDist = 0;
       let initialScale = 1;
+      let initialTouchAngle = 0;
+      let initialRotation = 0;
       let touchStartMidX = 0;
       let touchStartMidY = 0;
       let touchStartPanX = 0;
@@ -1292,6 +1331,8 @@
           const t2 = e.touches[1];
           initialTouchDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
           initialScale = currentCamera.scale;
+          initialTouchAngle = Math.atan2(t2.clientY - t1.clientY, t2.clientX - t1.clientX) * 180 / Math.PI;
+          initialRotation = currentCamera.rotation || 0;
           
           const rect = container.getBoundingClientRect();
           touchStartMidX = ((t1.clientX + t2.clientX) / 2) - rect.left;
@@ -1312,7 +1353,7 @@
           if (hasDraggedMap) {
             currentCamera.panX = origPanX + dx;
             currentCamera.panY = origPanY + dy;
-            stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+            updateCameraTransform();
             updatePopupPosition();
           }
         } else if (e.touches.length === 2) {
@@ -1320,6 +1361,8 @@
           const t1 = e.touches[0];
           const t2 = e.touches[1];
           const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
+          const currentAngle = Math.atan2(t2.clientY - t1.clientY, t2.clientX - t1.clientX) * 180 / Math.PI;
+
           if (initialTouchDist > 0) {
             const factor = currentDist / initialTouchDist;
             const newScale = Math.min(8.0, Math.max(0.65, initialScale * factor));
@@ -1332,9 +1375,14 @@
             currentCamera.panY = touchStartMidY - pointY * newScale;
             currentCamera.isZoomed = newScale > 1.1;
 
-            stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+            // Two-finger Rotation Gesture (Google Maps Style)
+            let deltaAngle = currentAngle - initialTouchAngle;
+            currentCamera.rotation = (initialRotation + deltaAngle) % 360;
+
+            updateCameraTransform();
             updatePopupPosition();
             updateZoomButtonUI();
+            updateCompassUI();
           }
         }
       }, { passive: false });
@@ -2873,73 +2921,107 @@
       renderLegendList();
     }
 
-    // Render Official Legend in Directory Screen
+    // Render Unified Directory of all Mall Stores and Islands (Single Entity)
     function renderLegendList() {
       if (!mallLegends) return;
-      const spec = FLOOR_SPECS[currentLevel];
-      const legendFloor = mallLegends[spec.legendKey];
-      if (!legendFloor) return;
-
-      const titleEl = document.getElementById('legend-floor-title');
-      if (titleEl) titleEl.innerText = legendFloor.nombre;
       const container = document.getElementById('legend-items-container');
       if (!container) return;
       container.innerHTML = '';
 
-      legendFloor.stores.forEach(s => {
-        const nodeId = `n_lvl${currentLevel}_store_${s.id}`;
-        const node = (levelNodes[currentLevel] && levelNodes[currentLevel][nodeId]) || { name: s.name, type: s.type, level: currentLevel };
-        const cat = getNodeCategoryGroup(node);
-        if (currentCategoryFilter !== 'all' && cat !== currentCategoryFilter) return;
+      const allItems = [];
 
-        const info = getPlaceVisualInfo(node);
-        const div = document.createElement('div');
-        div.className = "p-3.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-500/60 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-md active:scale-[0.98]";
-        div.onclick = () => {
-          setTotemRoute(nodeId);
-          showMapView(nodeId);
-        };
-        div.innerHTML = `
-          <div class="flex items-center gap-3 min-w-0">
-            <span class="w-10 h-10 rounded-2xl ${s.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-sm font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">${info.emoji}</span>
-            <div class="truncate">
-              <p class="text-xs font-bold text-white group-hover:text-sky-300 truncate">${s.name}</p>
-              <p class="text-[10px] text-slate-400 truncate mt-0.5">${info.category} · Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}</p>
-            </div>
-          </div>
-          <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-blue-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-blue-400 transition-all flex-shrink-0">
-            <span>Ruta</span>
-            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </div>
-        `;
-        container.appendChild(div);
+      // Iterate through all 3 floors to build a single complete mall directory
+      [1, 2, 3].forEach(lvl => {
+        const spec = FLOOR_SPECS[lvl];
+        const legendFloor = mallLegends[spec.legendKey];
+        if (!legendFloor) return;
+
+        (legendFloor.stores || []).forEach(s => {
+          const nodeId = `n_lvl${lvl}_store_${s.id}`;
+          const node = (levelNodes[lvl] && levelNodes[lvl][nodeId]) || { name: s.name, type: s.type, level: lvl, id: nodeId };
+          allItems.push({
+            nodeId: nodeId,
+            node: node,
+            name: s.name,
+            level: lvl,
+            type: s.type,
+            isIsland: false
+          });
+        });
+
+        (legendFloor.islas || []).forEach(isl => {
+          const nodeId = `n_lvl${lvl}_island_${isl.id}`;
+          const node = (levelNodes[lvl] && levelNodes[lvl][nodeId]) || { name: isl.name, type: 'island', level: lvl, id: nodeId };
+          allItems.push({
+            nodeId: nodeId,
+            node: node,
+            name: isl.name,
+            level: lvl,
+            type: 'island',
+            islandId: isl.id,
+            isIsland: true
+          });
+        });
       });
 
-      (legendFloor.islas || []).forEach(isl => {
-        const nodeId = `n_lvl${currentLevel}_island_${isl.id}`;
-        const node = (levelNodes[currentLevel] && levelNodes[currentLevel][nodeId]) || { name: isl.name, type: 'island', level: currentLevel };
-        const cat = getNodeCategoryGroup(node);
-        if (currentCategoryFilter !== 'all' && cat !== currentCategoryFilter) return;
+      // Filter by active category
+      const filtered = allItems.filter(item => {
+        const cat = getNodeCategoryGroup(item.node);
+        return currentCategoryFilter === 'all' || cat === currentCategoryFilter;
+      });
 
+      // Sort alphabetically by store name
+      filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'es', { sensitivity: 'base' }));
+
+      filtered.forEach(item => {
+        const info = getPlaceVisualInfo(item.node);
         const div = document.createElement('div');
-        div.className = "p-3.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800/90 border border-slate-800 hover:border-sky-500/60 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-md active:scale-[0.98]";
+        div.className = "p-3.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-500/60 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-md active:scale-[0.98]";
+        
         div.onclick = () => {
-          setTotemRoute(nodeId);
-          showMapView(nodeId);
+          setTotemRoute(item.nodeId);
+          showMapView(item.nodeId);
         };
-        div.innerHTML = `
-          <div class="flex items-center gap-3 min-w-0">
-            <span class="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-xs font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0">I${isl.id}</span>
-            <div class="truncate">
-              <p class="text-xs font-bold text-sky-200 group-hover:text-white truncate">${isl.name}</p>
-              <p class="text-[10px] text-slate-400 mt-0.5">ISLA DE PASILLO · Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}</p>
+
+        const levelBadgeText = item.level === 1 ? 'PB (Inferior)' : (item.level === 2 ? 'Nivel 1 (Principal)' : 'Nivel 2 (Superior)');
+        const levelBadgeColor = item.level === 1 ? 'bg-emerald-950/70 text-emerald-300 border-emerald-800/60' : (item.level === 2 ? 'bg-blue-950/70 text-sky-300 border-sky-800/60' : 'bg-purple-950/70 text-purple-300 border-purple-800/60');
+
+        if (item.isIsland) {
+          div.innerHTML = `
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-xs font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0">I${item.islandId}</span>
+              <div class="truncate">
+                <p class="text-xs font-bold text-sky-200 group-hover:text-white truncate">${item.name}</p>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <span class="text-[9px] px-1.5 py-0.5 rounded-md border font-semibold ${levelBadgeColor}">${levelBadgeText}</span>
+                  <span class="text-[10px] text-slate-400 truncate">ISLA DE PASILLO</span>
+                </div>
+              </div>
             </div>
-          </div>
-          <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-sky-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-sky-400 transition-all flex-shrink-0">
-            <span>Ruta</span>
-            <i class="fa-solid fa-arrow-right text-[10px]"></i>
-          </div>
-        `;
+            <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-sky-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-sky-400 transition-all flex-shrink-0">
+              <span>Ruta</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </div>
+          `;
+        } else {
+          div.innerHTML = `
+            <div class="flex items-center gap-3 min-w-0">
+              <span class="w-10 h-10 rounded-2xl ${item.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-sm font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">${info.emoji}</span>
+              <div class="truncate">
+                <p class="text-xs font-bold text-white group-hover:text-sky-300 truncate">${item.name}</p>
+                <div class="flex items-center gap-1.5 mt-0.5">
+                  <span class="text-[9px] px-1.5 py-0.5 rounded-md border font-semibold ${levelBadgeColor}">${levelBadgeText}</span>
+                  <span class="text-[10px] text-slate-400 truncate">${info.category}</span>
+                </div>
+              </div>
+            </div>
+            <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-blue-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-blue-400 transition-all flex-shrink-0">
+              <span>Ruta</span>
+              <i class="fa-solid fa-arrow-right text-[10px]"></i>
+            </div>
+          `;
+        }
+
         container.appendChild(div);
       });
 
