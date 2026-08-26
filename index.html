@@ -827,7 +827,7 @@
           y: targetY,
           angle: finalAngle,
           duration: duration,
-          easing: 'easeInOutQuad',
+          easing: 'easeInOutSine',
           update: function() {
             arrow.setAttribute('transform', `translate(${state.x}, ${state.y}) rotate(${state.angle})`);
           },
@@ -870,7 +870,7 @@
           panY: targetPanY,
           scale: targetScale,
           duration: duration,
-          easing: 'easeOutCubic',
+          easing: 'easeInOutSine',
           update: function() {
             const rot = currentCamera.rotation || 0;
             stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale}) rotate(${rot}deg)`;
@@ -1466,7 +1466,7 @@
       }
     }
 
-    const WALK_STEP_DURATION = 800;
+    const WALK_STEP_DURATION = 1350;
 
     function startWalkSimulation() {
       if (routeSegments.length === 0) return;
