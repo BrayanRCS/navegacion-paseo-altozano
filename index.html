@@ -793,17 +793,17 @@
         });
       },
 
-      // Destination Target Pin Elastic Pop-in
+      // Destination Target Pin Stable Appearance (Solid, no wobble)
       popInDestinationPin: function() {
         const destPin = document.getElementById('svg-dest-pin');
         if (!destPin || typeof anime === 'undefined') return;
         anime.remove(destPin);
         anime({
           targets: destPin,
-          scale: [0.3, 1],
-          opacity: [0, 1],
-          duration: 650,
-          easing: 'easeOutElastic(1, .6)'
+          scale: [0.85, 1],
+          opacity: [0.6, 1],
+          duration: 250,
+          easing: 'easeOutQuad'
         });
       },
 
@@ -2060,7 +2060,7 @@
 
       closeNodePopup();
       renderLegendList();
-      renderMapOverlay();
+      renderMapOverlay(true);
       updateSegmentButtons();
     }
 
@@ -2145,7 +2145,7 @@
       if (routeSegments.length > 0 && routeSegments[0].level !== currentLevel) {
         switchLevel(routeSegments[0].level);
       } else {
-        renderMapOverlay();
+        renderMapOverlay(true);
       }
 
       updateTotemUI(false);
@@ -2447,7 +2447,7 @@
         if (step.level !== currentLevel) {
           switchLevel(step.level);
         } else {
-          renderMapOverlay();
+          renderMapOverlay(false);
         }
         // Position the Iconic Google Maps Navigation Arrow on the active step
         positionNavArrowOnNode(step.node, step.nextNode, false);
@@ -2632,7 +2632,7 @@
     }
 
     // Render Map SVG Overlay with Google Maps Blue Route & Navigation Arrow
-    function renderMapOverlay() {
+    function renderMapOverlay(animate = false) {
       if (!mallGraph) return;
 
       const nodesLayer = document.getElementById('svg-nodes-layer');
@@ -2829,8 +2829,10 @@
         pathEl.setAttribute('d', d);
         chevronsEl.setAttribute('d', d);
 
-        // Animate line drawing with Anime.js
-        NavAnimator.animateRoutePath();
+        if (animate) {
+          // Animate line drawing only on new routes or floor changes
+          NavAnimator.animateRoutePath();
+        }
 
         // Position Destination Target Pin on last node of this segment
         const lastNode = activeSeg.path[activeSeg.path.length - 1];
@@ -2843,7 +2845,9 @@
         document.getElementById('dest-pin-label').setAttribute('y', lastNode.coordinates.y - 14);
         document.getElementById('dest-pin-label').textContent = lastNode.name || 'Destino';
 
-        NavAnimator.popInDestinationPin();
+        if (animate) {
+          NavAnimator.popInDestinationPin();
+        }
       } else {
         waterBedEl.setAttribute('d', '');
         pathEl.setAttribute('d', '');
