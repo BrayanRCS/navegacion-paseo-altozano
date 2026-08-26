@@ -970,12 +970,13 @@
       let startMouseY = 0;
       let origPanX = 0;
       let origPanY = 0;
+      const DRAG_THRESHOLD = 4; // px
+
       container.addEventListener('mousedown', (e) => {
         if (e.button !== 0) return;
-        // If clicking on an interactive node or popup, ignore map dragging
-        if (e.target.closest('.map-node-interactive') || e.target.closest('#map-node-popup')) {
-          return;
-        }
+        // Don't drag if clicking directly inside popup card buttons
+        if (e.target.closest('#map-node-popup')) return;
+
         isMouseDown = true;
         hasDraggedMap = false;
         if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
@@ -1009,7 +1010,7 @@
           container.classList.remove('is-dragging');
           setTimeout(() => {
             hasDraggedMap = false;
-          }, 60);
+          }, 80);
         }
       });
 
