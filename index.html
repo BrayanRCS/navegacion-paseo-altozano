@@ -1020,8 +1020,12 @@
     function toggleGraphPoints() {
       showGraphClutter = !showGraphClutter;
       const edgesLayer = document.getElementById('svg-edges-layer');
+      const nodesLayer = document.getElementById('svg-nodes-layer');
       if (edgesLayer) {
         edgesLayer.style.display = showGraphClutter ? 'block' : 'none';
+      }
+      if (nodesLayer) {
+        nodesLayer.style.display = showGraphClutter ? 'block' : (isSimulating ? 'none' : 'block');
       }
       triggerHaptic('light');
     }
@@ -1068,7 +1072,9 @@
       }
     }
 
-    function zoomToCoordinates(x, y, targetScale = null, animate = true) {
+    let isFollowingGPS = true;
+
+    function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 650) {
       const container = document.getElementById('map-container');
       const stage = document.getElementById('map-camera-stage');
       if (!container || !stage) return;
@@ -1107,7 +1113,7 @@
       const panY = (ch / 2) - (pixelY * targetScale);
 
       if (animate) {
-        NavAnimator.animateCameraTo(panX, panY, targetScale, 650);
+        NavAnimator.animateCameraTo(panX, panY, targetScale, duration);
       } else {
         currentCamera.scale = targetScale;
         currentCamera.panX = panX;
@@ -1139,13 +1145,16 @@
 
     function toggleZoomOverview() {
       if (currentCamera.isZoomed) {
+        isFollowingGPS = false;
         zoomToOverview(true);
       } else {
+        isFollowingGPS = true;
         centerOnNavArrow();
       }
     }
 
     function centerOnNavArrow() {
+      isFollowingGPS = true;
       let targetNode = null;
       let targetLevel = currentLevel;
 
@@ -1406,9 +1415,12 @@
       }
     }
 
+    const WALK_STEP_DURATION = 800;
+
     function startWalkSimulation() {
       if (routeSegments.length === 0) return;
       triggerHaptic('medium');
+      isFollowingGPS = true;
 
       // If already at the end of the route, restart cleanly from step 0
       const isAtEnd = currentStepIndex >= currentSteps.length - 1 || 
@@ -1432,9 +1444,9 @@
       const mSimIcon = document.getElementById('mobile-sim-icon');
       if (mSimIcon) mSimIcon.className = "fa-solid fa-pause";
 
-      // Hide graph nodes during navigation/play for a super clean view
+      // Hide graph nodes by default during navigation UNLESS user manually toggled them on
       const nodesLayer = document.getElementById('svg-nodes-layer');
-      if (nodesLayer) nodesLayer.style.display = 'none';
+      if (nodesLayer) nodesLayer.style.display = showGraphClutter ? 'block' : 'none';
 
       // Ensure current level matches the current segment
       if (currentLevel !== routeSegments[simSegIndex].level) {
@@ -1445,12 +1457,12 @@
       const seg = routeSegments[simSegIndex];
       if (seg && seg.path.length > 0) {
         const startNode = seg.path[Math.min(simNodeIndex, seg.path.length - 1)];
-        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true);
+        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
       }
 
       clearInterval(simInterval);
       runSimulationStep();
-      simInterval = setInterval(runSimulationStep, 1100);
+      simInterval = setInterval(runSimulationStep, WALK_STEP_DURATION);
     }
 
     function runSimulationStep() {
@@ -1492,7 +1504,9 @@
             if (nextSeg.path.length > 0) {
               const startN = nextSeg.path[0];
               updatePlaceCard(startN);
-              zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true);
+              if (isFollowingGPS) {
+                zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+              }
             }
           }, 1400);
           return;
@@ -1525,7 +1539,9 @@
             if (routeSegments[0] && routeSegments[0].path.length > 0) {
               const startNode = routeSegments[0].path[0];
               updatePlaceCard(startNode);
-              zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true);
+              if (isFollowingGPS) {
+                zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+              }
             }
           }, 2200);
           return;
@@ -1535,11 +1551,13 @@
       const curr = pathNodes[simNodeIndex];
       const next = pathNodes[Math.min(pathNodes.length - 1, simNodeIndex + 1)];
 
-      // Position & Smoothly Glide Nav Arrow
-      positionNavArrowOnNode(curr, next, true);
+      // Position & Seamlessly Glide Nav Arrow without dead time
+      positionNavArrowOnNode(curr, next, true, WALK_STEP_DURATION);
 
-      // Smooth Camera Tracking (Keep GPS Arrow Centered in Zoomed Mode with strong mobile focus)
-      zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true);
+      // Smooth Camera Tracking (respects if user clicked "Ver Todo" overview)
+      if (isFollowingGPS) {
+        zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+      }
 
       // Update Live Place & Landmark Preview Card
       const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex === pathNodes.length - 1);
@@ -1692,7 +1710,7 @@
     }
 
     // Position Navigation Arrow on specific step node
-    function positionNavArrowOnNode(currNode, nextNode, animate = false) {
+    function positionNavArrowOnNode(currNode, nextNode, animate = false, duration = 800) {
       const navArrow = document.getElementById('svg-nav-arrow-cursor');
       if (!currNode || currNode.level !== currentLevel) {
         navArrow.style.display = 'none';
@@ -1708,7 +1726,7 @@
       }
 
       if (animate) {
-        NavAnimator.animateArrowTo(currNode.coordinates.x, currNode.coordinates.y, angleDeg, 950);
+        NavAnimator.animateArrowTo(currNode.coordinates.x, currNode.coordinates.y, angleDeg, duration);
       } else {
         NavAnimator.setArrowInstant(currNode.coordinates.x, currNode.coordinates.y, angleDeg);
       }
@@ -2646,8 +2664,9 @@
       nodesLayer.innerHTML = '';
       edgesLayer.innerHTML = '';
 
-      // Auto-hide intermediate nodes during active Play / Walk simulation for clean view
-      nodesLayer.style.display = isSimulating ? 'none' : 'block';
+      // Auto-hide intermediate nodes during active Play / Walk simulation, UNLESS user explicitly toggled them on
+      nodesLayer.style.display = showGraphClutter ? 'block' : (isSimulating ? 'none' : 'block');
+      edgesLayer.style.display = showGraphClutter ? 'block' : 'none';
 
       // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
       if (currentLevel === 2) {
