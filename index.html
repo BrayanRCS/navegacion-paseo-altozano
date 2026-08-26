@@ -78,6 +78,34 @@
       pointer-events: none !important;
     }
 
+    /* Map Drag vs Node Pointer Disambiguation */
+    #map-container {
+      cursor: grab;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+    #map-container.is-dragging,
+    #map-container.is-dragging * {
+      cursor: grabbing !important;
+    }
+    #map-svg-overlay {
+      pointer-events: none;
+    }
+    #svg-nodes-layer {
+      pointer-events: auto;
+    }
+    .map-node-interactive {
+      cursor: pointer !important;
+      pointer-events: auto;
+    }
+    .map-node-interactive * {
+      pointer-events: none;
+    }
+    #svg-edges-layer, #svg-water-bed, #svg-active-route, #svg-chevrons-path,
+    #svg-totem-marker, #svg-dest-pin, #svg-nav-arrow-cursor {
+      pointer-events: none;
+    }
+
     /* Custom scrollbar */
     ::-webkit-scrollbar { width: 6px; height: 6px; }
     ::-webkit-scrollbar-track { background: #0f172a; }
@@ -943,34 +971,54 @@
       }
     }
 
+    let hasDraggedMap = false;
+
     function setupInteractiveCameraPan() {
       const container = document.getElementById('map-container');
       const stage = document.getElementById('map-camera-stage');
-      let isDragging = false;
-      let startX = 0;
-      let startY = 0;
+      let isMouseDown = false;
+      let startMouseX = 0;
+      let startMouseY = 0;
+      let origPanX = 0;
+      let origPanY = 0;
+      const DRAG_THRESHOLD = 5; // px to distinguish click vs pan
 
       container.addEventListener('mousedown', (e) => {
         if (e.button !== 0) return;
-        isDragging = true;
+        isMouseDown = true;
+        hasDraggedMap = false;
         if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
-        startX = e.clientX - currentCamera.panX;
-        startY = e.clientY - currentCamera.panY;
-        container.style.cursor = 'grabbing';
+        startMouseX = e.clientX;
+        startMouseY = e.clientY;
+        origPanX = currentCamera.panX;
+        origPanY = currentCamera.panY;
       });
 
       window.addEventListener('mousemove', (e) => {
-        if (!isDragging) return;
-        currentCamera.panX = e.clientX - startX;
-        currentCamera.panY = e.clientY - startY;
-        stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
-        updatePopupPosition();
+        if (!isMouseDown) return;
+        const dx = e.clientX - startMouseX;
+        const dy = e.clientY - startMouseY;
+
+        if (!hasDraggedMap && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
+          hasDraggedMap = true;
+          container.classList.add('is-dragging');
+        }
+
+        if (hasDraggedMap) {
+          currentCamera.panX = origPanX + dx;
+          currentCamera.panY = origPanY + dy;
+          stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+          updatePopupPosition();
+        }
       });
 
       window.addEventListener('mouseup', () => {
-        if (isDragging) {
-          isDragging = false;
-          container.style.cursor = 'grab';
+        if (isMouseDown) {
+          isMouseDown = false;
+          container.classList.remove('is-dragging');
+          setTimeout(() => {
+            hasDraggedMap = false;
+          }, 60);
         }
       });
 
@@ -2172,10 +2220,11 @@
           const isCategoryMatch = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
 
           const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          g.setAttribute('class', 'cursor-pointer transition-transform duration-200 hover:scale-125');
+          g.setAttribute('class', 'map-node-interactive transition-transform duration-200 hover:scale-125');
           g.style.opacity = isCategoryMatch ? '1' : '0.15';
           g.onclick = (e) => {
             e.stopPropagation();
+            if (hasDraggedMap) return;
             showNodePopup(n);
           };
 
