@@ -69,13 +69,9 @@
       will-change: transform;
     }
 
-    /* Graph Nodes & Edges Layer Smooth Fade */
-    #svg-edges-layer, #svg-nodes-layer {
-      transition: opacity 0.55s cubic-bezier(0.4, 0, 0.2, 1);
-    }
-    .graph-nav-hidden {
-      opacity: 0 !important;
-      pointer-events: none !important;
+    /* Graph Nodes & Edges Layer */
+    #svg-nodes-layer {
+      pointer-events: auto;
     }
 
     /* Map Drag vs Node Pointer Disambiguation */
@@ -88,17 +84,14 @@
     #map-container.is-dragging * {
       cursor: grabbing !important;
     }
-    #map-svg-overlay {
-      pointer-events: none;
-    }
-    #svg-nodes-layer {
-      pointer-events: auto;
-    }
     .map-node-interactive {
       cursor: pointer !important;
-      pointer-events: auto;
+      pointer-events: all;
     }
     .map-node-interactive * {
+      pointer-events: all;
+    }
+    .map-node-interactive text {
       pointer-events: none;
     }
     #svg-edges-layer, #svg-water-bed, #svg-active-route, #svg-chevrons-path,
@@ -844,14 +837,9 @@
 
     function toggleGraphPoints() {
       showGraphClutter = !showGraphClutter;
-      const nodesLayer = document.getElementById('svg-nodes-layer');
       const edgesLayer = document.getElementById('svg-edges-layer');
-      if (showGraphClutter) {
-        nodesLayer.classList.remove('graph-nav-hidden');
-        edgesLayer.classList.remove('graph-nav-hidden');
-      } else {
-        nodesLayer.classList.add('graph-nav-hidden');
-        edgesLayer.classList.add('graph-nav-hidden');
+      if (edgesLayer) {
+        edgesLayer.style.display = showGraphClutter ? 'block' : 'none';
       }
     }
 
@@ -859,12 +847,6 @@
       const container = document.getElementById('map-container');
       const stage = document.getElementById('map-camera-stage');
       if (!container || !stage) return;
-
-      // Smoothly fade out inactive graph clutter during navigation / zoom
-      if (!showGraphClutter) {
-        document.getElementById('svg-nodes-layer').classList.add('graph-nav-hidden');
-        document.getElementById('svg-edges-layer').classList.add('graph-nav-hidden');
-      }
 
       const spec = FLOOR_SPECS[currentLevel];
       const cw = container.clientWidth;
@@ -2222,11 +2204,22 @@
           const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
           g.setAttribute('class', 'map-node-interactive transition-transform duration-200 hover:scale-125');
           g.style.opacity = isCategoryMatch ? '1' : '0.15';
-          g.onclick = (e) => {
+
+          // Invisible enlarged hit area for effortless clicking
+          const hitArea = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+          hitArea.setAttribute('cx', n.coordinates.x);
+          hitArea.setAttribute('cy', n.coordinates.y);
+          hitArea.setAttribute('r', '18');
+          hitArea.setAttribute('fill', 'transparent');
+          hitArea.style.pointerEvents = 'all';
+          hitArea.style.cursor = 'pointer';
+          g.appendChild(hitArea);
+
+          g.addEventListener('click', (e) => {
             e.stopPropagation();
             if (hasDraggedMap) return;
             showNodePopup(n);
-          };
+          });
 
           if (n.type === 'portal_escalator' || n.type === 'portal_elevator') {
             const isEsc = n.type === 'portal_escalator';
