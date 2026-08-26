@@ -992,9 +992,9 @@
     function getDynamicZoomLevel(isSim = false) {
       const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
       if (isMobile) {
-        return isSim ? 3.85 : 3.25; // Super strong cinematic zoom on mobile!
+        return isSim ? 2.1 : 1.75; // Perfectly framed for smartphone view (always keeps arrow and surroundings in full sight)
       }
-      return isSim ? 2.6 : 1.85;
+      return isSim ? 1.7 : 1.4; // Stable, wide view for Totem kiosk
     }
 
     let is3DModeActive = false;
@@ -1053,7 +1053,7 @@
           targets: currentCamera,
           rotation: 0,
           duration: 350,
-          easing: 'easeOutQuad',
+          easing: 'easeInOutSine',
           update: () => {
             updateCameraTransform();
             updateCompassUI();
@@ -1097,6 +1097,8 @@
       const stage = document.getElementById('map-camera-stage');
       if (!container || !stage) return;
 
+      const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
+
       if (targetScale === null) {
         targetScale = getDynamicZoomLevel(isSimulating);
       }
@@ -1127,27 +1129,28 @@
       const pixelX = offsetX + u * renderW;
       const pixelY = offsetY + v * renderH;
 
-      // Determine Target Rotation (Google Maps Dynamic Heading Alignment)
-      let targetRot = currentCamera.rotation || 0;
-      if (targetHeadingDeg !== null && (isSimulating || document.body.classList.contains('mobile-navigation-mode'))) {
-        // Rotate map so forward walking direction is straight UP (-headingDeg)
+      // Determine Target Rotation: ONLY on Mobile when heading is provided; Totem view is ALWAYS 0 (static)
+      let targetRot = 0;
+      if (isMobile && targetHeadingDeg !== null) {
         targetRot = -targetHeadingDeg;
       }
 
-      // Calculate shortest angle delta to avoid 360 wrap arounds
+      // Smooth shortest angle delta calculation
       let currentRot = currentCamera.rotation || 0;
+      if (!isMobile) currentRot = 0;
+
       let diffAngle = (targetRot - (currentRot % 360));
       while (diffAngle < -180) diffAngle += 360;
       while (diffAngle > 180) diffAngle -= 360;
-      const finalRot = currentRot + diffAngle;
+      const finalRot = isMobile ? (currentRot + diffAngle) : 0;
 
       const rad = finalRot * Math.PI / 180;
       const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
       const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
 
-      // Target screen center (pin arrow slightly below center for Google Maps lookahead vision)
+      // Target screen center: centered in viewport for guaranteed 100% arrow visibility
       const targetScreenX = cw / 2;
-      const targetScreenY = (isSimulating || document.body.classList.contains('mobile-navigation-mode')) ? ch * 0.58 : ch / 2;
+      const targetScreenY = ch / 2;
 
       const panX = targetScreenX - rx;
       const panY = targetScreenY - ry;
