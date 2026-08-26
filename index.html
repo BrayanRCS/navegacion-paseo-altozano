@@ -850,19 +850,21 @@
       },
 
       // 3. Smooth Camera Zoom & Pan with Rotation (Hardware-Accelerated)
-      animateCameraTo: function(targetPanX, targetPanY, targetScale, duration = 600) {
+      animateCameraTo: function(targetPanX, targetPanY, targetScale, duration = 600, targetRotation = null) {
         const stage = document.getElementById('map-camera-stage');
         if (!stage || typeof anime === 'undefined') {
           if (stage) {
+            if (targetRotation !== null) currentCamera.rotation = targetRotation;
             const rot = currentCamera.rotation || 0;
             stage.style.transform = `translate(${targetPanX}px, ${targetPanY}px) scale(${targetScale}) rotate(${rot}deg)`;
+            updateCompassUI();
           }
           return;
         }
 
         if (this.activeCameraAnim) this.activeCameraAnim.pause();
 
-        this.activeCameraAnim = anime({
+        const animConfig = {
           targets: currentCamera,
           panX: targetPanX,
           panY: targetPanY,
@@ -873,12 +875,20 @@
             const rot = currentCamera.rotation || 0;
             stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale}) rotate(${rot}deg)`;
             updatePopupPosition();
+            updateCompassUI();
           },
           complete: function() {
             currentCamera.isZoomed = currentCamera.scale > 1.1;
             updateZoomButtonUI();
+            updateCompassUI();
           }
-        });
+        };
+
+        if (targetRotation !== null) {
+          animConfig.rotation = targetRotation;
+        }
+
+        this.activeCameraAnim = anime(animConfig);
       },
 
       // 4. Totem UI Micro-interactions (Step changes, icons, cards)
@@ -1074,7 +1084,15 @@
 
     let isFollowingGPS = true;
 
-    function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 650) {
+    function getNodeHeading(curr, next) {
+      if (!curr || !next) return null;
+      if (next.coordinates.x === curr.coordinates.x && next.coordinates.y === curr.coordinates.y) return null;
+      const dx = next.coordinates.x - curr.coordinates.x;
+      const dy = next.coordinates.y - curr.coordinates.y;
+      return (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+    }
+
+    function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 650, targetHeadingDeg = null) {
       const container = document.getElementById('map-container');
       const stage = document.getElementById('map-camera-stage');
       if (!container || !stage) return;
@@ -1109,18 +1127,42 @@
       const pixelX = offsetX + u * renderW;
       const pixelY = offsetY + v * renderH;
 
-      const panX = (cw / 2) - (pixelX * targetScale);
-      const panY = (ch / 2) - (pixelY * targetScale);
+      // Determine Target Rotation (Google Maps Dynamic Heading Alignment)
+      let targetRot = currentCamera.rotation || 0;
+      if (targetHeadingDeg !== null && (isSimulating || document.body.classList.contains('mobile-navigation-mode'))) {
+        // Rotate map so forward walking direction is straight UP (-headingDeg)
+        targetRot = -targetHeadingDeg;
+      }
+
+      // Calculate shortest angle delta to avoid 360 wrap arounds
+      let currentRot = currentCamera.rotation || 0;
+      let diffAngle = (targetRot - (currentRot % 360));
+      while (diffAngle < -180) diffAngle += 360;
+      while (diffAngle > 180) diffAngle -= 360;
+      const finalRot = currentRot + diffAngle;
+
+      const rad = finalRot * Math.PI / 180;
+      const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
+      const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
+
+      // Target screen center (pin arrow slightly below center for Google Maps lookahead vision)
+      const targetScreenX = cw / 2;
+      const targetScreenY = (isSimulating || document.body.classList.contains('mobile-navigation-mode')) ? ch * 0.58 : ch / 2;
+
+      const panX = targetScreenX - rx;
+      const panY = targetScreenY - ry;
 
       if (animate) {
-        NavAnimator.animateCameraTo(panX, panY, targetScale, duration);
+        NavAnimator.animateCameraTo(panX, panY, targetScale, duration, finalRot);
       } else {
         currentCamera.scale = targetScale;
         currentCamera.panX = panX;
         currentCamera.panY = panY;
+        currentCamera.rotation = finalRot;
         currentCamera.isZoomed = targetScale > 1.1;
         updateCameraTransform();
         updateZoomButtonUI();
+        updateCompassUI();
       }
     }
 
@@ -1132,11 +1174,12 @@
       updateCompassUI();
 
       if (animate) {
-        NavAnimator.animateCameraTo(0, 0, 1.0, 600);
+        NavAnimator.animateCameraTo(0, 0, 1.0, 600, 0);
       } else {
         currentCamera.scale = 1.0;
         currentCamera.panX = 0;
         currentCamera.panY = 0;
+        currentCamera.rotation = 0;
         currentCamera.isZoomed = false;
         updateCameraTransform();
         updateZoomButtonUI();
@@ -1156,21 +1199,27 @@
     function centerOnNavArrow() {
       isFollowingGPS = true;
       let targetNode = null;
+      let nextNode = null;
       let targetLevel = currentLevel;
 
       // 1. If actively simulating walk, get the simulated position
       if (isSimulating && routeSegments[simSegIndex] && routeSegments[simSegIndex].path[simNodeIndex]) {
         targetNode = routeSegments[simSegIndex].path[simNodeIndex];
+        const path = routeSegments[simSegIndex].path;
+        nextNode = path[Math.min(path.length - 1, simNodeIndex + 1)];
         targetLevel = routeSegments[simSegIndex].level;
       }
       // 2. Else get the active step waypoint
       else if (currentSteps.length > 0 && currentSteps[currentStepIndex] && currentSteps[currentStepIndex].node) {
         targetNode = currentSteps[currentStepIndex].node;
+        nextNode = currentSteps[currentStepIndex].nextNode;
         targetLevel = targetNode.level;
       }
       // 3. Else fallback to the origin node of the route
       else if (routeSegments.length > 0 && routeSegments[0].start) {
         targetNode = routeSegments[0].start;
+        const p = routeSegments[0].path;
+        nextNode = p.length > 1 ? p[1] : p[0];
         targetLevel = targetNode.level;
       }
       // 4. Default fallback: Totem (Punto 12, Nivel 1)
@@ -1181,14 +1230,16 @@
 
       if (!targetNode) return;
 
+      const heading = getNodeHeading(targetNode, nextNode);
+
       // If the GPS arrow / step is on a different floor, switch to that floor first
       if (currentLevel !== targetLevel) {
         switchLevel(targetLevel);
         setTimeout(() => {
-          zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+          zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, getDynamicZoomLevel(isSimulating), true, 600, heading);
         }, 80);
       } else {
-        zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+        zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, getDynamicZoomLevel(isSimulating), true, 600, heading);
       }
     }
 
@@ -1453,11 +1504,14 @@
         switchLevel(routeSegments[simSegIndex].level);
       }
 
-      // Initial Ultra-Close Zoom to starting node of the walk
+      // Initial Ultra-Close Zoom and dynamic rotation to starting node of the walk
       const seg = routeSegments[simSegIndex];
       if (seg && seg.path.length > 0) {
         const startNode = seg.path[Math.min(simNodeIndex, seg.path.length - 1)];
-        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+        const nextNode = seg.path[Math.min(simNodeIndex + 1, seg.path.length - 1)];
+        const heading = getNodeHeading(startNode, nextNode);
+        positionNavArrowOnNode(startNode, nextNode, false);
+        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
       }
 
       clearInterval(simInterval);
@@ -1503,9 +1557,11 @@
             // Zoom to first node of new floor
             if (nextSeg.path.length > 0) {
               const startN = nextSeg.path[0];
+              const nextN = nextSeg.path.length > 1 ? nextSeg.path[1] : startN;
+              const heading = getNodeHeading(startN, nextN);
               updatePlaceCard(startN);
               if (isFollowingGPS) {
-                zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+                zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
               }
             }
           }, 1400);
@@ -1538,9 +1594,11 @@
             // Re-zoom to starting node
             if (routeSegments[0] && routeSegments[0].path.length > 0) {
               const startNode = routeSegments[0].path[0];
+              const nextNode = routeSegments[0].path.length > 1 ? routeSegments[0].path[1] : startNode;
+              const heading = getNodeHeading(startNode, nextNode);
               updatePlaceCard(startNode);
               if (isFollowingGPS) {
-                zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+                zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
               }
             }
           }, 2200);
@@ -1550,13 +1608,14 @@
 
       const curr = pathNodes[simNodeIndex];
       const next = pathNodes[Math.min(pathNodes.length - 1, simNodeIndex + 1)];
+      const heading = getNodeHeading(curr, next);
 
       // Position & Seamlessly Glide Nav Arrow without dead time
       positionNavArrowOnNode(curr, next, true, WALK_STEP_DURATION);
 
-      // Smooth Camera Tracking (respects if user clicked "Ver Todo" overview)
+      // Smooth Camera Tracking (respects if user clicked "Ver Todo" overview) with Dynamic Heading
       if (isFollowingGPS) {
-        zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION);
+        zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
       }
 
       // Update Live Place & Landmark Preview Card
@@ -2470,9 +2529,10 @@
         // Position the Iconic Google Maps Navigation Arrow on the active step
         positionNavArrowOnNode(step.node, step.nextNode, false);
 
-        // Zoom & center camera on active step waypoint
+        // Zoom & center camera on active step waypoint with heading
         if (step.node && step.node.level === currentLevel) {
-          zoomToCoordinates(step.node.coordinates.x, step.node.coordinates.y, getDynamicZoomLevel(false), true);
+          const heading = getNodeHeading(step.node, step.nextNode);
+          zoomToCoordinates(step.node.coordinates.x, step.node.coordinates.y, getDynamicZoomLevel(false), true, 600, heading);
         }
       }
     }
