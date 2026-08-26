@@ -969,11 +969,40 @@
     }
 
     function centerOnNavArrow() {
-      if (currentSteps.length > 0 && currentSteps[currentStepIndex]) {
-        const node = currentSteps[currentStepIndex].node;
-        if (node && node.level === currentLevel) {
-          zoomToCoordinates(node.coordinates.x, node.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
-        }
+      let targetNode = null;
+      let targetLevel = currentLevel;
+
+      // 1. If actively simulating walk, get the simulated position
+      if (isSimulating && routeSegments[simSegIndex] && routeSegments[simSegIndex].path[simNodeIndex]) {
+        targetNode = routeSegments[simSegIndex].path[simNodeIndex];
+        targetLevel = routeSegments[simSegIndex].level;
+      }
+      // 2. Else get the active step waypoint
+      else if (currentSteps.length > 0 && currentSteps[currentStepIndex] && currentSteps[currentStepIndex].node) {
+        targetNode = currentSteps[currentStepIndex].node;
+        targetLevel = targetNode.level;
+      }
+      // 3. Else fallback to the origin node of the route
+      else if (routeSegments.length > 0 && routeSegments[0].start) {
+        targetNode = routeSegments[0].start;
+        targetLevel = targetNode.level;
+      }
+      // 4. Default fallback: Totem (Punto 12, Nivel 1)
+      else if (levelNodes[2] && levelNodes[2][TOTEM_NODE_ID]) {
+        targetNode = levelNodes[2][TOTEM_NODE_ID];
+        targetLevel = 2;
+      }
+
+      if (!targetNode) return;
+
+      // If the GPS arrow / step is on a different floor, switch to that floor first
+      if (currentLevel !== targetLevel) {
+        switchLevel(targetLevel);
+        setTimeout(() => {
+          zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+        }, 80);
+      } else {
+        zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
       }
     }
 
