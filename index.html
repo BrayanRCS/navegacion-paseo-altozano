@@ -69,6 +69,14 @@
       will-change: transform;
     }
 
+    /* High-DPI Crisp Edge Image Rendering */
+    #floor-plan-img {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      transform: translateZ(0);
+      backface-visibility: hidden;
+    }
+
     /* Graph Nodes & Edges Layer */
     #svg-nodes-layer {
       pointer-events: auto;
@@ -2292,7 +2300,7 @@
         totemMarkerEl.style.display = 'none';
       }
 
-      // Draw Walkable Corridors for current level
+      // Draw Vector Walkable Corridors & Crisp Architectural Edges (Infinite Vector Sharpness)
       const drawn = new Set();
       const floorEdges = levelGraphs[currentLevel] || {};
       Object.values(floorEdges).forEach(edgeList => {
@@ -2303,11 +2311,27 @@
             const key = [u.id, v.id].sort().join('--');
             if (!drawn.has(key)) {
               drawn.add(key);
+
+              // 1. Subtle dark casing road line for architectural definition
+              const casing = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+              casing.setAttribute('x1', u.coordinates.x);
+              casing.setAttribute('y1', u.coordinates.y);
+              casing.setAttribute('x2', v.coordinates.x);
+              casing.setAttribute('y2', v.coordinates.y);
+              casing.setAttribute('stroke', 'rgba(15, 23, 42, 0.6)');
+              casing.setAttribute('stroke-width', '6.5');
+              casing.setAttribute('stroke-linecap', 'round');
+              edgesLayer.appendChild(casing);
+
+              // 2. High-precision vector corridor centerline
               const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
               line.setAttribute('x1', u.coordinates.x);
               line.setAttribute('y1', u.coordinates.y);
               line.setAttribute('x2', v.coordinates.x);
               line.setAttribute('y2', v.coordinates.y);
+              line.setAttribute('stroke', 'rgba(56, 189, 248, 0.28)');
+              line.setAttribute('stroke-width', '2.2');
+              line.setAttribute('stroke-linecap', 'round');
               edgesLayer.appendChild(line);
             }
           }
