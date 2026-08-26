@@ -80,19 +80,26 @@
       user-select: none;
       -webkit-user-select: none;
     }
-    #map-container.is-dragging,
+    #map-container.is-dragging {
+      cursor: grabbing !important;
+    }
     #map-container.is-dragging * {
       cursor: grabbing !important;
     }
     .map-node-interactive {
       cursor: pointer !important;
-      pointer-events: all;
+      pointer-events: auto;
+      transition: filter 0.15s ease;
+    }
+    .map-node-interactive:hover {
+      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.95)) brightness(1.25);
     }
     .map-node-interactive * {
-      pointer-events: all;
+      pointer-events: auto;
     }
     .map-node-interactive text {
       pointer-events: none;
+      user-select: none;
     }
     #svg-edges-layer, #svg-water-bed, #svg-active-route, #svg-chevrons-path,
     #svg-totem-marker, #svg-dest-pin, #svg-nav-arrow-cursor {
@@ -963,10 +970,12 @@
       let startMouseY = 0;
       let origPanX = 0;
       let origPanY = 0;
-      const DRAG_THRESHOLD = 5; // px to distinguish click vs pan
-
       container.addEventListener('mousedown', (e) => {
         if (e.button !== 0) return;
+        // If clicking on an interactive node or popup, ignore map dragging
+        if (e.target.closest('.map-node-interactive') || e.target.closest('#map-node-popup')) {
+          return;
+        }
         isMouseDown = true;
         hasDraggedMap = false;
         if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
@@ -2202,7 +2211,7 @@
           const isCategoryMatch = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
 
           const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-          g.setAttribute('class', 'map-node-interactive transition-transform duration-200 hover:scale-125');
+          g.setAttribute('class', 'map-node-interactive');
           g.style.opacity = isCategoryMatch ? '1' : '0.15';
 
           // Invisible enlarged hit area for effortless clicking
@@ -2217,7 +2226,7 @@
 
           g.addEventListener('click', (e) => {
             e.stopPropagation();
-            if (hasDraggedMap) return;
+            e.preventDefault();
             showNodePopup(n);
           });
 
