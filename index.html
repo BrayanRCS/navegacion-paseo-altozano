@@ -152,112 +152,166 @@
     </div>
   </header>
 
-  <!-- MAIN WORKSPACE (KIOSK TOTEM FULL SCREEN) -->
-  <main class="flex-1 max-w-[1750px] w-full mx-auto p-4 md:p-6 grid grid-cols-12 gap-6">
+  <!-- MAIN WORKSPACE: VERTICAL KIOSK PORTRAIT FLOW (SCREEN 1: DIRECTORY -> SCREEN 2: MAP) -->
+  <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col gap-4">
 
-    <!-- FULL WIDTH 2D MAP & ROUTE PLANNER (TOTEM KIOSK) -->
-    <div class="col-span-12 flex flex-col gap-4">
+    <!-- Hidden standard selects to maintain API compatibility -->
+    <div class="hidden">
+      <select id="origin-select" name="origin" aria-label="Punto de origen"></select>
+      <select id="dest-select" name="destination" aria-label="Punto de destino"></select>
+      <input type="checkbox" id="prefer-elevator-chk">
+      <span id="chip-dist"></span>
+      <span id="chip-time"></span>
+      <span id="chip-floors"></span>
+      <span id="route-time-dist"></span>
+      <span id="route-dest-name"></span>
+    </div>
+
+    <!-- ======================================================== -->
+    <!-- SCREEN 1: DIRECTORIO INTERACTIVO (PANTALLA DE INICIO)   -->
+    <!-- ======================================================== -->
+    <div id="view-directory" class="flex flex-col gap-4">
       
-      <!-- CONTROLS & ROUTE SELECTOR -->
-      <div class="bg-slate-900/85 backdrop-blur-xl rounded-2xl p-4 md:p-5 border border-slate-800 shadow-xl">
-        <div class="flex flex-col md:flex-row items-start md:items-center justify-between gap-3 pb-3 border-b border-slate-800">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-route text-sky-400 text-base"></i>
-            <span class="text-sm font-bold text-white uppercase tracking-wider">Planificador de Rutas</span>
+      <!-- Kiosk Welcome & Totem Location Banner -->
+      <div class="bg-gradient-to-r from-slate-900 via-slate-800 to-slate-900 border border-slate-700/80 rounded-3xl p-5 shadow-2xl relative overflow-hidden">
+        <div class="flex items-center justify-between gap-3">
+          <div>
+            <div class="flex items-center gap-2 mb-1">
+              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+              <span class="text-xs font-bold text-emerald-400 uppercase tracking-wider">Tótem Interactivo</span>
+            </div>
+            <h2 class="text-xl md:text-2xl font-black text-white">¿A dónde deseas ir?</h2>
+            <p class="text-xs text-slate-300 mt-0.5">Estás en el <b class="text-rose-400">Punto 12 · Nivel 1</b> (Frente a Chedraui / M-Caps)</p>
           </div>
+          <button onclick="showMapView()" class="px-4 py-2.5 bg-blue-600 hover:bg-blue-500 text-white rounded-2xl text-xs font-extrabold shadow-xl shadow-blue-600/30 flex items-center gap-2 transition-all active:scale-95 border border-blue-400/40 flex-shrink-0">
+            <i class="fa-solid fa-map-location-dot text-sm"></i>
+            <span>Ver Mapa</span>
+          </button>
+        </div>
 
-          <!-- Floor Level Switcher -->
-          <div class="flex items-center gap-2">
-            <span class="text-xs font-bold text-slate-400 uppercase mr-1">Planta:</span>
-            <div class="flex bg-slate-900 p-1 rounded-xl border border-slate-800">
-              <button onclick="switchLevel(1)" id="btn-lvl-1" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white">
-                PB (Inferior)
-              </button>
-              <button onclick="switchLevel(2)" id="btn-lvl-2" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-md">
-                Nivel 1 (Principal)
-              </button>
-              <button onclick="switchLevel(3)" id="btn-lvl-3" class="px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white">
-                Nivel 2 (Superior)
-              </button>
+        <!-- Big Touch Search Input -->
+        <div class="mt-4 relative">
+          <i class="fa-solid fa-magnifying-glass absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
+          <input type="text" id="legend-search-input" name="search_store" aria-label="Buscar tienda o café" onkeyup="filterLegendList()" placeholder="Toca aquí para buscar tienda, café o servicio..." class="w-full bg-slate-950/90 border-2 border-slate-700 focus:border-blue-500 text-white text-sm rounded-2xl pl-11 pr-4 py-3.5 focus:outline-none placeholder:text-slate-500 shadow-inner font-medium">
+        </div>
+
+        <!-- Floor Switcher Buttons -->
+        <div class="mt-3.5 flex items-center justify-between flex-wrap gap-2 pt-3 border-t border-slate-800/80">
+          <span class="text-xs font-bold text-slate-400 uppercase tracking-wider">Seleccionar Planta:</span>
+          <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
+            <button onclick="switchLevel(1)" id="btn-lvl-1" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
+              PB (Inferior)
+            </button>
+            <button onclick="switchLevel(2)" id="btn-lvl-2" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md">
+              Nivel 1 (Principal)
+            </button>
+            <button onclick="switchLevel(3)" id="btn-lvl-3" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
+              Nivel 2 (Superior)
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Quick Category Filter Chips (Large Touch Targets) -->
+      <div class="flex items-center gap-2 overflow-x-auto pb-1 select-none" id="category-filter-chips">
+        <button id="cat-chip-all" onclick="filterByCategory('all')" class="category-chip active px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+          <span>🏷️ Todos</span>
+        </button>
+        <button id="cat-chip-coffee" onclick="filterByCategory('coffee')" class="category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+          <span>☕ Cafés & Postres</span>
+        </button>
+        <button id="cat-chip-food" onclick="filterByCategory('food')" class="category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+          <span>🍔 Comida</span>
+        </button>
+        <button id="cat-chip-fashion" onclick="filterByCategory('fashion')" class="category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+          <span>👗 Moda</span>
+        </button>
+        <button id="cat-chip-anchor" onclick="filterByCategory('anchor')" class="category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+          <span>🛍️ Tiendas Ancla</span>
+        </button>
+        <button id="cat-chip-portal" onclick="filterByCategory('portal')" class="category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer">
+          <span>🪜 Escaleras & Elevador</span>
+        </button>
+      </div>
+
+      <!-- Directory List Grid (Touch-friendly Store Cards) -->
+      <div class="bg-slate-900/90 backdrop-blur-xl border border-slate-800 rounded-3xl p-4 shadow-xl flex flex-col flex-1">
+        <div class="flex items-center justify-between pb-3 mb-2 border-b border-slate-800 text-xs">
+          <span class="font-extrabold text-white uppercase tracking-wider flex items-center gap-2">
+            <i class="fa-solid fa-store text-sky-400"></i> Locales en <span id="legend-floor-title" class="text-sky-400">Nivel 1</span>
+          </span>
+          <span class="text-slate-400 text-[11px]">Toca cualquier tienda para trazar tu ruta</span>
+        </div>
+
+        <div id="legend-items-container" class="grid grid-cols-1 sm:grid-cols-2 gap-2.5 max-h-[580px] overflow-y-auto pr-1">
+          <!-- Populated dynamically by renderLegendList() -->
+        </div>
+      </div>
+    </div>
+
+
+    <!-- ======================================================== -->
+    <!-- SCREEN 2: MAPA Y NAVEGACIÓN DE RUTA (PANTALLA DE RUTA)  -->
+    <!-- ======================================================== -->
+    <div id="view-map" class="flex flex-col gap-4 hidden">
+      
+      <!-- Top Map Navigation Bar (Back to Directory + Route Info + QR) -->
+      <div class="bg-slate-900/90 backdrop-blur-xl rounded-3xl p-4 border border-slate-800 shadow-xl flex flex-col gap-3">
+        <div class="flex items-center justify-between gap-2">
+          <!-- Back Button to Directory -->
+          <button onclick="showDirectoryView()" class="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center gap-2 border border-slate-700 shadow-md transition-all active:scale-95">
+            <i class="fa-solid fa-arrow-left text-sky-400"></i>
+            <span>Volver al Directorio</span>
+          </button>
+
+          <!-- Floor Switcher in Map -->
+          <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
+            <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
+              PB
+            </button>
+            <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md">
+              Nivel 1
+            </button>
+            <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
+              Nivel 2
+            </button>
+          </div>
+        </div>
+
+        <!-- Destination Info Banner & QR Action -->
+        <div class="bg-slate-950/90 rounded-2xl p-3.5 border border-slate-800 flex items-center justify-between gap-3 shadow-inner">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="map-target-icon-box" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-700 flex items-center justify-center text-2xl shadow-md flex-shrink-0">
+              <span id="map-target-emoji">🎯</span>
+            </div>
+            <div class="truncate">
+              <span class="text-[10px] uppercase font-extrabold text-sky-400 tracking-wider block">DESTINO SELECCIONADO</span>
+              <h3 id="map-target-title" class="text-base font-black text-white truncate">Liverpool</h3>
+              <p id="map-target-metrics" class="text-xs text-emerald-400 font-bold mt-0.5">85 m · ~1 min a pie</p>
             </div>
           </div>
-        </div>
 
-        <!-- Origin, Swap and Destination Inputs -->
-        <div class="grid grid-cols-1 md:grid-cols-12 gap-3 mt-3 items-center">
-          <!-- Origin -->
-          <div class="md:col-span-5">
-            <label for="origin-select" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-              <i class="fa-solid fa-location-crosshairs text-rose-400 mr-1"></i> Origen:
-            </label>
-            <select id="origin-select" name="origin" aria-label="Punto de origen" onchange="calculateRoute()" class="w-full bg-slate-900 border border-rose-500/40 text-white text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-rose-500 focus:outline-none font-bold">
-              <option value="">Cargando locales...</option>
-            </select>
-          </div>
-
-          <!-- Swap Button & Transit Mode Toggle -->
-          <div class="md:col-span-2 flex flex-col items-center justify-center gap-1 mt-1 md:mt-4">
-            <button onclick="swapEndpoints()" title="Invertir origen y destino" class="w-8 h-8 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 flex items-center justify-center transition-all">
-              <i class="fa-solid fa-arrow-right-arrow-left text-xs"></i>
-            </button>
-            <label class="cursor-pointer flex items-center gap-1 text-[10px] text-slate-400 mt-0.5">
-              <input type="checkbox" id="prefer-elevator-chk" onchange="calculateRoute()" class="rounded bg-slate-800 border-slate-700 text-blue-500 focus:ring-0 w-3 h-3">
-              <span>Usar Elevador</span>
-            </label>
-          </div>
-
-          <!-- Destination -->
-          <div class="md:col-span-5">
-            <label for="dest-select" class="block text-[11px] font-bold text-slate-400 uppercase tracking-wider mb-1">
-              <i class="fa-solid fa-flag-checkered text-sky-400 mr-1"></i> Destino:
-            </label>
-            <select id="dest-select" name="destination" aria-label="Punto de destino" onchange="calculateRoute()" class="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none font-medium">
-              <option value="">Cargando locales...</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Multi-floor Segment Chips (Tramos por Planta) -->
-        <div id="route-segments-bar" class="flex flex-wrap items-center gap-2 mt-3 pt-3 border-t border-slate-800/80 text-xs" style="display: none;">
-          <span class="text-slate-400 font-bold flex items-center gap-1.5">
-            <i class="fa-solid fa-layer-group text-sky-400"></i> Tramos de la Ruta:
-          </span>
-          <div id="segments-container" class="flex flex-wrap gap-2">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Route Summary Chips & QR Action Button -->
-        <div class="flex flex-wrap items-center justify-between gap-3 mt-3 pt-2 text-xs border-t border-slate-800/80">
-          <div class="flex flex-wrap items-center gap-2.5">
-            <span class="text-slate-400 font-medium">Resumen:</span>
-            <span id="chip-dist" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-emerald-400 font-bold">
-              <i class="fa-solid fa-ruler-horizontal mr-1"></i> 90 m
-            </span>
-            <span id="chip-time" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-sky-400 font-bold">
-              <i class="fa-solid fa-clock mr-1"></i> 1 min a pie
-            </span>
-            <span id="chip-floors" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-blue-400 font-bold">
-              <i class="fa-solid fa-stairs mr-1"></i> Mismo nivel
-            </span>
-            <span id="chip-steps-count" class="px-2.5 py-1 rounded-md bg-slate-900 border border-slate-700 text-purple-400 font-bold">
-              <i class="fa-solid fa-shoe-prints mr-1"></i> 4 pasos guiados
-            </span>
-          </div>
-
-          <!-- Prominent QR Button for Kiosk Users -->
-          <button onclick="showQrModal()" class="px-3.5 py-1.5 bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white rounded-xl text-xs font-extrabold shadow-lg shadow-emerald-500/20 flex items-center gap-2 transition-all active:scale-95 border border-emerald-400/30">
-            <i class="fa-solid fa-qrcode text-sm"></i>
-            <span>Llevar esta ruta en mi Smartphone</span>
+          <!-- QR Button -->
+          <button onclick="showQrModal()" class="px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition-all active:scale-95 border border-emerald-400/30 flex-shrink-0">
+            <i class="fa-solid fa-qrcode text-base"></i>
+            <span class="hidden sm:inline">Llevar en Celular</span>
           </button>
+        </div>
+
+        <!-- Multi-floor Segment Chips (Tramos de la Ruta) -->
+        <div id="route-segments-bar" class="flex flex-wrap items-center gap-2 pt-1 text-xs" style="display: none;">
+          <span class="text-slate-400 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-sky-400"></i> Tramos:
+          </span>
+          <div id="segments-container" class="flex flex-wrap gap-2"></div>
         </div>
       </div>
 
       <!-- 2D MAP CANVAS WITH DYNAMIC CAMERA ZOOM -->
-      <div class="bg-slate-900/85 backdrop-blur-xl rounded-2xl p-4 border border-slate-800 relative flex-1 flex flex-col min-h-[550px]">
+      <div class="bg-slate-900/85 backdrop-blur-xl rounded-3xl p-4 border border-slate-800 relative flex flex-col min-h-[480px]">
         
         <!-- Header Bar with Map Level & Controls -->
-        <div class="flex items-center justify-between mb-2.5 text-xs flex-wrap gap-2">
+        <div class="flex items-center justify-between mb-2 text-xs flex-wrap gap-2">
           <div class="flex items-center gap-2">
             <span class="font-bold text-white text-sm" id="map-level-title">Planta 1 · Nivel Principal</span>
             <span class="text-slate-500">|</span>
@@ -269,13 +323,11 @@
             <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 border border-white"></span> ➤ Flecha GPS</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Tienda</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Isla</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-cyan-400"></span> 🪜 Escaleras</span>
-            <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-blue-500"></span> 🛗 Elevador</span>
           </div>
         </div>
 
         <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage) -->
-        <div id="map-container" class="relative w-full bg-[#080d16] rounded-xl overflow-hidden border border-slate-800 flex items-center justify-center flex-1 select-none cursor-grab" style="aspect-ratio: 1536 / 718; max-height: 560px;">
+        <div id="map-container" class="relative w-full bg-[#080d16] rounded-2xl overflow-hidden border border-slate-800 flex items-center justify-center select-none cursor-grab" style="aspect-ratio: 1536 / 718; max-height: 520px;">
           
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
@@ -420,75 +472,32 @@
             </div>
           </div>
 
-          <!-- Floating Bottom-Right Play Button -->
-          <div class="absolute bottom-3 right-4 z-20">
-            <button onclick="toggleWalkSimulation()" class="bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xl shadow-blue-600/30 flex items-center gap-2 transition-all active:scale-95 border border-blue-400/40">
-              <i id="hud-sim-icon" class="fa-solid fa-location-arrow text-sm"></i>
-              <span id="hud-sim-btn-text">Recorrer con Flecha GPS</span>
-            </button>
-          </div>
+        </div>
 
+        <!-- Simulation and Controls Bar -->
+        <div class="mt-3 flex items-center justify-between gap-2">
+          <button onclick="toggleWalkSimulation()" class="flex-1 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition-all active:scale-95 border border-blue-400/40">
+            <i id="hud-sim-icon" class="fa-solid fa-location-arrow text-sm"></i>
+            <span id="hud-sim-btn-text">Recorrer con Flecha GPS</span>
+          </button>
+          <button onclick="centerOnNavArrow()" title="Centrar flecha GPS" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all">
+            <i class="fa-solid fa-crosshairs text-sm"></i>
+          </button>
         </div>
 
         <!-- Step By Step List Below Map -->
-        <div class="mt-3 bg-slate-900/90 rounded-xl p-3 border border-slate-800">
+        <div class="mt-3 bg-slate-950/80 rounded-2xl p-3.5 border border-slate-800">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">
               <i class="fa-solid fa-list-ol text-sky-400 mr-1"></i> Guía Visual Paso a Paso
             </span>
-            <span class="text-[11px] text-slate-400">Puntos de control y cambios de dirección</span>
+            <span id="chip-steps-count" class="text-[11px] text-purple-400 font-bold">4 pasos guiados</span>
           </div>
-          <div class="grid grid-cols-1 md:grid-cols-4 gap-2" id="route-steps-grid">
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-2" id="route-steps-grid">
             <!-- Populated by JS -->
           </div>
         </div>
 
-      </div>
-
-      <!-- OFFICIAL FLOOR LEGEND ACCORDION / EXPLORER -->
-      <div class="bg-slate-900/85 backdrop-blur-xl rounded-2xl p-4 md:p-5 border border-slate-800 shadow-xl">
-        <div class="flex items-center justify-between mb-2.5 flex-wrap gap-2">
-          <div class="flex items-center gap-2">
-            <i class="fa-solid fa-book-open text-sky-400 text-sm"></i>
-            <h3 class="text-xs font-bold text-white uppercase tracking-wide">
-              Directorio de Locales & Leyenda (<span id="legend-floor-title" class="text-sky-400">Nivel 1</span>)
-            </h3>
-          </div>
-          <span class="text-[11px] text-slate-400">Toca cualquier punto del mapa o directorio</span>
-        </div>
-
-        <!-- Quick Category Filter Chips -->
-        <div class="flex items-center gap-1.5 overflow-x-auto pb-2 mb-2 select-none" id="category-filter-chips">
-          <button id="cat-chip-all" onclick="filterByCategory('all')" class="category-chip active px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all bg-blue-600 text-white shadow-md flex items-center gap-1 flex-shrink-0 cursor-pointer">
-            <span>🏷️ Todos</span>
-          </button>
-          <button id="cat-chip-coffee" onclick="filterByCategory('coffee')" class="category-chip px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 flex-shrink-0 cursor-pointer">
-            <span>☕ Cafés & Postres</span>
-          </button>
-          <button id="cat-chip-food" onclick="filterByCategory('food')" class="category-chip px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 flex-shrink-0 cursor-pointer">
-            <span>🍔 Comida</span>
-          </button>
-          <button id="cat-chip-fashion" onclick="filterByCategory('fashion')" class="category-chip px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 flex-shrink-0 cursor-pointer">
-            <span>👗 Moda</span>
-          </button>
-          <button id="cat-chip-anchor" onclick="filterByCategory('anchor')" class="category-chip px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 flex-shrink-0 cursor-pointer">
-            <span>🛍️ Tiendas Ancla</span>
-          </button>
-          <button id="cat-chip-portal" onclick="filterByCategory('portal')" class="category-chip px-2.5 py-1 rounded-xl text-[10px] font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1 flex-shrink-0 cursor-pointer">
-            <span>🪜 Escaleras & Elevador</span>
-          </button>
-        </div>
-
-        <!-- Search / Filter in Legend -->
-        <div class="mb-2.5">
-          <input type="text" id="legend-search-input" name="search_store" aria-label="Buscar local por nombre" onkeyup="filterLegendList()" placeholder="🔍 Buscar local por nombre..." class="w-full bg-slate-900 border border-slate-700 text-white text-xs rounded-xl p-2.5 focus:ring-2 focus:ring-blue-500 focus:outline-none placeholder:text-slate-500">
-        </div>
-        <!-- Legend Items Container -->
-        <div class="max-h-52 overflow-y-auto pr-1">
-          <div id="legend-items-container" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-2">
-            <!-- Populated dynamically by JS -->
-          </div>
-        </div>
       </div>
 
     </div>
@@ -1759,20 +1768,26 @@
       const svgOverlay = document.getElementById('map-svg-overlay');
 
       [1, 2, 3].forEach(l => {
-        const btn = document.getElementById(`btn-lvl-${l}`);
-        if (l === lvl) {
-          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all bg-blue-600 text-white shadow-md";
-        } else {
-          btn.className = "px-3 py-1.5 rounded-lg text-xs font-bold transition-all text-slate-400 hover:text-white";
+        const btnDir = document.getElementById(`btn-lvl-${l}`);
+        if (btnDir) {
+          btnDir.className = l === lvl 
+            ? "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md"
+            : "px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white";
+        }
+        const btnMap = document.getElementById(`map-bar-btn-lvl-${l}`);
+        if (btnMap) {
+          btnMap.className = l === lvl
+            ? "px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md"
+            : "px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white";
         }
       });
 
-      img.src = spec.img;
-      title.innerText = spec.name;
-      count.innerText = spec.count;
+      if (img) img.src = spec.img;
+      if (title) title.innerText = spec.name;
+      if (count) count.innerText = spec.count;
       
-      container.style.aspectRatio = `${spec.width} / ${spec.height}`;
-      svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
+      if (container) container.style.aspectRatio = `${spec.width} / ${spec.height}`;
+      if (svgOverlay) svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
 
       closeNodePopup();
       renderLegendList();
@@ -1824,6 +1839,17 @@
         chipFloors.innerHTML = origNode.level === destNode.level ? 
           `<i class="fa-solid fa-circle-check mr-1"></i> Mismo nivel (${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')})` : 
           `<i class="fa-solid fa-stairs mr-1"></i> Nivel ${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')} → Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+      }
+
+      // Update Map View Target Header
+      const targetTitle = document.getElementById('map-target-title');
+      if (targetTitle) targetTitle.innerText = destNode.name || 'Destino';
+      const targetMetrics = document.getElementById('map-target-metrics');
+      if (targetMetrics) targetMetrics.innerText = `${distMeters} m · ~${walkMinutes} min a pie · Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+      const targetEmoji = document.getElementById('map-target-emoji');
+      if (targetEmoji) {
+        const info = getPlaceVisualInfo(destNode);
+        targetEmoji.innerText = info.emoji;
       }
 
       // Update Totem Bottom Bar
@@ -2524,15 +2550,80 @@
       }
     }
 
-    // Render Official Legend in Bottom Drawer
+    // --- KIOSK TWO-SCREEN FLOW: VIEW 1 (DIRECTORY) & VIEW 2 (MAP & NAVIGATION) ---
+    let currentKioskView = 'directory';
+
+    function showDirectoryView() {
+      currentKioskView = 'directory';
+      const dirEl = document.getElementById('view-directory');
+      const mapEl = document.getElementById('view-map');
+      if (dirEl && mapEl) {
+        mapEl.classList.add('hidden');
+        dirEl.classList.remove('hidden');
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: '#view-directory',
+            opacity: [0, 1],
+            translateY: [15, 0],
+            duration: 320,
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+    }
+
+    function showMapView(destId = null) {
+      currentKioskView = 'map';
+      const dirEl = document.getElementById('view-directory');
+      const mapEl = document.getElementById('view-map');
+      if (dirEl && mapEl) {
+        dirEl.classList.add('hidden');
+        mapEl.classList.remove('hidden');
+
+        if (destId) {
+          document.getElementById('dest-select').value = destId;
+          calculateRoute();
+        } else {
+          renderMapOverlay();
+          zoomToOverview(false);
+        }
+
+        if (typeof anime !== 'undefined') {
+          anime({
+            targets: '#view-map',
+            opacity: [0, 1],
+            translateY: [15, 0],
+            duration: 320,
+            easing: 'easeOutQuad'
+          });
+        }
+      }
+    }
+
+    function filterByCategory(cat) {
+      currentCategoryFilter = cat;
+      const chips = document.querySelectorAll('.category-chip');
+      chips.forEach(chip => {
+        chip.className = "category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer";
+      });
+      const activeChip = document.getElementById(`cat-chip-${cat}`);
+      if (activeChip) {
+        activeChip.className = "category-chip active px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md flex items-center gap-1.5 flex-shrink-0 cursor-pointer";
+      }
+      renderLegendList();
+    }
+
+    // Render Official Legend in Directory Screen
     function renderLegendList() {
       if (!mallLegends) return;
       const spec = FLOOR_SPECS[currentLevel];
       const legendFloor = mallLegends[spec.legendKey];
       if (!legendFloor) return;
 
-      document.getElementById('legend-floor-title').innerText = legendFloor.nombre;
+      const titleEl = document.getElementById('legend-floor-title');
+      if (titleEl) titleEl.innerText = legendFloor.nombre;
       const container = document.getElementById('legend-items-container');
+      if (!container) return;
       container.innerHTML = '';
 
       legendFloor.stores.forEach(s => {
@@ -2543,16 +2634,22 @@
 
         const info = getPlaceVisualInfo(node);
         const div = document.createElement('div');
-        div.className = "p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-blue-500/50 cursor-pointer transition-all flex items-center gap-2 group";
+        div.className = "p-3.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-500/60 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-md active:scale-[0.98]";
         div.onclick = () => {
-          showNodePopup(node);
           setTotemRoute(nodeId);
+          showMapView(nodeId);
         };
         div.innerHTML = `
-          <span class="w-6 h-6 rounded-full ${s.type === 'anchor_store' ? 'bg-orange-500 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-[10px] font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">${info.emoji}</span>
-          <div class="truncate">
-            <p class="text-xs text-slate-200 group-hover:text-white font-medium truncate">${s.name}</p>
-            <p class="text-[9px] text-slate-500 truncate">${info.category}</p>
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="w-10 h-10 rounded-2xl ${s.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-sm font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">${info.emoji}</span>
+            <div class="truncate">
+              <p class="text-xs font-bold text-white group-hover:text-sky-300 truncate">${s.name}</p>
+              <p class="text-[10px] text-slate-400 truncate mt-0.5">${info.category} · Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-blue-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-blue-400 transition-all flex-shrink-0">
+            <span>Ruta</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </div>
         `;
         container.appendChild(div);
@@ -2565,16 +2662,22 @@
         if (currentCategoryFilter !== 'all' && cat !== currentCategoryFilter) return;
 
         const div = document.createElement('div');
-        div.className = "p-2 rounded-lg bg-slate-900/80 hover:bg-slate-800 border border-slate-800 hover:border-sky-500/50 cursor-pointer transition-all flex items-center gap-2 group";
+        div.className = "p-3.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800/90 border border-slate-800 hover:border-sky-500/60 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-md active:scale-[0.98]";
         div.onclick = () => {
-          showNodePopup(node);
           setTotemRoute(nodeId);
+          showMapView(nodeId);
         };
         div.innerHTML = `
-          <span class="w-6 h-6 rounded-full bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-[10px] font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0">I${isl.id}</span>
-          <div class="truncate">
-            <p class="text-xs text-sky-200 group-hover:text-white font-medium truncate">${isl.name}</p>
-            <p class="text-[9px] text-slate-500">ISLA DE PASILLO</p>
+          <div class="flex items-center gap-3 min-w-0">
+            <span class="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-xs font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0">I${isl.id}</span>
+            <div class="truncate">
+              <p class="text-xs font-bold text-sky-200 group-hover:text-white truncate">${isl.name}</p>
+              <p class="text-[10px] text-slate-400 mt-0.5">ISLA DE PASILLO · Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}</p>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-sky-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-sky-400 transition-all flex-shrink-0">
+            <span>Ruta</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
           </div>
         `;
         container.appendChild(div);
@@ -2717,11 +2820,12 @@
         document.getElementById('dest-select').value = dest;
       }
 
-      if (orig && dest) {
-        calculateRoute();
+      if (dest) {
+        showMapView(dest);
       } else {
-        // Default initial demo route: Tótem Punto 12 -> Sfera (Nivel 1)
-        setTotemRoute("n_lvl2_store_17");
+        // Initial View: Start in Directory (Pantalla 1)
+        showDirectoryView();
+        setTotemRoute("n_lvl2_store_17"); // Preload default route in background
       }
 
       if (mode === 'mobile') {
@@ -2731,13 +2835,7 @@
 
     function applyMobileNavigationLayout() {
       document.body.classList.add('mobile-navigation-mode');
-      const leftPanel = document.getElementById('left-phone-panel');
-      if (leftPanel) {
-        const phoneScreen = leftPanel.querySelector('.totem-screen');
-        if (phoneScreen) {
-          phoneScreen.classList.remove('rounded-[42px]', 'border-[5px]', 'border-slate-800', 'shadow-2xl');
-        }
-      }
+      showMapView();
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
