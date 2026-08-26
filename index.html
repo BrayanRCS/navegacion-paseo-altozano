@@ -1172,8 +1172,10 @@
 
       isSimulating = true;
       isTransitioningFloor = false;
-      document.getElementById('hud-sim-icon').className = "fa-solid fa-pause";
-      document.getElementById('hud-sim-btn-text').innerText = "Pausar";
+      const hudIcon = document.getElementById('hud-sim-icon');
+      if (hudIcon) hudIcon.className = "fa-solid fa-pause";
+      const hudText = document.getElementById('hud-sim-btn-text');
+      if (hudText) hudText.innerText = "Pausar";
 
       // Ensure current level matches the current segment
       if (currentLevel !== routeSegments[simSegIndex].level) {
@@ -1813,15 +1815,22 @@
       const walkMinutes = Math.max(1, Math.round(distMeters / 75));
 
       // Update Summary Chips
-      document.getElementById('chip-dist').innerHTML = `<i class="fa-solid fa-ruler-horizontal mr-1"></i> ${distMeters} m`;
-      document.getElementById('chip-time').innerHTML = `<i class="fa-solid fa-clock mr-1"></i> ${walkMinutes} min a pie`;
-      document.getElementById('chip-floors').innerHTML = origNode.level === destNode.level ? 
-        `<i class="fa-solid fa-circle-check mr-1"></i> Mismo nivel (${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')})` : 
-        `<i class="fa-solid fa-stairs mr-1"></i> Nivel ${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')} → Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+      const chipDist = document.getElementById('chip-dist');
+      if (chipDist) chipDist.innerHTML = `<i class="fa-solid fa-ruler-horizontal mr-1"></i> ${distMeters} m`;
+      const chipTime = document.getElementById('chip-time');
+      if (chipTime) chipTime.innerHTML = `<i class="fa-solid fa-clock mr-1"></i> ${walkMinutes} min a pie`;
+      const chipFloors = document.getElementById('chip-floors');
+      if (chipFloors) {
+        chipFloors.innerHTML = origNode.level === destNode.level ? 
+          `<i class="fa-solid fa-circle-check mr-1"></i> Mismo nivel (${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')})` : 
+          `<i class="fa-solid fa-stairs mr-1"></i> Nivel ${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')} → Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+      }
 
       // Update Totem Bottom Bar
-      document.getElementById('route-time-dist').innerText = `${walkMinutes} min · ${distMeters} m`;
-      document.getElementById('route-dest-name').innerText = `a ${destNode.name || 'Destino'} · Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
+      const rTimeDist = document.getElementById('route-time-dist');
+      if (rTimeDist) rTimeDist.innerText = `${walkMinutes} min · ${distMeters} m`;
+      const rDestName = document.getElementById('route-dest-name');
+      if (rDestName) rDestName.innerText = `a ${destNode.name || 'Destino'} · Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
 
       // Build Step-by-Step Navigation with visual distance-based waypoints
       buildStepByStepList();
@@ -2062,20 +2071,27 @@
       if (currentSteps.length === 0) return;
       const step = currentSteps[currentStepIndex];
 
-      document.getElementById('step-number-tag').innerText = `PASO ${currentStepIndex + 1} DE ${currentSteps.length}`;
-      document.getElementById('step-level-tag').innerText = `Nivel ${step.level === 1 ? 'PB' : (step.level === 2 ? '1' : '2')}`;
-      document.getElementById('step-instruction-main').innerText = step.title;
-      document.getElementById('step-instruction-context').innerText = step.context;
-      document.getElementById('step-action-text').innerText = step.actionText;
+      const tagNumber = document.getElementById('step-number-tag');
+      if (tagNumber) tagNumber.innerText = `PASO ${currentStepIndex + 1} DE ${currentSteps.length}`;
+      const tagLevel = document.getElementById('step-level-tag');
+      if (tagLevel) tagLevel.innerText = `Nivel ${step.level === 1 ? 'PB' : (step.level === 2 ? '1' : '2')}`;
+      const mainInstr = document.getElementById('step-instruction-main');
+      if (mainInstr) mainInstr.innerText = step.title;
+      const ctxInstr = document.getElementById('step-instruction-context');
+      if (ctxInstr) ctxInstr.innerText = step.context;
+      const actionTxt = document.getElementById('step-action-text');
+      if (actionTxt) actionTxt.innerText = step.actionText;
 
       // Update progress bar segments
       const barContainer = document.getElementById('step-progress-bars');
-      barContainer.innerHTML = '';
-      barContainer.style.gridTemplateColumns = `repeat(${currentSteps.length}, minmax(0, 1fr))`;
-      for (let i = 0; i < currentSteps.length; i++) {
-        const seg = document.createElement('div');
-        seg.className = `h-1.5 rounded-full transition-all duration-300 ${i <= currentStepIndex ? 'bg-blue-500' : 'bg-slate-700'}`;
-        barContainer.appendChild(seg);
+      if (barContainer) {
+        barContainer.innerHTML = '';
+        barContainer.style.gridTemplateColumns = `repeat(${currentSteps.length}, minmax(0, 1fr))`;
+        for (let i = 0; i < currentSteps.length; i++) {
+          const seg = document.createElement('div');
+          seg.className = `h-1.5 rounded-full transition-all duration-300 ${i <= currentStepIndex ? 'bg-blue-500' : 'bg-slate-700'}`;
+          barContainer.appendChild(seg);
+        }
       }
 
       // Update bottom steps list highlight
