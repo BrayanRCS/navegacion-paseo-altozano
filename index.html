@@ -51,14 +51,46 @@
       }
     }
 
-    /* Google Maps Blue Nav Puck Pulse */
+    /* Google Maps Dual-Ring GPS Nav Puck Pulse */
     .nav-puck-pulse {
       animation: puckPulse 1.8s ease-out infinite;
       transform-origin: center;
     }
+    .nav-puck-pulse-2 {
+      animation: puckPulse 1.8s ease-out 0.6s infinite;
+      transform-origin: center;
+    }
     @keyframes puckPulse {
-      0% { r: 12; opacity: 0.8; }
-      100% { r: 32; opacity: 0; }
+      0% { r: 10; opacity: 0.9; }
+      100% { r: 42; opacity: 0; }
+    }
+
+    /* Ad Banner Shimmer Reflection */
+    .ad-shimmer-layer {
+      background: linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.09) 50%, transparent 100%);
+      background-size: 200% 100%;
+      animation: shimmerAd 3.8s infinite;
+    }
+    @keyframes shimmerAd {
+      0% { background-position: -200% 0; }
+      100% { background-position: 200% 0; }
+    }
+
+    /* Landmark Active Proximity Halo */
+    .landmark-halo-pulse {
+      animation: landmarkPulse 1.4s ease-in-out infinite alternate;
+    }
+    @keyframes landmarkPulse {
+      0% { transform: scale(1); filter: drop-shadow(0 0 4px #38bdf8); }
+      100% { transform: scale(1.22); filter: drop-shadow(0 0 16px #0ea5e9); }
+    }
+
+    /* 3D Perspective Mode for Smartphones */
+    .map-3d-active {
+      perspective: 900px !important;
+    }
+    .map-3d-active #map-camera-stage {
+      transform-origin: 50% 60% !important;
     }
 
     /* Hardware-Accelerated Nav Arrow Cursor & Camera Stage (Driven by Anime.js) */
@@ -417,10 +449,11 @@
 
               <!-- ICONIC GOOGLE MAPS NAVIGATION ARROW (Blue Puck with Directional Chevron & Heading Beam) -->
               <g id="svg-nav-arrow-cursor" style="display: none;" transform="translate(0,0)">
-                <!-- Pulsing GPS Radar Ring -->
+                <!-- Multi-Tier Pulsing GPS Radar Waves -->
                 <circle cx="0" cy="0" r="14" fill="none" stroke="#38bdf8" stroke-width="2.5" class="nav-puck-pulse"></circle>
+                <circle cx="0" cy="0" r="14" fill="rgba(56, 189, 248, 0.18)" stroke="#0284c7" stroke-width="1.5" class="nav-puck-pulse-2"></circle>
                 <!-- Heading Beam Cone -->
-                <path d="M 0 0 L -22 -48 L 22 -48 Z" fill="rgba(56, 189, 248, 0.22)" stroke="rgba(56, 189, 248, 0.4)" stroke-width="1"></path>
+                <path d="M 0 0 L -22 -48 L 22 -48 Z" fill="rgba(56, 189, 248, 0.25)" stroke="rgba(56, 189, 248, 0.5)" stroke-width="1"></path>
                 <!-- Outer Blue Puck Circle with White Border & Shadow -->
                 <circle cx="0" cy="0" r="14" fill="#1d4ed8" stroke="#ffffff" stroke-width="3" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
                 <!-- Central Crisp Navigation Chevron Arrow (Google Maps Style) -->
@@ -431,6 +464,10 @@
 
           <!-- Floating Camera Controls Toolbar (Top-Right) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 shadow-xl">
+            <button onclick="toggle3DMode()" id="btn-3d-toggle" title="Perspectiva 3D / 2D" class="px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-extrabold text-[10px] flex items-center gap-1 transition-all border border-slate-700">
+              <i class="fa-solid fa-cube text-[10px] text-indigo-400"></i>
+              <span>3D</span>
+            </button>
             <button onclick="toggleZoomOverview()" id="btn-zoom-toggle" title="Ver Ruta Completa / Acercar" class="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
               <i id="zoom-toggle-icon" class="fa-solid fa-expand text-xs"></i>
               <span id="zoom-toggle-text">Ver Todo</span>
@@ -511,8 +548,11 @@
     
     <!-- 1. TOP ADVERTISING BANNER (BANNER PUBLICITARIO SUPERIOR) -->
     <div id="mobile-ad-banner" class="rounded-3xl p-4 text-white relative overflow-hidden border border-emerald-500/30 shadow-2xl bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950">
-      <div class="flex justify-between items-start">
-        <div class="z-10 max-w-[75%]">
+      <!-- GPU Shimmer Light Reflection Effect -->
+      <div class="ad-shimmer-layer absolute inset-0 pointer-events-none"></div>
+
+      <div class="flex justify-between items-start relative z-10">
+        <div class="max-w-[75%]">
           <div class="flex items-center gap-1.5 mb-1">
             <span class="text-[9px] font-extrabold tracking-widest uppercase bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30">ANUNCIO DESTACADO</span>
             <span class="text-[9px] text-emerald-400 font-bold">Nivel 1</span>
@@ -946,7 +986,42 @@
       }
     }
 
-    // --- DYNAMIC CAMERA ZOOM & PAN ENGINE ---
+    // --- DYNAMIC HIGH-POWER CAMERA ZOOM & PAN ENGINE ---
+    function getDynamicZoomLevel(isSim = false) {
+      const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
+      if (isMobile) {
+        return isSim ? 3.85 : 3.25; // Super strong cinematic zoom on mobile!
+      }
+      return isSim ? 2.6 : 1.85;
+    }
+
+    let is3DModeActive = false;
+    function toggle3DMode() {
+      is3DModeActive = !is3DModeActive;
+      const container = document.getElementById('map-container');
+      const btn3d = document.getElementById('btn-3d-toggle');
+      if (container) {
+        if (is3DModeActive) {
+          container.classList.add('map-3d-active');
+          if (btn3d) btn3d.className = "px-2 py-1.5 rounded-lg bg-indigo-600 text-white font-extrabold text-[10px] shadow-lg border border-indigo-400";
+        } else {
+          container.classList.remove('map-3d-active');
+          if (btn3d) btn3d.className = "px-2 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white font-extrabold text-[10px] flex items-center gap-1 transition-all border border-slate-700";
+        }
+      }
+      triggerHaptic('light');
+    }
+
+    function triggerHaptic(type = 'light') {
+      if ('vibrate' in navigator) {
+        try {
+          if (type === 'light') navigator.vibrate(22);
+          else if (type === 'medium') navigator.vibrate([35, 20, 35]);
+          else if (type === 'success') navigator.vibrate([45, 30, 70]);
+        } catch (e) {}
+      }
+    }
+
     const NAVIGATION_ZOOM_LEVEL = 1.85;
     let showGraphClutter = false;
 
@@ -956,12 +1031,17 @@
       if (edgesLayer) {
         edgesLayer.style.display = showGraphClutter ? 'block' : 'none';
       }
+      triggerHaptic('light');
     }
 
-    function zoomToCoordinates(x, y, targetScale = NAVIGATION_ZOOM_LEVEL, animate = true) {
+    function zoomToCoordinates(x, y, targetScale = null, animate = true) {
       const container = document.getElementById('map-container');
       const stage = document.getElementById('map-camera-stage');
       if (!container || !stage) return;
+
+      if (targetScale === null) {
+        targetScale = getDynamicZoomLevel(isSimulating);
+      }
 
       const spec = FLOOR_SPECS[currentLevel];
       const cw = container.clientWidth;
@@ -993,7 +1073,7 @@
       const panY = (ch / 2) - (pixelY * targetScale);
 
       if (animate) {
-        NavAnimator.animateCameraTo(panX, panY, targetScale, 600);
+        NavAnimator.animateCameraTo(panX, panY, targetScale, 650);
       } else {
         currentCamera.scale = targetScale;
         currentCamera.panX = panX;
@@ -1270,6 +1350,7 @@
 
     // --- MULTI-FLOOR NAVIGATION ARROW SIMULATION (GPS Style) ---
     function toggleWalkSimulation() {
+      triggerHaptic('light');
       if (isSimulating) {
         stopWalkSimulation();
       } else {
@@ -1279,6 +1360,7 @@
 
     function startWalkSimulation() {
       if (routeSegments.length === 0) return;
+      triggerHaptic('medium');
 
       // If already at the end of the route, restart cleanly from step 0
       const isAtEnd = currentStepIndex >= currentSteps.length - 1 || 
@@ -1307,16 +1389,16 @@
         switchLevel(routeSegments[simSegIndex].level);
       }
 
-      // Initial Zoom to starting node of the walk
+      // Initial Ultra-Close Zoom to starting node of the walk
       const seg = routeSegments[simSegIndex];
       if (seg && seg.path.length > 0) {
         const startNode = seg.path[Math.min(simNodeIndex, seg.path.length - 1)];
-        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+        zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true);
       }
 
       clearInterval(simInterval);
       runSimulationStep();
-      simInterval = setInterval(runSimulationStep, 1200);
+      simInterval = setInterval(runSimulationStep, 1100);
     }
 
     function runSimulationStep() {
@@ -1338,6 +1420,7 @@
           // Cross-floor transition (Escalator / Elevator)
           isTransitioningFloor = true;
           const nextSeg = routeSegments[simSegIndex + 1];
+          triggerHaptic('medium');
           
           // Find transition step in currentSteps
           const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
@@ -1357,7 +1440,7 @@
             if (nextSeg.path.length > 0) {
               const startN = nextSeg.path[0];
               updatePlaceCard(startN);
-              zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+              zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true);
             }
           }, 1400);
           return;
@@ -1368,6 +1451,7 @@
           updatePlaceCard(destN, true);
           updateTotemUI(false);
           isTransitioningFloor = true;
+          triggerHaptic('success');
 
           // Pause 2.2s on destination, then continuously loop back to start unless paused by user
           setTimeout(() => {
@@ -1389,7 +1473,7 @@
             if (routeSegments[0] && routeSegments[0].path.length > 0) {
               const startNode = routeSegments[0].path[0];
               updatePlaceCard(startNode);
-              zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+              zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true);
             }
           }, 2200);
           return;
@@ -1402,8 +1486,8 @@
       // Position & Smoothly Glide Nav Arrow
       positionNavArrowOnNode(curr, next, true);
 
-      // Smooth Camera Tracking (Keep GPS Arrow Centered in Zoomed Mode)
-      zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+      // Smooth Camera Tracking (Keep GPS Arrow Centered in Zoomed Mode with strong mobile focus)
+      zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true);
 
       // Update Live Place & Landmark Preview Card
       const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex === pathNodes.length - 1);
@@ -1414,6 +1498,7 @@
       if (matchingStepIdx !== -1 && matchingStepIdx !== currentStepIndex) {
         currentStepIndex = matchingStepIdx;
         updateTotemUI(false);
+        triggerHaptic('light');
       }
 
       simNodeIndex++;
@@ -2313,13 +2398,14 @@
 
         // Zoom & center camera on active step waypoint
         if (step.node && step.node.level === currentLevel) {
-          zoomToCoordinates(step.node.coordinates.x, step.node.coordinates.y, NAVIGATION_ZOOM_LEVEL, true);
+          zoomToCoordinates(step.node.coordinates.x, step.node.coordinates.y, getDynamicZoomLevel(false), true);
         }
       }
     }
 
     function nextNavStep() {
       stopWalkSimulation();
+      triggerHaptic('light');
       if (currentStepIndex < currentSteps.length - 1) {
         currentStepIndex++;
       } else {
