@@ -504,6 +504,120 @@
 
   </main>
 
+  <!-- ======================================================== -->
+  <!-- EXCLUSIVE SMARTPHONE MOBILE VIEW (TRIGGERED VIA QR CODE) -->
+  <!-- ======================================================== -->
+  <div id="view-mobile-app" class="hidden min-h-screen w-full max-w-lg mx-auto flex flex-col p-3 md:p-4 gap-3 bg-slate-950">
+    
+    <!-- 1. TOP ADVERTISING BANNER (BANNER PUBLICITARIO SUPERIOR) -->
+    <div id="mobile-ad-banner" class="rounded-3xl p-4 text-white relative overflow-hidden border border-emerald-500/30 shadow-2xl bg-gradient-to-br from-emerald-950 via-slate-900 to-emerald-950">
+      <div class="flex justify-between items-start">
+        <div class="z-10 max-w-[75%]">
+          <div class="flex items-center gap-1.5 mb-1">
+            <span class="text-[9px] font-extrabold tracking-widest uppercase bg-emerald-500/20 text-emerald-300 px-2.5 py-0.5 rounded-full border border-emerald-500/30">ANUNCIO DESTACADO</span>
+            <span class="text-[9px] text-emerald-400 font-bold">Nivel 1</span>
+          </div>
+          <h3 class="text-base font-black leading-tight text-white">Tu momento. Tu Starbucks.</h3>
+          <p class="text-[11px] font-semibold text-emerald-300 mt-0.5">2x1 en Bebidas Seleccionadas hasta las 6 PM</p>
+        </div>
+        <div class="w-11 h-11 rounded-2xl bg-emerald-900/90 border border-emerald-400/40 flex items-center justify-center p-1 shadow-inner flex-shrink-0">
+          <i class="fa-solid fa-mug-hot text-emerald-300 text-xl"></i>
+        </div>
+      </div>
+
+      <!-- Promo Products Visual Pill -->
+      <div class="mt-3 flex items-center justify-around bg-emerald-950/80 rounded-2xl p-2 border border-emerald-800/50 text-center">
+        <div class="flex items-center gap-1.5">
+          <span class="text-xl">☕</span>
+          <span class="text-[10px] text-emerald-200 font-bold">Caramel Macchiato</span>
+        </div>
+        <div class="h-3.5 w-px bg-emerald-800"></div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-xl">🥤</span>
+          <span class="text-[10px] text-emerald-200 font-bold">Frappuccino</span>
+        </div>
+        <div class="h-3.5 w-px bg-emerald-800"></div>
+        <div class="flex items-center gap-1.5">
+          <span class="text-xl">🍵</span>
+          <span class="text-[10px] text-emerald-200 font-bold">Iced Matcha</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- 2. ROUTE DESTINATION HEADER WITH FLOOR SELECTOR -->
+    <div class="bg-slate-900/90 backdrop-blur-xl rounded-2xl p-3.5 border border-slate-800 flex items-center justify-between gap-2 shadow-lg">
+      <div class="flex items-center gap-2.5 min-w-0">
+        <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 flex items-center justify-center text-lg shadow-md flex-shrink-0">
+          <span id="mobile-target-emoji">🎯</span>
+        </div>
+        <div class="truncate">
+          <span class="text-[9px] uppercase font-extrabold text-sky-400 tracking-wider block">DESTINO EN TU CELULAR</span>
+          <h4 id="mobile-target-title" class="text-sm font-extrabold text-white truncate">Starbucks</h4>
+        </div>
+      </div>
+
+      <div class="flex items-center gap-1 bg-slate-950 p-1 rounded-xl border border-slate-800 flex-shrink-0">
+        <button onclick="switchLevel(1)" id="mob-lvl-1" class="px-2 py-1 rounded-lg text-[10px] font-bold text-slate-400">PB</button>
+        <button onclick="switchLevel(2)" id="mob-lvl-2" class="px-2 py-1 rounded-lg text-[10px] font-bold bg-blue-600 text-white">N1</button>
+        <button onclick="switchLevel(3)" id="mob-lvl-3" class="px-2 py-1 rounded-lg text-[10px] font-bold text-slate-400">N2</button>
+      </div>
+    </div>
+
+    <!-- 3. MOBILE INTERACTIVE MAP CANVAS -->
+    <div id="mobile-map-slot" class="w-full relative rounded-3xl overflow-hidden shadow-2xl border border-slate-800 flex-1 min-h-[350px]">
+      <!-- Map is attached here when in mobile mode -->
+    </div>
+
+    <!-- 4. FLOATING STEP BY STEP NAVIGATION CARD (GUÍA VISUAL PASO A PASO) -->
+    <div class="bg-slate-900/95 backdrop-blur-xl border border-sky-500/30 rounded-3xl p-4 shadow-2xl flex flex-col gap-2.5">
+      
+      <!-- Step Tag and Floor -->
+      <div class="flex items-center justify-between text-xs font-bold text-sky-400">
+        <span id="mobile-step-number" class="uppercase tracking-wider">PASO 1 DE 3</span>
+        <span id="mobile-step-level" class="text-[11px] px-2.5 py-0.5 bg-sky-950 text-sky-300 rounded-full border border-sky-800">Nivel 1</span>
+      </div>
+
+      <!-- Step Guidance Row -->
+      <div class="flex items-start gap-3">
+        <div class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 flex items-center justify-center text-white text-xl shadow-lg shadow-blue-600/30 flex-shrink-0">
+          <i id="mobile-step-icon" class="fa-solid fa-arrow-turn-up text-white" style="transform: rotate(90deg);"></i>
+        </div>
+        <div class="flex-1 min-w-0">
+          <h4 id="mobile-step-title" class="text-sm font-extrabold text-white leading-tight">Inicia tu recorrido</h4>
+          <p id="mobile-step-context" class="text-xs text-slate-300 font-medium mt-0.5 leading-snug">Avanza por el pasillo principal hacia Starbucks</p>
+        </div>
+      </div>
+
+      <!-- Progress Segments -->
+      <div class="grid grid-cols-4 gap-1.5 my-0.5" id="mobile-step-progress"></div>
+
+      <!-- Controls Row -->
+      <div class="flex items-center gap-2 mt-1">
+        <button onclick="nextNavStep()" class="flex-1 py-3.5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs transition-all border border-blue-400/30 shadow-lg shadow-blue-600/25 flex items-center justify-center gap-1.5 active:scale-95">
+          <span id="mobile-step-action-btn-text">Paso siguiente</span>
+          <i class="fa-solid fa-chevron-right text-[10px]"></i>
+        </button>
+        <button onclick="toggleWalkSimulation()" title="Recorrer con GPS" class="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-base transition-all flex items-center justify-center border border-slate-700 shadow-md active:scale-95">
+          <i id="mobile-sim-icon" class="fa-solid fa-location-arrow"></i>
+        </button>
+        <button onclick="centerOnNavArrow()" title="Centrar GPS" class="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base transition-all flex items-center justify-center border border-slate-700 shadow-md active:scale-95">
+          <i class="fa-solid fa-crosshairs"></i>
+        </button>
+      </div>
+
+      <!-- Distance and Walk Time Footer -->
+      <div class="flex items-center justify-between text-xs text-slate-400 pt-1 border-t border-slate-800/80 font-medium">
+        <span class="flex items-center gap-1 text-emerald-400 font-bold">
+          <i class="fa-solid fa-person-walking"></i>
+          <span id="mobile-target-metrics">85 m · ~1 min a pie</span>
+        </span>
+        <span class="text-[11px] text-slate-500">Paseo Altozano GPS</span>
+      </div>
+
+    </div>
+
+  </div>
+
   <!-- QR CODE MODAL (Decentralized Multi-User Mobile Routing) -->
   <div id="qr-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
     <div class="bg-slate-900 border border-sky-500/40 rounded-3xl p-6 max-w-md w-full shadow-2xl relative text-center flex flex-col items-center">
@@ -1185,6 +1299,8 @@
       if (hudIcon) hudIcon.className = "fa-solid fa-pause";
       const hudText = document.getElementById('hud-sim-btn-text');
       if (hudText) hudText.innerText = "Pausar";
+      const mSimIcon = document.getElementById('mobile-sim-icon');
+      if (mSimIcon) mSimIcon.className = "fa-solid fa-pause";
 
       // Ensure current level matches the current segment
       if (currentLevel !== routeSegments[simSegIndex].level) {
@@ -1307,8 +1423,12 @@
       isSimulating = false;
       isTransitioningFloor = false;
       clearInterval(simInterval);
-      document.getElementById('hud-sim-icon').className = "fa-solid fa-location-arrow";
-      document.getElementById('hud-sim-btn-text').innerText = "Recorrer con Flecha GPS";
+      const hudIcon = document.getElementById('hud-sim-icon');
+      if (hudIcon) hudIcon.className = "fa-solid fa-location-arrow";
+      const hudText = document.getElementById('hud-sim-btn-text');
+      if (hudText) hudText.innerText = "Recorrer con Flecha GPS";
+      const mSimIcon = document.getElementById('mobile-sim-icon');
+      if (mSimIcon) mSimIcon.className = "fa-solid fa-location-arrow";
     }
 
     // --- VISUAL PLACE & LANDMARK RECOGNITION ENGINE ---
@@ -1780,13 +1900,21 @@
             ? "px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md"
             : "px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white";
         }
+        const btnMob = document.getElementById(`mob-lvl-${l}`);
+        if (btnMob) {
+          btnMob.className = l === lvl
+            ? "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-blue-600 text-white shadow-md"
+            : "px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white";
+        }
       });
 
       if (img) img.src = spec.img;
       if (title) title.innerText = spec.name;
       if (count) count.innerText = spec.count;
       
-      if (container) container.style.aspectRatio = `${spec.width} / ${spec.height}`;
+      if (container && !document.body.classList.contains('mobile-navigation-mode')) {
+        container.style.aspectRatio = `${spec.width} / ${spec.height}`;
+      }
       if (svgOverlay) svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
 
       closeNodePopup();
@@ -1841,16 +1969,23 @@
           `<i class="fa-solid fa-stairs mr-1"></i> Nivel ${origNode.level === 1 ? 'PB' : (origNode.level === 2 ? '1' : '2')} → Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
       }
 
+      const visualInfo = getPlaceVisualInfo(destNode);
+
       // Update Map View Target Header
       const targetTitle = document.getElementById('map-target-title');
       if (targetTitle) targetTitle.innerText = destNode.name || 'Destino';
       const targetMetrics = document.getElementById('map-target-metrics');
       if (targetMetrics) targetMetrics.innerText = `${distMeters} m · ~${walkMinutes} min a pie · Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
       const targetEmoji = document.getElementById('map-target-emoji');
-      if (targetEmoji) {
-        const info = getPlaceVisualInfo(destNode);
-        targetEmoji.innerText = info.emoji;
-      }
+      if (targetEmoji) targetEmoji.innerText = visualInfo.emoji;
+
+      // Sync Mobile View Header
+      const mTargetTitle = document.getElementById('mobile-target-title');
+      if (mTargetTitle) mTargetTitle.innerText = destNode.name || 'Destino';
+      const mTargetMetrics = document.getElementById('mobile-target-metrics');
+      if (mTargetMetrics) mTargetMetrics.innerText = `${distMeters} m · ~${walkMinutes} min a pie`;
+      const mTargetEmoji = document.getElementById('mobile-target-emoji');
+      if (mTargetEmoji) mTargetEmoji.innerText = visualInfo.emoji;
 
       // Update Totem Bottom Bar
       const rTimeDist = document.getElementById('route-time-dist');
@@ -2117,6 +2252,34 @@
           const seg = document.createElement('div');
           seg.className = `h-1.5 rounded-full transition-all duration-300 ${i <= currentStepIndex ? 'bg-blue-500' : 'bg-slate-700'}`;
           barContainer.appendChild(seg);
+        }
+      }
+
+      // Sync Mobile Guidance Card UI
+      const mStepNumber = document.getElementById('mobile-step-number');
+      if (mStepNumber) mStepNumber.innerText = `PASO ${currentStepIndex + 1} DE ${currentSteps.length}`;
+      const mStepLevel = document.getElementById('mobile-step-level');
+      if (mStepLevel) mStepLevel.innerText = `Nivel ${step.level === 1 ? 'PB' : (step.level === 2 ? '1' : '2')}`;
+      const mStepTitle = document.getElementById('mobile-step-title');
+      if (mStepTitle) mStepTitle.innerText = step.title;
+      const mStepCtx = document.getElementById('mobile-step-context');
+      if (mStepCtx) mStepCtx.innerText = step.context;
+      const mActionText = document.getElementById('mobile-step-action-btn-text');
+      if (mActionText) mActionText.innerText = step.actionText || (currentStepIndex === currentSteps.length - 1 ? 'Finalizar' : 'Paso siguiente');
+      const mIcon = document.getElementById('mobile-step-icon');
+      if (mIcon) {
+        mIcon.className = `fa-solid ${step.icon || 'fa-arrow-up'} text-white text-xl`;
+      }
+
+      // Mobile Step Progress Bars
+      const mProgress = document.getElementById('mobile-step-progress');
+      if (mProgress) {
+        mProgress.innerHTML = '';
+        mProgress.style.gridTemplateColumns = `repeat(${currentSteps.length}, minmax(0, 1fr))`;
+        for (let i = 0; i < currentSteps.length; i++) {
+          const seg = document.createElement('div');
+          seg.className = `h-1.5 rounded-full transition-all duration-300 ${i <= currentStepIndex ? 'bg-blue-500' : 'bg-slate-700'}`;
+          mProgress.appendChild(seg);
         }
       }
 
@@ -2835,7 +2998,42 @@
 
     function applyMobileNavigationLayout() {
       document.body.classList.add('mobile-navigation-mode');
-      showMapView();
+      
+      // Hide Kiosk Header and Kiosk Main
+      const totemHeader = document.querySelector('header');
+      if (totemHeader) totemHeader.style.display = 'none';
+      
+      const mainKiosk = document.querySelector('main');
+      if (mainKiosk) mainKiosk.style.display = 'none';
+
+      // Show Exclusive Mobile View Container
+      const mobileApp = document.getElementById('view-mobile-app');
+      if (mobileApp) mobileApp.classList.remove('hidden');
+
+      // Move Map Container into Mobile Map Slot
+      const mapContainer = document.getElementById('map-container');
+      const mobileMapSlot = document.getElementById('mobile-map-slot');
+      if (mapContainer && mobileMapSlot) {
+        mobileMapSlot.appendChild(mapContainer);
+        mapContainer.style.maxHeight = 'none';
+        mapContainer.style.aspectRatio = 'auto';
+        mapContainer.style.minHeight = '350px';
+        mapContainer.style.height = '100%';
+      }
+
+      // Sync destination info in mobile header
+      const destId = document.getElementById('dest-select').value;
+      const destNode = mallGraph ? mallGraph.nodes.find(n => n.id === destId) : null;
+      if (destNode) {
+        const info = getPlaceVisualInfo(destNode);
+        const mEmoji = document.getElementById('mobile-target-emoji');
+        if (mEmoji) mEmoji.innerText = info.emoji;
+        const mTitle = document.getElementById('mobile-target-title');
+        if (mTitle) mTitle.innerText = destNode.name || 'Destino';
+      }
+
+      updateTotemUI(true);
+      zoomToOverview(false);
     }
 
     window.addEventListener('DOMContentLoaded', initApp);
