@@ -1384,6 +1384,10 @@
       const mSimIcon = document.getElementById('mobile-sim-icon');
       if (mSimIcon) mSimIcon.className = "fa-solid fa-pause";
 
+      // Hide graph nodes during navigation/play for a super clean view
+      const nodesLayer = document.getElementById('svg-nodes-layer');
+      if (nodesLayer) nodesLayer.style.display = 'none';
+
       // Ensure current level matches the current segment
       if (currentLevel !== routeSegments[simSegIndex].level) {
         switchLevel(routeSegments[simSegIndex].level);
@@ -1514,6 +1518,10 @@
       if (hudText) hudText.innerText = "Recorrer con Flecha GPS";
       const mSimIcon = document.getElementById('mobile-sim-icon');
       if (mSimIcon) mSimIcon.className = "fa-solid fa-location-arrow";
+
+      // Restore graph nodes visibility
+      const nodesLayer = document.getElementById('svg-nodes-layer');
+      if (nodesLayer) nodesLayer.style.display = 'block';
     }
 
     // --- VISUAL PLACE & LANDMARK RECOGNITION ENGINE ---
@@ -2589,6 +2597,9 @@
 
       nodesLayer.innerHTML = '';
       edgesLayer.innerHTML = '';
+
+      // Auto-hide intermediate nodes during active Play / Walk simulation for clean view
+      nodesLayer.style.display = isSimulating ? 'none' : 'block';
 
       // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
       if (currentLevel === 2) {
