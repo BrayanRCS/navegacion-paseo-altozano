@@ -112,6 +112,9 @@ Este documento contiene la lista completa de tiendas, islas, locales comerciales
 | 64 | **Moyo** | *Isla:* Yogurt Helado | [ ] Pendiente | |
 | 65 | **M-Caps** | *Isla:* Gorras Exclusivas | [ ] Pendiente | |
 | 66 | **Coven** | Ropa & Calzado | [ ] Pendiente | Próximamente |
+| 67 | **Watch 2 Go** | Relojería & Accesorios | [x] Recibido | |
+| 68 | **Axen Health** | Salud, Bienestar & Estética | [x] Recibido | |
+| 69 | **GNC** | Nutrición & Suplementos | [ ] Pendiente | |
 
 ---
 
