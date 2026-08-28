@@ -956,8 +956,8 @@
     async function initApp() {
       try {
         const [resGraph, resLegends] = await Promise.all([
-          fetch('mall_graph.json'),
-          fetch('gemini-code-1787086839436.json')
+          fetch('mall_graph.json?t=' + Date.now()),
+          fetch('gemini-code-1787086839436.json?t=' + Date.now())
         ]);
         
         mallGraph = await resGraph.json();
@@ -1651,7 +1651,7 @@
       if (name.includes('burger') || name.includes('carl') || name.includes('domino') || name.includes('pizza') || name.includes('wing') || name.includes('infierno') || name.includes('taco') || name.includes('chilim')) {
         return { emoji: '🍔', category: 'COMIDA RÁPIDA & SNACKS', bgGradient: 'from-amber-600 to-orange-800', name: node.name, detail: 'Área gastronómica y antojos' };
       }
-      if (name.includes('fisher') || name.includes('unagi') || name.includes('jana') || name.includes('mammut') || name.includes('bistrot') || name.includes('restauran')) {
+      if (name.includes('fisher') || name.includes('unagi') || name.includes('jana') || name.includes('mammut') || name.includes('jimenez') || name.includes('jiménez') || name.includes('bistrot') || name.includes('restauran')) {
         return { emoji: '🍣', category: 'RESTAURANTE & TERRAZA', bgGradient: 'from-teal-600 to-emerald-900', name: node.name, detail: 'Restaurante con vista panorámica en Terraza' };
       }
 
@@ -2546,7 +2546,7 @@
       if (name.includes('starbucks') || name.includes('cafe') || name.includes('café') || name.includes('moyo') || name.includes('nutrisa') || name.includes('helad') || name.includes('ice') || name.includes('crepe') || name.includes('chocolat')) {
         return 'coffee';
       }
-      if (name.includes('sanborns') || name.includes('burger') || name.includes('carl') || name.includes('domino') || name.includes('pizza') || name.includes('wing') || name.includes('infierno') || name.includes('taco') || name.includes('chilim') || name.includes('fisher') || name.includes('unagi') || name.includes('jana') || name.includes('mammut') || name.includes('bistrot') || name.includes('restauran') || name.includes('food') || name.includes('sushi')) {
+      if (name.includes('sanborns') || name.includes('burger') || name.includes('carl') || name.includes('domino') || name.includes('pizza') || name.includes('wing') || name.includes('infierno') || name.includes('taco') || name.includes('chilim') || name.includes('fisher') || name.includes('unagi') || name.includes('jana') || name.includes('mammut') || name.includes('jimenez') || name.includes('jiménez') || name.includes('bistrot') || name.includes('restauran') || name.includes('food') || name.includes('sushi')) {
         return 'food';
       }
       if (name.includes('sfera') || name.includes('zara') || name.includes('h&m') || name.includes('c&a') || name.includes('gap') || name.includes('studio') || name.includes('guess') || name.includes('eagle') || name.includes('tommy') || name.includes('springfield') || name.includes('women') || name.includes('flexi') || name.includes('adidas') || name.includes('salomon') || name.includes('sport') || name.includes('dpstreet') || name.includes('dportenis') || name.includes('moda') || name.includes('shoes') || name.includes('boutique')) {
