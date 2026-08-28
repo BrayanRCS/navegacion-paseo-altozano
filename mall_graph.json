@@ -1,7 +1,7 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 210,
-  "total_edges": 592,
+  "total_nodes": 211,
+  "total_edges": 598,
   "nodes": [
     {
       "id": "n_lvl1_store_1",
@@ -2292,6 +2292,17 @@
         "y": 300
       },
       "context_element": "Anytime Fitness"
+    },
+    {
+      "id": "n_lvl3_store_30",
+      "level": 3,
+      "type": "store",
+      "name": "Jiménez+",
+      "coordinates": {
+        "x": 1086,
+        "y": 143
+      },
+      "context_element": null
     }
   ],
   "edges": [
@@ -5254,6 +5265,36 @@
       "from": "n_lvl3_portal_esc_anytime",
       "to": "n_lvl2_portal_esc_automotive",
       "weight": 50
+    },
+    {
+      "from": "n_lvl3_store_30",
+      "to": "n_lvl3_c_cinelia_3",
+      "weight": 94.0
+    },
+    {
+      "from": "n_lvl3_c_cinelia_3",
+      "to": "n_lvl3_store_30",
+      "weight": 94.0
+    },
+    {
+      "from": "n_lvl3_store_30",
+      "to": "n_lvl3_c_fitness",
+      "weight": 183.0
+    },
+    {
+      "from": "n_lvl3_c_fitness",
+      "to": "n_lvl3_store_30",
+      "weight": 183.0
+    },
+    {
+      "from": "n_lvl3_store_30",
+      "to": "n_lvl3_c_biz_1",
+      "weight": 167.6
+    },
+    {
+      "from": "n_lvl3_c_biz_1",
+      "to": "n_lvl3_store_30",
+      "weight": 167.6
     }
   ]
 }

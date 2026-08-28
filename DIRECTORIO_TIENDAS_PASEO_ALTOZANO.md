@@ -147,6 +147,7 @@ Este documento contiene la lista completa de tiendas, islas, locales comerciales
 | 26 | **Intelisis** | Software Empresarial | [ ] Pendiente | |
 | 27 | **Scio México** | Servicios Tecnológicos | [ ] Pendiente | |
 | 28 | **A Mar y Pasta** | Pastas & Mariscos | [ ] Pendiente | Próximamente |
+| 29 | **Jiménez+** | Restaurante & Bar | [x] Recibido | Al lado de Monkey Bowling y Anytime Fitness |
 
 ---
 

@@ -703,6 +703,11 @@
           "id": 28,
           "name": "Wingstop",
           "type": "store"
+        },
+        {
+          "id": 29,
+          "name": "Jiménez+",
+          "type": "store"
         }
       ],
       "islas": [],
