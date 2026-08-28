@@ -37,8 +37,8 @@ Este documento contiene la lista completa de tiendas, islas, locales comerciales
 | 27 | **Casa Carcasa** | *Isla:* Accesorios Celular | [ ] Pendiente | |
 | 28 | **Jurassic Ride** | *Isla:* Atracción Infantil | [ ] Pendiente | |
 | 29 | **Flabelus** | *Isla:* Calzado & Accesorios | [ ] Pendiente | |
-| 30 | **Bath & Body Works** | Fragancias & Cuidado Personal | [ ] Pendiente | Próximamente |
-| 31 | **Sephora** | Cosméticos & Maquillaje de Lujo | [ ] Pendiente | Próximamente |
+| 30 | **Bath & Body Works** | Fragancias & Cuidado Personal | [x] Recibido | Activo en Planta Baja |
+| 31 | **Sephora** | Cosméticos & Maquillaje de Lujo | [x] Recibido | Activo en Planta Baja |
 
 ---
 

@@ -133,6 +133,16 @@
           "id": 26,
           "name": "Geely",
           "type": "store"
+        },
+        {
+          "id": 28,
+          "name": "Sephora",
+          "type": "store"
+        },
+        {
+          "id": 27,
+          "name": "Bath & Body Works",
+          "type": "store"
         }
       ],
       "islas": [
@@ -156,11 +166,6 @@
         {
           "id": 1,
           "name": "Bath & Body Works",
-          "type": "store"
-        },
-        {
-          "id": 2,
-          "name": "Sephora",
           "type": "store"
         }
       ]
