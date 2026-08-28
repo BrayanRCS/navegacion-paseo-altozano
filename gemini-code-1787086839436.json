@@ -135,13 +135,13 @@
           "type": "store"
         },
         {
-          "id": 28,
-          "name": "Sephora",
+          "id": 27,
+          "name": "Bath & Body Works",
           "type": "store"
         },
         {
-          "id": 27,
-          "name": "Bath & Body Works",
+          "id": 28,
+          "name": "Sephora",
           "type": "store"
         }
       ],
@@ -162,13 +162,7 @@
           "type": "island"
         }
       ],
-      "proximamente": [
-        {
-          "id": 1,
-          "name": "Bath & Body Works",
-          "type": "store"
-        }
-      ]
+      "proximamente": []
     },
     "nivel_principal": {
       "level": 2,
@@ -488,6 +482,11 @@
           "id": 63,
           "name": "Pies & Salud",
           "type": "store"
+        },
+        {
+          "id": 65,
+          "name": "Telcel CAC",
+          "type": "store"
         }
       ],
       "islas": [
@@ -556,11 +555,6 @@
         {
           "id": 1,
           "name": "Coven",
-          "type": "store"
-        },
-        {
-          "id": 2,
-          "name": "Telcel Centro de Atención a Clientes",
           "type": "store"
         }
       ]
@@ -710,19 +704,18 @@
           "type": "store"
         },
         {
+          "id": 29,
+          "name": "A Mar y Pasta",
+          "type": "store"
+        },
+        {
           "id": 30,
           "name": "Jiménez+",
           "type": "store"
         }
       ],
       "islas": [],
-      "proximamente": [
-        {
-          "id": 1,
-          "name": "A Mar y Pasta",
-          "type": "store"
-        }
-      ]
+      "proximamente": []
     }
   }
 }

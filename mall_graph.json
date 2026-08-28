@@ -326,7 +326,7 @@
       "id": "n_lvl1_store_27",
       "level": 1,
       "type": "store",
-      "name": "Bath & Body Works (Próximamente)",
+      "name": "Bath & Body Works",
       "coordinates": {
         "x": 890,
         "y": 215
@@ -1256,7 +1256,7 @@
       "id": "n_lvl2_store_65",
       "level": 2,
       "type": "store",
-      "name": "Telcel CAC (Próximamente)",
+      "name": "Telcel CAC",
       "coordinates": {
         "x": 992,
         "y": 290
@@ -1688,7 +1688,7 @@
       "id": "n_lvl3_store_29",
       "level": 3,
       "type": "store",
-      "name": "A Mar y Pasta (Próximamente)",
+      "name": "A Mar y Pasta",
       "coordinates": {
         "x": 942,
         "y": 356
