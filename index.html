@@ -977,18 +977,54 @@
           easing: 'easeOutBack'
         });
       }
-    };
+    // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
+    const APP_CACHE_VERSION = 'v1.3.2';
+
+    async function loadCachedJson(key, url) {
+      const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
+      try {
+        const cached = localStorage.getItem(storageKey);
+        if (cached) {
+          const parsed = JSON.parse(cached);
+          // Revalidate in background without blocking render
+          fetch(`${url}?v=${APP_CACHE_VERSION}`)
+            .then(res => res.ok ? res.json() : null)
+            .then(fresh => {
+              if (fresh) {
+                try { localStorage.setItem(storageKey, JSON.stringify(fresh)); } catch (e) {}
+              }
+            })
+            .catch(() => {});
+          return parsed;
+        }
+      } catch (e) {}
+
+      // Initial network fetch if not cached
+      const res = await fetch(`${url}?v=${APP_CACHE_VERSION}`);
+      const data = await res.json();
+      try { localStorage.setItem(storageKey, JSON.stringify(data)); } catch (e) {}
+      return data;
+    }
 
     // Initialize application
     async function initApp() {
       try {
-        const [resGraph, resLegends] = await Promise.all([
-          fetch('mall_graph.json?t=' + Date.now()),
-          fetch('gemini-code-1787086839436.json?t=' + Date.now())
+        // Automatically prune legacy cache keys
+        try {
+          for (let i = localStorage.length - 1; i >= 0; i--) {
+            const k = localStorage.key(i);
+            if (k && k.startsWith('altozano_') && !k.includes(APP_CACHE_VERSION)) {
+              localStorage.removeItem(k);
+            }
+          }
+        } catch (e) {}
+
+        const [dataGraph, legData] = await Promise.all([
+          loadCachedJson('graph', 'mall_graph.json'),
+          loadCachedJson('legends', 'gemini-code-1787086839436.json')
         ]);
         
-        mallGraph = await resGraph.json();
-        const legData = await resLegends.json();
+        mallGraph = dataGraph;
         mallLegends = legData.mall_legends;
         
         buildFloorSubgraphs();
@@ -1377,7 +1413,7 @@
         if (hasDraggedMap) {
           currentCamera.panX = origPanX + dx;
           currentCamera.panY = origPanY + dy;
-          stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+          updateCameraTransform();
           updatePopupPosition();
         }
       });
@@ -1392,7 +1428,7 @@
         }
       });
 
-      // Mouse-wheel and Touchpad Pinch-to-Zoom (Google Maps cursor focal point)
+      // Mouse-wheel and Touchpad Pinch-to-Zoom (Google Maps cursor focal point with rotation matrix)
       container.addEventListener('wheel', (e) => {
         e.preventDefault();
         if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
@@ -1401,25 +1437,33 @@
         const mouseX = e.clientX - rect.left;
         const mouseY = e.clientY - rect.top;
 
-        // Coordinates on the map under the cursor
-        const pointX = (mouseX - currentCamera.panX) / currentCamera.scale;
-        const pointY = (mouseY - currentCamera.panY) / currentCamera.scale;
-
         // Smooth delta calculation (Touchpad pinch vs Wheel)
         let delta = -e.deltaY;
         if (e.ctrlKey) {
           delta *= 2.5; // Touchpad pinch gesture
         }
 
-        const zoomFactor = Math.exp(delta * 0.0025);
+        const zoomFactor = Math.exp(delta * 0.002);
         const newScale = Math.min(8.0, Math.max(0.65, currentCamera.scale * zoomFactor));
 
-        currentCamera.panX = mouseX - pointX * newScale;
-        currentCamera.panY = mouseY - pointY * newScale;
+        // Coordinate transformation accounting for current camera rotation
+        const rotRad = (currentCamera.rotation || 0) * Math.PI / 180;
+        const cos = Math.cos(-rotRad);
+        const sin = Math.sin(-rotRad);
+        const dx = mouseX - currentCamera.panX;
+        const dy = mouseY - currentCamera.panY;
+        const localX = (dx * cos - dy * sin) / currentCamera.scale;
+        const localY = (dx * sin + dy * cos) / currentCamera.scale;
+
+        const newDx = (localX * newScale) * Math.cos(rotRad) - (localY * newScale) * Math.sin(rotRad);
+        const newDy = (localX * newScale) * Math.sin(rotRad) + (localY * newScale) * Math.cos(rotRad);
+
+        currentCamera.panX = mouseX - newDx;
+        currentCamera.panY = mouseY - newDy;
         currentCamera.scale = newScale;
         currentCamera.isZoomed = newScale > 1.1;
 
-        stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale})`;
+        updateCameraTransform();
         updatePopupPosition();
         updateZoomButtonUI();
       }, { passive: false });
@@ -1487,12 +1531,20 @@
             const factor = currentDist / initialTouchDist;
             const newScale = Math.min(8.0, Math.max(0.65, initialScale * factor));
             
-            const pointX = (touchStartMidX - touchStartPanX) / initialScale;
-            const pointY = (touchStartMidY - touchStartPanY) / initialScale;
+            const rotRad = (currentCamera.rotation || 0) * Math.PI / 180;
+            const cos = Math.cos(-rotRad);
+            const sin = Math.sin(-rotRad);
+            const dx = touchStartMidX - touchStartPanX;
+            const dy = touchStartMidY - touchStartPanY;
+            const localX = (dx * cos - dy * sin) / initialScale;
+            const localY = (dx * sin + dy * cos) / initialScale;
+
+            const newDx = (localX * newScale) * Math.cos(rotRad) - (localY * newScale) * Math.sin(rotRad);
+            const newDy = (localX * newScale) * Math.sin(rotRad) + (localY * newScale) * Math.cos(rotRad);
 
             currentCamera.scale = newScale;
-            currentCamera.panX = touchStartMidX - pointX * newScale;
-            currentCamera.panY = touchStartMidY - pointY * newScale;
+            currentCamera.panX = touchStartMidX - newDx;
+            currentCamera.panY = touchStartMidY - newDy;
             currentCamera.isZoomed = newScale > 1.1;
 
             // Two-finger Rotation Gesture (Google Maps Style)
