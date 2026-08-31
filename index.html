@@ -977,8 +977,10 @@
           easing: 'easeOutBack'
         });
       }
+    };
+
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.3.2';
+    const APP_CACHE_VERSION = 'v1.3.3';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
