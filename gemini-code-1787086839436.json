@@ -7,142 +7,198 @@
         {
           "id": 1,
           "name": "Liverpool",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Liverpool/color.svg",
+          "logo_white": "assets/logos/Liverpool/blanco.svg"
         },
         {
           "id": 2,
           "name": "Women'secret",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Women'secret/color.svg",
+          "logo_white": "assets/logos/Women'secret/blanco.svg"
         },
         {
           "id": 3,
           "name": "Springfield",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Springfield/color.svg",
+          "logo_white": "assets/logos/Springfield/blanco.svg"
         },
         {
           "id": 4,
           "name": "DpStreet",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/DpStreet/color.svg",
+          "logo_white": "assets/logos/DpStreet/blanco.svg"
         },
         {
           "id": 5,
           "name": "Guess",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Guess/color.svg",
+          "logo_white": "assets/logos/Guess/blanco.svg"
         },
         {
           "id": 6,
           "name": "Studio F",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Studio%20F/color.svg",
+          "logo_white": "assets/logos/Studio%20F/blanco.svg"
         },
         {
           "id": 7,
           "name": "Natura",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Natura/color.svg",
+          "logo_white": "assets/logos/Natura/blanco.svg"
         },
         {
           "id": 8,
           "name": "American Eagle",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/American%20Eagle/color.svg",
+          "logo_white": "assets/logos/American%20Eagle/blanco.svg"
         },
         {
           "id": 9,
           "name": "H&M",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/H%26M/color.svg",
+          "logo_white": "assets/logos/H%26M/blanco.svg"
         },
         {
           "id": 10,
           "name": "Porrúa",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Porr%C3%BAa/color.svg",
+          "logo_white": "assets/logos/Porr%C3%BAa/blanco.svg"
         },
         {
           "id": 11,
           "name": "Adolfo Domínguez",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Adolfo%20Dom%C3%ADnguez/color.svg",
+          "logo_white": "assets/logos/Adolfo%20Dom%C3%ADnguez/blanco.svg"
         },
         {
           "id": 12,
           "name": "Pandora",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Pandora/color.svg",
+          "logo_white": "assets/logos/Pandora/blanco.svg"
         },
         {
           "id": 13,
           "name": "Tommy Hilfiger",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Tommy%20Hilfiger/color.svg",
+          "logo_white": "assets/logos/Tommy%20Hilfiger/blanco.svg"
         },
         {
           "id": 14,
           "name": "MAJA Sportwear",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/MAJA%20Sportwear/color.svg",
+          "logo_white": "assets/logos/MAJA%20Sportwear/blanco.svg"
         },
         {
           "id": 15,
           "name": "Adidas",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Adidas%20Performance/color.svg",
+          "logo_white": "assets/logos/Adidas%20Performance/blanco.svg"
         },
         {
           "id": 16,
           "name": "Daily Pick",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Daily%20Pick/color.svg",
+          "logo_white": "assets/logos/Daily%20Pick/blanco.svg"
         },
         {
           "id": 17,
           "name": "Le Lieu",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Le%20Lieu/color.svg",
+          "logo_white": "assets/logos/Le%20Lieu/blanco.svg"
         },
         {
           "id": 18,
           "name": "AT&T",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/AT%26T/color.svg",
+          "logo_white": "assets/logos/AT%26T/blanco.svg"
         },
         {
           "id": 19,
           "name": "Salomon",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Salomon/color.svg",
+          "logo_white": "assets/logos/Salomon/blanco.svg"
         },
         {
           "id": 20,
           "name": "BYD",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/BYD/color.svg",
+          "logo_white": "assets/logos/BYD/blanco.svg"
         },
         {
           "id": 21,
           "name": "Banamex",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Banamex/color.svg",
+          "logo_white": "assets/logos/Banamex/blanco.svg"
         },
         {
           "id": 22,
           "name": "MacStore",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/MacStore/color.svg",
+          "logo_white": "assets/logos/MacStore/blanco.svg"
         },
         {
           "id": 23,
           "name": "Fiesta Inn",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Fiesta%20Inn/color.svg",
+          "logo_white": "assets/logos/Fiesta%20Inn/blanco.svg"
         },
         {
           "id": 24,
           "name": "Crown City Casino",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Crown%20City%20Casino/color.svg",
+          "logo_white": "assets/logos/Crown%20City%20Casino/blanco.svg"
         },
         {
           "id": 25,
           "name": "Honda",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Honda/color.svg",
+          "logo_white": "assets/logos/Honda/blanco.svg"
         },
         {
           "id": 26,
           "name": "Geely",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Geely/color.svg",
+          "logo_white": "assets/logos/Geely/blanco.svg"
         },
         {
           "id": 27,
           "name": "Bath & Body Works",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Bath%20%26%20Body%20Works/color.svg",
+          "logo_white": "assets/logos/Bath%20%26%20Body%20Works/blanco.svg"
         },
         {
           "id": 28,
           "name": "Sephora",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Sephora/color.svg",
+          "logo_white": "assets/logos/Sephora/blanco.svg"
         }
       ],
       "islas": [
@@ -171,27 +227,37 @@
         {
           "id": 1,
           "name": "Liverpool",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Liverpool/color.svg",
+          "logo_white": "assets/logos/Liverpool/blanco.svg"
         },
         {
           "id": 2,
           "name": "5.11 Outdoor and Adventure",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/5.11%20Outdoor/color.svg",
+          "logo_white": "assets/logos/5.11%20Outdoor/blanco.svg"
         },
         {
           "id": 3,
           "name": "Fame",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Fame%20-%20Showroom%20Fame/color.svg",
+          "logo_white": "assets/logos/Fame%20-%20Showroom%20Fame/blanco.svg"
         },
         {
           "id": 4,
           "name": "Telcel",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Telcel/color.svg",
+          "logo_white": "assets/logos/Telcel/blanco.svg"
         },
         {
           "id": 5,
           "name": "Watch 2 Go",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Watch%202%20Go/color.svg",
+          "logo_white": "assets/logos/Watch%202%20Go/blanco.svg"
         },
         {
           "id": 6,
@@ -201,292 +267,408 @@
         {
           "id": 7,
           "name": "Lids",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Lids/color.svg",
+          "logo_white": "assets/logos/Lids/blanco.svg"
         },
         {
           "id": 8,
           "name": "Hey Guapa",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Hey%20Guapa/color.svg",
+          "logo_white": "assets/logos/Hey%20Guapa/blanco.svg"
         },
         {
           "id": 9,
           "name": "La Casa de las Carcasas",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/La%20Casa%20de%20las%20Carcasas/color.svg",
+          "logo_white": "assets/logos/La%20Casa%20de%20las%20Carcasas/blanco.svg"
         },
         {
           "id": 10,
           "name": "Urani",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Urani/color.svg",
+          "logo_white": "assets/logos/Urani/blanco.svg"
         },
         {
           "id": 11,
           "name": "Miniso",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Miniso/color.svg",
+          "logo_white": "assets/logos/Miniso/blanco.svg"
         },
         {
           "id": 12,
           "name": "Zanati",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Zanati/color.svg",
+          "logo_white": "assets/logos/Zanati/blanco.svg"
         },
         {
           "id": 13,
           "name": "Dportenis",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Dportenis/color.svg",
+          "logo_white": "assets/logos/Dportenis/blanco.svg"
         },
         {
           "id": 14,
           "name": "Sally Beauty",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Sally%20Beauty/color.svg",
+          "logo_white": "assets/logos/Sally%20Beauty/blanco.svg"
         },
         {
           "id": 15,
           "name": "Mi Cha",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Mi%20Cha/color.svg",
+          "logo_white": "assets/logos/Mi%20Cha/blanco.svg"
         },
         {
           "id": 16,
           "name": "Dairy Queen",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Dairy%20Queen/color.svg",
+          "logo_white": "assets/logos/Dairy%20Queen/blanco.svg"
         },
         {
           "id": 17,
           "name": "Sfera",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Sfera/color.svg",
+          "logo_white": "assets/logos/Sfera/blanco.svg"
         },
         {
           "id": 18,
           "name": "Honda",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Honda/color.svg",
+          "logo_white": "assets/logos/Honda/blanco.svg"
         },
         {
           "id": 19,
           "name": "Geely",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Geely/color.svg",
+          "logo_white": "assets/logos/Geely/blanco.svg"
         },
         {
           "id": 20,
           "name": "Smart Trampoline",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Smart%20Trampoline/color.svg",
+          "logo_white": "assets/logos/Smart%20Trampoline/blanco.svg"
         },
         {
           "id": 21,
           "name": "Taller Creativo de Oscar Torres",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Taller%20Creativo%20Oscar%20Torres/color.svg",
+          "logo_white": "assets/logos/Taller%20Creativo%20Oscar%20Torres/blanco.svg"
         },
         {
           "id": 22,
           "name": "Floristorio",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Floristorio/color.svg",
+          "logo_white": "assets/logos/Floristorio/blanco.svg"
         },
         {
           "id": 23,
           "name": "Estrella Dorada",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Estrella%20Dorada/color.svg",
+          "logo_white": "assets/logos/Estrella%20Dorada/blanco.svg"
         },
         {
           "id": 24,
           "name": "Showroom Fame",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Fame%20-%20Showroom%20Fame/color.svg",
+          "logo_white": "assets/logos/Fame%20-%20Showroom%20Fame/blanco.svg"
         },
         {
           "id": 25,
           "name": "Toyota",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Toyota/color.svg",
+          "logo_white": "assets/logos/Toyota/blanco.svg"
         },
         {
           "id": 26,
           "name": "Taller BYD",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/BYD/color.svg",
+          "logo_white": "assets/logos/BYD/blanco.svg"
         },
         {
           "id": 27,
           "name": "KIA",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/KIA/color.svg",
+          "logo_white": "assets/logos/KIA/blanco.svg"
         },
         {
           "id": 28,
           "name": "Sears",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Sears/color.svg",
+          "logo_white": "assets/logos/Sears/blanco.svg"
         },
         {
           "id": 29,
           "name": "Chedraui Selecto",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Chedraui%20Selecto/color.svg",
+          "logo_white": "assets/logos/Chedraui%20Selecto/blanco.svg"
         },
         {
           "id": 30,
           "name": "Palet",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Palet/color.svg",
+          "logo_white": "assets/logos/Palet/blanco.svg"
         },
         {
           "id": 31,
           "name": "Dolphy",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Dolphy/color.svg",
+          "logo_white": "assets/logos/Dolphy/blanco.svg"
         },
         {
           "id": 32,
           "name": "Flexi",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Flexi/color.svg",
+          "logo_white": "assets/logos/Flexi/blanco.svg"
         },
         {
           "id": 33,
           "name": "New York Coffee",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/New%20York%20Coffee/color.svg",
+          "logo_white": "assets/logos/New%20York%20Coffee/blanco.svg"
         },
         {
           "id": 34,
           "name": "Café Europa",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Caf%C3%A9%20Europa/color.svg",
+          "logo_white": "assets/logos/Caf%C3%A9%20Europa/blanco.svg"
         },
         {
           "id": 35,
           "name": "Vía Uno",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/V%C3%ADa%20Uno/color.svg",
+          "logo_white": "assets/logos/V%C3%ADa%20Uno/blanco.svg"
         },
         {
           "id": 36,
           "name": "Beau",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Beau/color.svg",
+          "logo_white": "assets/logos/Beau/blanco.svg"
         },
         {
           "id": 37,
           "name": "Sanborns",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Sanborns/color.svg",
+          "logo_white": "assets/logos/Sanborns/blanco.svg"
         },
         {
           "id": 38,
           "name": "Ópticas Kauffman",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/%C3%93pticas%20Kauffman/color.svg",
+          "logo_white": "assets/logos/%C3%93pticas%20Kauffman/blanco.svg"
         },
         {
           "id": 39,
           "name": "Hill's Collection",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Hill's%20Collection/color.svg",
+          "logo_white": "assets/logos/Hill's%20Collection/blanco.svg"
         },
         {
           "id": 40,
           "name": "Nutrisa",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Nutrisa/color.svg",
+          "logo_white": "assets/logos/Nutrisa/blanco.svg"
         },
         {
           "id": 41,
           "name": "Ópticas Lux",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/%C3%93pticas%20Lux/color.svg",
+          "logo_white": "assets/logos/%C3%93pticas%20Lux/blanco.svg"
         },
         {
           "id": 42,
           "name": "H&M",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/H%26M/color.svg",
+          "logo_white": "assets/logos/H%26M/blanco.svg"
         },
         {
           "id": 43,
           "name": "Inter Home",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Inter%20Home/color.svg",
+          "logo_white": "assets/logos/Inter%20Home/blanco.svg"
         },
         {
           "id": 44,
           "name": "Banana Republic",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Banana%20Republic/color.svg",
+          "logo_white": "assets/logos/Banana%20Republic/blanco.svg"
         },
         {
           "id": 45,
           "name": "Fabletics",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Fabletics/color.svg",
+          "logo_white": "assets/logos/Fabletics/blanco.svg"
         },
         {
           "id": 46,
           "name": "GAP",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/GAP/color.svg",
+          "logo_white": "assets/logos/GAP/blanco.svg"
         },
         {
           "id": 47,
           "name": "Steren",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Steren/color.svg",
+          "logo_white": "assets/logos/Steren/blanco.svg"
         },
         {
           "id": 48,
           "name": "Luuna",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Luuna/color.svg",
+          "logo_white": "assets/logos/Luuna/blanco.svg"
         },
         {
           "id": 49,
           "name": "Havoc",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Havoc/color.svg",
+          "logo_white": "assets/logos/Havoc/blanco.svg"
         },
         {
           "id": 50,
           "name": "Axen Health",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Axen%20Health/color.svg",
+          "logo_white": "assets/logos/Axen%20Health/blanco.svg"
         },
         {
           "id": 51,
           "name": "Starbucks Coffee",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Starbucks%20Coffee/color.svg",
+          "logo_white": "assets/logos/Starbucks%20Coffee/blanco.svg"
         },
         {
           "id": 52,
           "name": "Enki's Barbería",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Enki's%20Barber%C3%ADa/color.svg",
+          "logo_white": "assets/logos/Enki's%20Barber%C3%ADa/blanco.svg"
         },
         {
           "id": 53,
           "name": "Todomoda",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Todomoda/color.svg",
+          "logo_white": "assets/logos/Todomoda/blanco.svg"
         },
         {
           "id": 54,
           "name": "Studio Mix",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Studio%20Mix/color.svg",
+          "logo_white": "assets/logos/Studio%20Mix/blanco.svg"
         },
         {
           "id": 55,
           "name": "Bizzarro",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Bizzarro/color.svg",
+          "logo_white": "assets/logos/Bizzarro/blanco.svg"
         },
         {
           "id": 56,
           "name": "Ben & Frank",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Ben%20%26%20Frank/color.svg",
+          "logo_white": "assets/logos/Ben%20%26%20Frank/blanco.svg"
         },
         {
           "id": 57,
           "name": "Yuscase",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Yuscase/color.svg",
+          "logo_white": "assets/logos/Yuscase/blanco.svg"
         },
         {
           "id": 58,
           "name": "Sunglass Hut",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Sunglass%20Hut/color.svg",
+          "logo_white": "assets/logos/Sunglass%20Hut/blanco.svg"
         },
         {
           "id": 59,
           "name": "Adidas",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Adidas%20Performance/color.svg",
+          "logo_white": "assets/logos/Adidas%20Performance/blanco.svg"
         },
         {
           "id": 60,
           "name": "Crocs",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Crocs/color.svg",
+          "logo_white": "assets/logos/Crocs/blanco.svg"
         },
         {
           "id": 61,
           "name": "Taste Top",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Taste%20Top/color.svg",
+          "logo_white": "assets/logos/Taste%20Top/blanco.svg"
         },
         {
           "id": 62,
           "name": "Di Luca Gelato Gourmet",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Di%20Luca%20Gelato/color.svg",
+          "logo_white": "assets/logos/Di%20Luca%20Gelato/blanco.svg"
         },
         {
           "id": 63,
           "name": "Pies & Salud",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Pies%20%26%20Salud/color.svg",
+          "logo_white": "assets/logos/Pies%20%26%20Salud/blanco.svg"
         },
         {
           "id": 65,
           "name": "Telcel CAC",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Telcel/color.svg",
+          "logo_white": "assets/logos/Telcel/blanco.svg"
         }
       ],
       "islas": [
@@ -571,112 +753,156 @@
         {
           "id": 2,
           "name": "GoKartManía",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/GoKartMan%C3%ADa/color.svg",
+          "logo_white": "assets/logos/GoKartMan%C3%ADa/blanco.svg"
         },
         {
           "id": 3,
           "name": "Cinelia",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Cinelia/color.svg",
+          "logo_white": "assets/logos/Cinelia/blanco.svg"
         },
         {
           "id": 4,
           "name": "Julio Cepeda Jugueterías",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Julio%20Cepeda%20Jugueter%C3%ADas/color.svg",
+          "logo_white": "assets/logos/Julio%20Cepeda%20Jugueter%C3%ADas/blanco.svg"
         },
         {
           "id": 5,
           "name": "Monkey Bowling Bar",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Monkey%20Bowling%20Bar/color.svg",
+          "logo_white": "assets/logos/Monkey%20Bowling%20Bar/blanco.svg"
         },
         {
           "id": 6,
           "name": "Anytime Fitness",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Anytime%20Fitness/color.svg",
+          "logo_white": "assets/logos/Anytime%20Fitness/blanco.svg"
         },
         {
           "id": 7,
           "name": "Fisher's",
-          "type": "anchor_store"
+          "type": "anchor_store",
+          "logo": "assets/logos/Fisher's/color.svg",
+          "logo_white": "assets/logos/Fisher's/blanco.svg"
         },
         {
           "id": 8,
           "name": "UNAGI Teppan-Yaki & Sushi Bar",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/UNAGI%20Sushi%20Bar/color.svg",
+          "logo_white": "assets/logos/UNAGI%20Sushi%20Bar/blanco.svg"
         },
         {
           "id": 9,
           "name": "G-Work Space",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/G-Work%20Space/color.svg",
+          "logo_white": "assets/logos/G-Work%20Space/blanco.svg"
         },
         {
           "id": 10,
           "name": "Mammut Pizza",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Mammut%20Pizza/color.svg",
+          "logo_white": "assets/logos/Mammut%20Pizza/blanco.svg"
         },
         {
           "id": 11,
           "name": "Jana",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Jana/color.svg",
+          "logo_white": "assets/logos/Jana/blanco.svg"
         },
         {
           "id": 12,
           "name": "Casa Paula",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Casa%20Paula/color.svg",
+          "logo_white": "assets/logos/Casa%20Paula/blanco.svg"
         },
         {
           "id": 13,
           "name": "Funki Squad",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Funki%20Squad/color.svg",
+          "logo_white": "assets/logos/Funki%20Squad/blanco.svg"
         },
         {
           "id": 14,
           "name": "Carl's Jr.",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Carl's%20Jr/color.svg",
+          "logo_white": "assets/logos/Carl's%20Jr/blanco.svg"
         },
         {
           "id": 15,
           "name": "Taquería El Infierno",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Taquer%C3%ADa%20El%20Infierno/color.svg",
+          "logo_white": "assets/logos/Taquer%C3%ADa%20El%20Infierno/blanco.svg"
         },
         {
           "id": 16,
           "name": "Inn Salata Express",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Inn%20Salata%20Express/color.svg",
+          "logo_white": "assets/logos/Inn%20Salata%20Express/blanco.svg"
         },
         {
           "id": 17,
           "name": "Mikono Sushi Bar",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Mikono%20Sushi/color.svg",
+          "logo_white": "assets/logos/Mikono%20Sushi/blanco.svg"
         },
         {
           "id": 18,
           "name": "La Cueva de Chucho",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/La%20Cueva%20de%20Chucho/color.svg",
+          "logo_white": "assets/logos/La%20Cueva%20de%20Chucho/blanco.svg"
         },
         {
           "id": 19,
           "name": "Domino's Pizza",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Domino's%20Pizza/color.svg",
+          "logo_white": "assets/logos/Domino's%20Pizza/blanco.svg"
         },
         {
           "id": 20,
           "name": "Hong Kong Express",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Hong%20Kong%20Express/color.svg",
+          "logo_white": "assets/logos/Hong%20Kong%20Express/blanco.svg"
         },
         {
           "id": 21,
           "name": "Intelisis",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Intelisis/color.svg",
+          "logo_white": "assets/logos/Intelisis/blanco.svg"
         },
         {
           "id": 22,
           "name": "Grupo Altozano",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Grupo%20Altozano/color.svg",
+          "logo_white": "assets/logos/Grupo%20Altozano/blanco.svg"
         },
         {
           "id": 23,
           "name": "Showroom",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Fame%20-%20Showroom%20Fame/color.svg",
+          "logo_white": "assets/logos/Fame%20-%20Showroom%20Fame/blanco.svg"
         },
         {
           "id": 24,
@@ -691,17 +917,23 @@
         {
           "id": 26,
           "name": "Raspados Jalisco",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Raspados%20Jalisco/color.svg",
+          "logo_white": "assets/logos/Raspados%20Jalisco/blanco.svg"
         },
         {
           "id": 27,
           "name": "La Gofrera",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/La%20Gofrera/color.svg",
+          "logo_white": "assets/logos/La%20Gofrera/blanco.svg"
         },
         {
           "id": 28,
           "name": "Wingstop",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Wingstop/color.svg",
+          "logo_white": "assets/logos/Wingstop/blanco.svg"
         },
         {
           "id": 29,
@@ -711,7 +943,9 @@
         {
           "id": 30,
           "name": "Jiménez+",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Jim%C3%A9nez%2B/color.svg",
+          "logo_white": "assets/logos/Jim%C3%A9nez%2B/blanco.svg"
         }
       ],
       "islas": [],

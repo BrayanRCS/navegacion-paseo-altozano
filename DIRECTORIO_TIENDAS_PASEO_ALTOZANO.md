@@ -8,35 +8,35 @@ Este documento contiene la lista completa de tiendas, islas, locales comerciales
 
 | # | Establecimiento | Tipo / Giro | Estatus Logo | Contacto / Notas |
 |---|---|---|:---:|---|
-| 1 | **Liverpool** | Tienda Departamental Ancla | [ ] Pendiente | |
-| 2 | **H&M** | Moda & Ropa Ancla | [ ] Pendiente | |
-| 3 | **Fiesta Inn** | Hotel Business Class Ancla | [ ] Pendiente | |
-| 4 | **Crown City Casino** | Entretenimiento Ancla | [ ] Pendiente | |
-| 5 | **Women'secret** | Ropa & Lencería | [ ] Pendiente | |
-| 6 | **Springfield** | Moda Casual | [ ] Pendiente | |
-| 7 | **DpStreet** | Calzado Urbano & Sneakers | [ ] Pendiente | |
-| 8 | **Guess** | Moda & Accesorios | [ ] Pendiente | |
-| 9 | **Studio F** | Moda Femenina | [ ] Pendiente | |
-| 10 | **Natura** | Belleza & Cuidado Personal | [ ] Pendiente | |
-| 11 | **American Eagle** | Ropa & Denim | [ ] Pendiente | |
-| 12 | **Porrúa** | Librería & Cultura | [ ] Pendiente | |
-| 13 | **Adolfo Domínguez** | Moda de Diseñador | [ ] Pendiente | |
-| 14 | **Pandora** | Joyería Fina & Dijes | [ ] Pendiente | |
-| 15 | **Tommy Hilfiger** | Moda Internacional | [ ] Pendiente | |
-| 16 | **MAJA Sportwear** | Ropa Deportiva | [ ] Pendiente | |
-| 17 | **Adidas** | Deportes & Calzado | [ ] Pendiente | |
-| 18 | **Daily Pick** | Tienda de Conveniencia | [ ] Pendiente | |
-| 19 | **Le Lieu** | Ropa & Boutique | [ ] Pendiente | |
-| 20 | **AT&T** | Telefonía Móvil & Planes | [ ] Pendiente | |
-| 21 | **Salomon** | Calzado Outdoor & Running | [ ] Pendiente | |
-| 22 | **BYD** | Showroom Automotriz Eléctrico | [ ] Pendiente | |
-| 23 | **Banamex** | Servicios Financieros & Banca | [ ] Pendiente | |
-| 24 | **MacStore** | Distribuidor Autorizado Apple | [ ] Pendiente | |
-| 25 | **Honda** | Exhibición Automotriz | [ ] Pendiente | |
-| 26 | **Geely** | Showroom Automotriz | [ ] Pendiente | |
-| 27 | **Casa Carcasa** | *Isla:* Accesorios Celular | [ ] Pendiente | |
-| 28 | **Jurassic Ride** | *Isla:* Atracción Infantil | [ ] Pendiente | |
-| 29 | **Flabelus** | *Isla:* Calzado & Accesorios | [ ] Pendiente | |
+| 1 | **Liverpool** | Tienda Departamental Ancla | [x] Recibido | |
+| 2 | **H&M** | Moda & Ropa Ancla | [x] Recibido | |
+| 3 | **Fiesta Inn** | Hotel Business Class Ancla | [x] Recibido | |
+| 4 | **Crown City Casino** | Entretenimiento Ancla | [x] Recibido | |
+| 5 | **Women'secret** | Ropa & Lencería | [x] Recibido | |
+| 6 | **Springfield** | Moda Casual | [x] Recibido | |
+| 7 | **DpStreet** | Calzado Urbano & Sneakers | [x] Recibido | |
+| 8 | **Guess** | Moda & Accesorios | [x] Recibido | |
+| 9 | **Studio F** | Moda Femenina | [x] Recibido | |
+| 10 | **Natura** | Belleza & Cuidado Personal | [x] Recibido | |
+| 11 | **American Eagle** | Ropa & Denim | [x] Recibido | |
+| 12 | **Porrúa** | Librería & Cultura | [x] Recibido | |
+| 13 | **Adolfo Domínguez** | Moda de Diseñador | [x] Recibido | |
+| 14 | **Pandora** | Joyería Fina & Dijes | [x] Recibido | |
+| 15 | **Tommy Hilfiger** | Moda Internacional | [x] Recibido | |
+| 16 | **MAJA Sportwear** | Ropa Deportiva | [x] Recibido | |
+| 17 | **Adidas** | Deportes & Calzado | [x] Recibido | |
+| 18 | **Daily Pick** | Tienda de Conveniencia | [x] Recibido | |
+| 19 | **Le Lieu** | Ropa & Boutique | [x] Recibido | |
+| 20 | **AT&T** | Telefonía Móvil & Planes | [x] Recibido | |
+| 21 | **Salomon** | Calzado Outdoor & Running | [x] Recibido | |
+| 22 | **BYD** | Showroom Automotriz Eléctrico | [x] Recibido | |
+| 23 | **Banamex** | Servicios Financieros & Banca | [x] Recibido | |
+| 24 | **MacStore** | Distribuidor Autorizado Apple | [x] Recibido | |
+| 25 | **Honda** | Exhibición Automotriz | [x] Recibido | |
+| 26 | **Geely** | Showroom Automotriz | [x] Recibido | |
+| 27 | **Casa Carcasa** | *Isla:* Accesorios Celular | [x] Recibido | |
+| 28 | **Jurassic Ride** | *Isla:* Atracción Infantil | [x] Recibido | |
+| 29 | **Flabelus** | *Isla:* Calzado & Accesorios | [x] Recibido | |
 | 30 | **Bath & Body Works** | Fragancias & Cuidado Personal | [x] Recibido | Activo en Planta Baja |
 | 31 | **Sephora** | Cosméticos & Maquillaje de Lujo | [x] Recibido | Activo en Planta Baja |
 
@@ -46,71 +46,71 @@ Este documento contiene la lista completa de tiendas, islas, locales comerciales
 
 | # | Establecimiento | Tipo / Giro | Estatus Logo | Contacto / Notas |
 |---|---|---|:---:|---|
-| 1 | **Liverpool** | Tienda Departamental Ancla | [ ] Pendiente | |
-| 2 | **Sears** | Tienda Departamental Ancla | [ ] Pendiente | |
-| 3 | **Chedraui Selecto** | Supermercado Gourmet Ancla | [ ] Pendiente | |
-| 4 | **Sanborns** | Tienda Departamental & Restaurante | [ ] Pendiente | |
-| 5 | **H&M** | Moda & Ropa Ancla | [ ] Pendiente | |
-| 6 | **Inter Home** | Muebles & Decoración Ancla | [ ] Pendiente | |
-| 7 | **Starbucks Coffee** | Cafetería | [ ] Pendiente | |
-| 8 | **Banana Republic** | Moda Elegante | [ ] Pendiente | |
-| 9 | **GAP** | Moda Casual Familiar | [ ] Pendiente | |
-| 10 | **Sfera** | Moda Española | [ ] Pendiente | |
-| 11 | **Steren** | Electrónica & Tecnología | [ ] Pendiente | |
-| 12 | **Miniso** | Diseño, Hogar & Regalos | [ ] Pendiente | |
-| 13 | **Flexi** | Calzado de Confort | [ ] Pendiente | |
-| 14 | **Dportenis** | Deportes & Sneakers | [ ] Pendiente | |
-| 15 | **Crocs** | Calzado | [ ] Pendiente | |
-| 16 | **Bizzarro** | Joyería Fina & Relojería | [ ] Pendiente | |
-| 17 | **Ben & Frank** | Óptica Moderna | [ ] Pendiente | |
-| 18 | **Sunglass Hut** | Lentes Solares de Marca | [ ] Pendiente | |
-| 19 | **Sally Beauty** | Productos de Belleza Profesional | [ ] Pendiente | |
-| 20 | **Dairy Queen** | Heladería & Postres | [ ] Pendiente | |
-| 21 | **Nutrisa** | Helado de Yogurt & Snacks | [ ] Pendiente | |
-| 22 | **Dolphy** | Heladería | [ ] Pendiente | |
-| 23 | **New York Coffee** | Cafetería | [ ] Pendiente | |
-| 24 | **Café Europa** | Cafetería Gourmet | [ ] Pendiente | |
-| 25 | **Di Luca Gelato** | Helados Artesanales | [ ] Pendiente | |
-| 26 | **Taste Top** | Snacks & Dulces | [ ] Pendiente | |
-| 27 | **Urani** | Chocolates & Dulcería | [ ] Pendiente | |
-| 28 | **Mi Cha** | Té de Burbujas (Boba Tea) | [ ] Pendiente | |
-| 29 | **Todomoda** | Accesorios Femeninos | [ ] Pendiente | |
-| 30 | **Studio Mix** | Accesorios & Belleza | [ ] Pendiente | |
-| 31 | **Luuna** | Colchones & Descanso | [ ] Pendiente | |
-| 32 | **Havoc** | Trajes & Sastrería | [ ] Pendiente | |
-| 33 | **Fabletics** | Ropa Deportiva | [ ] Pendiente | |
-| 34 | **5.11 Outdoor** | Ropa Táctica & Aventura | [ ] Pendiente | |
-| 35 | **Lids** | Gorras Deportivas | [ ] Pendiente | |
-| 36 | **Hey Guapa** | Moda Femenina | [ ] Pendiente | |
-| 37 | **La Casa de las Carcasas** | Accesorios para Celular | [ ] Pendiente | |
-| 38 | **Yuscase** | Fundas Móviles | [ ] Pendiente | |
-| 39 | **Zanati** | Joyería & Accesorios | [ ] Pendiente | |
-| 40 | **Vía Uno** | Calzado & Bolsas | [ ] Pendiente | |
-| 41 | **Beau** | Cosméticos | [ ] Pendiente | |
-| 42 | **Ópticas Lux** | Óptica & Salud Visual | [ ] Pendiente | |
-| 43 | **Ópticas Kauffman** | Óptica | [ ] Pendiente | |
-| 44 | **Hill's Collection** | Moda & Ropa | [ ] Pendiente | |
-| 45 | **Telcel** | Telefonía Móvil & CAC | [ ] Pendiente | |
-| 46 | **Pies & Salud** | Podología & Cuidado del Pie | [ ] Pendiente | |
-| 47 | **Enki's Barbería** | Barbería & Grooming | [ ] Pendiente | |
-| 48 | **Palet** | Paletas Artesanales | [ ] Pendiente | |
-| 49 | **Smart Trampoline** | Entretenimiento Infantil | [ ] Pendiente | |
+| 1 | **Liverpool** | Tienda Departamental Ancla | [x] Recibido | |
+| 2 | **Sears** | Tienda Departamental Ancla | [x] Recibido | |
+| 3 | **Chedraui Selecto** | Supermercado Gourmet Ancla | [x] Recibido | |
+| 4 | **Sanborns** | Tienda Departamental & Restaurante | [x] Recibido | |
+| 5 | **H&M** | Moda & Ropa Ancla | [x] Recibido | |
+| 6 | **Inter Home** | Muebles & Decoración Ancla | [x] Recibido | |
+| 7 | **Starbucks Coffee** | Cafetería | [x] Recibido | |
+| 8 | **Banana Republic** | Moda Elegante | [x] Recibido | |
+| 9 | **GAP** | Moda Casual Familiar | [x] Recibido | |
+| 10 | **Sfera** | Moda Española | [x] Recibido | |
+| 11 | **Steren** | Electrónica & Tecnología | [x] Recibido | |
+| 12 | **Miniso** | Diseño, Hogar & Regalos | [x] Recibido | |
+| 13 | **Flexi** | Calzado de Confort | [x] Recibido | |
+| 14 | **Dportenis** | Deportes & Sneakers | [x] Recibido | |
+| 15 | **Crocs** | Calzado | [x] Recibido | |
+| 16 | **Bizzarro** | Joyería Fina & Relojería | [x] Recibido | |
+| 17 | **Ben & Frank** | Óptica Moderna | [x] Recibido | |
+| 18 | **Sunglass Hut** | Lentes Solares de Marca | [x] Recibido | |
+| 19 | **Sally Beauty** | Productos de Belleza Profesional | [x] Recibido | |
+| 20 | **Dairy Queen** | Heladería & Postres | [x] Recibido | |
+| 21 | **Nutrisa** | Helado de Yogurt & Snacks | [x] Recibido | |
+| 22 | **Dolphy** | Heladería | [x] Recibido | |
+| 23 | **New York Coffee** | Cafetería | [x] Recibido | |
+| 24 | **Café Europa** | Cafetería Gourmet | [x] Recibido | |
+| 25 | **Di Luca Gelato** | Helados Artesanales | [x] Recibido | |
+| 26 | **Taste Top** | Snacks & Dulces | [x] Recibido | |
+| 27 | **Urani** | Chocolates & Dulcería | [x] Recibido | |
+| 28 | **Mi Cha** | Té de Burbujas (Boba Tea) | [x] Recibido | |
+| 29 | **Todomoda** | Accesorios Femeninos | [x] Recibido | |
+| 30 | **Studio Mix** | Accesorios & Belleza | [x] Recibido | |
+| 31 | **Luuna** | Colchones & Descanso | [x] Recibido | |
+| 32 | **Havoc** | Trajes & Sastrería | [x] Recibido | |
+| 33 | **Fabletics** | Ropa Deportiva | [x] Recibido | |
+| 34 | **5.11 Outdoor** | Ropa Táctica & Aventura | [x] Recibido | |
+| 35 | **Lids** | Gorras Deportivas | [x] Recibido | |
+| 36 | **Hey Guapa** | Moda Femenina | [x] Recibido | |
+| 37 | **La Casa de las Carcasas** | Accesorios para Celular | [x] Recibido | |
+| 38 | **Yuscase** | Fundas Móviles | [x] Recibido | |
+| 39 | **Zanati** | Joyería & Accesorios | [x] Recibido | |
+| 40 | **Vía Uno** | Calzado & Bolsas | [x] Recibido | |
+| 41 | **Beau** | Cosméticos | [x] Recibido | |
+| 42 | **Ópticas Lux** | Óptica & Salud Visual | [x] Recibido | |
+| 43 | **Ópticas Kauffman** | Óptica | [x] Recibido | |
+| 44 | **Hill's Collection** | Moda & Ropa | [x] Recibido | |
+| 45 | **Telcel** | Telefonía Móvil & CAC | [x] Recibido | |
+| 46 | **Pies & Salud** | Podología & Cuidado del Pie | [x] Recibido | |
+| 47 | **Enki's Barbería** | Barbería & Grooming | [x] Recibido | |
+| 48 | **Palet** | Paletas Artesanales | [x] Recibido | |
+| 49 | **Smart Trampoline** | Entretenimiento Infantil | [x] Recibido | |
 | 50 | **Taller Creativo Oscar Torres**| Arte & Talleres | [ ] Pendiente | |
-| 51 | **Floristorio** | Floristería Gourmet | [ ] Pendiente | |
-| 52 | **Estrella Dorada** | Regalos & Novedades | [ ] Pendiente | |
-| 53 | **Fame / Showroom Fame** | Automotriz Multimarca | [ ] Pendiente | |
-| 54 | **Toyota** | Exhibición Automotriz | [ ] Pendiente | |
-| 55 | **KIA** | Showroom Automotriz | [ ] Pendiente | |
-| 56 | **De Regil Chocolat** | *Isla:* Chocolatería Fina | [ ] Pendiente | |
-| 57 | **Elotería La Cerrada** | *Isla:* Snacks & Elotes | [ ] Pendiente | |
-| 58 | **Mingos** | *Isla:* Postres & Antojos | [ ] Pendiente | |
-| 59 | **Straight A Head** | *Isla:* Cuidado del Cabello | [ ] Pendiente | |
-| 60 | **Olivia** | *Isla:* Joyería & Regalos | [ ] Pendiente | |
+| 51 | **Floristorio** | Floristería Gourmet | [x] Recibido | |
+| 52 | **Estrella Dorada** | Regalos & Novedades | [x] Recibido | |
+| 53 | **Fame / Showroom Fame** | Automotriz Multimarca | [x] Recibido | |
+| 54 | **Toyota** | Exhibición Automotriz | [x] Recibido | |
+| 55 | **KIA** | Showroom Automotriz | [x] Recibido | |
+| 56 | **De Regil Chocolat** | *Isla:* Chocolatería Fina | [x] Recibido | |
+| 57 | **Elotería La Cerrada** | *Isla:* Snacks & Elotes | [x] Recibido | |
+| 58 | **Mingos** | *Isla:* Postres & Antojos | [x] Recibido | |
+| 59 | **Straight A Head** | *Isla:* Cuidado del Cabello | [x] Recibido | |
+| 60 | **Olivia** | *Isla:* Joyería & Regalos | [x] Recibido | |
 | 61 | **Obey Your Body** | *Isla:* Cosmética & Spa | [ ] Pendiente | |
-| 62 | **M&L Joyas** | *Isla:* Joyería | [ ] Pendiente | |
-| 63 | **Delicrepé** | *Isla:* Crepas & Postres | [ ] Pendiente | |
-| 64 | **Moyo** | *Isla:* Yogurt Helado | [ ] Pendiente | |
-| 65 | **M-Caps** | *Isla:* Gorras Exclusivas | [ ] Pendiente | |
+| 62 | **M&L Joyas** | *Isla:* Joyería | [x] Recibido | |
+| 63 | **Delicrepé** | *Isla:* Crepas & Postres | [x] Recibido | |
+| 64 | **Moyo** | *Isla:* Yogurt Helado | [x] Recibido | |
+| 65 | **M-Caps** | *Isla:* Gorras Exclusivas | [x] Recibido | |
 | 66 | **Coven** | Ropa & Calzado | [ ] Pendiente | Próximamente |
 | 67 | **Watch 2 Go** | Relojería & Accesorios | [x] Recibido | |
 | 68 | **Axen Health** | Salud, Bienestar & Estética | [x] Recibido | |
@@ -122,32 +122,32 @@ Este documento contiene la lista completa de tiendas, islas, locales comerciales
 
 | # | Establecimiento | Tipo / Giro | Estatus Logo | Contacto / Notas |
 |---|---|---|:---:|---|
-| 1 | **Cinelia** | Complejo de Cines Ancla | [ ] Pendiente | |
-| 2 | **GoKartManía** | Pista de Go Karts Ancla | [ ] Pendiente | |
-| 3 | **Anytime Fitness** | Gimnasio 24/7 Ancla | [ ] Pendiente | |
-| 4 | **Fisher's** | Restaurante de Mariscos Ancla | [ ] Pendiente | |
-| 5 | **Monkey Bowling Bar** | Boliche, Bar & Entretenimiento | [ ] Pendiente | |
-| 6 | **Carl's Jr.** | Hamburguesas Fast Food | [ ] Pendiente | |
-| 7 | **Domino's Pizza** | Pizzería | [ ] Pendiente | |
-| 8 | **Wingstop** | Alitas & Boneless | [ ] Pendiente | |
-| 9 | **Taquería El Infierno** | Tacos Tradicionales | [ ] Pendiente | |
+| 1 | **Cinelia** | Complejo de Cines Ancla | [x] Recibido | |
+| 2 | **GoKartManía** | Pista de Go Karts Ancla | [x] Recibido | |
+| 3 | **Anytime Fitness** | Gimnasio 24/7 Ancla | [x] Recibido | |
+| 4 | **Fisher's** | Restaurante de Mariscos Ancla | [x] Recibido | |
+| 5 | **Monkey Bowling Bar** | Boliche, Bar & Entretenimiento | [x] Recibido | |
+| 6 | **Carl's Jr.** | Hamburguesas Fast Food | [x] Recibido | |
+| 7 | **Domino's Pizza** | Pizzería | [x] Recibido | |
+| 8 | **Wingstop** | Alitas & Boneless | [x] Recibido | |
+| 9 | **Taquería El Infierno** | Tacos Tradicionales | [x] Recibido | |
 | 10 | **UNAGI Sushi Bar** | Comida Japonesa & Teppanyaki | [ ] Pendiente | |
-| 11 | **Mikono Sushi** | Sushi Bar | [ ] Pendiente | |
-| 12 | **Mammut Pizza** | Pizzería Gourmet | [ ] Pendiente | |
-| 13 | **Hong Kong Express** | Comida China | [ ] Pendiente | |
-| 14 | **La Cueva de Chucho** | Cocina Regional | [ ] Pendiente | |
-| 15 | **Inn Salata Express** | Ensaladas & Comida Saludable | [ ] Pendiente | |
-| 16 | **La Gofrera** | Waffles & Postres | [ ] Pendiente | |
-| 17 | **Raspados Jalisco** | Raspados Tradicionales | [ ] Pendiente | |
-| 18 | **Julio Cepeda Jugueterías** | Juguetería | [ ] Pendiente | |
-| 19 | **Funki Squad** | Moda Urbana Infantil | [ ] Pendiente | |
-| 20 | **Casa Paula** | Muebles & Decoración | [ ] Pendiente | |
-| 21 | **Jana** | Ropa & Boutique | [ ] Pendiente | |
-| 22 | **G-Work Space** | Coworking & Oficinas | [ ] Pendiente | |
+| 11 | **Mikono Sushi** | Sushi Bar | [x] Recibido | |
+| 12 | **Mammut Pizza** | Pizzería Gourmet | [x] Recibido | |
+| 13 | **Hong Kong Express** | Comida China | [x] Recibido | |
+| 14 | **La Cueva de Chucho** | Cocina Regional | [x] Recibido | |
+| 15 | **Inn Salata Express** | Ensaladas & Comida Saludable | [x] Recibido | |
+| 16 | **La Gofrera** | Waffles & Postres | [x] Recibido | |
+| 17 | **Raspados Jalisco** | Raspados Tradicionales | [x] Recibido | |
+| 18 | **Julio Cepeda Jugueterías** | Juguetería | [x] Recibido | |
+| 19 | **Funki Squad** | Moda Urbana Infantil | [x] Recibido | |
+| 20 | **Casa Paula** | Muebles & Decoración | [x] Recibido | |
+| 21 | **Jana** | Ropa & Boutique | [x] Recibido | |
+| 22 | **G-Work Space** | Coworking & Oficinas | [x] Recibido | |
 | 23 | **Centro de Negocios** | Oficinas Corporativas | [ ] Pendiente | |
-| 24 | **Grupo Altozano** | Desarrolladora Inmobiliaria | [ ] Pendiente | |
+| 24 | **Grupo Altozano** | Desarrolladora Inmobiliaria | [x] Recibido | |
 | 25 | **Erre Media** | Agencia de Marketing | [ ] Pendiente | |
-| 26 | **Intelisis** | Software Empresarial | [ ] Pendiente | |
+| 26 | **Intelisis** | Software Empresarial | [x] Recibido | |
 | 27 | **Scio México** | Servicios Tecnológicos | [ ] Pendiente | |
 | 28 | **A Mar y Pasta** | Pastas & Mariscos | [x] Recibido | Activo en Planta Alta |
 | 29 | **Jiménez+** | Restaurante & Bar | [x] Recibido | Al lado de Monkey Bowling y Anytime Fitness |

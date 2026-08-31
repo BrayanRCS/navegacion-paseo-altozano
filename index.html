@@ -147,31 +147,39 @@
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
   </style>
 </head>
-<body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white">
+<body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
 
-  <!-- TOP APP BAR -->
-  <header class="border-b border-slate-800/80 bg-slate-950/85 sticky top-0 z-50 backdrop-blur-md px-6 py-3.5 flex items-center justify-between">
-    <div class="flex items-center gap-3">
-      <div class="w-9 h-9 rounded-xl bg-gradient-to-tr from-blue-600 to-sky-400 flex items-center justify-center shadow-lg shadow-blue-500/25">
-        <i class="fa-solid fa-location-arrow text-white text-base"></i>
+  <!-- TOP APP BAR: PASEO ALTOZANO LUXURY EDITION -->
+  <header class="border-b border-emerald-500/20 bg-gradient-to-r from-[#06151b] via-[#09131f] to-[#06151b] sticky top-0 z-50 backdrop-blur-xl px-5 md:px-8 py-3.5 flex items-center justify-between shadow-2xl">
+    <div class="flex items-center gap-3.5">
+      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-400 p-0.5 shadow-lg shadow-emerald-500/25 flex items-center justify-center flex-shrink-0">
+        <div class="w-full h-full bg-slate-950/90 rounded-[14px] flex items-center justify-center">
+          <i class="fa-solid fa-compass text-emerald-400 text-lg animate-pulse"></i>
+        </div>
       </div>
       <div>
-        <h1 class="text-sm font-bold text-white tracking-wide flex items-center gap-2">
-          PASEO ALTOZANO <span class="text-[11px] font-semibold px-2 py-0.5 bg-blue-500/20 text-sky-400 rounded-full border border-blue-500/30">Navegación GPS / A*</span>
-        </h1>
+        <div class="flex items-center gap-2">
+          <h1 class="text-sm md:text-base font-black text-white tracking-wider">
+            PASEO ALTOZANO
+          </h1>
+          <span class="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-500/15 text-emerald-300 rounded-full border border-emerald-500/30 tracking-widest uppercase shadow-sm">
+            Navegación GPS
+          </span>
+        </div>
+        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Directorio Digital & Señalética Interactiva A*</p>
       </div>
     </div>
 
     <!-- Header Actions & Totem Location Indicator -->
     <div class="flex items-center gap-3 text-xs">
-      <button onclick="showQrModal()" class="px-3 py-1.5 rounded-xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-bold flex items-center gap-1.5 shadow-lg shadow-emerald-500/20 transition-all active:scale-95 border border-emerald-400/30">
-        <i class="fa-solid fa-qrcode text-xs"></i> <span>Llevar a Celular (QR)</span>
+      <button onclick="showQrModal()" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all active:scale-95 border border-emerald-400/40 cursor-pointer">
+        <i class="fa-solid fa-qrcode text-sm"></i> <span>Llevar a Celular (QR)</span>
       </button>
 
-      <div class="hidden sm:flex px-3 py-1.5 rounded-xl bg-slate-900 border border-slate-800 items-center gap-2">
-        <span class="w-2 h-2 rounded-full bg-emerald-400 animate-pulse"></span>
-        <span class="text-slate-400">Tótem:</span>
-        <span class="text-rose-400 font-bold">Punto 12 · Nivel 1</span>
+      <div class="hidden md:flex px-3.5 py-2 rounded-2xl bg-slate-900/90 border border-slate-700/80 items-center gap-2.5 shadow-inner">
+        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+        <span class="text-slate-400 font-medium">Tótem:</span>
+        <span class="text-rose-400 font-black">Punto 12 · Nivel 1</span>
       </div>
     </div>
   </header>
@@ -352,6 +360,17 @@
                     <feMergeNode in="blur" />
                     <feMergeNode in="SourceGraphic" />
                   </feMerge>
+                </filter>
+
+                <!-- Luxury Brand Badge Soft Drop Shadow -->
+                <filter id="luxuryBadgeShadow" x="-30%" y="-30%" width="160%" height="160%">
+                  <feDropShadow dx="0" dy="2" stdDeviation="2.5" flood-color="#000000" flood-opacity="0.8" />
+                </filter>
+
+                <!-- Luxury Anchor Store Cyan/Sky Aura Glow -->
+                <filter id="luxuryAnchorGlow" x="-35%" y="-35%" width="170%" height="170%">
+                  <feDropShadow dx="0" dy="0" stdDeviation="3.5" flood-color="#38bdf8" flood-opacity="0.65" />
+                  <feDropShadow dx="0" dy="2" stdDeviation="2" flood-color="#000000" flood-opacity="0.9" />
                 </filter>
 
                 <!-- 100% Pure Vector Icons (Zero Pixelation at Any Zoom Level) -->
@@ -1721,12 +1740,17 @@
 
       const info = getPlaceVisualInfo(node);
 
-      emojiEl.innerText = info.emoji;
+      if (node.logo) {
+        emojiEl.innerHTML = `<img src="${node.logo}" alt="${node.name}" class="max-w-[32px] max-h-[32px] object-contain">`;
+        iconBox.className = "w-12 h-12 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg border border-white/50 flex-shrink-0 transition-all duration-300";
+      } else {
+        emojiEl.innerText = info.emoji;
+        iconBox.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${info.bgGradient} flex items-center justify-center text-2xl shadow-md flex-shrink-0 transition-all duration-300`;
+      }
+
       catEl.innerText = info.category;
       titleEl.innerText = info.name;
       detailEl.innerText = info.detail;
-
-      iconBox.className = `w-12 h-12 rounded-xl bg-gradient-to-tr ${info.bgGradient} flex items-center justify-center text-2xl shadow-md flex-shrink-0 transition-all duration-300`;
 
       if (isDestination) {
         statusEl.className = "text-[9px] px-1.5 py-0.2 bg-amber-950 text-amber-300 border border-amber-800 rounded font-bold flex-shrink-0 animate-pulse";
@@ -2163,13 +2187,22 @@
 
       const visualInfo = getPlaceVisualInfo(destNode);
 
-      // Update Map View Target Header
+      // Update Map View Target Header (with Brand Logo if available)
       const targetTitle = document.getElementById('map-target-title');
       if (targetTitle) targetTitle.innerText = destNode.name || 'Destino';
       const targetMetrics = document.getElementById('map-target-metrics');
       if (targetMetrics) targetMetrics.innerText = `${distMeters} m · ~${walkMinutes} min a pie · Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
-      const targetEmoji = document.getElementById('map-target-emoji');
-      if (targetEmoji) targetEmoji.innerText = visualInfo.emoji;
+      
+      const targetIconBox = document.getElementById('map-target-icon-box');
+      if (targetIconBox) {
+        if (destNode.logo) {
+          targetIconBox.className = "w-12 h-12 rounded-2xl bg-white p-1 flex items-center justify-center shadow-xl border border-white/50 flex-shrink-0";
+          targetIconBox.innerHTML = `<img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain">`;
+        } else {
+          targetIconBox.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${visualInfo.bgGradient} flex items-center justify-center text-2xl shadow-md flex-shrink-0`;
+          targetIconBox.innerHTML = `<span id="map-target-emoji">${visualInfo.emoji}</span>`;
+        }
+      }
 
       // Sync Mobile View Header
       const mTargetTitle = document.getElementById('mobile-target-title');
@@ -2177,7 +2210,15 @@
       const mTargetMetrics = document.getElementById('mobile-target-metrics');
       if (mTargetMetrics) mTargetMetrics.innerText = `${distMeters} m · ~${walkMinutes} min a pie`;
       const mTargetEmoji = document.getElementById('mobile-target-emoji');
-      if (mTargetEmoji) mTargetEmoji.innerText = visualInfo.emoji;
+      if (mTargetEmoji && mTargetEmoji.parentElement) {
+        if (destNode.logo) {
+          mTargetEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-white p-1 flex items-center justify-center shadow-md flex-shrink-0 border border-white/40";
+          mTargetEmoji.parentElement.innerHTML = `<img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain">`;
+        } else {
+          mTargetEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 flex items-center justify-center text-lg shadow-md flex-shrink-0";
+          mTargetEmoji.parentElement.innerHTML = `<span id="mobile-target-emoji">${visualInfo.emoji}</span>`;
+        }
+      }
 
       // Update Totem Bottom Bar
       const rTimeDist = document.getElementById('route-time-dist');
@@ -2604,7 +2645,12 @@
       if (!popup) return;
 
       const info = getPlaceVisualInfo(node);
-      document.getElementById('popup-emoji').innerText = info.emoji;
+      const emojiEl = document.getElementById('popup-emoji');
+      if (node.logo) {
+        emojiEl.innerHTML = `<div class="w-6 h-6 rounded-lg bg-white p-0.5 flex items-center justify-center shadow"><img src="${node.logo}" alt="${node.name}" class="max-w-full max-h-full object-contain"></div>`;
+      } else {
+        emojiEl.innerText = info.emoji;
+      }
       document.getElementById('popup-category').innerText = info.category;
       document.getElementById('popup-title').innerText = node.name || 'Punto';
       document.getElementById('popup-desc').innerText = info.detail || `Nivel ${node.level === 1 ? 'PB' : (node.level === 2 ? '1' : '2')}`;
@@ -2777,14 +2823,15 @@
           if (n.type === 'portal_escalator' || n.type === 'portal_elevator') {
             const isEsc = n.type === 'portal_escalator';
             const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-            rect.setAttribute('x', n.coordinates.x - 9.5);
-            rect.setAttribute('y', n.coordinates.y - 9.5);
-            rect.setAttribute('width', 19);
-            rect.setAttribute('height', 19);
-            rect.setAttribute('rx', 4.5);
+            rect.setAttribute('x', n.coordinates.x - 11);
+            rect.setAttribute('y', n.coordinates.y - 11);
+            rect.setAttribute('width', 22);
+            rect.setAttribute('height', 22);
+            rect.setAttribute('rx', 6);
             rect.setAttribute('fill', isEsc ? '#0891b2' : '#2563eb');
             rect.setAttribute('stroke', '#ffffff');
-            rect.setAttribute('stroke-width', '1.5');
+            rect.setAttribute('stroke-width', '1.6');
+            rect.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
             useIcon.setAttribute('href', isEsc ? '#vec-icon-stairs' : '#vec-icon-elevator');
@@ -2796,8 +2843,41 @@
             g.appendChild(title);
             g.appendChild(rect);
             g.appendChild(useIcon);
+          } else if (n.logo) {
+            // OFFICIAL LUXURY BRAND BADGE WITH SVG LOGO (ALTOZANO LUXURY EDITION)
+            const isAnchor = n.type === 'anchor_store';
+            const bw = isAnchor ? 34 : 24;
+            const bh = isAnchor ? 26 : 20;
+            const rx = isAnchor ? 7 : 5;
+
+            const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            bgRect.setAttribute('x', n.coordinates.x - bw / 2);
+            bgRect.setAttribute('y', n.coordinates.y - bh / 2);
+            bgRect.setAttribute('width', bw);
+            bgRect.setAttribute('height', bh);
+            bgRect.setAttribute('rx', rx);
+            bgRect.setAttribute('fill', '#ffffff');
+            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(15,23,42,0.4)');
+            bgRect.setAttribute('stroke-width', isAnchor ? '1.8' : '1.0');
+            bgRect.setAttribute('filter', isAnchor ? 'url(#luxuryAnchorGlow)' : 'url(#luxuryBadgeShadow)');
+
+            const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            const padX = isAnchor ? 4 : 3;
+            const padY = isAnchor ? 3 : 2;
+            imgEl.setAttribute('href', n.logo);
+            imgEl.setAttribute('x', n.coordinates.x - (bw / 2) + padX);
+            imgEl.setAttribute('y', n.coordinates.y - (bh / 2) + padY);
+            imgEl.setAttribute('width', bw - (padX * 2));
+            imgEl.setAttribute('height', bh - (padY * 2));
+            imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+
+            const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+            title.textContent = `${n.name} (Toca para trazar ruta)`;
+            g.appendChild(title);
+            g.appendChild(bgRect);
+            g.appendChild(imgEl);
           } else if (n.type === 'anchor_store') {
-            // Anchor Stores (Liverpool, Sears, Cinelia, Chedraui) - Pure Vector Badge
+            // Anchor Stores without logo
             const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             rect.setAttribute('x', n.coordinates.x - 11);
             rect.setAttribute('y', n.coordinates.y - 11);
@@ -2807,6 +2887,7 @@
             rect.setAttribute('fill', '#f97316');
             rect.setAttribute('stroke', '#ffffff');
             rect.setAttribute('stroke-width', '1.8');
+            rect.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const lower = (n.name || '').toLowerCase();
             let iconHref = '#vec-icon-bag';
@@ -2824,7 +2905,7 @@
             g.appendChild(rect);
             g.appendChild(useIcon);
           } else if (cat === 'coffee' || cat === 'food') {
-            // Cafes & Food - Pure Vector Amber/Emerald Pin
+            // Cafes & Food without logo
             const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle.setAttribute('cx', n.coordinates.x);
             circle.setAttribute('cy', n.coordinates.y);
@@ -2832,6 +2913,7 @@
             circle.setAttribute('fill', cat === 'coffee' ? '#059669' : '#d97706');
             circle.setAttribute('stroke', '#ffffff');
             circle.setAttribute('stroke-width', '1.4');
+            circle.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
             useIcon.setAttribute('href', cat === 'coffee' ? '#vec-icon-coffee' : '#vec-icon-food');
@@ -2844,7 +2926,7 @@
             g.appendChild(circle);
             g.appendChild(useIcon);
           } else {
-            // Regular Stores and Islands - Crisp Vector Pin
+            // Regular Stores and Islands without logo
             const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
             circle.setAttribute('cx', n.coordinates.x);
             circle.setAttribute('cy', n.coordinates.y);
@@ -2859,6 +2941,7 @@
             circle.setAttribute('fill', fill);
             circle.setAttribute('stroke', '#ffffff');
             circle.setAttribute('stroke-width', '1.4');
+            circle.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             title.textContent = `${n.name || n.id}`;
@@ -3032,8 +3115,10 @@
 
       filtered.forEach(item => {
         const info = getPlaceVisualInfo(item.node);
+        const logoUrl = (item.node && item.node.logo) || item.logo || (item.node && item.node.logo_white);
+
         const div = document.createElement('div');
-        div.className = "p-3.5 rounded-2xl bg-slate-950/80 hover:bg-slate-800/90 border border-slate-800 hover:border-blue-500/60 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-md active:scale-[0.98]";
+        div.className = "p-3.5 rounded-2xl bg-slate-950/85 hover:bg-slate-900 border border-slate-800/90 hover:border-sky-500/50 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-lg active:scale-[0.98]";
         
         div.onclick = () => {
           setTotemRoute(item.nodeId);
@@ -3041,43 +3126,41 @@
         };
 
         const levelBadgeText = item.level === 1 ? 'PB (Inferior)' : (item.level === 2 ? 'Nivel 1 (Principal)' : 'Nivel 2 (Superior)');
-        const levelBadgeColor = item.level === 1 ? 'bg-emerald-950/70 text-emerald-300 border-emerald-800/60' : (item.level === 2 ? 'bg-blue-950/70 text-sky-300 border-sky-800/60' : 'bg-purple-950/70 text-purple-300 border-purple-800/60');
+        const levelBadgeColor = item.level === 1 ? 'bg-emerald-950/80 text-emerald-300 border-emerald-800/70' : (item.level === 2 ? 'bg-blue-950/80 text-sky-300 border-sky-800/70' : 'bg-purple-950/80 text-purple-300 border-purple-800/70');
 
-        if (item.isIsland) {
-          div.innerHTML = `
-            <div class="flex items-center gap-3 min-w-0">
-              <span class="w-10 h-10 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-xs font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0">I${item.islandId}</span>
-              <div class="truncate">
-                <p class="text-xs font-bold text-sky-200 group-hover:text-white truncate">${item.name}</p>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                  <span class="text-[9px] px-1.5 py-0.5 rounded-md border font-semibold ${levelBadgeColor}">${levelBadgeText}</span>
-                  <span class="text-[10px] text-slate-400 truncate">ISLA DE PASILLO</span>
-                </div>
-              </div>
+        let avatarHtml = '';
+        if (logoUrl) {
+          avatarHtml = `
+            <div class="w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md border border-white/50 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              <img src="${logoUrl}" alt="${item.name}" class="max-w-full max-h-full object-contain filter drop-shadow-sm" loading="lazy" onerror="this.parentElement.outerHTML='<span class=\\'w-12 h-12 rounded-2xl bg-slate-800 text-slate-300 flex items-center justify-center text-lg font-bold flex-shrink-0\\'>${info.emoji}</span>'">
             </div>
-            <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-sky-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-sky-400 transition-all flex-shrink-0">
-              <span>Ruta</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </div>
+          `;
+        } else if (item.isIsland) {
+          avatarHtml = `
+            <span class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-xs font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0 shadow-md">I${item.islandId || 'S'}</span>
           `;
         } else {
-          div.innerHTML = `
-            <div class="flex items-center gap-3 min-w-0">
-              <span class="w-10 h-10 rounded-2xl ${item.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-sm font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0">${info.emoji}</span>
-              <div class="truncate">
-                <p class="text-xs font-bold text-white group-hover:text-sky-300 truncate">${item.name}</p>
-                <div class="flex items-center gap-1.5 mt-0.5">
-                  <span class="text-[9px] px-1.5 py-0.5 rounded-md border font-semibold ${levelBadgeColor}">${levelBadgeText}</span>
-                  <span class="text-[10px] text-slate-400 truncate">${info.category}</span>
-                </div>
-              </div>
-            </div>
-            <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/60 group-hover:bg-blue-600 px-2.5 py-1.5 rounded-xl border border-sky-800/60 group-hover:border-blue-400 transition-all flex-shrink-0">
-              <span>Ruta</span>
-              <i class="fa-solid fa-arrow-right text-[10px]"></i>
-            </div>
+          avatarHtml = `
+            <span class="w-12 h-12 rounded-2xl ${item.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-lg font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0 shadow-md">${info.emoji}</span>
           `;
         }
+
+        div.innerHTML = `
+          <div class="flex items-center gap-3 min-w-0">
+            ${avatarHtml}
+            <div class="truncate">
+              <p class="text-xs font-black text-white group-hover:text-sky-300 truncate">${item.name}</p>
+              <div class="flex items-center gap-1.5 mt-1">
+                <span class="text-[9px] px-2 py-0.5 rounded-lg border font-bold ${levelBadgeColor}">${levelBadgeText}</span>
+                <span class="text-[10px] text-slate-400 font-medium truncate">${info.category}</span>
+              </div>
+            </div>
+          </div>
+          <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/70 group-hover:bg-blue-600 px-3 py-2 rounded-xl border border-sky-800/60 group-hover:border-blue-400 transition-all flex-shrink-0 shadow-sm">
+            <span>Ruta</span>
+            <i class="fa-solid fa-arrow-right text-[10px]"></i>
+          </div>
+        `;
 
         container.appendChild(div);
       });
@@ -3126,7 +3209,12 @@
       const destNode = mallGraph ? mallGraph.nodes.find(n => n.id === destId) : null;
       if (destNode) {
         const info = getPlaceVisualInfo(destNode);
-        document.getElementById('qr-route-emoji').innerText = info.emoji;
+        const qrEmoji = document.getElementById('qr-route-emoji');
+        if (destNode.logo) {
+          qrEmoji.innerHTML = `<div class="w-9 h-9 rounded-xl bg-white p-1 flex items-center justify-center shadow-md border border-white/50"><img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain"></div>`;
+        } else {
+          qrEmoji.innerText = info.emoji;
+        }
         document.getElementById('qr-route-title').innerText = destNode.name || 'Destino';
         document.getElementById('qr-route-level').innerText = `Nivel ${destNode.level === 1 ? 'PB' : (destNode.level === 2 ? '1' : '2')}`;
         document.getElementById('qr-route-desc').innerText = `${document.getElementById('route-time-dist').innerText || 'Ruta guiada'}`;
@@ -3263,7 +3351,14 @@
       if (destNode) {
         const info = getPlaceVisualInfo(destNode);
         const mEmoji = document.getElementById('mobile-target-emoji');
-        if (mEmoji) mEmoji.innerText = info.emoji;
+        if (mEmoji && mEmoji.parentElement) {
+          if (destNode.logo) {
+            mEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-white p-1 flex items-center justify-center shadow-md flex-shrink-0 border border-white/40";
+            mEmoji.parentElement.innerHTML = `<img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain">`;
+          } else {
+            mEmoji.innerText = info.emoji;
+          }
+        }
         const mTitle = document.getElementById('mobile-target-title');
         if (mTitle) mTitle.innerText = destNode.name || 'Destino';
       }
