@@ -190,7 +190,7 @@
   </header>
 
   <!-- MAIN WORKSPACE: VERTICAL KIOSK PORTRAIT FLOW (SCREEN 1: DIRECTORY -> SCREEN 2: MAP) -->
-  <main class="flex-1 max-w-4xl w-full mx-auto p-4 md:p-6 flex flex-col gap-4">
+  <main class="flex-1 max-w-6xl w-full mx-auto p-2 sm:p-4 md:p-6 flex flex-col gap-3.5">
 
     <!-- Hidden standard selects to maintain API compatibility -->
     <div class="hidden">
@@ -347,8 +347,8 @@
           </div>
         </div>
 
-        <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Vertical Kiosk Format) -->
-        <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="aspect-ratio: 9 / 13; max-height: 650px;">
+        <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Near Full-Screen Format) -->
+        <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="height: 72vh; min-height: 580px; max-height: 84vh;">
           
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
@@ -1053,8 +1053,10 @@
 
       if (isVerticalMode) {
         if (container && !isMobile) {
-          container.style.aspectRatio = '9 / 13';
-          container.style.maxHeight = '650px';
+          container.style.aspectRatio = 'auto';
+          container.style.height = '72vh';
+          container.style.minHeight = '580px';
+          container.style.maxHeight = '84vh';
         }
         if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-sky-400";
         currentCamera.rotation = -90;
@@ -1062,7 +1064,8 @@
         if (container && !isMobile) {
           const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
           container.style.aspectRatio = `${spec.width} / ${spec.height}`;
-          container.style.maxHeight = '520px';
+          container.style.height = '62vh';
+          container.style.maxHeight = '700px';
         }
         if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-slate-400";
         currentCamera.rotation = 0;
@@ -1221,13 +1224,17 @@
       if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
         const cw = container.clientWidth;
         const ch = container.clientHeight;
-        // When rotated -90, map aspect ratio is inverted (718 / 1536)
-        targetScale = Math.max(1.15, (ch / (cw * 0.55)));
+        const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
+        // In -90 rotation, map height is spec.width (1536) and map width is spec.height (718)
+        const scaleX = cw / spec.height;
+        const scaleY = ch / spec.width;
+        targetScale = Math.min(scaleX, scaleY) * 1.05;
         if (targetScale > 2.2) targetScale = 2.0;
+        if (targetScale < 0.6) targetScale = 0.85;
       }
 
       if (animate) {
-        NavAnimator.animateCameraTo(panX, panY, targetScale, 600, baseRot);
+        NavAnimator.animateCameraTo(panX, panY, targetScale, 450, baseRot);
       } else {
         currentCamera.scale = targetScale;
         currentCamera.panX = panX;
@@ -1519,7 +1526,7 @@
       }
     }
 
-    const WALK_STEP_DURATION = 1650;
+    const WALK_STEP_DURATION = 650;
 
     function startWalkSimulation() {
       if (routeSegments.length === 0) return;
@@ -1600,7 +1607,7 @@
             updateTotemUI(false);
           }
 
-          // Pause 1.4 seconds on the portal, then switch floor
+          // Pause briefly on the portal, then switch floor
           setTimeout(() => {
             if (!isSimulating) return;
             simSegIndex++;
@@ -1617,7 +1624,7 @@
                 zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
               }
             }
-          }, 1400);
+          }, 750);
           return;
         } else {
           // Reached final destination!
@@ -1628,7 +1635,7 @@
           isTransitioningFloor = true;
           triggerHaptic('success');
 
-          // Pause 2.2s on destination, then continuously loop back to start unless paused by user
+          // Pause 1.2s on destination, then continuously loop back to start unless paused by user
           setTimeout(() => {
             if (!isSimulating) return;
 
@@ -1654,7 +1661,7 @@
                 zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
               }
             }
-          }, 2200);
+          }, 1200);
           return;
         }
       }
