@@ -95,12 +95,16 @@
       will-change: transform;
     }
 
-    /* High-DPI Crisp Edge Image Rendering */
-    #floor-plan-img {
+    /* High-DPI Crisp Edge Image Rendering & Ultra-Sharp SVG Images */
+    #floor-plan-img, #map-svg-overlay image {
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
+      shape-rendering: geometricPrecision;
       transform: translateZ(0);
       backface-visibility: hidden;
+    }
+    .map-node-interactive rect {
+      shape-rendering: geometricPrecision;
     }
 
     /* Graph Nodes & Edges Layer */
@@ -980,7 +984,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.3.3';
+    const APP_CACHE_VERSION = 'v1.3.4';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -2993,20 +2997,21 @@
             g.appendChild(rect);
             g.appendChild(useIcon);
           } else if (n.logo) {
-            // OFFICIAL LUXURY BRAND BADGE WITH SVG LOGO (ALTOZANO LUXURY EDITION - HIGH PERFORMANCE)
+            // OFFICIAL LUXURY BRAND BADGE WITH SVG LOGO (ALTOZANO LUXURY EDITION - ULTRA CRISP)
             const isAnchor = n.type === 'anchor_store';
-            const bw = isAnchor ? 34 : 24;
-            const bh = isAnchor ? 26 : 20;
-            const rx = isAnchor ? 7 : 5;
+            const isIsland = n.type === 'island';
+            const bw = isAnchor ? 48 : (isIsland ? 28 : 36);
+            const bh = isAnchor ? 34 : (isIsland ? 22 : 26);
+            const rx = isAnchor ? 9 : (isIsland ? 5 : 7);
 
             // Crisp vector shadow (0% CPU blur overhead)
             const shadowRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-            shadowRect.setAttribute('x', n.coordinates.x - bw / 2 + 1);
-            shadowRect.setAttribute('y', n.coordinates.y - bh / 2 + 1.5);
+            shadowRect.setAttribute('x', n.coordinates.x - bw / 2 + 1.2);
+            shadowRect.setAttribute('y', n.coordinates.y - bh / 2 + 2);
             shadowRect.setAttribute('width', bw);
             shadowRect.setAttribute('height', bh);
             shadowRect.setAttribute('rx', rx);
-            shadowRect.setAttribute('fill', 'rgba(0, 0, 0, 0.45)');
+            shadowRect.setAttribute('fill', 'rgba(0, 0, 0, 0.6)');
 
             const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             bgRect.setAttribute('x', n.coordinates.x - bw / 2);
@@ -3015,12 +3020,12 @@
             bgRect.setAttribute('height', bh);
             bgRect.setAttribute('rx', rx);
             bgRect.setAttribute('fill', '#ffffff');
-            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(15,23,42,0.3)');
-            bgRect.setAttribute('stroke-width', isAnchor ? '1.8' : '1.0');
+            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(15,23,42,0.65)');
+            bgRect.setAttribute('stroke-width', isAnchor ? '2.0' : '1.3');
 
             const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-            const padX = isAnchor ? 4 : 3;
-            const padY = isAnchor ? 3 : 2;
+            const padX = isAnchor ? 5 : (isIsland ? 3 : 3.5);
+            const padY = isAnchor ? 4 : (isIsland ? 2.5 : 3);
             imgEl.setAttribute('href', n.logo);
             imgEl.setAttribute('x', n.coordinates.x - (bw / 2) + padX);
             imgEl.setAttribute('y', n.coordinates.y - (bh / 2) + padY);
