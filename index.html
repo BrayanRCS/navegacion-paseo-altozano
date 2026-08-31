@@ -95,44 +95,27 @@
       will-change: transform;
     }
 
-    /* High-DPI Crisp Edge Image Rendering & Ultra-Sharp SVG Images */
-    #floor-plan-img, #map-svg-overlay image {
+    /* Infinite Vector Sharpness (Re-rasterized at Native Device DPI on every zoom level) */
+    #floor-plan-img {
       image-rendering: -webkit-optimize-contrast;
       image-rendering: crisp-edges;
+    }
+    #map-svg-overlay {
       shape-rendering: geometricPrecision;
-      transform: translateZ(0);
-      backface-visibility: hidden;
+      text-rendering: geometricPrecision;
     }
-    .map-node-interactive rect {
+    #map-svg-overlay image {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: crisp-edges;
+      image-rendering: high-quality;
       shape-rendering: geometricPrecision;
     }
-
-    /* Graph Nodes & Edges Layer */
-    #svg-nodes-layer {
-      pointer-events: auto;
-    }
-
-    /* Map Drag vs Node Pointer Disambiguation */
-    #map-container {
-      cursor: grab;
-      user-select: none;
-      -webkit-user-select: none;
-    }
-    #map-container.is-dragging {
-      cursor: grabbing !important;
-    }
-    /* Super Fast Virtualized Directory List (Zero Lag, Native 60 FPS) */
-    #legend-items-container > div {
-      content-visibility: auto;
-      contain-intrinsic-size: 72px;
-      contain: layout style paint;
-    }
-
     .map-node-interactive {
       cursor: pointer !important;
       pointer-events: auto;
-      transform: translateZ(0);
-      will-change: opacity, transform;
+    }
+    .map-node-interactive rect, .map-node-interactive circle {
+      shape-rendering: geometricPrecision;
     }
     .map-node-interactive:hover {
       filter: brightness(1.2);
@@ -984,7 +967,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.3.4';
+    const APP_CACHE_VERSION = 'v1.3.5';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -3032,6 +3015,8 @@
             imgEl.setAttribute('width', bw - (padX * 2));
             imgEl.setAttribute('height', bh - (padY * 2));
             imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            imgEl.setAttribute('shape-rendering', 'geometricPrecision');
+            imgEl.style.imageRendering = '-webkit-optimize-contrast';
 
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             title.textContent = `${n.name} (Toca para trazar ruta)`;
