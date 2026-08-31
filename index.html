@@ -347,8 +347,8 @@
           </div>
         </div>
 
-        <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage) -->
-        <div id="map-container" class="relative w-full bg-[#080d16] rounded-2xl overflow-hidden border border-slate-800 flex items-center justify-center select-none cursor-grab" style="aspect-ratio: 1536 / 718; max-height: 520px;">
+        <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Vertical Kiosk Format) -->
+        <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="aspect-ratio: 9 / 13; max-height: 650px;">
           
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
@@ -464,6 +464,9 @@
 
           <!-- Floating Camera Controls Toolbar (Top-Right) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 shadow-xl">
+            <button onclick="toggleMapOrientation()" id="btn-orientation-toggle" title="Alternar Orientación Vertical (Tótem) / Horizontal" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 flex items-center justify-center transition-all border border-slate-700 shadow-md active:scale-95">
+              <i id="orientation-icon" class="fa-solid fa-arrows-rotate text-xs"></i>
+            </button>
             <button onclick="resetCameraRotation()" id="btn-compass" title="Restablecer al Norte (0°)" class="hidden w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 shadow-md">
               <i id="compass-needle" class="fa-solid fa-compass text-rose-400 text-sm transition-transform duration-75"></i>
             </button>
@@ -1035,6 +1038,42 @@
       triggerHaptic('light');
     }
 
+    let isVerticalMode = true; // Default vertical kiosk & mobile layout!
+
+    function toggleMapOrientation() {
+      isVerticalMode = !isVerticalMode;
+      triggerHaptic('medium');
+      applyMapOrientation();
+    }
+
+    function applyMapOrientation() {
+      const container = document.getElementById('map-container');
+      const icon = document.getElementById('orientation-icon');
+      const isMobile = document.body.classList.contains('mobile-navigation-mode');
+
+      if (isVerticalMode) {
+        if (container && !isMobile) {
+          container.style.aspectRatio = '9 / 13';
+          container.style.maxHeight = '650px';
+        }
+        if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-sky-400";
+        currentCamera.rotation = -90;
+      } else {
+        if (container && !isMobile) {
+          const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
+          container.style.aspectRatio = `${spec.width} / ${spec.height}`;
+          container.style.maxHeight = '520px';
+        }
+        if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-slate-400";
+        currentCamera.rotation = 0;
+      }
+
+      renderMapOverlay();
+      updateCameraTransform();
+      updateCompassUI();
+      zoomToOverview(true);
+    }
+
     function updateCameraTransform() {
       const stage = document.getElementById('map-camera-stage');
       if (!stage) return;
@@ -1043,10 +1082,11 @@
     }
 
     function resetCameraRotation() {
+      const baseRot = isVerticalMode ? -90 : 0;
       if (typeof anime !== 'undefined') {
         anime({
           targets: currentCamera,
-          rotation: 0,
+          rotation: baseRot,
           duration: 350,
           easing: 'easeInOutSine',
           update: () => {
@@ -1055,7 +1095,7 @@
           }
         });
       } else {
-        currentCamera.rotation = 0;
+        currentCamera.rotation = baseRot;
         updateCameraTransform();
         updateCompassUI();
       }
@@ -1066,8 +1106,9 @@
       const compassBtn = document.getElementById('btn-compass');
       const compassNeedle = document.getElementById('compass-needle');
       if (!compassBtn) return;
+      const baseRot = isVerticalMode ? -90 : 0;
       const rot = currentCamera.rotation || 0;
-      if (Math.abs(rot) > 2) {
+      if (Math.abs(rot - baseRot) > 2) {
         compassBtn.classList.remove('hidden');
         if (compassNeedle) {
           compassNeedle.style.transform = `rotate(${-rot}deg)`;
@@ -1124,20 +1165,20 @@
       const pixelX = offsetX + u * renderW;
       const pixelY = offsetY + v * renderH;
 
-      // Determine Target Rotation: ONLY on Mobile when heading is provided; Totem view is ALWAYS 0 (static)
-      let targetRot = 0;
+      // Determine Target Rotation: Head-up on mobile, or vertical (-90°) on Totem
+      let targetRot = isVerticalMode ? -90 : 0;
       if (isMobile && targetHeadingDeg !== null) {
         targetRot = -targetHeadingDeg;
       }
 
       // Smooth shortest angle delta calculation
-      let currentRot = currentCamera.rotation || 0;
-      if (!isMobile) currentRot = 0;
+      let currentRot = currentCamera.rotation || (isVerticalMode ? -90 : 0);
+      if (!isMobile) currentRot = isVerticalMode ? -90 : 0;
 
       let diffAngle = (targetRot - (currentRot % 360));
       while (diffAngle < -180) diffAngle += 360;
       while (diffAngle > 180) diffAngle -= 360;
-      const finalRot = isMobile ? (currentRot + diffAngle) : 0;
+      const finalRot = isMobile ? (currentRot + diffAngle) : (isVerticalMode ? -90 : 0);
 
       const rad = finalRot * Math.PI / 180;
       const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
@@ -1166,18 +1207,32 @@
 
     function zoomToOverview(animate = true) {
       const stage = document.getElementById('map-camera-stage');
-      if (!stage) return;
+      const container = document.getElementById('map-container');
+      if (!stage || !container) return;
 
-      currentCamera.rotation = 0;
+      const baseRot = isVerticalMode ? -90 : 0;
+      currentCamera.rotation = baseRot;
       updateCompassUI();
 
+      let targetScale = 1.0;
+      let panX = 0;
+      let panY = 0;
+
+      if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
+        const cw = container.clientWidth;
+        const ch = container.clientHeight;
+        // When rotated -90, map aspect ratio is inverted (718 / 1536)
+        targetScale = Math.max(1.15, (ch / (cw * 0.55)));
+        if (targetScale > 2.2) targetScale = 2.0;
+      }
+
       if (animate) {
-        NavAnimator.animateCameraTo(0, 0, 1.0, 600, 0);
+        NavAnimator.animateCameraTo(panX, panY, targetScale, 600, baseRot);
       } else {
-        currentCamera.scale = 1.0;
-        currentCamera.panX = 0;
-        currentCamera.panY = 0;
-        currentCamera.rotation = 0;
+        currentCamera.scale = targetScale;
+        currentCamera.panX = panX;
+        currentCamera.panY = panY;
+        currentCamera.rotation = baseRot;
         currentCamera.isZoomed = false;
         updateCameraTransform();
         updateZoomButtonUI();
@@ -2808,6 +2863,9 @@
           const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
           g.setAttribute('class', 'map-node-interactive');
           g.style.opacity = isCategoryMatch ? '1' : '0.15';
+          if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
+            g.setAttribute('transform', `rotate(90, ${n.coordinates.x}, ${n.coordinates.y})`);
+          }
 
           // Invisible enlarged hit area for effortless clicking
           const hitArea = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -2990,6 +3048,14 @@
         document.getElementById('dest-pin-label').setAttribute('x', lastNode.coordinates.x);
         document.getElementById('dest-pin-label').setAttribute('y', lastNode.coordinates.y - 14);
         document.getElementById('dest-pin-label').textContent = lastNode.name || 'Destino';
+
+        if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
+          destPinEl.setAttribute('transform', `rotate(90, ${lastNode.coordinates.x}, ${lastNode.coordinates.y})`);
+          totemMarkerEl.setAttribute('transform', 'rotate(90, 960, 510)');
+        } else {
+          destPinEl.removeAttribute('transform');
+          totemMarkerEl.removeAttribute('transform');
+        }
 
         if (animate) {
           NavAnimator.popInDestinationPin();
