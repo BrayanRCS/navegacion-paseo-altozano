@@ -1827,19 +1827,45 @@
     }
 
     // Position Navigation Arrow on specific step node
+    let lastKnownArrowAngle = 0;
+
+    // Position Navigation Arrow on specific step node with Google Maps style heading
     function positionNavArrowOnNode(currNode, nextNode, animate = false, duration = 800) {
       const navArrow = document.getElementById('svg-nav-arrow-cursor');
+      if (!navArrow) return;
       if (!currNode || currNode.level !== currentLevel) {
         navArrow.style.display = 'none';
         return;
       }
 
       navArrow.style.display = 'block';
-      let angleDeg = 0;
+      let angleDeg = lastKnownArrowAngle;
+
       if (nextNode && (nextNode.coordinates.x !== currNode.coordinates.x || nextNode.coordinates.y !== currNode.coordinates.y)) {
         const dx = nextNode.coordinates.x - currNode.coordinates.x;
         const dy = nextNode.coordinates.y - currNode.coordinates.y;
         angleDeg = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+        lastKnownArrowAngle = angleDeg;
+      } else {
+        // Look up forward tangent along active route segment
+        const activeSeg = routeSegments.find(s => s.level === currentLevel);
+        if (activeSeg && activeSeg.path.length > 1) {
+          const idx = activeSeg.path.findIndex(n => n.id === currNode.id);
+          if (idx !== -1 && idx < activeSeg.path.length - 1) {
+            const next = activeSeg.path[idx + 1];
+            const dx = next.coordinates.x - currNode.coordinates.x;
+            const dy = next.coordinates.y - currNode.coordinates.y;
+            angleDeg = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+            lastKnownArrowAngle = angleDeg;
+          } else if (idx > 0) {
+            // Destination arrival: retain forward momentum angle from previous node
+            const prev = activeSeg.path[idx - 1];
+            const dx = currNode.coordinates.x - prev.coordinates.x;
+            const dy = currNode.coordinates.y - prev.coordinates.y;
+            angleDeg = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+            lastKnownArrowAngle = angleDeg;
+          }
+        }
       }
 
       if (animate) {
@@ -2300,7 +2326,7 @@
         renderMapOverlay(true);
       }
 
-      updateTotemUI(false);
+      updateTotemUI(true);
       zoomToOverview(false);
     }
 
