@@ -967,7 +967,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.3.5';
+    const APP_CACHE_VERSION = 'v1.4.0';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -1238,25 +1238,52 @@
       const container = document.getElementById('map-container');
       if (!stage || !container) return;
 
+      const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
+      const cw = container.clientWidth;
+      const ch = container.clientHeight;
+
       const baseRot = isVerticalMode ? -90 : 0;
       currentCamera.rotation = baseRot;
       updateCompassUI();
 
       let targetScale = 1.0;
-      let panX = 0;
-      let panY = 0;
-
       if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
-        const cw = container.clientWidth;
-        const ch = container.clientHeight;
-        const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
-        // In -90 rotation, map height is spec.width (1536) and map width is spec.height (718)
+        // In vertical -90deg rotation: visual width is spec.height (718), visual height is spec.width (1536)
         const scaleX = cw / spec.height;
         const scaleY = ch / spec.width;
-        targetScale = Math.min(scaleX, scaleY) * 1.05;
-        if (targetScale > 2.2) targetScale = 2.0;
-        if (targetScale < 0.6) targetScale = 0.85;
+        targetScale = Math.min(scaleX, scaleY) * 0.98;
+      } else {
+        targetScale = 1.0;
       }
+
+      // Exact Geometric Center Calculation of the Stage
+      const midX = spec.width / 2;
+      const midY = spec.height / 2;
+
+      const imgAspect = spec.width / spec.height;
+      const containerAspect = cw / ch;
+      let renderW, renderH, offsetX, offsetY;
+      if (containerAspect > imgAspect) {
+        renderH = ch;
+        renderW = ch * imgAspect;
+        offsetX = (cw - renderW) / 2;
+        offsetY = 0;
+      } else {
+        renderW = cw;
+        renderH = cw / imgAspect;
+        offsetX = 0;
+        offsetY = (ch - renderH) / 2;
+      }
+
+      const pixelX = offsetX + (midX / spec.width) * renderW;
+      const pixelY = offsetY + (midY / spec.height) * renderH;
+
+      const rad = baseRot * Math.PI / 180;
+      const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
+      const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
+
+      const panX = (cw / 2) - rx;
+      const panY = (ch / 2) - ry;
 
       if (animate) {
         NavAnimator.animateCameraTo(panX, panY, targetScale, 450, baseRot);
@@ -2261,15 +2288,11 @@
       if (img) img.src = spec.img;
       if (title) title.innerText = spec.name;
       if (count) count.innerText = spec.count;
-      
-      if (container && !document.body.classList.contains('mobile-navigation-mode')) {
-        container.style.aspectRatio = `${spec.width} / ${spec.height}`;
-      }
       if (svgOverlay) svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
 
       closeNodePopup();
       renderLegendList();
-      renderMapOverlay(true);
+      applyMapOrientation();
       updateSegmentButtons();
     }
 
