@@ -117,16 +117,21 @@
     #map-container.is-dragging {
       cursor: grabbing !important;
     }
-    #map-container.is-dragging * {
-      cursor: grabbing !important;
+    /* Super Fast Virtualized Directory List (Zero Lag, Native 60 FPS) */
+    #legend-items-container > div {
+      content-visibility: auto;
+      contain-intrinsic-size: 72px;
+      contain: layout style paint;
     }
+
     .map-node-interactive {
       cursor: pointer !important;
       pointer-events: auto;
-      transition: filter 0.15s ease;
+      transform: translateZ(0);
+      will-change: opacity, transform;
     }
     .map-node-interactive:hover {
-      filter: drop-shadow(0 0 8px rgba(56, 189, 248, 0.95)) brightness(1.25);
+      filter: brightness(1.2);
     }
     .map-node-interactive * {
       pointer-events: auto;
@@ -2831,7 +2836,6 @@
             rect.setAttribute('fill', isEsc ? '#0891b2' : '#2563eb');
             rect.setAttribute('stroke', '#ffffff');
             rect.setAttribute('stroke-width', '1.6');
-            rect.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
             useIcon.setAttribute('href', isEsc ? '#vec-icon-stairs' : '#vec-icon-elevator');
@@ -2844,11 +2848,20 @@
             g.appendChild(rect);
             g.appendChild(useIcon);
           } else if (n.logo) {
-            // OFFICIAL LUXURY BRAND BADGE WITH SVG LOGO (ALTOZANO LUXURY EDITION)
+            // OFFICIAL LUXURY BRAND BADGE WITH SVG LOGO (ALTOZANO LUXURY EDITION - HIGH PERFORMANCE)
             const isAnchor = n.type === 'anchor_store';
             const bw = isAnchor ? 34 : 24;
             const bh = isAnchor ? 26 : 20;
             const rx = isAnchor ? 7 : 5;
+
+            // Crisp vector shadow (0% CPU blur overhead)
+            const shadowRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+            shadowRect.setAttribute('x', n.coordinates.x - bw / 2 + 1);
+            shadowRect.setAttribute('y', n.coordinates.y - bh / 2 + 1.5);
+            shadowRect.setAttribute('width', bw);
+            shadowRect.setAttribute('height', bh);
+            shadowRect.setAttribute('rx', rx);
+            shadowRect.setAttribute('fill', 'rgba(0, 0, 0, 0.45)');
 
             const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             bgRect.setAttribute('x', n.coordinates.x - bw / 2);
@@ -2857,9 +2870,8 @@
             bgRect.setAttribute('height', bh);
             bgRect.setAttribute('rx', rx);
             bgRect.setAttribute('fill', '#ffffff');
-            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(15,23,42,0.4)');
+            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(15,23,42,0.3)');
             bgRect.setAttribute('stroke-width', isAnchor ? '1.8' : '1.0');
-            bgRect.setAttribute('filter', isAnchor ? 'url(#luxuryAnchorGlow)' : 'url(#luxuryBadgeShadow)');
 
             const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
             const padX = isAnchor ? 4 : 3;
@@ -2874,6 +2886,7 @@
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             title.textContent = `${n.name} (Toca para trazar ruta)`;
             g.appendChild(title);
+            g.appendChild(shadowRect);
             g.appendChild(bgRect);
             g.appendChild(imgEl);
           } else if (n.type === 'anchor_store') {
@@ -2887,7 +2900,6 @@
             rect.setAttribute('fill', '#f97316');
             rect.setAttribute('stroke', '#ffffff');
             rect.setAttribute('stroke-width', '1.8');
-            rect.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const lower = (n.name || '').toLowerCase();
             let iconHref = '#vec-icon-bag';
@@ -2913,7 +2925,6 @@
             circle.setAttribute('fill', cat === 'coffee' ? '#059669' : '#d97706');
             circle.setAttribute('stroke', '#ffffff');
             circle.setAttribute('stroke-width', '1.4');
-            circle.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
             useIcon.setAttribute('href', cat === 'coffee' ? '#vec-icon-coffee' : '#vec-icon-food');
@@ -2941,7 +2952,6 @@
             circle.setAttribute('fill', fill);
             circle.setAttribute('stroke', '#ffffff');
             circle.setAttribute('stroke-width', '1.4');
-            circle.setAttribute('filter', 'url(#luxuryBadgeShadow)');
 
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             title.textContent = `${n.name || n.id}`;
