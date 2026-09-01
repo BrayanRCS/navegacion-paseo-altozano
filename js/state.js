@@ -39,7 +39,12 @@ const AltozanoState = {
     segIndex: 0,
     nodeIndex: 0,
     isTransitioningFloor: false
-  }
+  },
+
+  // Interactive Visual Editor (Drag & Drop Logo Placement)
+  isEditorMode: false,
+  customLogoPositions: {},
+  selectedEditorNodeId: null
 };
 
 // Global backward compatibility references
@@ -64,3 +69,6 @@ let currentCategoryFilter = AltozanoState.currentCategoryFilter;
 let cachedViewport = AltozanoState.cachedViewport;
 let isFollowingGPS = AltozanoState.isFollowingGPS;
 let currentKioskView = AltozanoState.currentView;
+let isEditorMode = AltozanoState.isEditorMode;
+let customLogoPositions = AltozanoState.customLogoPositions;
+let selectedEditorNodeId = AltozanoState.selectedEditorNodeId;

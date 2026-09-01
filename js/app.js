@@ -95,6 +95,8 @@ async function initApp() {
     populateSelects();
     renderLegendList();
     setupInteractiveCameraPan();
+    if (typeof initLogoPositions === 'function') initLogoPositions();
+    if (typeof setupEditorDragListeners === 'function') setupEditorDragListeners();
     
     initFromUrlParams();
   } catch (err) {

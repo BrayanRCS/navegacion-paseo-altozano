@@ -43,6 +43,10 @@ function renderMapOverlay(animate = false) {
   nodesLayer.innerHTML = '';
   edgesLayer.innerHTML = '';
 
+  // Clear or prepare tether layer for logo position editor
+  const oldTether = document.getElementById('svg-editor-tether-layer');
+  if (oldTether) oldTether.innerHTML = '';
+
   // Display or hide nodes layer based on showStoresAndRestaurants
   nodesLayer.style.display = showStoresAndRestaurants ? (isSimulating ? 'none' : 'block') : 'none';
   edgesLayer.style.display = 'block';
@@ -97,24 +101,30 @@ function renderMapOverlay(animate = false) {
       const cat = getNodeCategoryGroup(n);
       const isCategoryMatch = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
 
+      // Calculate Visual Position (support custom dragged offset or default navigation node position)
+      const logoPos = typeof getNodeLogoPosition === 'function' ? getNodeLogoPosition(n) : n.coordinates;
+      const posX = logoPos.x;
+      const posY = logoPos.y;
+
       const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-      g.setAttribute('class', 'map-node-interactive');
+      g.setAttribute('class', isEditorMode ? 'map-node-interactive map-node-editable' : 'map-node-interactive');
       g.style.opacity = isCategoryMatch ? '1' : '0.15';
       if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
-        g.setAttribute('transform', `rotate(90, ${n.coordinates.x}, ${n.coordinates.y})`);
+        g.setAttribute('transform', `rotate(90, ${posX}, ${posY})`);
       }
 
-      // Invisible enlarged hit area for effortless clicking
+      // Invisible enlarged hit area for effortless clicking and drag & drop
       const hitArea = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-      hitArea.setAttribute('cx', n.coordinates.x);
-      hitArea.setAttribute('cy', n.coordinates.y);
-      hitArea.setAttribute('r', '18');
+      hitArea.setAttribute('cx', posX);
+      hitArea.setAttribute('cy', posY);
+      hitArea.setAttribute('r', isEditorMode ? '24' : '18');
       hitArea.setAttribute('fill', 'transparent');
       hitArea.style.pointerEvents = 'all';
-      hitArea.style.cursor = 'pointer';
+      hitArea.style.cursor = isEditorMode ? 'grab' : 'pointer';
       g.appendChild(hitArea);
 
       g.addEventListener('click', (e) => {
+        if (isEditorMode) return;
         e.stopPropagation();
         e.preventDefault();
         showNodePopup(n);
@@ -123,8 +133,8 @@ function renderMapOverlay(animate = false) {
       if (n.type === 'portal_escalator' || n.type === 'portal_elevator') {
         const isEsc = n.type === 'portal_escalator';
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('x', n.coordinates.x - 11);
-        rect.setAttribute('y', n.coordinates.y - 11);
+        rect.setAttribute('x', posX - 11);
+        rect.setAttribute('y', posY - 11);
         rect.setAttribute('width', 22);
         rect.setAttribute('height', 22);
         rect.setAttribute('rx', 6);
@@ -134,8 +144,8 @@ function renderMapOverlay(animate = false) {
 
         const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
         useIcon.setAttribute('href', isEsc ? '#vec-icon-stairs' : '#vec-icon-elevator');
-        useIcon.setAttribute('x', n.coordinates.x);
-        useIcon.setAttribute('y', n.coordinates.y);
+        useIcon.setAttribute('x', posX);
+        useIcon.setAttribute('y', posY);
 
         const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
         title.textContent = `${n.name} (${isEsc ? 'Escaleras Eléctricas' : 'Elevador'})`;
@@ -153,32 +163,32 @@ function renderMapOverlay(animate = false) {
         const padY = isAnchor ? 5 : (isIsland ? 3 : 3.5);
         const logoW = bw - (padX * 2);
         const logoH = bh - (padY * 2);
-        const logoX = n.coordinates.x - (bw / 2) + padX;
-        const logoY = n.coordinates.y - (bh / 2) + padY;
+        const logoX = posX - (bw / 2) + padX;
+        const logoY = posY - (bh / 2) + padY;
 
         // Vector shadow
         const shadowRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        shadowRect.setAttribute('x', n.coordinates.x - bw / 2 + 1.2);
-        shadowRect.setAttribute('y', n.coordinates.y - bh / 2 + 2);
+        shadowRect.setAttribute('x', posX - bw / 2 + 1.2);
+        shadowRect.setAttribute('y', posY - bh / 2 + 2);
         shadowRect.setAttribute('width', bw);
         shadowRect.setAttribute('height', bh);
         shadowRect.setAttribute('rx', rx);
         shadowRect.setAttribute('fill', 'rgba(0, 0, 0, 0.65)');
 
         const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        bgRect.setAttribute('x', n.coordinates.x - bw / 2);
-        bgRect.setAttribute('y', n.coordinates.y - bh / 2);
+        bgRect.setAttribute('x', posX - bw / 2);
+        bgRect.setAttribute('y', posY - bh / 2);
         bgRect.setAttribute('width', bw);
         bgRect.setAttribute('height', bh);
         bgRect.setAttribute('rx', rx);
         bgRect.setAttribute('fill', '#ffffff');
-        bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(203, 213, 225, 0.9)');
-        bgRect.setAttribute('stroke-width', isAnchor ? '2.2' : '1.3');
+        bgRect.setAttribute('stroke', isEditorMode ? '#f59e0b' : (isAnchor ? '#0284c7' : 'rgba(203, 213, 225, 0.9)'));
+        bgRect.setAttribute('stroke-width', isEditorMode ? '2.5' : (isAnchor ? '2.2' : '1.3'));
 
         g.setAttribute('data-logo-node-id', n.id);
 
         const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
-        title.textContent = `${n.name} (Toca para trazar ruta)`;
+        title.textContent = isEditorMode ? `${n.name} (Arrastra para mover posición visual)` : `${n.name} (Toca para trazar ruta)`;
         g.appendChild(title);
         g.appendChild(shadowRect);
         g.appendChild(bgRect);
@@ -193,10 +203,15 @@ function renderMapOverlay(animate = false) {
         imgEl.setAttribute('shape-rendering', 'geometricPrecision');
         imgEl.style.imageRendering = '-webkit-optimize-contrast';
         g.appendChild(imgEl);
+
+        // Draw tether indicator line in editor mode or if offset
+        if (typeof updateEditorTetherLine === 'function' && (isEditorMode || posX !== n.coordinates.x || posY !== n.coordinates.y)) {
+          updateEditorTetherLine(n, posX, posY);
+        }
       } else if (n.type === 'anchor_store') {
         const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-        rect.setAttribute('x', n.coordinates.x - 11);
-        rect.setAttribute('y', n.coordinates.y - 11);
+        rect.setAttribute('x', posX - 11);
+        rect.setAttribute('y', posY - 11);
         rect.setAttribute('width', 22);
         rect.setAttribute('height', 22);
         rect.setAttribute('rx', 5);
@@ -211,8 +226,8 @@ function renderMapOverlay(animate = false) {
 
         const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
         useIcon.setAttribute('href', iconHref);
-        useIcon.setAttribute('x', n.coordinates.x);
-        useIcon.setAttribute('y', n.coordinates.y);
+        useIcon.setAttribute('x', posX);
+        useIcon.setAttribute('y', posY);
 
         const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
         title.textContent = `${n.name}`;
@@ -221,8 +236,8 @@ function renderMapOverlay(animate = false) {
         g.appendChild(useIcon);
       } else if (cat === 'coffee' || cat === 'food') {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', n.coordinates.x);
-        circle.setAttribute('cy', n.coordinates.y);
+        circle.setAttribute('cx', posX);
+        circle.setAttribute('cy', posY);
         circle.setAttribute('r', '8');
         circle.setAttribute('fill', cat === 'coffee' ? '#059669' : '#ea580c');
         circle.setAttribute('stroke', '#ffffff');
@@ -230,8 +245,8 @@ function renderMapOverlay(animate = false) {
 
         const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
         useIcon.setAttribute('href', cat === 'coffee' ? '#vec-icon-coffee' : '#vec-icon-food');
-        useIcon.setAttribute('x', n.coordinates.x);
-        useIcon.setAttribute('y', n.coordinates.y);
+        useIcon.setAttribute('x', posX);
+        useIcon.setAttribute('y', posY);
 
         const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
         title.textContent = `${n.name}`;
@@ -240,8 +255,8 @@ function renderMapOverlay(animate = false) {
         g.appendChild(useIcon);
       } else {
         const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
-        circle.setAttribute('cx', n.coordinates.x);
-        circle.setAttribute('cy', n.coordinates.y);
+        circle.setAttribute('cx', posX);
+        circle.setAttribute('cy', posY);
 
         let r = 5.5;
         let fill = '#3b82f6';
