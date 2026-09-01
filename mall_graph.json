@@ -902,10 +902,10 @@
       "id": "n_lvl1_c_cas_1",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Pasillo Casino 1 (Mantenimiento) PB",
+      "name": "Pasillo Casino 1 PB",
       "coordinates": {
-        "x": 955,
-        "y": 175
+        "x": 960,
+        "y": 160
       }
     },
     {
@@ -914,8 +914,8 @@
       "type": "corridor_waypoint",
       "name": "Pasillo Casino 2 PB",
       "coordinates": {
-        "x": 985,
-        "y": 155
+        "x": 990,
+        "y": 140
       }
     },
     {
@@ -924,8 +924,8 @@
       "type": "corridor_waypoint",
       "name": "Pasillo Casino 3 PB",
       "coordinates": {
-        "x": 1015,
-        "y": 130
+        "x": 1020,
+        "y": 115
       }
     },
     {
@@ -934,8 +934,8 @@
       "type": "corridor_waypoint",
       "name": "Pasillo Casino 4 PB",
       "coordinates": {
-        "x": 1045,
-        "y": 105
+        "x": 1050,
+        "y": 95
       }
     },
     {
