@@ -88,17 +88,15 @@
     /* Hardware-Accelerated Nav Arrow Cursor & Camera Stage (Driven by Anime.js) */
     #svg-nav-arrow-cursor {
       transform-origin: 0 0;
-      will-change: transform;
     }
     #map-camera-stage {
       transform-origin: 0 0;
-      will-change: transform;
     }
 
-    /* Infinite Vector Sharpness (Re-rasterized at Native Device DPI on every zoom level) */
+    /* Ultra-Crisp Vector & Logo Rendering (Infinite HD at Any Zoom Level) */
     #floor-plan-img {
       image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
+      image-rendering: high-quality;
     }
     #map-svg-overlay {
       shape-rendering: geometricPrecision;
@@ -106,19 +104,27 @@
     }
     #map-svg-overlay image {
       image-rendering: -webkit-optimize-contrast;
-      image-rendering: crisp-edges;
       image-rendering: high-quality;
       shape-rendering: geometricPrecision;
+    }
+    #map-svg-overlay svg {
+      shape-rendering: geometricPrecision;
+      overflow: visible;
+    }
+    .brand-logo-img {
+      image-rendering: -webkit-optimize-contrast;
+      image-rendering: high-quality;
     }
     .map-node-interactive {
       cursor: pointer !important;
       pointer-events: auto;
+      transition: filter 0.15s ease-out, transform 0.15s ease-out;
     }
-    .map-node-interactive rect, .map-node-interactive circle {
+    .map-node-interactive rect, .map-node-interactive circle, .map-node-interactive path, .map-node-interactive polygon {
       shape-rendering: geometricPrecision;
     }
     .map-node-interactive:hover {
-      filter: brightness(1.2);
+      filter: brightness(1.15) drop-shadow(0 2px 8px rgba(56, 189, 248, 0.45));
     }
     .map-node-interactive * {
       pointer-events: auto;
@@ -177,7 +183,7 @@
   </header>
 
   <!-- MAIN WORKSPACE: VERTICAL KIOSK PORTRAIT FLOW (SCREEN 1: DIRECTORY -> SCREEN 2: MAP) -->
-  <main class="flex-1 max-w-6xl w-full mx-auto p-2 sm:p-4 md:p-6 flex flex-col gap-3.5">
+  <main class="flex-1 w-full max-w-[1750px] mx-auto p-2 sm:p-3 md:p-4 flex flex-col gap-3">
 
     <!-- Hidden standard selects to maintain API compatibility -->
     <div class="hidden">
@@ -434,17 +440,19 @@
                 <text id="dest-pin-label" x="0" y="-20" font-size="11" font-weight="extrabold" fill="#fdba74" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.9);">🎯 DESTINO</text>
               </g>
 
-              <!-- ICONIC GOOGLE MAPS NAVIGATION ARROW (Blue Puck with Directional Chevron & Heading Beam) -->
-              <g id="svg-nav-arrow-cursor" style="display: none;" transform="translate(0,0)">
-                <!-- Multi-Tier Pulsing GPS Radar Waves -->
-                <circle cx="0" cy="0" r="14" fill="none" stroke="#38bdf8" stroke-width="2.5" class="nav-puck-pulse"></circle>
-                <circle cx="0" cy="0" r="14" fill="rgba(56, 189, 248, 0.18)" stroke="#0284c7" stroke-width="1.5" class="nav-puck-pulse-2"></circle>
-                <!-- Heading Beam Cone -->
-                <path d="M 0 0 L -22 -48 L 22 -48 Z" fill="rgba(56, 189, 248, 0.25)" stroke="rgba(56, 189, 248, 0.5)" stroke-width="1"></path>
-                <!-- Outer Blue Puck Circle with White Border & Shadow -->
-                <circle cx="0" cy="0" r="14" fill="#1d4ed8" stroke="#ffffff" stroke-width="3" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
-                <!-- Central Crisp Navigation Chevron Arrow (Google Maps Style) -->
-                <path d="M 0 -10 L 7 7 L 0 3.5 L -7 7 Z" fill="#ffffff"></path>
+              <!-- Dynamic GPS Nav Arrow Cursor Layer -->
+              <g id="svg-nav-cursor-layer">
+                <g id="svg-nav-arrow-cursor" style="display: none;" transform="translate(0,0)">
+                  <!-- Multi-Tier Pulsing GPS Radar Waves -->
+                  <circle cx="0" cy="0" r="14" fill="none" stroke="#38bdf8" stroke-width="2.5" class="nav-puck-pulse"></circle>
+                  <circle cx="0" cy="0" r="14" fill="rgba(56, 189, 248, 0.18)" stroke="#0284c7" stroke-width="1.5" class="nav-puck-pulse-2"></circle>
+                  <!-- Heading Beam Cone -->
+                  <path d="M 0 0 L -22 -48 L 22 -48 Z" fill="rgba(56, 189, 248, 0.25)" stroke="rgba(56, 189, 248, 0.5)" stroke-width="1"></path>
+                  <!-- Outer Blue Puck Circle with White Border & Shadow -->
+                  <circle cx="0" cy="0" r="14" fill="#1d4ed8" stroke="#ffffff" stroke-width="3" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
+                  <!-- Central Crisp Navigation Chevron Arrow (Google Maps Style) -->
+                  <path d="M 0 -10 L 7 7 L 0 3.5 L -7 7 Z" fill="#ffffff"></path>
+                </g>
               </g>
             </svg>
           </div>
@@ -457,15 +465,13 @@
             <button onclick="resetCameraRotation()" id="btn-compass" title="Restablecer al Norte (0°)" class="hidden w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 shadow-md">
               <i id="compass-needle" class="fa-solid fa-compass text-rose-400 text-sm transition-transform duration-75"></i>
             </button>
+            <button onclick="toggleStoresAndRestaurants()" id="btn-toggle-stores" title="Mostrar u Ocultar Tiendas y Restaurantes" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700">
+              <i id="btn-toggle-stores-icon" class="fa-solid fa-eye-slash text-xs"></i>
+              <span id="btn-toggle-stores-text">Ocultar Tiendas y Restaurantes</span>
+            </button>
             <button onclick="toggleZoomOverview()" id="btn-zoom-toggle" title="Ver Ruta Completa / Acercar" class="px-2.5 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md">
               <i id="zoom-toggle-icon" class="fa-solid fa-expand text-xs"></i>
               <span id="zoom-toggle-text">Ver Todo</span>
-            </button>
-            <button onclick="centerOnNavArrow()" title="Centrar en la Flecha GPS" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-all">
-              <i class="fa-solid fa-crosshairs text-xs"></i>
-            </button>
-            <button onclick="toggleGraphPoints()" title="Mostrar/Ocultar todos los nodos" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center transition-all">
-              <i class="fa-solid fa-circle-nodes text-xs"></i>
             </button>
             <button onclick="manualZoom(1.2)" title="Acercar (Zoom In)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-all">
               <i class="fa-solid fa-plus text-xs"></i>
@@ -500,19 +506,16 @@
 
         </div>
 
-        <!-- Simulation and Controls Bar -->
-        <div class="mt-3 flex items-center justify-between gap-2">
-          <button onclick="toggleWalkSimulation()" class="flex-1 py-3 px-4 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition-all active:scale-95 border border-blue-400/40">
-            <i id="hud-sim-icon" class="fa-solid fa-location-arrow text-sm"></i>
+        <!-- Simulation and Controls Bar (Full-Width GPS Button) -->
+        <div class="mt-3 flex items-center gap-2">
+          <button onclick="toggleWalkSimulation()" class="w-full py-3.5 px-5 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white font-extrabold text-xs sm:text-sm shadow-lg shadow-blue-600/30 flex items-center justify-center gap-2 transition-all active:scale-95 border border-blue-400/40">
+            <i id="hud-sim-icon" class="fa-solid fa-location-arrow text-base"></i>
             <span id="hud-sim-btn-text">Recorrer con Flecha GPS</span>
-          </button>
-          <button onclick="centerOnNavArrow()" title="Centrar flecha GPS" class="p-3 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition-all">
-            <i class="fa-solid fa-crosshairs text-sm"></i>
           </button>
         </div>
 
-        <!-- Step By Step List Below Map -->
-        <div class="mt-3 bg-slate-950/80 rounded-2xl p-3.5 border border-slate-800">
+        <!-- Guía Visual Paso a Paso (Oculta por defecto en Tótem, disponible para vista móvil) -->
+        <div id="kiosk-step-by-step-guide" class="mt-3 bg-slate-950/80 rounded-2xl p-3.5 border border-slate-800 hidden">
           <div class="flex items-center justify-between mb-2">
             <span class="text-xs font-bold text-slate-300 uppercase tracking-wider">
               <i class="fa-solid fa-list-ol text-sky-400 mr-1"></i> Guía Visual Paso a Paso
@@ -626,11 +629,9 @@
           <span id="mobile-step-action-btn-text">Paso siguiente</span>
           <i class="fa-solid fa-chevron-right text-[10px]"></i>
         </button>
-        <button onclick="toggleWalkSimulation()" title="Recorrer con GPS" class="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-base transition-all flex items-center justify-center border border-slate-700 shadow-md active:scale-95">
+        <button onclick="toggleWalkSimulation()" title="Recorrer con GPS" class="px-4 py-3.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-xs transition-all flex items-center justify-center gap-1.5 border border-slate-700 shadow-md active:scale-95">
           <i id="mobile-sim-icon" class="fa-solid fa-location-arrow"></i>
-        </button>
-        <button onclick="centerOnNavArrow()" title="Centrar GPS" class="w-12 h-12 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 font-bold text-base transition-all flex items-center justify-center border border-slate-700 shadow-md active:scale-95">
-          <i class="fa-solid fa-crosshairs"></i>
+          <span>Simular</span>
         </button>
       </div>
 
@@ -758,7 +759,7 @@
       { id: "p_auto_anytime_esc", type: "escalator", name: "Escaleras Eléctricas Autos / Anytime", 2: "n_lvl2_portal_esc_automotive", 3: "n_lvl3_portal_esc_anytime" }
     ];
 
-    // --- ANIME.JS HARDWARE-ACCELERATED ANIMATION MODULE (Raspberry Pi 5 Optimized) ---
+    // --- ANIME.JS HARDWARE-ACCELERATED ANIMATION MODULE (60/120 FPS Fluid Edition) ---
     const NavAnimator = {
       activeCameraAnim: null,
       activeArrowAnim: null,
@@ -786,7 +787,7 @@
         anime({
           targets: [pathEl, waterBedEl],
           strokeDashoffset: [pathLength, 0],
-          duration: Math.min(1000, Math.max(450, pathLength * 0.7)),
+          duration: Math.min(850, Math.max(380, pathLength * 0.55)),
           easing: 'easeOutCubic',
           complete: function() {
             pathEl.style.strokeDasharray = 'none';
@@ -802,15 +803,15 @@
         anime.remove(destPin);
         anime({
           targets: destPin,
-          scale: [0.85, 1],
-          opacity: [0.6, 1],
-          duration: 250,
+          scale: [0.88, 1],
+          opacity: [0.7, 1],
+          duration: 220,
           easing: 'easeOutQuad'
         });
       },
 
       // 2. Smooth Navigation Arrow Motion & Tangent Rotation
-      animateArrowTo: function(targetX, targetY, targetAngle, duration = 950, onComplete) {
+      animateArrowTo: function(targetX, targetY, targetAngle, duration = 600, easing = 'easeInOutSine', onComplete) {
         const arrow = document.getElementById('svg-nav-arrow-cursor');
         if (!arrow || typeof anime === 'undefined') return;
 
@@ -829,9 +830,9 @@
           y: targetY,
           angle: finalAngle,
           duration: duration,
-          easing: 'easeInOutSine',
+          easing: easing,
           update: function() {
-            arrow.setAttribute('transform', `translate(${state.x}, ${state.y}) rotate(${state.angle})`);
+            arrow.setAttribute('transform', `translate(${state.x.toFixed(2)}, ${state.y.toFixed(2)}) rotate(${state.angle.toFixed(2)})`);
           },
           complete: function() {
             state.angle = finalAngle % 360;
@@ -848,17 +849,16 @@
         this.arrowState.x = x;
         this.arrowState.y = y;
         this.arrowState.angle = angle;
-        arrow.setAttribute('transform', `translate(${x}, ${y}) rotate(${angle})`);
+        arrow.setAttribute('transform', `translate(${x.toFixed(2)}, ${y.toFixed(2)}) rotate(${angle.toFixed(2)})`);
       },
 
-      // 3. Smooth Camera Zoom & Pan with Rotation (Hardware-Accelerated)
-      animateCameraTo: function(targetPanX, targetPanY, targetScale, duration = 600, targetRotation = null) {
+      // 3. Smooth Camera Zoom & Pan with Rotation (Hardware-Accelerated via translate3d)
+      animateCameraTo: function(targetPanX, targetPanY, targetScale, duration = 500, targetRotation = null, easing = 'easeInOutSine') {
         const stage = document.getElementById('map-camera-stage');
         if (!stage || typeof anime === 'undefined') {
           if (stage) {
             if (targetRotation !== null) currentCamera.rotation = targetRotation;
-            const rot = currentCamera.rotation || 0;
-            stage.style.transform = `translate(${targetPanX}px, ${targetPanY}px) scale(${targetScale}) rotate(${rot}deg)`;
+            updateCameraTransform();
             updateCompassUI();
           }
           return;
@@ -872,10 +872,10 @@
           panY: targetPanY,
           scale: targetScale,
           duration: duration,
-          easing: 'easeInOutSine',
+          easing: easing,
           update: function() {
             const rot = currentCamera.rotation || 0;
-            stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale}) rotate(${rot}deg)`;
+            stage.style.transform = `translate3d(${currentCamera.panX.toFixed(2)}px, ${currentCamera.panY.toFixed(2)}px, 0) scale(${currentCamera.scale.toFixed(4)}) rotate(${rot.toFixed(2)}deg)`;
             updatePopupPosition();
             updateCompassUI();
           },
@@ -967,7 +967,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.4.0';
+    const APP_CACHE_VERSION = 'v1.7.0';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -995,6 +995,96 @@
       return data;
     }
 
+    // --- 100% PURE VECTOR LOGO ENGINE (Infinite HD Sharpness at Any Zoom Level) ---
+    const logoVectorCache = new Map();
+    const pendingLogoFetches = new Map();
+
+    async function fetchAndCacheLogoVector(url) {
+      if (!url || !url.endsWith('.svg')) return null;
+      if (logoVectorCache.has(url)) return logoVectorCache.get(url);
+      if (pendingLogoFetches.has(url)) return pendingLogoFetches.get(url);
+
+      const fetchPromise = (async () => {
+        try {
+          const resp = await fetch(url);
+          if (!resp.ok) return null;
+          let text = await resp.text();
+          // Clean namespace prefixes (e.g. ns0:) and XML declarations
+          text = text.replace(/<\/?ns0:/g, match => match.startsWith('</') ? '</' : '<')
+                     .replace(/xmlns:ns0="[^"]*"/g, '');
+
+          const parser = new DOMParser();
+          const doc = parser.parseFromString(text, 'image/svg+xml');
+          const svgEl = doc.querySelector('svg');
+          if (!svgEl) return null;
+
+          let viewBox = svgEl.getAttribute('viewBox');
+          if (!viewBox) {
+            const w = parseFloat(svgEl.getAttribute('width')) || 100;
+            const h = parseFloat(svgEl.getAttribute('height')) || 100;
+            viewBox = `0 0 ${w} ${h}`;
+          }
+
+          const innerHTML = svgEl.innerHTML;
+          const vectorData = { viewBox, innerHTML };
+          logoVectorCache.set(url, vectorData);
+          pendingLogoFetches.delete(url);
+
+          // Dynamically upgrade any currently rendered vector slots on map
+          const slots = document.querySelectorAll(`.logo-vector-slot[data-logo-url="${CSS.escape(url)}"]`);
+          slots.forEach(slot => {
+            const lx = slot.getAttribute('data-x');
+            const ly = slot.getAttribute('data-y');
+            const lw = slot.getAttribute('data-w');
+            const lh = slot.getAttribute('data-h');
+            if (lx !== null && ly !== null && lw !== null && lh !== null) {
+              slot.innerHTML = `<svg x="${lx}" y="${ly}" width="${lw}" height="${lh}" viewBox="${viewBox}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${innerHTML}</svg>`;
+            }
+          });
+
+          // Dynamically upgrade any HTML image elements to pure inlined vectors
+          const htmlImgs = document.querySelectorAll(`img[data-logo-src="${CSS.escape(url)}"]`);
+          htmlImgs.forEach(img => {
+            const parent = img.parentElement;
+            if (parent) {
+              const cls = img.getAttribute('data-logo-class') || 'w-full h-full object-contain brand-logo-img';
+              parent.innerHTML = `<svg viewBox="${viewBox}" class="${cls}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${innerHTML}</svg>`;
+            }
+          });
+
+          return vectorData;
+        } catch (e) {
+          pendingLogoFetches.delete(url);
+          return null;
+        }
+      })();
+
+      pendingLogoFetches.set(url, fetchPromise);
+      return fetchPromise;
+    }
+
+    function preloadAllMallLogos() {
+      if (!mallGraph || !mallGraph.nodes) return;
+      const uniqueUrls = new Set();
+      mallGraph.nodes.forEach(n => {
+        if (n.logo && n.logo.endsWith('.svg')) uniqueUrls.add(n.logo);
+        if (n.logo_white && n.logo_white.endsWith('.svg')) uniqueUrls.add(n.logo_white);
+      });
+      uniqueUrls.forEach(url => {
+        fetchAndCacheLogoVector(url);
+      });
+    }
+
+    function getLogoHtml(logoUrl, altText = '', imgClass = 'w-full h-full object-contain brand-logo-img') {
+      if (!logoUrl) return '';
+      const cached = logoVectorCache.get(logoUrl);
+      if (cached) {
+        return `<svg viewBox="${cached.viewBox}" class="${imgClass}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${cached.innerHTML}</svg>`;
+      }
+      fetchAndCacheLogoVector(logoUrl);
+      return `<img src="${logoUrl}" alt="${altText}" data-logo-src="${logoUrl}" data-logo-class="${imgClass}" class="${imgClass}" loading="lazy">`;
+    }
+
     // Initialize application
     async function initApp() {
       try {
@@ -1017,6 +1107,7 @@
         mallLegends = legData.mall_legends;
         
         buildFloorSubgraphs();
+        preloadAllMallLogos();
         populateSelects();
         renderLegendList();
         setupInteractiveCameraPan();
@@ -1048,19 +1139,32 @@
     }
 
     const NAVIGATION_ZOOM_LEVEL = 1.85;
-    let showGraphClutter = false;
+    let showStoresAndRestaurants = true;
 
-    function toggleGraphPoints() {
-      showGraphClutter = !showGraphClutter;
-      const edgesLayer = document.getElementById('svg-edges-layer');
+    function toggleStoresAndRestaurants() {
+      showStoresAndRestaurants = !showStoresAndRestaurants;
       const nodesLayer = document.getElementById('svg-nodes-layer');
-      if (edgesLayer) {
-        edgesLayer.style.display = showGraphClutter ? 'block' : 'none';
-      }
       if (nodesLayer) {
-        nodesLayer.style.display = showGraphClutter ? 'block' : (isSimulating ? 'none' : 'block');
+        nodesLayer.style.display = showStoresAndRestaurants ? 'block' : 'none';
       }
+      updateToggleStoresButtonUI();
       triggerHaptic('light');
+    }
+
+    function updateToggleStoresButtonUI() {
+      const btn = document.getElementById('btn-toggle-stores');
+      const btnText = document.getElementById('btn-toggle-stores-text');
+      const btnIcon = document.getElementById('btn-toggle-stores-icon');
+      if (!btn) return;
+      if (showStoresAndRestaurants) {
+        if (btnText) btnText.innerText = "Ocultar Tiendas y Restaurantes";
+        if (btnIcon) btnIcon.className = "fa-solid fa-eye-slash text-xs";
+        btn.className = "px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700";
+      } else {
+        if (btnText) btnText.innerText = "Mostrar Tiendas y Restaurantes";
+        if (btnIcon) btnIcon.className = "fa-solid fa-store text-xs";
+        btn.className = "px-3 py-1.5 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-blue-400/40";
+      }
     }
 
     let isVerticalMode = true; // Default vertical kiosk & mobile layout!
@@ -1079,34 +1183,65 @@
       if (isVerticalMode) {
         if (container && !isMobile) {
           container.style.aspectRatio = 'auto';
-          container.style.height = '72vh';
+          container.style.height = 'calc(100vh - 215px)';
           container.style.minHeight = '580px';
-          container.style.maxHeight = '84vh';
+          container.style.maxHeight = 'none';
         }
         if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-sky-400";
         currentCamera.rotation = -90;
       } else {
         if (container && !isMobile) {
-          const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
-          container.style.aspectRatio = `${spec.width} / ${spec.height}`;
-          container.style.height = '62vh';
-          container.style.maxHeight = '700px';
+          container.style.aspectRatio = 'auto';
+          container.style.height = 'calc(100vh - 215px)';
+          container.style.minHeight = '580px';
+          container.style.maxHeight = 'none';
         }
         if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-slate-400";
         currentCamera.rotation = 0;
       }
 
+      cachedViewport = null;
       renderMapOverlay();
       updateCameraTransform();
       updateCompassUI();
       zoomToOverview(true);
     }
 
+    // --- HIGH-PERFORMANCE VIEWPORT METRICS CACHE (Zero Layout Reflows) ---
+    let cachedViewport = null;
+    function getMapViewport(forceRefresh = false) {
+      if (cachedViewport && !forceRefresh) return cachedViewport;
+      const container = document.getElementById('map-container');
+      if (!container) return { cw: 1536, ch: 718, renderW: 1536, renderH: 718, offsetX: 0, offsetY: 0 };
+      const cw = container.clientWidth || 1000;
+      const ch = container.clientHeight || 600;
+      const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
+      const imgAspect = spec.width / spec.height;
+      const containerAspect = cw / ch;
+
+      let renderW, renderH, offsetX, offsetY;
+      if (containerAspect > imgAspect) {
+        renderH = ch;
+        renderW = ch * imgAspect;
+        offsetX = (cw - renderW) / 2;
+        offsetY = 0;
+      } else {
+        renderW = cw;
+        renderH = cw / imgAspect;
+        offsetX = 0;
+        offsetY = (ch - renderH) / 2;
+      }
+      cachedViewport = { cw, ch, renderW, renderH, offsetX, offsetY, spec };
+      return cachedViewport;
+    }
+
+    window.addEventListener('resize', () => { cachedViewport = null; });
+
     function updateCameraTransform() {
       const stage = document.getElementById('map-camera-stage');
       if (!stage) return;
       const rot = currentCamera.rotation || 0;
-      stage.style.transform = `translate(${currentCamera.panX}px, ${currentCamera.panY}px) scale(${currentCamera.scale}) rotate(${rot}deg)`;
+      stage.style.transform = `translate3d(${currentCamera.panX.toFixed(2)}px, ${currentCamera.panY.toFixed(2)}px, 0) scale(${currentCamera.scale.toFixed(4)}) rotate(${rot.toFixed(2)}deg)`;
     }
 
     function resetCameraRotation() {
@@ -1130,13 +1265,16 @@
       triggerHaptic('light');
     }
 
+    let lastCompassState = null;
     function updateCompassUI() {
       const compassBtn = document.getElementById('btn-compass');
       const compassNeedle = document.getElementById('compass-needle');
       if (!compassBtn) return;
       const baseRot = isVerticalMode ? -90 : 0;
       const rot = currentCamera.rotation || 0;
-      if (Math.abs(rot - baseRot) > 2) {
+      const isVisible = Math.abs(rot - baseRot) > 2;
+
+      if (isVisible) {
         compassBtn.classList.remove('hidden');
         if (compassNeedle) {
           compassNeedle.style.transform = `rotate(${-rot}deg)`;
@@ -1156,10 +1294,9 @@
       return (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
     }
 
-    function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 650, targetHeadingDeg = null) {
-      const container = document.getElementById('map-container');
+    function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 600, targetHeadingDeg = null) {
       const stage = document.getElementById('map-camera-stage');
-      if (!container || !stage) return;
+      if (!stage) return;
 
       const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
 
@@ -1167,31 +1304,11 @@
         targetScale = getDynamicZoomLevel(isSimulating);
       }
 
-      const spec = FLOOR_SPECS[currentLevel];
-      const cw = container.clientWidth;
-      const ch = container.clientHeight;
-
-      const u = x / spec.width;
-      const v = y / spec.height;
-
-      const imgAspect = spec.width / spec.height;
-      const containerAspect = cw / ch;
-
-      let renderW, renderH, offsetX, offsetY;
-      if (containerAspect > imgAspect) {
-        renderH = ch;
-        renderW = ch * imgAspect;
-        offsetX = (cw - renderW) / 2;
-        offsetY = 0;
-      } else {
-        renderW = cw;
-        renderH = cw / imgAspect;
-        offsetX = 0;
-        offsetY = (ch - renderH) / 2;
-      }
-
-      const pixelX = offsetX + u * renderW;
-      const pixelY = offsetY + v * renderH;
+      const vp = getMapViewport();
+      const u = x / vp.spec.width;
+      const v = y / vp.spec.height;
+      const pixelX = vp.offsetX + u * vp.renderW;
+      const pixelY = vp.offsetY + v * vp.renderH;
 
       // Determine Target Rotation: Head-up on mobile, or vertical (-90°) on Totem
       let targetRot = isVerticalMode ? -90 : 0;
@@ -1213,8 +1330,8 @@
       const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
 
       // Target screen center: centered in viewport for guaranteed 100% arrow visibility
-      const targetScreenX = cw / 2;
-      const targetScreenY = ch / 2;
+      const targetScreenX = vp.cw / 2;
+      const targetScreenY = vp.ch / 2;
 
       const panX = targetScreenX - rx;
       const panY = targetScreenY - ry;
@@ -1235,55 +1352,34 @@
 
     function zoomToOverview(animate = true) {
       const stage = document.getElementById('map-camera-stage');
-      const container = document.getElementById('map-container');
-      if (!stage || !container) return;
+      if (!stage) return;
 
-      const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
-      const cw = container.clientWidth;
-      const ch = container.clientHeight;
-
+      const vp = getMapViewport();
+      const spec = vp.spec;
       const baseRot = isVerticalMode ? -90 : 0;
       currentCamera.rotation = baseRot;
       updateCompassUI();
 
       let targetScale = 1.0;
       if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
-        // In vertical -90deg rotation: visual width is spec.height (718), visual height is spec.width (1536)
-        const scaleX = cw / spec.height;
-        const scaleY = ch / spec.width;
+        const scaleX = vp.cw / spec.height;
+        const scaleY = vp.ch / spec.width;
         targetScale = Math.min(scaleX, scaleY) * 0.98;
       } else {
         targetScale = 1.0;
       }
 
-      // Exact Geometric Center Calculation of the Stage
       const midX = spec.width / 2;
       const midY = spec.height / 2;
-
-      const imgAspect = spec.width / spec.height;
-      const containerAspect = cw / ch;
-      let renderW, renderH, offsetX, offsetY;
-      if (containerAspect > imgAspect) {
-        renderH = ch;
-        renderW = ch * imgAspect;
-        offsetX = (cw - renderW) / 2;
-        offsetY = 0;
-      } else {
-        renderW = cw;
-        renderH = cw / imgAspect;
-        offsetX = 0;
-        offsetY = (ch - renderH) / 2;
-      }
-
-      const pixelX = offsetX + (midX / spec.width) * renderW;
-      const pixelY = offsetY + (midY / spec.height) * renderH;
+      const pixelX = vp.offsetX + (midX / spec.width) * vp.renderW;
+      const pixelY = vp.offsetY + (midY / spec.height) * vp.renderH;
 
       const rad = baseRot * Math.PI / 180;
       const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
       const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
 
-      const panX = (cw / 2) - rx;
-      const panY = (ch / 2) - ry;
+      const panX = (vp.cw / 2) - rx;
+      const panY = (vp.ch / 2) - ry;
 
       if (animate) {
         NavAnimator.animateCameraTo(panX, panY, targetScale, 450, baseRot);
@@ -1365,14 +1461,28 @@
       const centerX = rect.width / 2;
       const centerY = rect.height / 2;
 
-      const pointX = (centerX - currentCamera.panX) / currentCamera.scale;
-      const pointY = (centerY - currentCamera.panY) / currentCamera.scale;
+      const rotRad = (currentCamera.rotation || 0) * Math.PI / 180;
+      const cos = Math.cos(-rotRad);
+      const sin = Math.sin(-rotRad);
+      const dx = centerX - currentCamera.panX;
+      const dy = centerY - currentCamera.panY;
+      const localX = (dx * cos - dy * sin) / currentCamera.scale;
+      const localY = (dx * sin + dy * cos) / currentCamera.scale;
 
       const newScale = Math.min(8.0, Math.max(0.65, currentCamera.scale * factor));
-      const targetPanX = centerX - pointX * newScale;
-      const targetPanY = centerY - pointY * newScale;
+      const newDx = (localX * newScale) * Math.cos(rotRad) - (localY * newScale) * Math.sin(rotRad);
+      const newDy = (localX * newScale) * Math.sin(rotRad) + (localY * newScale) * Math.cos(rotRad);
 
-      NavAnimator.animateCameraTo(targetPanX, targetPanY, newScale, 300);
+      const targetPanX = centerX - newDx;
+      const targetPanY = centerY - newDy;
+
+      currentCamera.scale = newScale;
+      currentCamera.panX = targetPanX;
+      currentCamera.panY = targetPanY;
+      currentCamera.isZoomed = newScale > 1.1;
+
+      NavAnimator.animateCameraTo(targetPanX, targetPanY, newScale, 280, currentCamera.rotation || 0);
+      updateZoomButtonUI();
     }
 
     function updateZoomButtonUI() {
@@ -1416,6 +1526,18 @@
         origPanY = currentCamera.panY;
       });
 
+      let panRafScheduled = false;
+      function requestPanUpdate() {
+        if (!panRafScheduled) {
+          panRafScheduled = true;
+          requestAnimationFrame(() => {
+            updateCameraTransform();
+            updatePopupPosition();
+            panRafScheduled = false;
+          });
+        }
+      }
+
       window.addEventListener('mousemove', (e) => {
         if (!isMouseDown) return;
         const dx = e.clientX - startMouseX;
@@ -1429,8 +1551,7 @@
         if (hasDraggedMap) {
           currentCamera.panX = origPanX + dx;
           currentCamera.panY = origPanY + dy;
-          updateCameraTransform();
-          updatePopupPosition();
+          requestPanUpdate();
         }
       });
 
@@ -1479,8 +1600,7 @@
         currentCamera.scale = newScale;
         currentCamera.isZoomed = newScale > 1.1;
 
-        updateCameraTransform();
-        updatePopupPosition();
+        requestPanUpdate();
         updateZoomButtonUI();
       }, { passive: false });
 
@@ -1533,8 +1653,7 @@
           if (hasDraggedMap) {
             currentCamera.panX = origPanX + dx;
             currentCamera.panY = origPanY + dy;
-            updateCameraTransform();
-            updatePopupPosition();
+            requestPanUpdate();
           }
         } else if (e.touches.length === 2) {
           e.preventDefault();
@@ -1567,8 +1686,7 @@
             let deltaAngle = currentAngle - initialTouchAngle;
             currentCamera.rotation = (initialRotation + deltaAngle) % 360;
 
-            updateCameraTransform();
-            updatePopupPosition();
+            requestPanUpdate();
             updateZoomButtonUI();
             updateCompassUI();
           }
@@ -1584,7 +1702,7 @@
       });
     }
 
-    // --- MULTI-FLOOR NAVIGATION ARROW SIMULATION (GPS Style) ---
+    // --- MULTI-FLOOR NAVIGATION ARROW SIMULATION (GPS Style Fluid Edition) ---
     function toggleWalkSimulation() {
       triggerHaptic('light');
       if (isSimulating) {
@@ -1594,7 +1712,7 @@
       }
     }
 
-    const WALK_STEP_DURATION = 650;
+    const WALK_STEP_DURATION = 550;
 
     function startWalkSimulation() {
       if (routeSegments.length === 0) return;
@@ -1692,7 +1810,7 @@
                 zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
               }
             }
-          }, 750);
+          }, 700);
           return;
         } else {
           // Reached final destination!
@@ -1738,16 +1856,23 @@
       const next = pathNodes[Math.min(pathNodes.length - 1, simNodeIndex + 1)];
       const heading = getNodeHeading(curr, next);
 
-      // Position & Seamlessly Glide Nav Arrow without dead time
-      positionNavArrowOnNode(curr, next, true, WALK_STEP_DURATION);
+      // Dynamically calculate smooth duration between waypoints
+      let dist = 30;
+      if (next && curr) {
+        dist = Math.hypot(next.coordinates.x - curr.coordinates.x, next.coordinates.y - curr.coordinates.y);
+      }
+      const stepDuration = Math.max(450, Math.min(750, dist * 7.5));
+      const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex === pathNodes.length - 1);
 
-      // Smooth Camera Tracking (respects if user clicked "Ver Todo" overview) with Dynamic Heading
+      // Position & Seamlessly Glide Nav Arrow without dead time
+      positionNavArrowOnNode(curr, next, true, stepDuration, isDestinationNode ? 'easeOutCubic' : 'linear');
+
+      // Smooth Camera Tracking with Dynamic Heading
       if (isFollowingGPS) {
-        zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
+        zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true, stepDuration, heading);
       }
 
       // Update Live Place & Landmark Preview Card
-      const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex === pathNodes.length - 1);
       updatePlaceCard(curr, isDestinationNode);
 
       // Sync closest step in Totem UI
@@ -1876,8 +2001,8 @@
       const info = getPlaceVisualInfo(node);
 
       if (node.logo) {
-        emojiEl.innerHTML = `<img src="${node.logo}" alt="${node.name}" class="max-w-[32px] max-h-[32px] object-contain">`;
-        iconBox.className = "w-12 h-12 rounded-2xl bg-white p-1 flex items-center justify-center shadow-lg border border-white/50 flex-shrink-0 transition-all duration-300";
+        emojiEl.innerHTML = getLogoHtml(node.logo, node.name, 'w-full h-full object-contain brand-logo-img');
+        iconBox.className = "w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-lg border border-slate-700/60 flex-shrink-0 transition-all duration-300";
       } else {
         emojiEl.innerText = info.emoji;
         iconBox.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${info.bgGradient} flex items-center justify-center text-2xl shadow-md flex-shrink-0 transition-all duration-300`;
@@ -1905,7 +2030,7 @@
     let lastKnownArrowAngle = 0;
 
     // Position Navigation Arrow on specific step node with Google Maps style heading
-    function positionNavArrowOnNode(currNode, nextNode, animate = false, duration = 800) {
+    function positionNavArrowOnNode(currNode, nextNode, animate = false, duration = 600, easing = 'easeInOutSine') {
       const navArrow = document.getElementById('svg-nav-arrow-cursor');
       if (!navArrow) return;
       if (!currNode || currNode.level !== currentLevel) {
@@ -1944,7 +2069,7 @@
       }
 
       if (animate) {
-        NavAnimator.animateArrowTo(currNode.coordinates.x, currNode.coordinates.y, angleDeg, duration);
+        NavAnimator.animateArrowTo(currNode.coordinates.x, currNode.coordinates.y, angleDeg, duration, easing);
       } else {
         NavAnimator.setArrowInstant(currNode.coordinates.x, currNode.coordinates.y, angleDeg);
       }
@@ -2256,6 +2381,7 @@
 
     function switchLevel(lvl) {
       currentLevel = lvl;
+      cachedViewport = null;
       const spec = FLOOR_SPECS[lvl];
       
       const img = document.getElementById('floor-plan-img');
@@ -2353,8 +2479,8 @@
       const targetIconBox = document.getElementById('map-target-icon-box');
       if (targetIconBox) {
         if (destNode.logo) {
-          targetIconBox.className = "w-12 h-12 rounded-2xl bg-white p-1 flex items-center justify-center shadow-xl border border-white/50 flex-shrink-0";
-          targetIconBox.innerHTML = `<img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain">`;
+          targetIconBox.className = "w-12 h-12 rounded-2xl bg-white p-2 flex items-center justify-center shadow-xl border border-slate-700/60 flex-shrink-0";
+          targetIconBox.innerHTML = getLogoHtml(destNode.logo, destNode.name, 'w-full h-full object-contain brand-logo-img');
         } else {
           targetIconBox.className = `w-12 h-12 rounded-2xl bg-gradient-to-tr ${visualInfo.bgGradient} flex items-center justify-center text-2xl shadow-md flex-shrink-0`;
           targetIconBox.innerHTML = `<span id="map-target-emoji">${visualInfo.emoji}</span>`;
@@ -2369,8 +2495,8 @@
       const mTargetEmoji = document.getElementById('mobile-target-emoji');
       if (mTargetEmoji && mTargetEmoji.parentElement) {
         if (destNode.logo) {
-          mTargetEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-white p-1 flex items-center justify-center shadow-md flex-shrink-0 border border-white/40";
-          mTargetEmoji.parentElement.innerHTML = `<img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain">`;
+          mTargetEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md flex-shrink-0 border border-slate-700/60";
+          mTargetEmoji.parentElement.innerHTML = getLogoHtml(destNode.logo, destNode.name, 'w-full h-full object-contain brand-logo-img');
         } else {
           mTargetEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-gradient-to-tr from-blue-600 to-sky-500 flex items-center justify-center text-lg shadow-md flex-shrink-0";
           mTargetEmoji.parentElement.innerHTML = `<span id="mobile-target-emoji">${visualInfo.emoji}</span>`;
@@ -2574,13 +2700,15 @@
         }
       });
 
-      document.getElementById('chip-steps-count').innerHTML = `<i class="fa-solid fa-shoe-prints mr-1"></i> ${currentSteps.length} pasos guiados`;
+      const chipCount = document.getElementById('chip-steps-count');
+      if (chipCount) chipCount.innerHTML = `<i class="fa-solid fa-shoe-prints mr-1"></i> ${currentSteps.length} pasos guiados`;
       renderStepsList();
     }
 
-    // Render Steps in Bottom List
+    // Render Steps in Bottom List (Mobile Only)
     function renderStepsList() {
       const container = document.getElementById('route-steps-grid');
+      if (!container) return; // Guard clause: Step-by-step guidance is saved exclusively for mobile QR view to maximize Kiosk RAM & GPU
       container.innerHTML = '';
       currentSteps.forEach((step, idx) => {
         const isCurrent = idx === currentStepIndex;
@@ -2754,31 +2882,11 @@
     }
 
     function getNodePixelPosition(nodeX, nodeY) {
-      const container = document.getElementById('map-container');
-      if (!container) return { x: 0, y: 0 };
-      const spec = FLOOR_SPECS[currentLevel];
-      const cw = container.clientWidth;
-      const ch = container.clientHeight;
-      const imgAspect = spec.width / spec.height;
-      const containerAspect = cw / ch;
-
-      let renderW, renderH, offsetX, offsetY;
-      if (containerAspect > imgAspect) {
-        renderH = ch;
-        renderW = ch * imgAspect;
-        offsetX = (cw - renderW) / 2;
-        offsetY = 0;
-      } else {
-        renderW = cw;
-        renderH = cw / imgAspect;
-        offsetX = 0;
-        offsetY = (ch - renderH) / 2;
-      }
-
-      const u = nodeX / spec.width;
-      const v = nodeY / spec.height;
-      const pixelX = offsetX + u * renderW;
-      const pixelY = offsetY + v * renderH;
+      const vp = getMapViewport();
+      const u = nodeX / vp.spec.width;
+      const v = nodeY / vp.spec.height;
+      const pixelX = vp.offsetX + u * vp.renderW;
+      const pixelY = vp.offsetY + v * vp.renderH;
 
       const screenX = (pixelX * currentCamera.scale) + currentCamera.panX;
       const screenY = (pixelY * currentCamera.scale) + currentCamera.panY;
@@ -2804,7 +2912,7 @@
       const info = getPlaceVisualInfo(node);
       const emojiEl = document.getElementById('popup-emoji');
       if (node.logo) {
-        emojiEl.innerHTML = `<div class="w-6 h-6 rounded-lg bg-white p-0.5 flex items-center justify-center shadow"><img src="${node.logo}" alt="${node.name}" class="max-w-full max-h-full object-contain"></div>`;
+        emojiEl.innerHTML = `<div class="w-7 h-7 rounded-lg bg-white p-1 flex items-center justify-center shadow border border-slate-700/50">${getLogoHtml(node.logo, node.name, 'w-full h-full object-contain brand-logo-img')}</div>`;
       } else {
         emojiEl.innerText = info.emoji;
       }
@@ -3003,12 +3111,18 @@
             g.appendChild(rect);
             g.appendChild(useIcon);
           } else if (n.logo) {
-            // OFFICIAL LUXURY BRAND BADGE WITH SVG LOGO (ALTOZANO LUXURY EDITION - ULTRA CRISP)
+            // OFFICIAL LUXURY BRAND BADGE WITH 100% PURE VECTOR SVG (INFINITE HD AT ANY ZOOM)
             const isAnchor = n.type === 'anchor_store';
             const isIsland = n.type === 'island';
-            const bw = isAnchor ? 48 : (isIsland ? 28 : 36);
-            const bh = isAnchor ? 34 : (isIsland ? 22 : 26);
-            const rx = isAnchor ? 9 : (isIsland ? 5 : 7);
+            const bw = isAnchor ? 54 : (isIsland ? 32 : 42);
+            const bh = isAnchor ? 38 : (isIsland ? 24 : 30);
+            const rx = isAnchor ? 10 : (isIsland ? 6 : 8);
+            const padX = isAnchor ? 6 : (isIsland ? 3.5 : 4.5);
+            const padY = isAnchor ? 5 : (isIsland ? 3 : 3.5);
+            const logoW = bw - (padX * 2);
+            const logoH = bh - (padY * 2);
+            const logoX = n.coordinates.x - (bw / 2) + padX;
+            const logoY = n.coordinates.y - (bh / 2) + padY;
 
             // Crisp vector shadow (0% CPU blur overhead)
             const shadowRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -3017,7 +3131,7 @@
             shadowRect.setAttribute('width', bw);
             shadowRect.setAttribute('height', bh);
             shadowRect.setAttribute('rx', rx);
-            shadowRect.setAttribute('fill', 'rgba(0, 0, 0, 0.6)');
+            shadowRect.setAttribute('fill', 'rgba(0, 0, 0, 0.65)');
 
             const bgRect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
             bgRect.setAttribute('x', n.coordinates.x - bw / 2);
@@ -3026,27 +3140,49 @@
             bgRect.setAttribute('height', bh);
             bgRect.setAttribute('rx', rx);
             bgRect.setAttribute('fill', '#ffffff');
-            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(15,23,42,0.65)');
-            bgRect.setAttribute('stroke-width', isAnchor ? '2.0' : '1.3');
+            bgRect.setAttribute('stroke', isAnchor ? '#0284c7' : 'rgba(203, 213, 225, 0.9)');
+            bgRect.setAttribute('stroke-width', isAnchor ? '2.2' : '1.3');
 
-            const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-            const padX = isAnchor ? 5 : (isIsland ? 3 : 3.5);
-            const padY = isAnchor ? 4 : (isIsland ? 2.5 : 3);
-            imgEl.setAttribute('href', n.logo);
-            imgEl.setAttribute('x', n.coordinates.x - (bw / 2) + padX);
-            imgEl.setAttribute('y', n.coordinates.y - (bh / 2) + padY);
-            imgEl.setAttribute('width', bw - (padX * 2));
-            imgEl.setAttribute('height', bh - (padY * 2));
-            imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-            imgEl.setAttribute('shape-rendering', 'geometricPrecision');
-            imgEl.style.imageRendering = '-webkit-optimize-contrast';
+            g.setAttribute('data-logo-node-id', n.id);
 
             const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
             title.textContent = `${n.name} (Toca para trazar ruta)`;
             g.appendChild(title);
             g.appendChild(shadowRect);
             g.appendChild(bgRect);
-            g.appendChild(imgEl);
+
+            // Pure Vector Slot
+            const vectorSlot = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+            vectorSlot.setAttribute('class', 'logo-vector-slot');
+            vectorSlot.setAttribute('data-logo-url', n.logo);
+            vectorSlot.setAttribute('data-x', logoX);
+            vectorSlot.setAttribute('data-y', logoY);
+            vectorSlot.setAttribute('data-w', logoW);
+            vectorSlot.setAttribute('data-h', logoH);
+
+            const cached = logoVectorCache.get(n.logo);
+            if (cached) {
+              // 100% INLINED PURE VECTOR PATHS -> ZERO BLUR, INFINITE HD AT ANY ZOOM!
+              vectorSlot.innerHTML = `<svg x="${logoX}" y="${logoY}" width="${logoW}" height="${logoH}" viewBox="${cached.viewBox}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${cached.innerHTML}</svg>`;
+            } else {
+              // Initial fallback image + async vector upgrade
+              const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+              imgEl.setAttribute('href', n.logo);
+              imgEl.setAttribute('x', logoX);
+              imgEl.setAttribute('y', logoY);
+              imgEl.setAttribute('width', logoW);
+              imgEl.setAttribute('height', logoH);
+              imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+              imgEl.setAttribute('shape-rendering', 'geometricPrecision');
+              vectorSlot.appendChild(imgEl);
+
+              fetchAndCacheLogoVector(n.logo).then(vData => {
+                if (vData && vectorSlot.isConnected) {
+                  vectorSlot.innerHTML = `<svg x="${logoX}" y="${logoY}" width="${logoW}" height="${logoH}" viewBox="${vData.viewBox}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${vData.innerHTML}</svg>`;
+                }
+              });
+            }
+            g.appendChild(vectorSlot);
           } else if (n.type === 'anchor_store') {
             // Anchor Stores without logo
             const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -3203,6 +3339,7 @@
       if (dirEl && mapEl) {
         dirEl.classList.add('hidden');
         mapEl.classList.remove('hidden');
+        cachedViewport = null;
 
         if (destId) {
           document.getElementById('dest-select').value = destId;
@@ -3307,8 +3444,8 @@
         let avatarHtml = '';
         if (logoUrl) {
           avatarHtml = `
-            <div class="w-12 h-12 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md border border-white/50 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
-              <img src="${logoUrl}" alt="${item.name}" class="max-w-full max-h-full object-contain filter drop-shadow-sm" loading="lazy" onerror="this.parentElement.outerHTML='<span class=\\'w-12 h-12 rounded-2xl bg-slate-800 text-slate-300 flex items-center justify-center text-lg font-bold flex-shrink-0\\'>${info.emoji}</span>'">
+            <div class="w-12 h-12 rounded-2xl bg-white p-2 flex items-center justify-center shadow-md border border-slate-700/60 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+              ${getLogoHtml(logoUrl, item.name, 'w-full h-full object-contain brand-logo-img')}
             </div>
           `;
         } else if (item.isIsland) {
@@ -3387,7 +3524,7 @@
         const info = getPlaceVisualInfo(destNode);
         const qrEmoji = document.getElementById('qr-route-emoji');
         if (destNode.logo) {
-          qrEmoji.innerHTML = `<div class="w-9 h-9 rounded-xl bg-white p-1 flex items-center justify-center shadow-md border border-white/50"><img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain"></div>`;
+          qrEmoji.innerHTML = `<div class="w-10 h-10 rounded-xl bg-white p-1.5 flex items-center justify-center shadow-md border border-slate-700/60">${getLogoHtml(destNode.logo, destNode.name, 'w-full h-full object-contain brand-logo-img')}</div>`;
         } else {
           qrEmoji.innerText = info.emoji;
         }
@@ -3529,8 +3666,8 @@
         const mEmoji = document.getElementById('mobile-target-emoji');
         if (mEmoji && mEmoji.parentElement) {
           if (destNode.logo) {
-            mEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-white p-1 flex items-center justify-center shadow-md flex-shrink-0 border border-white/40";
-            mEmoji.parentElement.innerHTML = `<img src="${destNode.logo}" alt="${destNode.name}" class="max-w-full max-h-full object-contain">`;
+            mEmoji.parentElement.className = "w-10 h-10 rounded-2xl bg-white p-1.5 flex items-center justify-center shadow-md flex-shrink-0 border border-slate-700/60";
+            mEmoji.parentElement.innerHTML = getLogoHtml(destNode.logo, destNode.name, 'w-full h-full object-contain brand-logo-img');
           } else {
             mEmoji.innerText = info.emoji;
           }
