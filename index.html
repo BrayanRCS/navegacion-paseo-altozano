@@ -967,7 +967,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.8.0';
+    const APP_CACHE_VERSION = 'v1.9.0';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -2289,9 +2289,7 @@
     }
 
     function setTotemRoute(destId) {
-      document.getElementById('origin-select').value = TOTEM_NODE_ID;
-      document.getElementById('dest-select').value = destId;
-      calculateRoute();
+      showMapView(destId);
     }
 
     function swapEndpoints() {
@@ -2302,7 +2300,7 @@
       calculateRoute();
     }
 
-    function switchLevel(lvl) {
+    function switchLevel(lvl, autoZoom = true) {
       currentLevel = lvl;
       cachedViewport = null;
       const spec = FLOOR_SPECS[lvl];
@@ -2310,7 +2308,6 @@
       const img = document.getElementById('floor-plan-img');
       const title = document.getElementById('map-level-title');
       const count = document.getElementById('map-nodes-count');
-      const container = document.getElementById('map-container');
       const svgOverlay = document.getElementById('map-svg-overlay');
 
       [1, 2, 3].forEach(l => {
@@ -2340,9 +2337,11 @@
       if (svgOverlay) svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
 
       closeNodePopup();
-      renderLegendList();
-      applyMapOrientation();
+      renderMapOverlay();
       updateSegmentButtons();
+      if (autoZoom) {
+        zoomToOverview(true);
+      }
     }
 
     // Calculate Route & Generate Steps
@@ -2441,10 +2440,9 @@
 
       // Automatically show the floor of the initial step
       if (routeSegments.length > 0 && routeSegments[0].level !== currentLevel) {
-        switchLevel(routeSegments[0].level);
-      } else {
-        renderMapOverlay(true);
+        switchLevel(routeSegments[0].level, false);
       }
+      renderMapOverlay(true);
 
       updateTotemUI(true);
       zoomToOverview(false);
@@ -2884,9 +2882,10 @@
 
     function routeToPopupNode() {
       if (!selectedPopupNode) return;
-      const destSelect = document.getElementById('dest-select');
-      destSelect.value = selectedPopupNode.id;
+      const destId = selectedPopupNode.id;
       closeNodePopup();
+      document.getElementById('origin-select').value = TOTEM_NODE_ID;
+      document.getElementById('dest-select').value = destId;
       calculateRoute();
     }
 
@@ -3242,9 +3241,14 @@
         mapEl.classList.remove('hidden');
         cachedViewport = null;
 
+        if (destId) {
+          document.getElementById('origin-select').value = TOTEM_NODE_ID;
+          document.getElementById('dest-select').value = destId;
+        }
+
         requestAnimationFrame(() => {
+          cachedViewport = null;
           if (destId) {
-            document.getElementById('dest-select').value = destId;
             calculateRoute();
           } else {
             renderMapOverlay();
@@ -3337,7 +3341,6 @@
         div.className = "p-3.5 rounded-2xl bg-slate-950/85 hover:bg-slate-900 border border-slate-800/90 hover:border-sky-500/50 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-lg active:scale-[0.98]";
         
         div.onclick = () => {
-          setTotemRoute(item.nodeId);
           showMapView(item.nodeId);
         };
 
