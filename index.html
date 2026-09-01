@@ -967,7 +967,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.9.0';
+    const APP_CACHE_VERSION = 'v2.0.0';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -1664,9 +1664,8 @@
       const mSimIcon = document.getElementById('mobile-sim-icon');
       if (mSimIcon) mSimIcon.className = "fa-solid fa-pause";
 
-      // Hide graph nodes by default during navigation UNLESS user manually toggled them on
       const nodesLayer = document.getElementById('svg-nodes-layer');
-      if (nodesLayer) nodesLayer.style.display = showGraphClutter ? 'block' : 'none';
+      if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? (isSimulating ? 'none' : 'block') : 'none';
 
       // Ensure current level matches the current segment
       if (currentLevel !== routeSegments[simSegIndex].level) {
@@ -1822,7 +1821,52 @@
 
       // Restore graph nodes visibility
       const nodesLayer = document.getElementById('svg-nodes-layer');
-      if (nodesLayer) nodesLayer.style.display = 'block';
+      if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? 'block' : 'none';
+    }
+
+    function updateZoomButtonUI() {
+      const btnText = document.getElementById('zoom-toggle-text');
+      const btnIcon = document.getElementById('zoom-toggle-icon');
+      if (btnText && btnIcon) {
+        if (currentCamera.isZoomed) {
+          btnText.innerText = "Ver Todo";
+          btnIcon.className = "fa-solid fa-compress text-xs";
+        } else {
+          btnText.innerText = "Ver Todo";
+          btnIcon.className = "fa-solid fa-expand text-xs";
+        }
+      }
+    }
+
+    function positionNavArrowOnNode(node, nextNode, animate = false, duration = 600, easing = 'easeInOutSine') {
+      const arrow = document.getElementById('svg-nav-arrow-cursor');
+      if (!arrow) return;
+      if (!node || node.level !== currentLevel) {
+        arrow.style.display = 'none';
+        return;
+      }
+
+      arrow.style.display = 'block';
+      const heading = getNodeHeading(node, nextNode) || 0;
+
+      if (animate && typeof NavAnimator !== 'undefined' && NavAnimator.animateArrowTo) {
+        NavAnimator.animateArrowTo(node.coordinates.x, node.coordinates.y, heading, duration, easing);
+      } else if (typeof NavAnimator !== 'undefined' && NavAnimator.setArrowInstant) {
+        NavAnimator.setArrowInstant(node.coordinates.x, node.coordinates.y, heading);
+      } else {
+        arrow.setAttribute('transform', `translate(${node.coordinates.x}, ${node.coordinates.y}) rotate(${heading})`);
+      }
+    }
+
+    function updatePlaceCard(node, isFinal = false) {
+      if (!node) return;
+      const info = getPlaceVisualInfo(node);
+      const titleEl = document.getElementById('place-preview-title');
+      if (titleEl) titleEl.innerText = isFinal ? `🎯 ${node.name || 'Destino'}` : (node.name || info.name);
+      const catEl = document.getElementById('place-preview-category');
+      if (catEl) catEl.innerText = info.category;
+      const descEl = document.getElementById('place-preview-desc');
+      if (descEl) descEl.innerText = info.detail;
     }
 
     // --- VISUAL PLACE & LANDMARK RECOGNITION ENGINE ---
@@ -2931,9 +2975,9 @@
       nodesLayer.innerHTML = '';
       edgesLayer.innerHTML = '';
 
-      // Auto-hide intermediate nodes during active Play / Walk simulation, UNLESS user explicitly toggled them on
-      nodesLayer.style.display = showGraphClutter ? 'block' : (isSimulating ? 'none' : 'block');
-      edgesLayer.style.display = showGraphClutter ? 'block' : 'none';
+      // Display or hide nodes layer based on showStoresAndRestaurants
+      nodesLayer.style.display = showStoresAndRestaurants ? (isSimulating ? 'none' : 'block') : 'none';
+      edgesLayer.style.display = 'block';
 
       // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
       if (currentLevel === 2) {
@@ -3531,7 +3575,8 @@
       } else {
         // Initial View: Start in Directory (Pantalla 1)
         showDirectoryView();
-        setTotemRoute("n_lvl2_store_17"); // Preload default route in background
+        if (document.getElementById('origin-select')) document.getElementById('origin-select').value = TOTEM_NODE_ID;
+        if (document.getElementById('dest-select')) document.getElementById('dest-select').value = "n_lvl2_store_17";
       }
 
       if (mode === 'mobile') {
