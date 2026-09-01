@@ -1,6 +1,6 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 253,
+  "total_nodes": 254,
   "total_edges": 668,
   "nodes": [
     {
@@ -455,7 +455,7 @@
       "name": "Mantenimiento",
       "coordinates": {
         "x": 960,
-        "y": 180
+        "y": 195
       }
     },
     {
@@ -814,7 +814,7 @@
       "type": "corridor_waypoint",
       "name": "Plaza Oval Rotonda Norte PB",
       "coordinates": {
-        "x": 835,
+        "x": 840,
         "y": 295
       }
     },
@@ -839,63 +839,73 @@
       }
     },
     {
-      "id": "n_lvl1_c_nloop_1",
+      "id": "n_lvl1_c_rot_up_1",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Bucle Norte 1 PB",
+      "name": "Rotonda Avenida Norte 1 PB",
       "coordinates": {
-        "x": 790,
-        "y": 260
+        "x": 840,
+        "y": 255
       }
     },
     {
-      "id": "n_lvl1_c_nloop_2",
+      "id": "n_lvl1_c_rot_up_2",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Bucle Norte 2 PB",
+      "name": "Rotonda Avenida Norte 2 PB",
       "coordinates": {
-        "x": 790,
+        "x": 835,
         "y": 215
       }
     },
     {
-      "id": "n_lvl1_c_nloop_3",
+      "id": "n_lvl1_c_rot_up_3",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Bucle Norte 3 PB",
+      "name": "Rotonda Bajo Fuente Exterior PB",
+      "coordinates": {
+        "x": 830,
+        "y": 185
+      }
+    },
+    {
+      "id": "n_lvl1_c_rot_top_1",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Rotonda Curva Superior 1 PB",
+      "coordinates": {
+        "x": 860,
+        "y": 180
+      }
+    },
+    {
+      "id": "n_lvl1_c_rot_top_2",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Rotonda Curva Superior 2 PB",
+      "coordinates": {
+        "x": 895,
+        "y": 180
+      }
+    },
+    {
+      "id": "n_lvl1_c_rot_top_3",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Rotonda Salida a Casino PB",
+      "coordinates": {
+        "x": 930,
+        "y": 180
+      }
+    },
+    {
+      "id": "n_lvl1_c_elev_landing",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Desembarque Elevador Central PB",
       "coordinates": {
         "x": 815,
-        "y": 185
-      }
-    },
-    {
-      "id": "n_lvl1_c_nloop_4",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Bucle Norte 4 (Bajo Fuente) PB",
-      "coordinates": {
-        "x": 855,
-        "y": 185
-      }
-    },
-    {
-      "id": "n_lvl1_c_nloop_5",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Bucle Norte 5 PB",
-      "coordinates": {
-        "x": 890,
-        "y": 185
-      }
-    },
-    {
-      "id": "n_lvl1_c_nloop_6",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Bucle Norte 6 (Salida a Casino) PB",
-      "coordinates": {
-        "x": 925,
-        "y": 185
+        "y": 250
       }
     },
     {
@@ -3867,92 +3877,92 @@
     },
     {
       "from": "n_lvl1_c_ov_north",
-      "to": "n_lvl1_c_nloop_1",
+      "to": "n_lvl1_c_rot_up_1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_1",
+      "from": "n_lvl1_c_rot_up_1",
       "to": "n_lvl1_c_ov_north",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_prom_7",
-      "to": "n_lvl1_c_nloop_1",
+      "from": "n_lvl1_c_rot_up_1",
+      "to": "n_lvl1_c_elev_landing",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_1",
-      "to": "n_lvl1_c_prom_7",
+      "from": "n_lvl1_c_elev_landing",
+      "to": "n_lvl1_c_rot_up_1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_1",
+      "from": "n_lvl1_c_elev_landing",
       "to": "n_lvl1_portal_elev_central",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_portal_elev_central",
-      "to": "n_lvl1_c_nloop_1",
+      "to": "n_lvl1_c_elev_landing",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_1",
-      "to": "n_lvl1_c_nloop_2",
+      "from": "n_lvl1_c_rot_up_1",
+      "to": "n_lvl1_c_rot_up_2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_2",
-      "to": "n_lvl1_c_nloop_1",
+      "from": "n_lvl1_c_rot_up_2",
+      "to": "n_lvl1_c_rot_up_1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_2",
-      "to": "n_lvl1_c_nloop_3",
+      "from": "n_lvl1_c_rot_up_2",
+      "to": "n_lvl1_c_rot_up_3",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_3",
-      "to": "n_lvl1_c_nloop_2",
+      "from": "n_lvl1_c_rot_up_3",
+      "to": "n_lvl1_c_rot_up_2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_3",
-      "to": "n_lvl1_c_nloop_4",
+      "from": "n_lvl1_c_rot_up_3",
+      "to": "n_lvl1_c_rot_top_1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_4",
-      "to": "n_lvl1_c_nloop_3",
+      "from": "n_lvl1_c_rot_top_1",
+      "to": "n_lvl1_c_rot_up_3",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_4",
-      "to": "n_lvl1_c_nloop_5",
+      "from": "n_lvl1_c_rot_top_1",
+      "to": "n_lvl1_c_rot_top_2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_5",
-      "to": "n_lvl1_c_nloop_4",
+      "from": "n_lvl1_c_rot_top_2",
+      "to": "n_lvl1_c_rot_top_1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_5",
-      "to": "n_lvl1_c_nloop_6",
+      "from": "n_lvl1_c_rot_top_2",
+      "to": "n_lvl1_c_rot_top_3",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_6",
-      "to": "n_lvl1_c_nloop_5",
+      "from": "n_lvl1_c_rot_top_3",
+      "to": "n_lvl1_c_rot_top_2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_nloop_6",
+      "from": "n_lvl1_c_rot_top_3",
       "to": "n_lvl1_c_cas_1",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_c_cas_1",
-      "to": "n_lvl1_c_nloop_6",
+      "to": "n_lvl1_c_rot_top_3",
       "bidirectional": true
     },
     {
