@@ -133,9 +133,36 @@
       pointer-events: none;
       user-select: none;
     }
+    .map-node-editable {
+      cursor: grab !important;
+    }
+    .map-node-editable:hover {
+      filter: brightness(1.2) drop-shadow(0 0 10px rgba(245, 158, 11, 0.8)) !important;
+    }
+    #map-container.is-logo-dragging {
+      cursor: grabbing !important;
+      user-select: none !important;
+    }
+    #map-container.is-logo-dragging * {
+      cursor: grabbing !important;
+    }
     #svg-edges-layer, #svg-water-bed, #svg-active-route, #svg-chevrons-path,
     #svg-totem-marker, #svg-dest-pin, #svg-nav-arrow-cursor {
       pointer-events: none;
+    }
+
+    /* Ultra-smooth GPU accelerated Directory Scrolling */
+    #legend-items-container {
+      -webkit-overflow-scrolling: touch;
+      scroll-behavior: smooth;
+      overscroll-behavior: contain;
+      contain: paint layout;
+    }
+    #legend-items-container > div {
+      contain: layout style;
+      content-visibility: auto;
+      contain-intrinsic-size: 0 74px;
+      transform: translateZ(0);
     }
 
     /* Custom scrollbar */

@@ -289,7 +289,10 @@ function setupInteractiveCameraPan() {
   const DRAG_THRESHOLD = 5;
 
   container.addEventListener('mousedown', (e) => {
-    if (e.target.closest('#map-node-popup')) return;
+    if (e.target.closest('#map-node-popup') || e.target.closest('#editor-hud-bar')) return;
+    if (isEditorMode && e.target.closest('[data-logo-node-id]')) return;
+    if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) return;
+
     isMouseDown = true;
     hasDraggedMap = false;
     if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
@@ -312,6 +315,10 @@ function setupInteractiveCameraPan() {
   }
 
   window.addEventListener('mousemove', (e) => {
+    if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) {
+      isMouseDown = false;
+      return;
+    }
     if (!isMouseDown) return;
     const dx = e.clientX - startMouseX;
     const dy = e.clientY - startMouseY;
@@ -383,7 +390,10 @@ function setupInteractiveCameraPan() {
 
   container.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
-      if (e.touches[0].target.closest('#map-node-popup')) return;
+      if (e.touches[0].target.closest('#map-node-popup') || e.touches[0].target.closest('#editor-hud-bar')) return;
+      if (isEditorMode && e.touches[0].target.closest('[data-logo-node-id]')) return;
+      if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) return;
+
       isMouseDown = true;
       hasDraggedMap = false;
       if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
@@ -410,6 +420,10 @@ function setupInteractiveCameraPan() {
   }, { passive: false });
 
   container.addEventListener('touchmove', (e) => {
+    if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) {
+      isMouseDown = false;
+      return;
+    }
     if (e.touches.length === 1 && isMouseDown) {
       const dx = e.touches[0].clientX - startMouseX;
       const dy = e.touches[0].clientY - startMouseY;

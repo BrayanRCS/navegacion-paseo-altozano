@@ -102,6 +102,7 @@ function setupEditorDragListeners() {
 
     activeDraggedNodeId = nodeId;
     selectedEditorNodeId = nodeId;
+    container.classList.add('is-logo-dragging');
 
     const rect = container.getBoundingClientRect();
     const screenX = clientX - rect.left;
@@ -114,6 +115,7 @@ function setupEditorDragListeners() {
 
     updateEditorHudInfo(node, currentPos);
     triggerHaptic('light');
+    return true;
   }
 
   function handleDragMove(clientX, clientY) {
@@ -138,7 +140,8 @@ function setupEditorDragListeners() {
   }
 
   function handleDragEnd() {
-    if (!isEditorMode || !activeDraggedNodeId) return;
+    if (!activeDraggedNodeId) return;
+    container.classList.remove('is-logo-dragging');
     saveLogoPositionsToStorage();
     activeDraggedNodeId = null;
     renderMapOverlay();
@@ -147,12 +150,17 @@ function setupEditorDragListeners() {
 
   container.addEventListener('mousedown', (e) => {
     if (e.target.closest('#map-node-popup') || e.target.closest('#editor-hud-bar')) return;
-    handleDragStart(e.clientX, e.clientY, e.target);
+    if (isEditorMode && e.target.closest('[data-logo-node-id]')) {
+      e.stopPropagation();
+      e.preventDefault();
+      handleDragStart(e.clientX, e.clientY, e.target);
+    }
   });
 
   window.addEventListener('mousemove', (e) => {
     if (activeDraggedNodeId) {
       e.preventDefault();
+      e.stopPropagation();
       handleDragMove(e.clientX, e.clientY);
     }
   });
@@ -166,13 +174,18 @@ function setupEditorDragListeners() {
   container.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
       if (e.touches[0].target.closest('#map-node-popup') || e.touches[0].target.closest('#editor-hud-bar')) return;
-      handleDragStart(e.touches[0].clientX, e.touches[0].clientY, e.touches[0].target);
+      if (isEditorMode && e.touches[0].target.closest('[data-logo-node-id]')) {
+        e.stopPropagation();
+        e.preventDefault();
+        handleDragStart(e.touches[0].clientX, e.touches[0].clientY, e.touches[0].target);
+      }
     }
   }, { passive: false });
 
   container.addEventListener('touchmove', (e) => {
     if (activeDraggedNodeId && e.touches.length === 1) {
       e.preventDefault();
+      e.stopPropagation();
       handleDragMove(e.touches[0].clientX, e.touches[0].clientY);
     }
   }, { passive: false });

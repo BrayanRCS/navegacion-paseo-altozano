@@ -285,6 +285,7 @@ function renderLegendList() {
   const container = document.getElementById('legend-items-container');
   if (!container) return;
   container.innerHTML = '';
+  const fragment = document.createDocumentFragment ? document.createDocumentFragment() : container;
 
   const allItems = [];
 
@@ -376,18 +377,25 @@ function renderLegendList() {
       </div>
     `;
 
-    container.appendChild(div);
+    fragment.appendChild(div);
   });
 
+  if (fragment !== container) container.appendChild(fragment);
   NavAnimator.staggerLegend();
 }
 
+let filterLegendRaf = null;
 function filterLegendList() {
-  const q = document.getElementById('legend-search-input').value.toLowerCase().trim();
-  const items = document.querySelectorAll('#legend-items-container > div');
-  items.forEach(el => {
-    const text = el.innerText.toLowerCase();
-    el.style.display = text.includes(q) ? 'flex' : 'none';
+  if (filterLegendRaf) cancelAnimationFrame(filterLegendRaf);
+  filterLegendRaf = requestAnimationFrame(() => {
+    const input = document.getElementById('legend-search-input');
+    if (!input) return;
+    const q = input.value.toLowerCase().trim();
+    const items = document.querySelectorAll('#legend-items-container > div');
+    items.forEach(el => {
+      const text = el.innerText.toLowerCase();
+      el.style.display = text.includes(q) ? 'flex' : 'none';
+    });
   });
 }
 

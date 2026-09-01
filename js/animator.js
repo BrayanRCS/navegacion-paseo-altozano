@@ -173,11 +173,11 @@ const NavAnimator = {
     const el = document.getElementById('legend-items-container');
     if (!el || typeof anime === 'undefined') return;
     anime({
-      targets: '#legend-items-container > div',
+      targets: '#legend-items-container > div:nth-child(-n+18)',
       opacity: [0, 1],
       translateY: [8, 0],
-      delay: anime.stagger(12, { start: 20 }),
-      duration: 260,
+      delay: anime.stagger(10, { start: 10 }),
+      duration: 220,
       easing: 'easeOutQuad'
     });
   },
