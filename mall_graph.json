@@ -1,7 +1,7 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 256,
-  "total_edges": 670,
+  "total_nodes": 249,
+  "total_edges": 656,
   "nodes": [
     {
       "id": "n_lvl1_store_1",
@@ -462,7 +462,7 @@
       "id": "n_lvl1_c_liv_1",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Liverpool Acceso PB",
+      "name": "Liverpool Entrada PB",
       "coordinates": {
         "x": 460,
         "y": 475
@@ -472,50 +472,20 @@
       "id": "n_lvl1_c_liv_2",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Plaza Liverpool Centro PB",
-      "coordinates": {
-        "x": 490,
-        "y": 475
-      }
-    },
-    {
-      "id": "n_lvl1_c_liv_3",
-      "level": 1,
-      "type": "corridor_waypoint",
       "name": "Plaza Liverpool Estatua PB",
       "coordinates": {
-        "x": 520,
+        "x": 510,
         "y": 475
       }
     },
     {
-      "id": "n_lvl1_c_liv_4",
+      "id": "n_lvl1_c_liv_hub",
       "level": 1,
       "type": "corridor_waypoint",
       "name": "Plaza Liverpool Hub PB",
       "coordinates": {
         "x": 550,
         "y": 475
-      }
-    },
-    {
-      "id": "n_lvl1_c_liv_esc",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Plaza Liverpool Escaleras PB",
-      "coordinates": {
-        "x": 562,
-        "y": 489
-      }
-    },
-    {
-      "id": "n_lvl1_c_liv_elev",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Plaza Liverpool Elevador PB",
-      "coordinates": {
-        "x": 605,
-        "y": 512
       }
     },
     {
@@ -569,42 +539,32 @@
       }
     },
     {
-      "id": "n_lvl1_c_ls_1",
+      "id": "n_lvl1_c_mac_entry",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Liverpool Sur 1 PB",
+      "name": "Acceso Pasillo MacStore/Banamex PB",
       "coordinates": {
-        "x": 495,
-        "y": 510
+        "x": 562,
+        "y": 525
       }
     },
     {
-      "id": "n_lvl1_c_ls_2",
+      "id": "n_lvl1_c_mac_store",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Liverpool Sur 2 PB",
+      "name": "Frente a MacStore PB",
       "coordinates": {
-        "x": 515,
-        "y": 540
+        "x": 565,
+        "y": 560
       }
     },
     {
-      "id": "n_lvl1_c_ls_3",
+      "id": "n_lvl1_c_banamex",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Liverpool Sur 3 (MacStore) PB",
+      "name": "Frente a Banamex PB",
       "coordinates": {
-        "x": 535,
-        "y": 565
-      }
-    },
-    {
-      "id": "n_lvl1_c_ls_4",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Curva Liverpool Sur 4 (Banamex) PB",
-      "coordinates": {
-        "x": 545,
+        "x": 565,
         "y": 595
       }
     },
@@ -614,8 +574,8 @@
       "type": "corridor_waypoint",
       "name": "Curva BYD 1 PB",
       "coordinates": {
-        "x": 580,
-        "y": 530
+        "x": 610,
+        "y": 535
       }
     },
     {
@@ -624,8 +584,8 @@
       "type": "corridor_waypoint",
       "name": "Curva BYD 2 (AT&T) PB",
       "coordinates": {
-        "x": 605,
-        "y": 545
+        "x": 625,
+        "y": 550
       }
     },
     {
@@ -634,7 +594,7 @@
       "type": "corridor_waypoint",
       "name": "Curva BYD 3 (Salomon) PB",
       "coordinates": {
-        "x": 625,
+        "x": 645,
         "y": 560
       }
     },
@@ -644,7 +604,7 @@
       "type": "corridor_waypoint",
       "name": "Curva BYD 4 (BYD) PB",
       "coordinates": {
-        "x": 660,
+        "x": 670,
         "y": 565
       }
     },
@@ -799,57 +759,37 @@
       }
     },
     {
-      "id": "n_lvl1_c_ov_1",
+      "id": "n_lvl1_c_ov_hub",
       "level": 1,
       "type": "corridor_waypoint",
       "name": "Plaza Oval Entrada PB",
       "coordinates": {
         "x": 815,
-        "y": 335
+        "y": 340
       }
     },
     {
-      "id": "n_lvl1_c_ov_2",
+      "id": "n_lvl1_c_ov_south",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Plaza Oval Escaleras PB",
+      "name": "Plaza Oval Sur (Porrúa) PB",
       "coordinates": {
         "x": 835,
-        "y": 335
+        "y": 370
       }
     },
     {
-      "id": "n_lvl1_c_ov_3",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Plaza Oval Isla 3 PB",
-      "coordinates": {
-        "x": 810,
-        "y": 355
-      }
-    },
-    {
-      "id": "n_lvl1_c_ov_4",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Plaza Oval Sur PB",
-      "coordinates": {
-        "x": 840,
-        "y": 375
-      }
-    },
-    {
-      "id": "n_lvl1_c_ov_5",
+      "id": "n_lvl1_c_ov_hm1",
       "level": 1,
       "type": "corridor_waypoint",
       "name": "Plaza Oval H&M Curva 1 PB",
       "coordinates": {
-        "x": 875,
-        "y": 405
+        "x": 870,
+        "y": 410
       }
     },
     {
-      "id": "n_lvl1_c_ov_6",
+      "id": "n_lvl1_c_ov_hm2",
       "level": 1,
       "type": "corridor_waypoint",
       "name": "Plaza Oval H&M Curva 2 PB",
@@ -859,153 +799,143 @@
       }
     },
     {
-      "id": "n_lvl1_c_fiesta",
+      "id": "n_lvl1_c_rot_w",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Fiesta Inn Elevador Hub PB",
+      "name": "Rotonda Poniente PB",
       "coordinates": {
-        "x": 790,
-        "y": 250
+        "x": 815,
+        "y": 290
       }
     },
     {
-      "id": "n_lvl1_c_ov_n1",
+      "id": "n_lvl1_c_rot_nw",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Plaza Oval Fuente Curva 1 PB",
+      "name": "Rotonda Norponiente PB",
       "coordinates": {
-        "x": 835,
-        "y": 300
-      }
-    },
-    {
-      "id": "n_lvl1_c_ov_n2",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Plaza Oval Fuente Curva 2 (Sephora) PB",
-      "coordinates": {
-        "x": 850,
-        "y": 265
-      }
-    },
-    {
-      "id": "n_lvl1_c_ov_n3",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Plaza Oval Fuente Curva 3 PB",
-      "coordinates": {
-        "x": 875,
+        "x": 825,
         "y": 245
+      }
+    },
+    {
+      "id": "n_lvl1_c_rot_n",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Rotonda Norte PB",
+      "coordinates": {
+        "x": 855,
+        "y": 210
+      }
+    },
+    {
+      "id": "n_lvl1_c_rot_ne",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Rotonda Nororiente (Acceso Casino) PB",
+      "coordinates": {
+        "x": 890,
+        "y": 190
+      }
+    },
+    {
+      "id": "n_lvl1_c_ov_sephora",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Rotonda Oriente (Frente a Sephora) PB",
+      "coordinates": {
+        "x": 865,
+        "y": 270
       }
     },
     {
       "id": "n_lvl1_c_cas_1",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Casino 1 PB",
+      "name": "Pasillo Casino 1 PB",
       "coordinates": {
-        "x": 900,
-        "y": 220
+        "x": 925,
+        "y": 185
       }
     },
     {
       "id": "n_lvl1_c_cas_2",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Casino 2 PB",
-      "coordinates": {
-        "x": 925,
-        "y": 195
-      }
-    },
-    {
-      "id": "n_lvl1_c_cas_3",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Curva Casino 3 (Mantenimiento) PB",
+      "name": "Pasillo Casino 2 (Mantenimiento) PB",
       "coordinates": {
         "x": 955,
         "y": 175
       }
     },
     {
+      "id": "n_lvl1_c_cas_3",
+      "level": 1,
+      "type": "corridor_waypoint",
+      "name": "Pasillo Casino 3 PB",
+      "coordinates": {
+        "x": 985,
+        "y": 155
+      }
+    },
+    {
       "id": "n_lvl1_c_cas_4",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Casino 4 PB",
+      "name": "Pasillo Casino 4 PB",
       "coordinates": {
-        "x": 980,
-        "y": 155
+        "x": 1015,
+        "y": 130
       }
     },
     {
       "id": "n_lvl1_c_cas_5",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Casino 5 PB",
+      "name": "Pasillo Casino 5 PB",
       "coordinates": {
-        "x": 1005,
-        "y": 135
+        "x": 1045,
+        "y": 105
       }
     },
     {
       "id": "n_lvl1_c_cas_6",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Curva Casino 6 PB",
+      "name": "Acceso Crown City Casino PB",
       "coordinates": {
-        "x": 1035,
-        "y": 110
+        "x": 1075,
+        "y": 90
       }
     },
     {
       "id": "n_lvl1_c_cas_7",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Acceso Casino PB",
+      "name": "Pasillo Honda PB",
       "coordinates": {
-        "x": 1065,
-        "y": 92
+        "x": 1125,
+        "y": 90
       }
     },
     {
       "id": "n_lvl1_c_cas_8",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Crown City Casino Entrada PB",
+      "name": "Pasillo Geely PB",
       "coordinates": {
-        "x": 1090,
-        "y": 88
+        "x": 1180,
+        "y": 90
       }
     },
     {
       "id": "n_lvl1_c_cas_9",
       "level": 1,
       "type": "corridor_waypoint",
-      "name": "Honda Entrada PB",
-      "coordinates": {
-        "x": 1130,
-        "y": 88
-      }
-    },
-    {
-      "id": "n_lvl1_c_cas_10",
-      "level": 1,
-      "type": "corridor_waypoint",
-      "name": "Geely Entrada PB",
-      "coordinates": {
-        "x": 1175,
-        "y": 88
-      }
-    },
-    {
-      "id": "n_lvl1_c_cas_11",
-      "level": 1,
-      "type": "corridor_waypoint",
       "name": "Galería Autos Final PB",
       "coordinates": {
-        "x": 1210,
-        "y": 88
+        "x": 1215,
+        "y": 90
       }
     },
     {
@@ -3127,22 +3057,12 @@
     },
     {
       "from": "n_lvl1_c_liv_2",
-      "to": "n_lvl1_c_liv_3",
+      "to": "n_lvl1_c_liv_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_liv_3",
+      "from": "n_lvl1_c_liv_hub",
       "to": "n_lvl1_c_liv_2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_3",
-      "to": "n_lvl1_c_liv_4",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_4",
-      "to": "n_lvl1_c_liv_3",
       "bidirectional": true
     },
     {
@@ -3226,93 +3146,23 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_liv_2",
-      "to": "n_lvl1_c_ls_1",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_1",
-      "to": "n_lvl1_c_liv_2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_1",
-      "to": "n_lvl1_c_ls_2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_2",
-      "to": "n_lvl1_c_ls_1",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_2",
-      "to": "n_lvl1_c_ls_3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_3",
-      "to": "n_lvl1_c_ls_2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_3",
-      "to": "n_lvl1_c_ls_4",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_4",
-      "to": "n_lvl1_c_ls_3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_store_22",
-      "to": "n_lvl1_c_ls_3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_3",
-      "to": "n_lvl1_store_22",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_store_21",
-      "to": "n_lvl1_c_ls_4",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ls_4",
-      "to": "n_lvl1_store_21",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_4",
-      "to": "n_lvl1_c_liv_esc",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_esc",
-      "to": "n_lvl1_c_liv_4",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_esc",
+      "from": "n_lvl1_c_liv_hub",
       "to": "n_lvl1_portal_esc_liverpool",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_portal_esc_liverpool",
-      "to": "n_lvl1_c_liv_esc",
+      "to": "n_lvl1_c_liv_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_liv_4",
+      "from": "n_lvl1_c_liv_hub",
       "to": "n_lvl1_c_liv_isl1",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_c_liv_isl1",
-      "to": "n_lvl1_c_liv_4",
+      "to": "n_lvl1_c_liv_hub",
       "bidirectional": true
     },
     {
@@ -3327,32 +3177,72 @@
     },
     {
       "from": "n_lvl1_c_liv_isl1",
-      "to": "n_lvl1_c_liv_elev",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_elev",
-      "to": "n_lvl1_c_liv_isl1",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_liv_elev",
       "to": "n_lvl1_portal_elev_liverpool",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_portal_elev_liverpool",
-      "to": "n_lvl1_c_liv_elev",
+      "to": "n_lvl1_c_liv_isl1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_liv_elev",
+      "from": "n_lvl1_portal_esc_liverpool",
+      "to": "n_lvl1_c_mac_entry",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_mac_entry",
+      "to": "n_lvl1_portal_esc_liverpool",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_mac_entry",
+      "to": "n_lvl1_c_mac_store",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_mac_store",
+      "to": "n_lvl1_c_mac_entry",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_mac_store",
+      "to": "n_lvl1_store_22",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_store_22",
+      "to": "n_lvl1_c_mac_store",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_mac_store",
+      "to": "n_lvl1_c_banamex",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_banamex",
+      "to": "n_lvl1_c_mac_store",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_banamex",
+      "to": "n_lvl1_store_21",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_store_21",
+      "to": "n_lvl1_c_banamex",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_portal_elev_liverpool",
       "to": "n_lvl1_c_le_1",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_c_le_1",
-      "to": "n_lvl1_c_liv_elev",
+      "to": "n_lvl1_portal_elev_liverpool",
       "bidirectional": true
     },
     {
@@ -3387,21 +3277,21 @@
     },
     {
       "from": "n_lvl1_store_18",
-      "to": "n_lvl1_c_le_2",
+      "to": "n_lvl1_c_le_1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_le_2",
+      "from": "n_lvl1_c_le_1",
       "to": "n_lvl1_store_18",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_store_19",
-      "to": "n_lvl1_c_le_3",
+      "to": "n_lvl1_c_le_2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_le_3",
+      "from": "n_lvl1_c_le_2",
       "to": "n_lvl1_store_19",
       "bidirectional": true
     },
@@ -3556,13 +3446,13 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_liv_4",
+      "from": "n_lvl1_c_liv_hub",
       "to": "n_lvl1_c_ps_1",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_c_ps_1",
-      "to": "n_lvl1_c_liv_4",
+      "to": "n_lvl1_c_liv_hub",
       "bidirectional": true
     },
     {
@@ -3787,182 +3677,172 @@
     },
     {
       "from": "n_lvl1_c_ps_8",
-      "to": "n_lvl1_c_ov_1",
+      "to": "n_lvl1_c_ov_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_1",
+      "from": "n_lvl1_c_ov_hub",
       "to": "n_lvl1_c_ps_8",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_c_pn_7",
-      "to": "n_lvl1_c_ov_1",
+      "to": "n_lvl1_c_rot_w",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_1",
+      "from": "n_lvl1_c_rot_w",
       "to": "n_lvl1_c_pn_7",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_1",
-      "to": "n_lvl1_c_ov_2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ov_2",
-      "to": "n_lvl1_c_ov_1",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ov_2",
+      "from": "n_lvl1_c_ov_hub",
       "to": "n_lvl1_portal_esc_oval",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_portal_esc_oval",
-      "to": "n_lvl1_c_ov_2",
+      "to": "n_lvl1_c_ov_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_1",
-      "to": "n_lvl1_c_ov_3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ov_3",
-      "to": "n_lvl1_c_ov_1",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ov_3",
+      "from": "n_lvl1_c_ov_hub",
       "to": "n_lvl1_island_3",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_island_3",
-      "to": "n_lvl1_c_ov_3",
+      "to": "n_lvl1_c_ov_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_3",
-      "to": "n_lvl1_c_ov_4",
+      "from": "n_lvl1_c_ov_hub",
+      "to": "n_lvl1_c_ov_south",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_4",
-      "to": "n_lvl1_c_ov_3",
+      "from": "n_lvl1_c_ov_south",
+      "to": "n_lvl1_c_ov_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_4",
-      "to": "n_lvl1_c_ov_5",
+      "from": "n_lvl1_c_ov_south",
+      "to": "n_lvl1_c_ov_hm1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_5",
-      "to": "n_lvl1_c_ov_4",
+      "from": "n_lvl1_c_ov_hm1",
+      "to": "n_lvl1_c_ov_south",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_5",
-      "to": "n_lvl1_c_ov_6",
+      "from": "n_lvl1_c_ov_hm1",
+      "to": "n_lvl1_c_ov_hm2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_6",
-      "to": "n_lvl1_c_ov_5",
+      "from": "n_lvl1_c_ov_hm2",
+      "to": "n_lvl1_c_ov_hm1",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_6",
+      "from": "n_lvl1_c_ov_hm2",
       "to": "n_lvl1_store_9",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_store_9",
-      "to": "n_lvl1_c_ov_6",
+      "to": "n_lvl1_c_ov_hm2",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_pn_7",
-      "to": "n_lvl1_c_fiesta",
+      "from": "n_lvl1_c_ov_hub",
+      "to": "n_lvl1_c_rot_w",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_fiesta",
-      "to": "n_lvl1_c_pn_7",
+      "from": "n_lvl1_c_rot_w",
+      "to": "n_lvl1_c_ov_hub",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_fiesta",
+      "from": "n_lvl1_c_rot_w",
+      "to": "n_lvl1_c_rot_nw",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_rot_nw",
+      "to": "n_lvl1_c_rot_w",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_rot_nw",
       "to": "n_lvl1_portal_elev_central",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_portal_elev_central",
-      "to": "n_lvl1_c_fiesta",
+      "to": "n_lvl1_c_rot_nw",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_fiesta",
-      "to": "n_lvl1_c_ov_n1",
+      "from": "n_lvl1_c_rot_nw",
+      "to": "n_lvl1_c_rot_n",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_n1",
-      "to": "n_lvl1_c_fiesta",
+      "from": "n_lvl1_c_rot_n",
+      "to": "n_lvl1_c_rot_nw",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_2",
-      "to": "n_lvl1_c_ov_n1",
+      "from": "n_lvl1_c_rot_n",
+      "to": "n_lvl1_c_rot_ne",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_n1",
-      "to": "n_lvl1_c_ov_2",
+      "from": "n_lvl1_c_rot_ne",
+      "to": "n_lvl1_c_rot_n",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_n1",
-      "to": "n_lvl1_c_ov_n2",
+      "from": "n_lvl1_portal_esc_oval",
+      "to": "n_lvl1_c_ov_sephora",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_n2",
-      "to": "n_lvl1_c_ov_n1",
+      "from": "n_lvl1_c_ov_sephora",
+      "to": "n_lvl1_portal_esc_oval",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_n2",
-      "to": "n_lvl1_c_ov_n3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ov_n3",
-      "to": "n_lvl1_c_ov_n2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_ov_n2",
+      "from": "n_lvl1_c_ov_sephora",
       "to": "n_lvl1_store_28",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_store_28",
-      "to": "n_lvl1_c_ov_n2",
+      "to": "n_lvl1_c_ov_sephora",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_ov_n3",
+      "from": "n_lvl1_c_ov_sephora",
+      "to": "n_lvl1_c_rot_ne",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_rot_ne",
+      "to": "n_lvl1_c_ov_sephora",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_rot_ne",
       "to": "n_lvl1_c_cas_1",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_c_cas_1",
-      "to": "n_lvl1_c_ov_n3",
+      "to": "n_lvl1_c_rot_ne",
       "bidirectional": true
     },
     {
@@ -3977,22 +3857,22 @@
     },
     {
       "from": "n_lvl1_c_cas_2",
-      "to": "n_lvl1_c_cas_3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_cas_3",
-      "to": "n_lvl1_c_cas_2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_cas_3",
       "to": "n_lvl1_service_maint",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_service_maint",
+      "to": "n_lvl1_c_cas_2",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_cas_2",
       "to": "n_lvl1_c_cas_3",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl1_c_cas_3",
+      "to": "n_lvl1_c_cas_2",
       "bidirectional": true
     },
     {
@@ -4056,52 +3936,32 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_cas_9",
-      "to": "n_lvl1_c_cas_10",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_cas_10",
-      "to": "n_lvl1_c_cas_9",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_cas_10",
-      "to": "n_lvl1_c_cas_11",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl1_c_cas_11",
-      "to": "n_lvl1_c_cas_10",
-      "bidirectional": true
-    },
-    {
       "from": "n_lvl1_store_24",
-      "to": "n_lvl1_c_cas_8",
+      "to": "n_lvl1_c_cas_6",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_cas_8",
+      "from": "n_lvl1_c_cas_6",
       "to": "n_lvl1_store_24",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_store_25",
-      "to": "n_lvl1_c_cas_9",
+      "to": "n_lvl1_c_cas_7",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_cas_9",
+      "from": "n_lvl1_c_cas_7",
       "to": "n_lvl1_store_25",
       "bidirectional": true
     },
     {
       "from": "n_lvl1_store_26",
-      "to": "n_lvl1_c_cas_10",
+      "to": "n_lvl1_c_cas_8",
       "bidirectional": true
     },
     {
-      "from": "n_lvl1_c_cas_10",
+      "from": "n_lvl1_c_cas_8",
       "to": "n_lvl1_store_26",
       "bidirectional": true
     },
