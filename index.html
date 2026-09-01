@@ -967,7 +967,7 @@
     };
 
     // --- INTELLIGENT ZERO-LATENCY CACHING ENGINE (Stale-While-Revalidate) ---
-    const APP_CACHE_VERSION = 'v1.7.0';
+    const APP_CACHE_VERSION = 'v1.8.0';
 
     async function loadCachedJson(key, url) {
       const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -995,94 +995,10 @@
       return data;
     }
 
-    // --- 100% PURE VECTOR LOGO ENGINE (Infinite HD Sharpness at Any Zoom Level) ---
-    const logoVectorCache = new Map();
-    const pendingLogoFetches = new Map();
-
-    async function fetchAndCacheLogoVector(url) {
-      if (!url || !url.endsWith('.svg')) return null;
-      if (logoVectorCache.has(url)) return logoVectorCache.get(url);
-      if (pendingLogoFetches.has(url)) return pendingLogoFetches.get(url);
-
-      const fetchPromise = (async () => {
-        try {
-          const resp = await fetch(url);
-          if (!resp.ok) return null;
-          let text = await resp.text();
-          // Clean namespace prefixes (e.g. ns0:) and XML declarations
-          text = text.replace(/<\/?ns0:/g, match => match.startsWith('</') ? '</' : '<')
-                     .replace(/xmlns:ns0="[^"]*"/g, '');
-
-          const parser = new DOMParser();
-          const doc = parser.parseFromString(text, 'image/svg+xml');
-          const svgEl = doc.querySelector('svg');
-          if (!svgEl) return null;
-
-          let viewBox = svgEl.getAttribute('viewBox');
-          if (!viewBox) {
-            const w = parseFloat(svgEl.getAttribute('width')) || 100;
-            const h = parseFloat(svgEl.getAttribute('height')) || 100;
-            viewBox = `0 0 ${w} ${h}`;
-          }
-
-          const innerHTML = svgEl.innerHTML;
-          const vectorData = { viewBox, innerHTML };
-          logoVectorCache.set(url, vectorData);
-          pendingLogoFetches.delete(url);
-
-          // Dynamically upgrade any currently rendered vector slots on map
-          const slots = document.querySelectorAll(`.logo-vector-slot[data-logo-url="${CSS.escape(url)}"]`);
-          slots.forEach(slot => {
-            const lx = slot.getAttribute('data-x');
-            const ly = slot.getAttribute('data-y');
-            const lw = slot.getAttribute('data-w');
-            const lh = slot.getAttribute('data-h');
-            if (lx !== null && ly !== null && lw !== null && lh !== null) {
-              slot.innerHTML = `<svg x="${lx}" y="${ly}" width="${lw}" height="${lh}" viewBox="${viewBox}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${innerHTML}</svg>`;
-            }
-          });
-
-          // Dynamically upgrade any HTML image elements to pure inlined vectors
-          const htmlImgs = document.querySelectorAll(`img[data-logo-src="${CSS.escape(url)}"]`);
-          htmlImgs.forEach(img => {
-            const parent = img.parentElement;
-            if (parent) {
-              const cls = img.getAttribute('data-logo-class') || 'w-full h-full object-contain brand-logo-img';
-              parent.innerHTML = `<svg viewBox="${viewBox}" class="${cls}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${innerHTML}</svg>`;
-            }
-          });
-
-          return vectorData;
-        } catch (e) {
-          pendingLogoFetches.delete(url);
-          return null;
-        }
-      })();
-
-      pendingLogoFetches.set(url, fetchPromise);
-      return fetchPromise;
-    }
-
-    function preloadAllMallLogos() {
-      if (!mallGraph || !mallGraph.nodes) return;
-      const uniqueUrls = new Set();
-      mallGraph.nodes.forEach(n => {
-        if (n.logo && n.logo.endsWith('.svg')) uniqueUrls.add(n.logo);
-        if (n.logo_white && n.logo_white.endsWith('.svg')) uniqueUrls.add(n.logo_white);
-      });
-      uniqueUrls.forEach(url => {
-        fetchAndCacheLogoVector(url);
-      });
-    }
-
+    // --- LIGHTWEIGHT HIGH-PERFORMANCE LOGO HELPER ---
     function getLogoHtml(logoUrl, altText = '', imgClass = 'w-full h-full object-contain brand-logo-img') {
       if (!logoUrl) return '';
-      const cached = logoVectorCache.get(logoUrl);
-      if (cached) {
-        return `<svg viewBox="${cached.viewBox}" class="${imgClass}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${cached.innerHTML}</svg>`;
-      }
-      fetchAndCacheLogoVector(logoUrl);
-      return `<img src="${logoUrl}" alt="${altText}" data-logo-src="${logoUrl}" data-logo-class="${imgClass}" class="${imgClass}" loading="lazy">`;
+      return `<img src="${logoUrl}" alt="${altText}" class="${imgClass}" loading="lazy">`;
     }
 
     // Initialize application
@@ -1107,7 +1023,6 @@
         mallLegends = legData.mall_legends;
         
         buildFloorSubgraphs();
-        preloadAllMallLogos();
         populateSelects();
         renderLegendList();
         setupInteractiveCameraPan();
@@ -1210,11 +1125,19 @@
     // --- HIGH-PERFORMANCE VIEWPORT METRICS CACHE (Zero Layout Reflows) ---
     let cachedViewport = null;
     function getMapViewport(forceRefresh = false) {
-      if (cachedViewport && !forceRefresh) return cachedViewport;
       const container = document.getElementById('map-container');
-      if (!container) return { cw: 1536, ch: 718, renderW: 1536, renderH: 718, offsetX: 0, offsetY: 0 };
-      const cw = container.clientWidth || 1000;
-      const ch = container.clientHeight || 600;
+      const cw = container ? container.clientWidth : 0;
+      const ch = container ? container.clientHeight : 0;
+
+      if (cw === 0 || ch === 0) {
+        const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
+        return { cw: window.innerWidth || 1536, ch: (window.innerHeight || 800) * 0.8, renderW: 1536, renderH: 718, offsetX: 0, offsetY: 0, spec, lvl: currentLevel };
+      }
+
+      if (cachedViewport && !forceRefresh && cachedViewport.cw === cw && cachedViewport.ch === ch && cachedViewport.lvl === currentLevel) {
+        return cachedViewport;
+      }
+
       const spec = FLOOR_SPECS[currentLevel] || { width: 1536, height: 718 };
       const imgAspect = spec.width / spec.height;
       const containerAspect = cw / ch;
@@ -1231,7 +1154,7 @@
         offsetX = 0;
         offsetY = (ch - renderH) / 2;
       }
-      cachedViewport = { cw, ch, renderW, renderH, offsetX, offsetY, spec };
+      cachedViewport = { cw, ch, renderW, renderH, offsetX, offsetY, spec, lvl: currentLevel };
       return cachedViewport;
     }
 
@@ -3151,38 +3074,16 @@
             g.appendChild(shadowRect);
             g.appendChild(bgRect);
 
-            // Pure Vector Slot
-            const vectorSlot = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-            vectorSlot.setAttribute('class', 'logo-vector-slot');
-            vectorSlot.setAttribute('data-logo-url', n.logo);
-            vectorSlot.setAttribute('data-x', logoX);
-            vectorSlot.setAttribute('data-y', logoY);
-            vectorSlot.setAttribute('data-w', logoW);
-            vectorSlot.setAttribute('data-h', logoH);
-
-            const cached = logoVectorCache.get(n.logo);
-            if (cached) {
-              // 100% INLINED PURE VECTOR PATHS -> ZERO BLUR, INFINITE HD AT ANY ZOOM!
-              vectorSlot.innerHTML = `<svg x="${logoX}" y="${logoY}" width="${logoW}" height="${logoH}" viewBox="${cached.viewBox}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${cached.innerHTML}</svg>`;
-            } else {
-              // Initial fallback image + async vector upgrade
-              const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
-              imgEl.setAttribute('href', n.logo);
-              imgEl.setAttribute('x', logoX);
-              imgEl.setAttribute('y', logoY);
-              imgEl.setAttribute('width', logoW);
-              imgEl.setAttribute('height', logoH);
-              imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
-              imgEl.setAttribute('shape-rendering', 'geometricPrecision');
-              vectorSlot.appendChild(imgEl);
-
-              fetchAndCacheLogoVector(n.logo).then(vData => {
-                if (vData && vectorSlot.isConnected) {
-                  vectorSlot.innerHTML = `<svg x="${logoX}" y="${logoY}" width="${logoW}" height="${logoH}" viewBox="${vData.viewBox}" preserveAspectRatio="xMidYMid meet" shape-rendering="geometricPrecision">${vData.innerHTML}</svg>`;
-                }
-              });
-            }
-            g.appendChild(vectorSlot);
+            const imgEl = document.createElementNS('http://www.w3.org/2000/svg', 'image');
+            imgEl.setAttribute('href', n.logo);
+            imgEl.setAttribute('x', logoX);
+            imgEl.setAttribute('y', logoY);
+            imgEl.setAttribute('width', logoW);
+            imgEl.setAttribute('height', logoH);
+            imgEl.setAttribute('preserveAspectRatio', 'xMidYMid meet');
+            imgEl.setAttribute('shape-rendering', 'geometricPrecision');
+            imgEl.style.imageRendering = '-webkit-optimize-contrast';
+            g.appendChild(imgEl);
           } else if (n.type === 'anchor_store') {
             // Anchor Stores without logo
             const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
@@ -3341,13 +3242,15 @@
         mapEl.classList.remove('hidden');
         cachedViewport = null;
 
-        if (destId) {
-          document.getElementById('dest-select').value = destId;
-          calculateRoute();
-        } else {
-          renderMapOverlay();
-          zoomToOverview(false);
-        }
+        requestAnimationFrame(() => {
+          if (destId) {
+            document.getElementById('dest-select').value = destId;
+            calculateRoute();
+          } else {
+            renderMapOverlay();
+            zoomToOverview(false);
+          }
+        });
 
         if (typeof anime !== 'undefined') {
           anime({
