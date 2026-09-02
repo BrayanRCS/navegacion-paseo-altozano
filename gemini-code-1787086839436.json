@@ -208,11 +208,6 @@
           "type": "island"
         },
         {
-          "id": 2,
-          "name": "Jurassic Ride",
-          "type": "island"
-        },
-        {
           "id": 3,
           "name": "Flabelus",
           "type": "island"
@@ -948,7 +943,13 @@
           "logo_white": "assets/logos/Jiménez+/blanco.svg"
         }
       ],
-      "islas": [],
+      "islas": [
+        {
+          "id": 1,
+          "name": "Jurassic Ride",
+          "type": "island"
+        }
+      ],
       "proximamente": []
     }
   }

@@ -389,13 +389,13 @@
       }
     },
     {
-      "id": "n_lvl1_island_2",
-      "level": 1,
+      "id": "n_lvl3_island_jurassic",
+      "level": 3,
       "type": "island",
       "name": "Jurassic Ride",
       "coordinates": {
-        "x": 580,
-        "y": 400
+        "x": 800,
+        "y": 300
       }
     },
     {
