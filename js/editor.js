@@ -13,24 +13,56 @@ function initCustomGraph() {
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed && Array.isArray(parsed.nodes) && Array.isArray(parsed.edges)) {
-        // Seamlessly merge any new server portal/anchor nodes that might not be in the local copy
-        if (mallGraph && Array.isArray(mallGraph.nodes)) {
-          const localNodeIds = new Set(parsed.nodes.map(n => n.id));
-          mallGraph.nodes.forEach(serverNode => {
-            if (!localNodeIds.has(serverNode.id)) {
-              parsed.nodes.push(serverNode);
-            }
-          });
-        }
+        // Clean out any orphaned corridor waypoints that have 0 edges connected
+        const connectedNodeIds = new Set();
+        parsed.edges.forEach(e => {
+          connectedNodeIds.add(e.from);
+          connectedNodeIds.add(e.to);
+        });
+
+        parsed.nodes = parsed.nodes.filter(n => {
+          // Keep all real destination stores, services, restrooms, and portals
+          if (n.type !== 'corridor_waypoint' && !n.id.includes('_c_wp_') && !n.id.startsWith('n_lvl1_c_') && !n.id.startsWith('n_lvl2_c_') && !n.id.startsWith('n_lvl3_c_')) {
+            return true;
+          }
+          // Only keep waypoints that actually have edges connected
+          return connectedNodeIds.has(n.id);
+        });
+
         mallGraph = parsed;
         AltozanoState.mallGraph = mallGraph;
         if (typeof buildFloorSubgraphs === 'function') buildFloorSubgraphs();
-        console.log("Loaded custom user mall graph from localStorage with merged portals. Total nodes:", mallGraph.nodes.length);
+        console.log("Loaded custom user mall graph from localStorage (ghost nodes removed). Total nodes:", mallGraph.nodes.length);
       }
     }
   } catch (e) {
     console.warn("Could not load custom mall graph from localStorage:", e);
   }
+}
+
+function cleanOrphanWaypoints() {
+  if (!mallGraph) return;
+  const connectedNodeIds = new Set();
+  mallGraph.edges.forEach(e => {
+    connectedNodeIds.add(e.from);
+    connectedNodeIds.add(e.to);
+  });
+
+  const beforeCount = mallGraph.nodes.length;
+  mallGraph.nodes = mallGraph.nodes.filter(n => {
+    if (n.type !== 'corridor_waypoint' && !n.id.includes('_c_wp_') && !n.id.startsWith('n_lvl1_c_') && !n.id.startsWith('n_lvl2_c_') && !n.id.startsWith('n_lvl3_c_')) {
+      return true;
+    }
+    return connectedNodeIds.has(n.id);
+  });
+
+  const removed = beforeCount - mallGraph.nodes.length;
+  saveCustomGraphToStorage();
+  renderMapOverlay();
+  triggerHaptic('medium');
+  
+  const titleEl = document.getElementById('editor-hud-title');
+  if (titleEl) titleEl.innerText = `🧹 Se limpiaron ${removed} nodos huérfanos sin aristas.`;
 }
 
 function saveCustomGraphToStorage() {
