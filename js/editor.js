@@ -13,10 +13,19 @@ function initCustomGraph() {
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed && Array.isArray(parsed.nodes) && Array.isArray(parsed.edges)) {
+        // Seamlessly merge any new server portal/anchor nodes that might not be in the local copy
+        if (mallGraph && Array.isArray(mallGraph.nodes)) {
+          const localNodeIds = new Set(parsed.nodes.map(n => n.id));
+          mallGraph.nodes.forEach(serverNode => {
+            if (!localNodeIds.has(serverNode.id)) {
+              parsed.nodes.push(serverNode);
+            }
+          });
+        }
         mallGraph = parsed;
         AltozanoState.mallGraph = mallGraph;
         if (typeof buildFloorSubgraphs === 'function') buildFloorSubgraphs();
-        console.log("Loaded custom user mall graph from localStorage. Total nodes:", mallGraph.nodes.length);
+        console.log("Loaded custom user mall graph from localStorage with merged portals. Total nodes:", mallGraph.nodes.length);
       }
     }
   } catch (e) {

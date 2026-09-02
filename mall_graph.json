@@ -1,6 +1,6 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 254,
+  "total_nodes": 256,
   "total_edges": 668,
   "nodes": [
     {
@@ -3082,6 +3082,26 @@
       "logo": "assets/logos/Jiménez+/color.svg",
       "logo_white": "assets/logos/Jim%C3%A9nez%2B/blanco.svg",
       "logo_folder": "Jiménez+"
+    },
+    {
+      "id": "n_lvl2_portal_esc_chedraui_front",
+      "name": "Escaleras Eléctricas Frente a Chedraui (N1)",
+      "type": "portal_escalator",
+      "level": 2,
+      "coordinates": {
+        "x": 948,
+        "y": 345
+      }
+    },
+    {
+      "id": "n_lvl2_portal_elev_sears_plaza",
+      "name": "Elevador Plaza Sears / Trampoline (N1)",
+      "type": "portal_elevator",
+      "level": 2,
+      "coordinates": {
+        "x": 1120,
+        "y": 200
+      }
     }
   ],
   "edges": [

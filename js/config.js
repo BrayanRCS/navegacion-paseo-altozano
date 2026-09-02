@@ -46,5 +46,6 @@ const PORTALS = [
   { id: "p_rotunda_top_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Norte", 2: "n_lvl2_portal_esc_rotunda_right", 3: "n_lvl3_portal_esc_central_top" },
   { id: "p_rotunda_bot_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Sur", 2: "n_lvl2_portal_esc_rotunda_bot", 3: "n_lvl3_portal_esc_central_bot" },
   { id: "p_sanborns_terrace_esc", type: "escalator", name: "Escaleras Eléctricas Terraza", 2: "n_lvl2_portal_esc_sanborns", 3: "n_lvl3_portal_esc_terrace" },
-  { id: "p_auto_anytime_esc", type: "escalator", name: "Escaleras Eléctricas Autos / Anytime", 2: "n_lvl2_portal_esc_automotive", 3: "n_lvl3_portal_esc_anytime" }
+  { id: "p_auto_anytime_esc", type: "escalator", name: "Escaleras Eléctricas Autos / Anytime", 2: "n_lvl2_portal_esc_automotive", 3: "n_lvl3_portal_esc_anytime" },
+  { id: "p_sears_plaza_elev", type: "elevator", name: "Elevador Plaza Sears / Trampoline", 2: "n_lvl2_portal_elev_sears_plaza", 3: "n_lvl3_portal_elev_cinelia" }
 ];
