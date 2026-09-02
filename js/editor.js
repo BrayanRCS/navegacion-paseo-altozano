@@ -720,3 +720,9 @@ function copyExportedJson() {
     }
   });
 }
+
+// Emergency safety persistence on window close or tab refresh
+window.addEventListener('beforeunload', () => {
+  if (typeof saveCustomGraphToStorage === 'function') saveCustomGraphToStorage();
+  if (typeof saveLogoPositionsToStorage === 'function') saveLogoPositionsToStorage();
+});

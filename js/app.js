@@ -74,15 +74,6 @@ function populateSelects() {
 
 async function initApp() {
   try {
-    try {
-      for (let i = localStorage.length - 1; i >= 0; i--) {
-        const k = localStorage.key(i);
-        if (k && k.startsWith('altozano_') && !k.startsWith('altozano_custom_') && !k.includes(APP_CACHE_VERSION)) {
-          localStorage.removeItem(k);
-        }
-      }
-    } catch (e) {}
-
     const [dataGraph, legData] = await Promise.all([
       loadCachedJson('graph', 'mall_graph.json'),
       loadCachedJson('legends', 'gemini-code-1787086839436.json')
