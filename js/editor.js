@@ -119,6 +119,10 @@ function toggleEditorMode() {
     if (hud) hud.classList.remove('hidden');
     triggerHaptic('medium');
   } else {
+    // Explicitly persist all graph and logo changes to localStorage on exit
+    saveCustomGraphToStorage();
+    saveLogoPositionsToStorage();
+
     if (btn) btn.className = "px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700";
     if (btnText) btnText.innerText = "Editar Grafo y Logos";
     if (hud) hud.classList.add('hidden');
@@ -129,6 +133,28 @@ function toggleEditorMode() {
   }
 
   renderMapOverlay();
+}
+
+function manualSaveEditorChanges() {
+  saveCustomGraphToStorage();
+  saveLogoPositionsToStorage();
+  triggerHaptic('medium');
+
+  const btn = document.getElementById('btn-editor-manual-save');
+  if (btn) {
+    const origHtml = btn.innerHTML;
+    btn.innerHTML = `<i class="fa-solid fa-check text-xs"></i> ¡Guardado!`;
+    btn.className = "px-2.5 py-1.5 rounded-xl bg-emerald-500 text-slate-950 text-xs font-black shadow-md transition-all flex items-center gap-1";
+    setTimeout(() => {
+      btn.innerHTML = origHtml;
+      btn.className = "px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold border border-slate-700 transition-all flex items-center gap-1";
+    }, 2000);
+  }
+
+  const titleEl = document.getElementById('editor-hud-title');
+  if (titleEl) {
+    titleEl.innerText = `💾 ¡Grafo y posiciones guardados con éxito en tu navegador!`;
+  }
 }
 
 function setEditorSubMode(subMode) {

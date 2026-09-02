@@ -77,7 +77,7 @@ async function initApp() {
     try {
       for (let i = localStorage.length - 1; i >= 0; i--) {
         const k = localStorage.key(i);
-        if (k && k.startsWith('altozano_') && !k.includes(APP_CACHE_VERSION)) {
+        if (k && k.startsWith('altozano_') && !k.startsWith('altozano_custom_') && !k.includes(APP_CACHE_VERSION)) {
           localStorage.removeItem(k);
         }
       }
