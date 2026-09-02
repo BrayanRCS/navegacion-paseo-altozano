@@ -91,11 +91,13 @@ async function initApp() {
     mallGraph = dataGraph;
     mallLegends = legData.mall_legends;
     
+    if (typeof initCustomGraph === 'function') initCustomGraph();
+    if (typeof initLogoPositions === 'function') initLogoPositions();
+
     buildFloorSubgraphs();
     populateSelects();
     renderLegendList();
     setupInteractiveCameraPan();
-    if (typeof initLogoPositions === 'function') initLogoPositions();
     if (typeof setupEditorDragListeners === 'function') setupEditorDragListeners();
     
     initFromUrlParams();

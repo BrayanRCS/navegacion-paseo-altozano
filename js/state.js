@@ -41,10 +41,13 @@ const AltozanoState = {
     isTransitioningFloor: false
   },
 
-  // Interactive Visual Editor (Drag & Drop Logo Placement)
+  // Interactive Visual Graph & Logo Studio
   isEditorMode: false,
-  customLogoPositions: {},
-  selectedEditorNodeId: null
+  editorSubMode: 'graph', // 'graph' | 'logos'
+  isConnectMode: false,
+  editorConnectSourceNodeId: null,
+  selectedEditorNodeId: null,
+  customLogoPositions: {}
 };
 
 // Global backward compatibility references
@@ -70,5 +73,8 @@ let cachedViewport = AltozanoState.cachedViewport;
 let isFollowingGPS = AltozanoState.isFollowingGPS;
 let currentKioskView = AltozanoState.currentView;
 let isEditorMode = AltozanoState.isEditorMode;
+let editorSubMode = AltozanoState.editorSubMode;
+let isConnectMode = AltozanoState.isConnectMode;
+let editorConnectSourceNodeId = AltozanoState.editorConnectSourceNodeId;
 let customLogoPositions = AltozanoState.customLogoPositions;
 let selectedEditorNodeId = AltozanoState.selectedEditorNodeId;

@@ -290,7 +290,7 @@ function setupInteractiveCameraPan() {
 
   container.addEventListener('mousedown', (e) => {
     if (e.target.closest('#map-node-popup') || e.target.closest('#editor-hud-bar')) return;
-    if (isEditorMode && e.target.closest('[data-logo-node-id]')) return;
+    if (isEditorMode && (e.target.closest('[data-logo-node-id]') || e.target.closest('[data-graph-node-id]'))) return;
     if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) return;
 
     isMouseDown = true;
