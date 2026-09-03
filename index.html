@@ -31,38 +31,12 @@
       background: linear-gradient(180deg, rgba(6, 64, 43, 0.85) 0%, rgba(3, 30, 22, 0.95) 100%);
     }
 
-    /* Clean Google Maps Route Flow Styling (Crisp & High Contrast) */
+    /* Clean Google Maps Blue River Flow Styling */
     .stream-water-glow {
       stroke: #3b82f6;
       stroke-linecap: round;
       stroke-linejoin: round;
       filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
-    }
-    .stream-chevrons {
-      stroke-dasharray: 8 16;
-      animation: flowChevrons 1.2s linear infinite;
-    }
-    @keyframes flowChevrons {
-      from {
-        stroke-dashoffset: 48;
-      }
-      to {
-        stroke-dashoffset: 0;
-      }
-    }
-
-    /* Google Maps Dual-Ring GPS Nav Puck Pulse */
-    .nav-puck-pulse {
-      animation: puckPulse 1.8s ease-out infinite;
-      transform-origin: center;
-    }
-    .nav-puck-pulse-2 {
-      animation: puckPulse 1.8s ease-out 0.6s infinite;
-      transform-origin: center;
-    }
-    @keyframes puckPulse {
-      0% { r: 10; opacity: 0.9; }
-      100% { r: 42; opacity: 0; }
     }
 
     /* Ad Banner Shimmer Reflection */
@@ -173,6 +147,35 @@
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
+
+  <!-- FULL SYSTEM LUXURY PRELOADER (Loads 100% of maps, logos and graphs before entrance) -->
+  <div id="app-preloader" class="fixed inset-0 z-[100] bg-[#050a12] flex flex-col items-center justify-center transition-opacity duration-700 ease-out select-none">
+    <div class="relative flex flex-col items-center max-w-sm px-6 text-center">
+      <!-- Ambient Glow Effect -->
+      <div class="absolute -top-12 w-48 h-48 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
+      
+      <!-- Brand Icon Badge -->
+      <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-400 p-0.5 shadow-2xl shadow-emerald-500/30 mb-6 flex items-center justify-center">
+        <div class="w-full h-full bg-slate-950/95 rounded-[22px] flex items-center justify-center">
+          <i class="fa-solid fa-compass text-emerald-400 text-3xl animate-spin" style="animation-duration: 6s;"></i>
+        </div>
+      </div>
+
+      <h2 class="text-xl font-black text-white tracking-wider mb-1">PASEO ALTOZANO</h2>
+      <p class="text-xs text-emerald-400 font-bold tracking-widest uppercase mb-6">Cargando Sistema de Navegación</p>
+
+      <!-- Progress Bar Container -->
+      <div class="w-64 h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800 shadow-inner mb-3">
+        <div id="preloader-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-400 rounded-full transition-all duration-300 ease-out" style="width: 10%;"></div>
+      </div>
+
+      <!-- Live Status Message -->
+      <div class="flex items-center justify-between w-64 text-[11px] text-slate-400 font-mono">
+        <span id="preloader-status-text" class="truncate">Inicializando planos y directorio...</span>
+        <span id="preloader-percentage-text" class="font-bold text-emerald-400 ml-2">10%</span>
+      </div>
+    </div>
+  </div>
 
   <!-- TOP APP BAR: PASEO ALTOZANO LUXURY EDITION -->
   <header class="border-b border-emerald-500/20 bg-gradient-to-r from-[#06151b] via-[#09131f] to-[#06151b] sticky top-0 z-50 backdrop-blur-xl px-5 md:px-8 py-3.5 flex items-center justify-between shadow-2xl">
@@ -467,11 +470,8 @@
               <!-- LAYER 1: Dark Casing Border for High Contrast -->
               <path id="svg-water-bed" d="" fill="none" stroke="rgba(11, 18, 30, 0.85)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"></path>
 
-              <!-- LAYER 2: Main Clean Blue Navigation Path (Google Maps Style) -->
+              <!-- LAYER 2: Main Clean Blue Navigation Path (Google Maps Solid River Style) -->
               <path id="svg-active-route" d="" fill="none" stroke="#2563eb" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" class="stream-water-glow"></path>
-
-              <!-- LAYER 3: Crisp White Marching Direction Chevrons -->
-              <path id="svg-chevrons-path" d="" fill="none" stroke="#ffffff" stroke-width="2" stroke-linecap="round" class="stream-chevrons"></path>
 
               <!-- Interactive Nodes & Badges -->
               <g id="svg-nodes-layer"></g>
@@ -492,15 +492,12 @@
               <!-- Dynamic GPS Nav Arrow Cursor Layer -->
               <g id="svg-nav-cursor-layer">
                 <g id="svg-nav-arrow-cursor" style="display: none;" transform="translate(0,0)">
-                  <!-- Multi-Tier Pulsing GPS Radar Waves -->
-                  <circle cx="0" cy="0" r="14" fill="none" stroke="#38bdf8" stroke-width="2.5" class="nav-puck-pulse"></circle>
-                  <circle cx="0" cy="0" r="14" fill="rgba(56, 189, 248, 0.18)" stroke="#0284c7" stroke-width="1.5" class="nav-puck-pulse-2"></circle>
-                  <!-- Heading Beam Cone -->
-                  <path d="M 0 0 L -22 -48 L 22 -48 Z" fill="rgba(56, 189, 248, 0.25)" stroke="rgba(56, 189, 248, 0.5)" stroke-width="1"></path>
-                  <!-- Outer Blue Puck Circle with White Border & Shadow -->
-                  <circle cx="0" cy="0" r="14" fill="#1d4ed8" stroke="#ffffff" stroke-width="3" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
-                  <!-- Central Crisp Navigation Chevron Arrow (Google Maps Style) -->
-                  <path d="M 0 -10 L 7 7 L 0 3.5 L -7 7 Z" fill="#ffffff"></path>
+                  <!-- Soft Heading Beam Cone -->
+                  <path d="M 0 0 L -22 -44 L 22 -44 Z" fill="rgba(56, 189, 248, 0.22)" stroke="rgba(56, 189, 248, 0.45)" stroke-width="1.2" stroke-linejoin="round"></path>
+                  <!-- Outer Precision Blue Puck Circle with White Border & Drop Shadow -->
+                  <circle cx="0" cy="0" r="13" fill="#1d4ed8" stroke="#ffffff" stroke-width="2.8" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
+                  <!-- Central Crisp Navigation White Chevron Arrow (Google Maps Style) -->
+                  <path d="M 0 -9 L 6 6 L 0 3 L -6 6 Z" fill="#ffffff"></path>
                 </g>
               </g>
             </svg>

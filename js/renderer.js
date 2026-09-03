@@ -407,9 +407,9 @@ function renderMapOverlay(animate = false) {
     nodesLayer.appendChild(g);
   });
 
-  // Draw Google Maps Blue River Route & Animated Chevrons
+  // Draw Google Maps Solid Blue River Route
   const activeSeg = routeSegments.find(s => s.level === currentLevel);
-  if (activeSeg && activeSeg.path.length > 0 && waterBedEl && pathEl && chevronsEl && destPinEl) {
+  if (activeSeg && activeSeg.path.length > 0 && waterBedEl && pathEl && destPinEl) {
     let d = '';
     activeSeg.path.forEach((node, i) => {
       d += (i === 0 ? 'M ' : 'L ') + `${node.coordinates.x} ${node.coordinates.y} `;
@@ -417,7 +417,7 @@ function renderMapOverlay(animate = false) {
 
     waterBedEl.setAttribute('d', d);
     pathEl.setAttribute('d', d);
-    chevronsEl.setAttribute('d', d);
+    if (chevronsEl) chevronsEl.setAttribute('d', '');
 
     if (animate && typeof NavAnimator !== 'undefined') {
       NavAnimator.animateRoutePath();

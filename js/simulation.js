@@ -1,6 +1,9 @@
 /**
  * Paseo Altozano · GPS Walkthrough Simulation Engine
+ * High-performance 60fps Continuous Motion & Tangent Rotation
  */
+
+let activeSimTimeout = null;
 
 function toggleWalkSimulation() {
   triggerHaptic('light');
@@ -16,9 +19,15 @@ function startWalkSimulation() {
   triggerHaptic('medium');
   isFollowingGPS = true;
 
+  // Clear any existing simulation timer
+  if (activeSimTimeout) clearTimeout(activeSimTimeout);
+  if (typeof NavAnimator !== 'undefined' && NavAnimator.activeArrowAnim) {
+    NavAnimator.activeArrowAnim.pause();
+  }
+
   // If already at the end of the route, restart cleanly from step 0
   const isAtEnd = currentStepIndex >= currentSteps.length - 1 || 
-                  (simSegIndex >= routeSegments.length - 1 && simNodeIndex >= (routeSegments[simSegIndex]?.path?.length || 0));
+                  (simSegIndex >= routeSegments.length - 1 && simNodeIndex >= (routeSegments[simSegIndex]?.path?.length || 0) - 1);
   
   if (isAtEnd) {
     simSegIndex = 0;
@@ -31,6 +40,7 @@ function startWalkSimulation() {
 
   isSimulating = true;
   isTransitioningFloor = false;
+
   const hudIcon = document.getElementById('hud-sim-icon');
   if (hudIcon) hudIcon.className = "fa-solid fa-pause";
   const hudText = document.getElementById('hud-sim-btn-text');
@@ -51,15 +61,16 @@ function startWalkSimulation() {
     const nextNode = seg.path[Math.min(simNodeIndex + 1, seg.path.length - 1)];
     const heading = getNodeHeading(startNode, nextNode);
     positionNavArrowOnNode(startNode, nextNode, false);
-    zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
+    if (isFollowingGPS) {
+      zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, 400, heading);
+    }
   }
 
-  clearInterval(simInterval);
-  runSimulationStep();
-  simInterval = setInterval(runSimulationStep, WALK_STEP_DURATION);
+  // Start continuous sequential stepping
+  stepToNextNode();
 }
 
-function runSimulationStep() {
+function stepToNextNode() {
   if (!isSimulating || isTransitioningFloor) return;
 
   if (simSegIndex >= routeSegments.length) {
@@ -72,34 +83,39 @@ function runSimulationStep() {
   const seg = routeSegments[simSegIndex];
   const pathNodes = seg.path;
 
-  if (simNodeIndex >= pathNodes.length) {
-    // Reached end of current floor segment!
+  // Reached the end of current floor path!
+  if (simNodeIndex >= pathNodes.length - 1) {
     if (simSegIndex < routeSegments.length - 1) {
       // Cross-floor transition (Escalator / Elevator)
       isTransitioningFloor = true;
       const nextSeg = routeSegments[simSegIndex + 1];
       triggerHaptic('medium');
-      
+
       const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
       if (transStepIdx !== -1) {
         currentStepIndex = transStepIdx;
         updateTotemUI(false);
       }
 
-      setTimeout(() => {
+      activeSimTimeout = setTimeout(() => {
         if (!isSimulating) return;
         simSegIndex++;
         simNodeIndex = 0;
         isTransitioningFloor = false;
         switchLevel(nextSeg.level, false);
+
         if (nextSeg.path.length > 0) {
           const startN = nextSeg.path[0];
           const nextN = nextSeg.path.length > 1 ? nextSeg.path[1] : startN;
           const heading = getNodeHeading(startN, nextN);
+          positionNavArrowOnNode(startN, nextN, false);
           updatePlaceCard(startN);
           if (isFollowingGPS) {
-            zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
+            zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, 450, heading);
           }
+          activeSimTimeout = setTimeout(() => {
+            if (isSimulating) stepToNextNode();
+          }, 350);
         }
       }, 700);
       return;
@@ -112,9 +128,8 @@ function runSimulationStep() {
       isTransitioningFloor = true;
       triggerHaptic('success');
 
-      setTimeout(() => {
+      activeSimTimeout = setTimeout(() => {
         if (!isSimulating) return;
-
         simSegIndex = 0;
         simNodeIndex = 0;
         currentStepIndex = 0;
@@ -129,49 +144,67 @@ function runSimulationStep() {
           const startNode = routeSegments[0].path[0];
           const nextNode = routeSegments[0].path.length > 1 ? routeSegments[0].path[1] : startNode;
           const heading = getNodeHeading(startNode, nextNode);
+          positionNavArrowOnNode(startNode, nextNode, false);
           updatePlaceCard(startNode);
           if (isFollowingGPS) {
-            zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, WALK_STEP_DURATION, heading);
+            zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, 450, heading);
           }
+          activeSimTimeout = setTimeout(() => {
+            if (isSimulating) stepToNextNode();
+          }, 600);
         }
-      }, 1200);
+      }, 1500);
       return;
     }
   }
 
   const curr = pathNodes[simNodeIndex];
-  const next = pathNodes[Math.min(pathNodes.length - 1, simNodeIndex + 1)];
+  const next = pathNodes[simNodeIndex + 1];
   const heading = getNodeHeading(curr, next);
 
-  let dist = 30;
-  if (next && curr) {
-    dist = Math.hypot(next.coordinates.x - curr.coordinates.x, next.coordinates.y - curr.coordinates.y);
-  }
-  const stepDuration = Math.max(450, Math.min(750, dist * 7.5));
-  const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex === pathNodes.length - 1);
+  const dist = Math.hypot(next.coordinates.x - curr.coordinates.x, next.coordinates.y - curr.coordinates.y);
+  // Natural human walking velocity (~110 px/s) gives 100% fluid, uniform camera & arrow movement
+  const stepDuration = Math.max(280, Math.min(800, Math.round(dist * 7.5)));
+  const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex + 1 === pathNodes.length - 1);
 
-  positionNavArrowOnNode(curr, next, true, stepDuration, isDestinationNode ? 'easeOutCubic' : 'linear');
+  // Smooth continuous vector motion
+  if (typeof NavAnimator !== 'undefined' && NavAnimator.animateArrowTo) {
+    NavAnimator.animateArrowTo(next.coordinates.x, next.coordinates.y, heading, stepDuration, 'linear', () => {
+      if (!isSimulating) return;
+      simNodeIndex++;
+      updatePlaceCard(next, isDestinationNode);
+
+      const matchingStepIdx = currentSteps.findIndex((s) => s.node && s.node.id === next.id && s.level === seg.level);
+      if (matchingStepIdx !== -1 && matchingStepIdx !== currentStepIndex) {
+        currentStepIndex = matchingStepIdx;
+        updateTotemUI(false);
+        triggerHaptic('light');
+      }
+
+      stepToNextNode();
+    });
+  } else {
+    positionNavArrowOnNode(next, next, false);
+    simNodeIndex++;
+    stepToNextNode();
+  }
 
   if (isFollowingGPS) {
-    zoomToCoordinates(curr.coordinates.x, curr.coordinates.y, getDynamicZoomLevel(true), true, stepDuration, heading);
+    zoomToCoordinates(next.coordinates.x, next.coordinates.y, getDynamicZoomLevel(true), true, stepDuration, heading);
   }
-
-  updatePlaceCard(curr, isDestinationNode);
-
-  const matchingStepIdx = currentSteps.findIndex((s, idx) => s.node && s.node.id === curr.id && s.level === seg.level);
-  if (matchingStepIdx !== -1 && matchingStepIdx !== currentStepIndex) {
-    currentStepIndex = matchingStepIdx;
-    updateTotemUI(false);
-    triggerHaptic('light');
-  }
-
-  simNodeIndex++;
 }
 
 function stopWalkSimulation() {
   isSimulating = false;
   isTransitioningFloor = false;
-  clearInterval(simInterval);
+  if (activeSimTimeout) {
+    clearTimeout(activeSimTimeout);
+    activeSimTimeout = null;
+  }
+  if (typeof NavAnimator !== 'undefined' && NavAnimator.activeArrowAnim) {
+    NavAnimator.activeArrowAnim.pause();
+  }
+
   const hudIcon = document.getElementById('hud-sim-icon');
   if (hudIcon) hudIcon.className = "fa-solid fa-location-arrow";
   const hudText = document.getElementById('hud-sim-btn-text');

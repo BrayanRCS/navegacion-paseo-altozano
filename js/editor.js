@@ -926,29 +926,8 @@ function updateLogoElementTransform(node, posX, posY) {
 }
 
 function updateEditorTetherLine(node, logoX, logoY) {
-  let tetherLayer = document.getElementById('svg-editor-tether-layer');
-  if (!tetherLayer) {
-    const svgOverlay = document.getElementById('map-svg-overlay');
-    if (!svgOverlay) return;
-    tetherLayer = document.createElementNS('http://www.w3.org/2000/svg', 'g');
-    tetherLayer.id = 'svg-editor-tether-layer';
-    svgOverlay.insertBefore(tetherLayer, document.getElementById('svg-nodes-layer'));
-  }
-
-  let line = document.getElementById(`tether-${node.id}`);
-  if (!line) {
-    line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-    line.id = `tether-${node.id}`;
-    line.setAttribute('stroke', '#f59e0b');
-    line.setAttribute('stroke-width', '1.8');
-    line.setAttribute('stroke-dasharray', '4 3');
-    tetherLayer.appendChild(line);
-  }
-
-  line.setAttribute('x1', node.coordinates.x);
-  line.setAttribute('y1', node.coordinates.y);
-  line.setAttribute('x2', logoX);
-  line.setAttribute('y2', logoY);
+  // Dotted tether lines removed per user request for clean visuals
+  return;
 }
 
 function updateEditorHudInfo(node, pos, customMsg = null) {

@@ -1,6 +1,38 @@
 /**
- * Paseo Altozano · Application Bootstrap & Cache Manager
+ * Paseo Altozano · Application Bootstrap & Full System Preloader
  */
+
+function setPreloaderProgress(percent, message) {
+  const bar = document.getElementById('preloader-progress-bar');
+  const txt = document.getElementById('preloader-status-text');
+  const pct = document.getElementById('preloader-percentage-text');
+  if (bar) bar.style.width = `${percent}%`;
+  if (txt && message) txt.innerText = message;
+  if (pct) pct.innerText = `${percent}%`;
+}
+
+function dismissPreloader() {
+  const preloader = document.getElementById('app-preloader');
+  if (!preloader) return;
+  setPreloaderProgress(100, "¡Sistema listo!");
+  setTimeout(() => {
+    preloader.style.opacity = '0';
+    preloader.style.pointerEvents = 'none';
+    setTimeout(() => {
+      preloader.style.display = 'none';
+    }, 700);
+  }, 400);
+}
+
+function preloadSingleImage(url) {
+  return new Promise((resolve) => {
+    if (!url || typeof Image === 'undefined') return resolve(url);
+    const img = new Image();
+    img.onload = () => resolve(url);
+    img.onerror = () => resolve(null); // Never block the entire app if one minor image fails
+    img.src = url;
+  });
+}
 
 async function loadCachedJson(key, url) {
   const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
@@ -74,6 +106,9 @@ function populateSelects() {
 
 async function initApp() {
   try {
+    setPreloaderProgress(15, "Descargando planos y grafos de navegación...");
+    
+    // 1. Fetch core graph and legends
     const [dataGraph, legData] = await Promise.all([
       loadCachedJson('graph', 'mall_graph.json'),
       loadCachedJson('legends', 'gemini-code-1787086839436.json')
@@ -85,6 +120,33 @@ async function initApp() {
     if (typeof initCustomGraph === 'function') initCustomGraph();
     if (typeof initLogoPositions === 'function') initLogoPositions();
 
+    setPreloaderProgress(45, "Cargando planos arquitectónicos HD...");
+
+    // 2. Preload all 6 architectural floor map images in parallel
+    const mapImageUrls = [
+      'planta-baja.png',
+      'planta-uno.png',
+      'planta-dos.png',
+      'planta-baja-dark.png',
+      'planta-uno-dark.png',
+      'planta-dos-dark.png'
+    ];
+    await Promise.all(mapImageUrls.map(url => preloadSingleImage(url)));
+
+    setPreloaderProgress(75, "Cargando catálogo completo de logotipos...");
+
+    // 3. Collect and preload all brand logo SVGs in parallel
+    const logoUrls = new Set();
+    if (mallGraph && Array.isArray(mallGraph.nodes)) {
+      mallGraph.nodes.forEach(n => {
+        if (n.logo) logoUrls.add(n.logo);
+      });
+    }
+    await Promise.all(Array.from(logoUrls).map(url => preloadSingleImage(url)));
+
+    setPreloaderProgress(90, "Compilando subgrafos de navegación A*...");
+
+    // 4. Build subgraphs and initialize UI
     buildFloorSubgraphs();
     populateSelects();
     renderLegendList();
@@ -92,8 +154,13 @@ async function initApp() {
     if (typeof setupEditorDragListeners === 'function') setupEditorDragListeners();
     
     initFromUrlParams();
+    renderMapOverlay();
+
+    setPreloaderProgress(100, "¡Carga completa!");
+    dismissPreloader();
   } catch (err) {
     console.error("Error loading graph/legend data:", err);
+    dismissPreloader();
   }
 }
 
