@@ -942,7 +942,9 @@
         {
           "id": 29,
           "name": "A Mar y Pasta",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/A Mar y Pasta/color.svg",
+          "logo_white": "assets/logos/A Mar y Pasta/blanco.svg"
         },
         {
           "id": 30,
@@ -956,7 +958,9 @@
         {
           "id": 1,
           "name": "Jurassic Ride",
-          "type": "island"
+          "type": "island",
+          "logo": "assets/logos/Jurassic Ride/color.svg",
+          "logo_white": "assets/logos/Jurassic Ride/blanco.svg"
         }
       ],
       "proximamente": []

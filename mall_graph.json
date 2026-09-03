@@ -396,7 +396,10 @@
       "coordinates": {
         "x": 800,
         "y": 300
-      }
+      },
+      "logo": "assets/logos/Jurassic Ride/color.svg",
+      "logo_white": "assets/logos/Jurassic Ride/blanco.svg",
+      "logo_folder": "Jurassic Ride"
     },
     {
       "id": "n_lvl1_island_3",
@@ -2569,9 +2572,9 @@
         "y": 356
       },
       "context_element": null,
-      "logo": null,
-      "logo_white": null,
-      "logo_folder": "AMaryPasta"
+      "logo": "assets/logos/A Mar y Pasta/color.svg",
+      "logo_white": "assets/logos/A Mar y Pasta/blanco.svg",
+      "logo_folder": "A Mar y Pasta"
     },
     {
       "id": "n_lvl3_portal_esc_cinelia",
