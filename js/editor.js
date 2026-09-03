@@ -13,7 +13,17 @@ function initCustomGraph() {
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed && Array.isArray(parsed.nodes) && Array.isArray(parsed.edges)) {
-        // Clean out any orphaned corridor waypoints that have 0 edges connected
+        // 1. Seamlessly merge newly introduced commercial stores / islands / portals from server
+        if (mallGraph && Array.isArray(mallGraph.nodes)) {
+          const localNodeIds = new Set(parsed.nodes.map(n => n.id));
+          mallGraph.nodes.forEach(serverNode => {
+            if (!localNodeIds.has(serverNode.id) && (serverNode.type === 'store' || serverNode.type === 'anchor_store' || serverNode.type === 'island' || serverNode.type === 'portal_escalator' || serverNode.type === 'portal_elevator')) {
+              parsed.nodes.push(serverNode);
+            }
+          });
+        }
+
+        // 2. Clean out any orphaned corridor waypoints that have 0 edges connected
         const connectedNodeIds = new Set();
         parsed.edges.forEach(e => {
           connectedNodeIds.add(e.from);
@@ -32,7 +42,7 @@ function initCustomGraph() {
         mallGraph = parsed;
         AltozanoState.mallGraph = mallGraph;
         if (typeof buildFloorSubgraphs === 'function') buildFloorSubgraphs();
-        console.log("Loaded custom user mall graph from localStorage (ghost nodes removed). Total nodes:", mallGraph.nodes.length);
+        console.log("Loaded custom user mall graph from localStorage. Total nodes:", mallGraph.nodes.length);
       }
     }
   } catch (e) {
@@ -334,6 +344,121 @@ function createNewWaypointAtCenter() {
   const centerX = Math.round(vp.spec.width / 2);
   const centerY = Math.round(vp.spec.height / 2);
   createNewWaypoint(centerX, centerY);
+}
+
+function createNewRestroom(svgX, svgY) {
+  if (!mallGraph) return;
+  const uniqueId = `n_lvl${currentLevel}_restroom_${Date.now().toString(36)}`;
+  const count = mallGraph.nodes.filter(n => n.level === currentLevel && n.type === 'restroom').length + 1;
+
+  const newNode = {
+    id: uniqueId,
+    level: currentLevel,
+    type: "restroom",
+    name: `Sanitarios ${count} (Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')})`,
+    coordinates: { x: svgX, y: svgY }
+  };
+
+  mallGraph.nodes.push(newNode);
+  saveCustomGraphToStorage();
+
+  selectedEditorNodeId = uniqueId;
+  AltozanoState.selectedEditorNodeId = uniqueId;
+
+  if (isConnectMode) {
+    if (editorConnectSourceNodeId) {
+      mallGraph.edges.push({ from: editorConnectSourceNodeId, to: uniqueId, bidirectional: true });
+      mallGraph.edges.push({ from: uniqueId, to: editorConnectSourceNodeId, bidirectional: true });
+      saveCustomGraphToStorage();
+    }
+    editorConnectSourceNodeId = uniqueId;
+    AltozanoState.editorConnectSourceNodeId = uniqueId;
+  }
+
+  renderMapOverlay();
+  updateEditorHudInfo(newNode, newNode.coordinates, `🚻 Sanitario creado: ${newNode.name}`);
+  triggerHaptic('medium');
+}
+
+function createNewRestroomAtCenter() {
+  const vp = getMapViewport();
+  const centerX = Math.round(vp.spec.width / 2);
+  const centerY = Math.round(vp.spec.height / 2);
+  createNewRestroom(centerX, centerY);
+}
+
+function handleSelectedNodeNameChange(newName) {
+  if (!selectedEditorNodeId || !mallGraph) return;
+  const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
+  if (!node) return;
+
+  node.name = newName;
+  if (levelNodes[currentLevel] && levelNodes[currentLevel][node.id]) {
+    levelNodes[currentLevel][node.id].name = newName;
+  }
+
+  saveCustomGraphToStorage();
+
+  const titleEl = document.getElementById('editor-hud-title');
+  if (titleEl) titleEl.innerText = `${node.name || node.id} (${node.type || 'nodo'})`;
+
+  // Update SVG DOM title
+  const nodeEl = document.querySelector(`[data-graph-node-id="${node.id}"]`);
+  if (nodeEl) {
+    const t = nodeEl.querySelector('title');
+    if (t) t.textContent = `${node.name}`;
+  }
+}
+
+function setPortalFloorConnection(preset) {
+  if (!selectedEditorNodeId || !mallGraph) return;
+  const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
+  if (!node) return;
+
+  const isEsc = node.type === 'portal_escalator';
+  const prefix = isEsc ? 'Escaleras Eléctricas' : 'Elevador';
+
+  switch (preset) {
+    case 'pb_n1':
+      node.name = `${prefix} (PB ↔ N1)`;
+      node.context_element = 'Conexión Planta Baja y Nivel 1';
+      break;
+    case 'n1_n2':
+      node.name = `${prefix} (N1 ↔ N2)`;
+      node.context_element = 'Conexión Nivel 1 y Nivel 2';
+      break;
+    case 'all':
+      node.name = `${prefix} (PB ↔ N1 ↔ N2)`;
+      node.context_element = 'Conexión Multinivel Completa';
+      break;
+    case 'pb_only':
+      node.name = `${prefix} (Solo PB)`;
+      node.context_element = 'Acceso Planta Baja';
+      break;
+    case 'n1_only':
+      node.name = `${prefix} (Solo N1)`;
+      node.context_element = 'Acceso Nivel 1';
+      break;
+    case 'n2_only':
+      node.name = `${prefix} (Solo N2)`;
+      node.context_element = 'Acceso Nivel 2';
+      break;
+  }
+
+  if (levelNodes[currentLevel] && levelNodes[currentLevel][node.id]) {
+    levelNodes[currentLevel][node.id].name = node.name;
+  }
+
+  saveCustomGraphToStorage();
+
+  const nameInput = document.getElementById('editor-node-name-input');
+  if (nameInput) nameInput.value = node.name;
+
+  const titleEl = document.getElementById('editor-hud-title');
+  if (titleEl) titleEl.innerText = `${node.name}`;
+
+  renderMapOverlay();
+  triggerHaptic('medium');
 }
 
 function deleteSelectedNode() {
@@ -650,6 +775,8 @@ function updateEditorHudInfo(node, pos, customMsg = null) {
   const titleEl = document.getElementById('editor-hud-title');
   const coordsEl = document.getElementById('editor-hud-coords');
   const deltaEl = document.getElementById('editor-hud-delta');
+  const nameInput = document.getElementById('editor-node-name-input');
+  const portalPresets = document.getElementById('editor-portal-floor-presets');
 
   if (titleEl) {
     if (customMsg) {
@@ -658,6 +785,20 @@ function updateEditorHudInfo(node, pos, customMsg = null) {
       titleEl.innerText = `${node.name || node.id} (${node.type || 'nodo'})`;
     }
   }
+
+  if (nameInput) {
+    nameInput.value = node.name || node.id || '';
+  }
+
+  if (portalPresets) {
+    const isPortal = node.type === 'portal_escalator' || node.type === 'portal_elevator';
+    if (isPortal) {
+      portalPresets.classList.remove('hidden');
+    } else {
+      portalPresets.classList.add('hidden');
+    }
+  }
+
   if (coordsEl) coordsEl.innerText = `X: ${pos.x}, Y: ${pos.y}`;
   
   if (deltaEl) {

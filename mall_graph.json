@@ -1,6 +1,6 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 256,
+  "total_nodes": 257,
   "total_edges": 668,
   "nodes": [
     {
@@ -3102,6 +3102,19 @@
         "x": 1120,
         "y": 200
       }
+    },
+    {
+      "id": "n_lvl2_island_13",
+      "level": 2,
+      "type": "island",
+      "name": "Isla Yuscase",
+      "coordinates": {
+        "x": 732,
+        "y": 345
+      },
+      "logo": "assets/logos/Yuscase/color.svg",
+      "logo_white": "assets/logos/Yuscase/blanco.svg",
+      "logo_folder": "Yuscase"
     }
   ],
   "edges": [

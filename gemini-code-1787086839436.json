@@ -726,6 +726,13 @@
           "id": 12,
           "name": "M-Caps",
           "type": "island"
+        },
+        {
+          "id": 13,
+          "name": "Isla Yuscase",
+          "type": "island",
+          "logo": "assets/logos/Yuscase/color.svg",
+          "logo_white": "assets/logos/Yuscase/blanco.svg"
         }
       ],
       "proximamente": [
