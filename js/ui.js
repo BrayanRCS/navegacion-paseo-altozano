@@ -260,6 +260,22 @@ function showMapView(destId = null) {
       const destSel = document.getElementById('dest-select');
       if (origSel) origSel.value = TOTEM_NODE_ID;
       if (destSel) destSel.value = destId;
+    } else {
+      // Exploring / browsing map freely without active route
+      stopWalkSimulation();
+      routeSegments = [];
+      currentSteps = [];
+      currentStepIndex = 0;
+      const waterBedEl = document.getElementById('svg-water-bed');
+      const pathEl = document.getElementById('svg-active-route');
+      const destPinEl = document.getElementById('svg-dest-pin');
+      const arrowEl = document.getElementById('svg-nav-arrow-cursor');
+      const segsBar = document.getElementById('route-segments-bar');
+      if (waterBedEl) waterBedEl.setAttribute('d', '');
+      if (pathEl) pathEl.setAttribute('d', '');
+      if (destPinEl) destPinEl.style.display = 'none';
+      if (arrowEl) arrowEl.style.display = 'none';
+      if (segsBar) segsBar.style.display = 'none';
     }
 
     requestAnimationFrame(() => {

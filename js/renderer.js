@@ -49,54 +49,56 @@ function renderMapOverlay(animate = false) {
 
   // Nodes and store logos are always visible for user orientation during navigation
   nodesLayer.style.display = (isEditorMode || showStoresAndRestaurants) ? 'block' : 'none';
-  edgesLayer.style.display = 'block';
+  edgesLayer.style.display = isEditorMode ? 'block' : 'none';
 
   // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
   if (totemMarkerEl) {
     totemMarkerEl.style.display = currentLevel === 2 ? 'block' : 'none';
   }
 
-  // Draw Vector Walkable Corridors & Crisp Architectural Edges
-  const drawn = new Set();
-  const floorEdges = levelGraphs[currentLevel] || {};
-  Object.values(floorEdges).forEach(edgeList => {
-    edgeList.forEach(e => {
-      const u = levelNodes[currentLevel] && levelNodes[currentLevel][e.from];
-      const v = levelNodes[currentLevel] && levelNodes[currentLevel][e.to];
-      if (u && v) {
-        const key = [u.id, v.id].sort().join('--');
-        if (!drawn.has(key)) {
-          drawn.add(key);
+  // Draw Vector Walkable Corridors & Graph Edges (ONLY when in Editor Mode)
+  if (isEditorMode) {
+    const drawn = new Set();
+    const floorEdges = levelGraphs[currentLevel] || {};
+    Object.values(floorEdges).forEach(edgeList => {
+      edgeList.forEach(e => {
+        const u = levelNodes[currentLevel] && levelNodes[currentLevel][e.from];
+        const v = levelNodes[currentLevel] && levelNodes[currentLevel][e.to];
+        if (u && v) {
+          const key = [u.id, v.id].sort().join('--');
+          if (!drawn.has(key)) {
+            drawn.add(key);
 
-          // 1. Subtle dark casing road line for architectural definition
-          const casing = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          casing.setAttribute('data-edge-u', u.id);
-          casing.setAttribute('data-edge-v', v.id);
-          casing.setAttribute('x1', u.coordinates.x);
-          casing.setAttribute('y1', u.coordinates.y);
-          casing.setAttribute('x2', v.coordinates.x);
-          casing.setAttribute('y2', v.coordinates.y);
-          casing.setAttribute('stroke', isEditorMode ? 'rgba(15, 23, 42, 0.85)' : 'rgba(15, 23, 42, 0.6)');
-          casing.setAttribute('stroke-width', isEditorMode ? '8' : '6.5');
-          casing.setAttribute('stroke-linecap', 'round');
-          edgesLayer.appendChild(casing);
+            // 1. Dark casing road line for graph definition in editor
+            const casing = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            casing.setAttribute('data-edge-u', u.id);
+            casing.setAttribute('data-edge-v', v.id);
+            casing.setAttribute('x1', u.coordinates.x);
+            casing.setAttribute('y1', u.coordinates.y);
+            casing.setAttribute('x2', v.coordinates.x);
+            casing.setAttribute('y2', v.coordinates.y);
+            casing.setAttribute('stroke', 'rgba(15, 23, 42, 0.85)');
+            casing.setAttribute('stroke-width', '8');
+            casing.setAttribute('stroke-linecap', 'round');
+            edgesLayer.appendChild(casing);
 
-          // 2. High-precision vector corridor centerline
-          const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
-          line.setAttribute('data-edge-u', u.id);
-          line.setAttribute('data-edge-v', v.id);
-          line.setAttribute('x1', u.coordinates.x);
-          line.setAttribute('y1', u.coordinates.y);
-          line.setAttribute('x2', v.coordinates.x);
-          line.setAttribute('y2', v.coordinates.y);
-          line.setAttribute('stroke', isEditorMode ? '#38bdf8' : 'rgba(56, 189, 248, 0.28)');
-          line.setAttribute('stroke-width', isEditorMode ? '3.2' : '2.2');
-          line.setAttribute('stroke-linecap', 'round');
-          edgesLayer.appendChild(line);
+            // 2. High-precision vector corridor centerline
+            const line = document.createElementNS('http://www.w3.org/2000/svg', 'line');
+            line.setAttribute('data-edge-u', u.id);
+            line.setAttribute('data-edge-v', v.id);
+            line.setAttribute('x1', u.coordinates.x);
+            line.setAttribute('y1', u.coordinates.y);
+            line.setAttribute('x2', v.coordinates.x);
+            line.setAttribute('y2', v.coordinates.y);
+            line.setAttribute('stroke', '#38bdf8');
+            line.setAttribute('stroke-width', '3.2');
+            line.setAttribute('stroke-linecap', 'round');
+            edgesLayer.appendChild(line);
+          }
         }
-      }
+      });
     });
-  });
+  }
 
   // Draw Nodes for current level
   const currentFloorNodes = levelNodes[currentLevel] || {};
