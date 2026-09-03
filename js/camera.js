@@ -141,6 +141,73 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
   }
 }
 
+function zoomToRouteBoundingBox(pathNodes, duration = 500) {
+  const stage = document.getElementById('map-camera-stage');
+  if (!stage || !pathNodes || pathNodes.length === 0) return;
+
+  const vp = getMapViewport();
+  const spec = vp.spec;
+  const finalRot = isVerticalMode ? -90 : 0;
+
+  let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+  pathNodes.forEach(n => {
+    const coords = n.coordinates || n;
+    if (coords.x < minX) minX = coords.x;
+    if (coords.x > maxX) maxX = coords.x;
+    if (coords.y < minY) minY = coords.y;
+    if (coords.y > maxY) maxY = coords.y;
+  });
+
+  const routeW = Math.max(maxX - minX, 120);
+  const routeH = Math.max(maxY - minY, 90);
+  const midX = (minX + maxX) / 2;
+  const midY = (minY + maxY) / 2;
+
+  // Add comfortable padding around the route for clear context
+  const paddedW = Math.max(routeW + 320, 520);
+  const paddedH = Math.max(routeH + 260, 380);
+
+  const routePixelW = (paddedW / spec.width) * vp.renderW;
+  const routePixelH = (paddedH / spec.height) * vp.renderH;
+
+  const scaleX = vp.cw / routePixelW;
+  const scaleY = vp.ch / routePixelH;
+  let targetScale = Math.min(scaleX, scaleY);
+
+  const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
+  const maxAllowScale = isMobile ? 1.4 : 1.32;
+  const minAllowScale = 1.02;
+  targetScale = Math.min(maxAllowScale, Math.max(minAllowScale, targetScale));
+
+  const u = midX / spec.width;
+  const v = midY / spec.height;
+  const pixelX = vp.offsetX + u * vp.renderW;
+  const pixelY = vp.offsetY + v * vp.renderH;
+
+  const rad = finalRot * Math.PI / 180;
+  const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
+  const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
+
+  const targetScreenX = vp.cw / 2;
+  const targetScreenY = vp.ch / 2;
+
+  const panX = targetScreenX - rx;
+  const panY = targetScreenY - ry;
+
+  if (typeof NavAnimator !== 'undefined' && NavAnimator.animateCameraTo) {
+    NavAnimator.animateCameraTo(panX, panY, targetScale, duration, finalRot);
+  } else {
+    currentCamera.scale = targetScale;
+    currentCamera.panX = panX;
+    currentCamera.panY = panY;
+    currentCamera.rotation = finalRot;
+    currentCamera.isZoomed = targetScale > 1.05;
+    updateCameraTransform();
+    updateZoomButtonUI();
+    updateCompassUI();
+  }
+}
+
 function zoomToOverview(animate = true) {
   const stage = document.getElementById('map-camera-stage');
   if (!stage) return;

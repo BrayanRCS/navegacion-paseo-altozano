@@ -104,9 +104,9 @@ function playCurrentFloorSegment() {
     return;
   }
 
-  // Natural walking velocity: ~115 px/second
-  const walkingSpeed = 115;
-  const totalDurationMs = Math.max(1200, Math.round((totalDist / walkingSpeed) * 1000));
+  // Natural walking velocity: ~55 px/second (calm, readable, smooth progression)
+  const walkingSpeed = 55;
+  const totalDurationMs = Math.max(1800, Math.round((totalDist / walkingSpeed) * 1000));
 
   // Initialize arrow at segment start
   const arrowEl = document.getElementById('svg-nav-arrow-cursor');
@@ -119,8 +119,13 @@ function playCurrentFloorSegment() {
     NavAnimator.arrowState = { x: points[0].x, y: points[0].y, angle: segHeadings[0] };
   }
 
-  if (isFollowingGPS) {
-    zoomToCoordinates(points[0].x, points[0].y, getDynamicZoomLevel(true), true, 450);
+  // Frame the entire route segment cleanly so the map stays completely rock-solid
+  if (isFollowingGPS && seg.path && seg.path.length > 0) {
+    if (typeof zoomToRouteBoundingBox === 'function') {
+      zoomToRouteBoundingBox(seg.path, 550);
+    } else {
+      zoomToCoordinates(points[0].x, points[0].y, getDynamicZoomLevel(true), true, 450);
+    }
   }
 
   updatePlaceCard(points[0].node);
@@ -152,7 +157,7 @@ function playCurrentFloorSegment() {
       const u = segLen > 0 ? (s - cumDist[i]) / segLen : 0;
       const currentHeading = segHeadings[i];
 
-      // Smooth turn slerp near corners (within 18px radius of vertex)
+      // Smooth turn slerp near corners (within 16px radius of vertex)
       let displayAngle = currentHeading;
       const distFromStart = s - cumDist[i];
       const distToEnd = cumDist[i + 1] - s;
@@ -176,12 +181,6 @@ function playCurrentFloorSegment() {
         NavAnimator.arrowState.x = curX;
         NavAnimator.arrowState.y = curY;
         NavAnimator.arrowState.angle = displayAngle;
-      }
-
-      // Smooth camera follow without shaking or spinning
-      if (isFollowingGPS && Math.abs(s - (progressObj._lastCameraS || 0)) > 25) {
-        progressObj._lastCameraS = s;
-        zoomToCoordinates(curX, curY, getDynamicZoomLevel(true), true, 280);
       }
 
       // Active place card and steps update
