@@ -234,36 +234,42 @@ function handleSegmentComplete() {
       switchLevel(nextSeg.level, false);
       
       activeSimTimeout = setTimeout(() => {
-        if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
-        if (isSimulating) playCurrentFloorSegment();
-      }, 600);
-    }, 1400);
-  } else {
-    // Destination reached!
-    if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
-    currentStepIndex = currentSteps.length - 1;
-    const destNode = seg.path[seg.path.length - 1];
-    updatePlaceCard(destNode, true);
-    updateTotemUI(false);
-    isTransitioningFloor = true;
-    triggerHaptic('success');
+      if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
+      if (isSimulating) playCurrentFloorSegment();
+    }, 600);
+  }, 1400);
+} else {
+  // Destination reached!
+  if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
+  currentStepIndex = currentSteps.length - 1;
+  const destNode = seg.path[seg.path.length - 1];
+  updatePlaceCard(destNode, true);
+  updateTotemUI(false);
+  triggerHaptic('success');
 
-    activeSimTimeout = setTimeout(() => {
-      if (!isSimulating) return;
-      simSegIndex = 0;
-      currentStepIndex = 0;
-      isTransitioningFloor = false;
+  // Terminate simulation cleanly - NO automatic restart loop!
+  isSimulating = false;
+  isTransitioningFloor = false;
 
-      if (currentLevel !== routeSegments[0].level) {
-        switchLevel(routeSegments[0].level, false);
-      }
-      updateTotemUI(false);
-
-      activeSimTimeout = setTimeout(() => {
-        if (isSimulating) playCurrentFloorSegment();
-      }, 600);
-    }, 2200);
+  if (activeSimAnim) {
+    activeSimAnim.pause();
+    activeSimAnim = null;
   }
+  if (activeSimTimeout) {
+    clearTimeout(activeSimTimeout);
+    activeSimTimeout = null;
+  }
+
+  // Update button to prompt user: "¿Reiniciar ruta?"
+  const hudIcon = document.getElementById('hud-sim-icon');
+  if (hudIcon) hudIcon.className = "fa-solid fa-rotate-right text-base text-emerald-400";
+  const hudText = document.getElementById('hud-sim-btn-text');
+  if (hudText) hudText.innerText = "¿Reiniciar ruta?";
+  const mSimIcon = document.getElementById('mobile-sim-icon');
+  if (mSimIcon) mSimIcon.className = "fa-solid fa-rotate-right text-emerald-400";
+  const mSimText = document.getElementById('mobile-sim-btn-text');
+  if (mSimText) mSimText.innerText = "¿Reiniciar?";
+}
 }
 
 function stopWalkSimulation() {
@@ -287,11 +293,13 @@ function stopWalkSimulation() {
   }
 
   const hudIcon = document.getElementById('hud-sim-icon');
-  if (hudIcon) hudIcon.className = "fa-solid fa-location-arrow";
+  if (hudIcon) hudIcon.className = "fa-solid fa-location-arrow text-base";
   const hudText = document.getElementById('hud-sim-btn-text');
   if (hudText) hudText.innerText = "Recorrer con Flecha GPS";
   const mSimIcon = document.getElementById('mobile-sim-icon');
   if (mSimIcon) mSimIcon.className = "fa-solid fa-location-arrow";
+  const mSimText = document.getElementById('mobile-sim-btn-text');
+  if (mSimText) mSimText.innerText = "Simular";
 
   const nodesLayer = document.getElementById('svg-nodes-layer');
   if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? 'block' : 'none';
