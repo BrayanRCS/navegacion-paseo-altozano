@@ -483,6 +483,90 @@ function createNewEscalatorAtCenter() {
   createNewEscalator(centerX, centerY);
 }
 
+function createNewParking(svgX, svgY) {
+  if (!mallGraph) return;
+  const uniqueId = `n_lvl${currentLevel}_parking_${Date.now().toString(36)}`;
+  const count = mallGraph.nodes.filter(n => n.level === currentLevel && (n.type === 'parking' || (n.name && n.name.toLowerCase().includes('estacionamiento')))).length + 1;
+
+  const newNode = {
+    id: uniqueId,
+    level: currentLevel,
+    type: "parking",
+    name: `Estacionamiento ${count} (Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')})`,
+    coordinates: { x: svgX, y: svgY },
+    context_element: `Acceso Estacionamiento Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}`
+  };
+
+  mallGraph.nodes.push(newNode);
+  saveCustomGraphToStorage();
+
+  selectedEditorNodeId = uniqueId;
+  AltozanoState.selectedEditorNodeId = uniqueId;
+
+  if (isConnectMode) {
+    if (editorConnectSourceNodeId) {
+      mallGraph.edges.push({ from: editorConnectSourceNodeId, to: uniqueId, bidirectional: true });
+      mallGraph.edges.push({ from: uniqueId, to: editorConnectSourceNodeId, bidirectional: true });
+      saveCustomGraphToStorage();
+    }
+    editorConnectSourceNodeId = uniqueId;
+    AltozanoState.editorConnectSourceNodeId = uniqueId;
+  }
+
+  renderMapOverlay();
+  updateEditorHudInfo(newNode, newNode.coordinates, `🅿️ Estacionamiento creado: ${newNode.name}`);
+  triggerHaptic('medium');
+}
+
+function createNewParkingAtCenter() {
+  const vp = getMapViewport();
+  const centerX = Math.round(vp.spec.width / 2);
+  const centerY = Math.round(vp.spec.height / 2);
+  createNewParking(centerX, centerY);
+}
+
+function createNewAdmin(svgX, svgY) {
+  if (!mallGraph) return;
+  const uniqueId = `n_lvl${currentLevel}_admin_${Date.now().toString(36)}`;
+  const count = mallGraph.nodes.filter(n => n.level === currentLevel && (n.type === 'admin' || n.type === 'service')).length + 1;
+
+  const newNode = {
+    id: uniqueId,
+    level: currentLevel,
+    type: "admin",
+    name: `Administración ${count} (Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')})`,
+    coordinates: { x: svgX, y: svgY },
+    context_element: `Oficina de Administración Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}`
+  };
+
+  mallGraph.nodes.push(newNode);
+  saveCustomGraphToStorage();
+
+  selectedEditorNodeId = uniqueId;
+  AltozanoState.selectedEditorNodeId = uniqueId;
+
+  if (isConnectMode) {
+    if (editorConnectSourceNodeId) {
+      mallGraph.edges.push({ from: editorConnectSourceNodeId, to: uniqueId, bidirectional: true });
+      mallGraph.edges.push({ from: uniqueId, to: editorConnectSourceNodeId, bidirectional: true });
+      saveCustomGraphToStorage();
+    }
+    editorConnectSourceNodeId = uniqueId;
+    AltozanoState.editorConnectSourceNodeId = uniqueId;
+  }
+
+  renderMapOverlay();
+  updateEditorHudInfo(newNode, newNode.coordinates, `🏢 Administración creada: ${newNode.name}`);
+  triggerHaptic('medium');
+}
+
+function createNewAdminAtCenter() {
+  const vp = getMapViewport();
+  const centerX = Math.round(vp.spec.width / 2);
+  const centerY = Math.round(vp.spec.height / 2);
+  createNewAdmin(centerX, centerY);
+}
+
 function handleSelectedNodeNameChange(newName) {
   if (!selectedEditorNodeId || !mallGraph) return;
   const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);

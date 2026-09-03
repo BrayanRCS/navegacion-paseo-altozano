@@ -312,6 +312,76 @@ function renderMapOverlay(animate = false) {
       g.appendChild(title);
       g.appendChild(circle);
       g.appendChild(useIcon);
+    } else if (n.type === 'restroom' || n.id.includes('restroom') || (n.name || '').toLowerCase().includes('sanitario') || (n.name || '').toLowerCase().includes('baño')) {
+      // DEDICATED RESTROOM BADGE
+      g.setAttribute('data-graph-node-id', n.id);
+      const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      circle.setAttribute('cx', posX);
+      circle.setAttribute('cy', posY);
+      circle.setAttribute('r', isSelected || isConnectSource ? '11' : '8.5');
+      circle.setAttribute('fill', isConnectSource ? '#10b981' : (isSelected ? '#f59e0b' : '#eab308'));
+      circle.setAttribute('stroke', '#ffffff');
+      circle.setAttribute('stroke-width', isSelected || isConnectSource ? '2.5' : '1.6');
+
+      const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      useIcon.setAttribute('href', '#vec-icon-restroom');
+      useIcon.setAttribute('x', posX);
+      useIcon.setAttribute('y', posY);
+
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = `${n.name || 'Sanitarios'}`;
+      g.appendChild(title);
+      g.appendChild(circle);
+      g.appendChild(useIcon);
+
+    } else if (n.type === 'service' || n.type === 'admin' || n.id.includes('admin') || n.id.includes('maint') || (n.name || '').toLowerCase().includes('admin') || (n.name || '').toLowerCase().includes('mantenimiento')) {
+      // DEDICATED ADMINISTRATION & SERVICES BADGE
+      g.setAttribute('data-graph-node-id', n.id);
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', posX - 10);
+      rect.setAttribute('y', posY - 10);
+      rect.setAttribute('width', 20);
+      rect.setAttribute('height', 20);
+      rect.setAttribute('rx', 5);
+      rect.setAttribute('fill', isConnectSource ? '#10b981' : (isSelected ? '#f59e0b' : '#6366f1'));
+      rect.setAttribute('stroke', '#ffffff');
+      rect.setAttribute('stroke-width', isSelected || isConnectSource ? '2.5' : '1.6');
+
+      const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      useIcon.setAttribute('href', '#vec-icon-admin');
+      useIcon.setAttribute('x', posX);
+      useIcon.setAttribute('y', posY);
+
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = `${n.name || 'Administración / Servicios'}`;
+      g.appendChild(title);
+      g.appendChild(rect);
+      g.appendChild(useIcon);
+
+    } else if (n.type === 'parking' || n.id.includes('parking') || (n.name || '').toLowerCase().includes('estacionamiento') || (n.name || '').toLowerCase().includes('parking')) {
+      // DEDICATED PARKING BADGE
+      g.setAttribute('data-graph-node-id', n.id);
+      const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+      rect.setAttribute('x', posX - 10);
+      rect.setAttribute('y', posY - 10);
+      rect.setAttribute('width', 20);
+      rect.setAttribute('height', 20);
+      rect.setAttribute('rx', 5);
+      rect.setAttribute('fill', isConnectSource ? '#10b981' : (isSelected ? '#f59e0b' : '#2563eb'));
+      rect.setAttribute('stroke', '#ffffff');
+      rect.setAttribute('stroke-width', isSelected || isConnectSource ? '2.5' : '1.6');
+
+      const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      useIcon.setAttribute('href', '#vec-icon-parking');
+      useIcon.setAttribute('x', posX);
+      useIcon.setAttribute('y', posY);
+
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = `${n.name || 'Estacionamiento'}`;
+      g.appendChild(title);
+      g.appendChild(rect);
+      g.appendChild(useIcon);
+
     } else {
       g.setAttribute('data-graph-node-id', n.id);
       const circle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
@@ -322,7 +392,6 @@ function renderMapOverlay(animate = false) {
       let fill = isConnectSource ? '#10b981' : (isSelected ? '#f59e0b' : '#3b82f6');
       if (n.type === 'island') { r = '7'; fill = '#38bdf8'; }
       else if (cat === 'fashion') { fill = '#8b5cf6'; }
-      else if (n.type === 'service' || n.type === 'restroom') { fill = '#eab308'; }
 
       circle.setAttribute('r', r);
       circle.setAttribute('fill', fill);
