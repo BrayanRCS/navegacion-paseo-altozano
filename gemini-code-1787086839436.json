@@ -739,7 +739,9 @@
         {
           "id": 1,
           "name": "Coven",
-          "type": "store"
+          "type": "store",
+          "logo": "assets/logos/Coven/color.svg",
+          "logo_white": "assets/logos/Coven/blanco.svg"
         }
       ]
     },

@@ -2039,12 +2039,15 @@
       "id": "n_lvl2_store_64",
       "level": 2,
       "type": "store",
-      "name": "Coven (Próximamente)",
+      "name": "Coven",
       "coordinates": {
         "x": 455,
         "y": 472
       },
-      "context_element": null
+      "context_element": null,
+      "logo": "assets/logos/Coven/color.svg",
+      "logo_white": "assets/logos/Coven/blanco.svg",
+      "logo_folder": "Coven"
     },
     {
       "id": "n_lvl2_store_65",

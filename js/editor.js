@@ -16,9 +16,21 @@ function initCustomGraph() {
         // 1. Seamlessly merge newly introduced commercial stores / islands / portals from server
         if (mallGraph && Array.isArray(mallGraph.nodes)) {
           const localNodeIds = new Set(parsed.nodes.map(n => n.id));
+          const serverNodeMap = new Map(mallGraph.nodes.map(n => [n.id, n]));
+          
           mallGraph.nodes.forEach(serverNode => {
             if (!localNodeIds.has(serverNode.id) && (serverNode.type === 'store' || serverNode.type === 'anchor_store' || serverNode.type === 'island' || serverNode.type === 'portal_escalator' || serverNode.type === 'portal_elevator')) {
               parsed.nodes.push(serverNode);
+            }
+          });
+
+          // Sync new logos to local nodes if present on server
+          parsed.nodes.forEach(localNode => {
+            const serverNode = serverNodeMap.get(localNode.id);
+            if (serverNode && serverNode.logo && (!localNode.logo || localNode.logo !== serverNode.logo)) {
+              localNode.logo = serverNode.logo;
+              localNode.logo_white = serverNode.logo_white;
+              localNode.logo_folder = serverNode.logo_folder;
             }
           });
         }
