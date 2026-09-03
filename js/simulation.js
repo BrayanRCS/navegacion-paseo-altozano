@@ -212,24 +212,35 @@ function handleSegmentComplete() {
     const nextSeg = routeSegments[simSegIndex + 1];
     triggerHaptic('medium');
 
+    const transNode = seg.path[seg.path.length - 1];
     const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
     if (transStepIdx !== -1) {
       currentStepIndex = transStepIdx;
       updateTotemUI(false);
     }
 
+    // Show Animated Floor Transition HUD
+    if (typeof showFloorTransitionHUD === 'function') {
+      showFloorTransitionHUD(seg.level, nextSeg.level, transNode);
+    }
+
     activeSimTimeout = setTimeout(() => {
-      if (!isSimulating) return;
+      if (!isSimulating) {
+        if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
+        return;
+      }
       simSegIndex++;
       isTransitioningFloor = false;
       switchLevel(nextSeg.level, false);
       
       activeSimTimeout = setTimeout(() => {
+        if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
         if (isSimulating) playCurrentFloorSegment();
-      }, 400);
-    }, 750);
+      }, 600);
+    }, 1400);
   } else {
     // Destination reached!
+    if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
     currentStepIndex = currentSteps.length - 1;
     const destNode = seg.path[seg.path.length - 1];
     updatePlaceCard(destNode, true);
@@ -258,6 +269,10 @@ function handleSegmentComplete() {
 function stopWalkSimulation() {
   isSimulating = false;
   isTransitioningFloor = false;
+
+  if (typeof hideFloorTransitionHUD === 'function') {
+    hideFloorTransitionHUD();
+  }
 
   if (activeSimAnim) {
     activeSimAnim.pause();

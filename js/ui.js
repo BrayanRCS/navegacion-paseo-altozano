@@ -95,7 +95,6 @@ function switchLevel(lvl, autoZoom = true) {
   cachedViewport = null;
   const spec = FLOOR_SPECS[lvl];
   
-  const img = document.getElementById('floor-plan-img');
   const title = document.getElementById('map-level-title');
   const count = document.getElementById('map-nodes-count');
   const svgOverlay = document.getElementById('map-svg-overlay');
@@ -119,9 +118,29 @@ function switchLevel(lvl, autoZoom = true) {
         ? "px-2.5 py-1 rounded-lg text-[10px] font-bold bg-blue-600 text-white shadow-md"
         : "px-2.5 py-1 rounded-lg text-[10px] font-bold text-slate-400 hover:text-white";
     }
+
+    // Zero-Flicker GPU Layer Crossfade
+    const layerImg = document.getElementById(`floor-plan-img-${l}`);
+    if (layerImg) {
+      if (l === lvl) {
+        layerImg.style.display = 'block';
+        requestAnimationFrame(() => {
+          layerImg.style.opacity = '0.95';
+        });
+      } else {
+        layerImg.style.opacity = '0';
+        setTimeout(() => {
+          if (currentLevel !== l) {
+            layerImg.style.display = 'none';
+          }
+        }, 280);
+      }
+    }
   });
 
-  if (img) img.src = spec.img;
+  const fallbackImg = document.getElementById('floor-plan-img');
+  if (fallbackImg) fallbackImg.src = spec.img;
+
   if (title) title.innerText = spec.name;
   if (count) count.innerText = spec.count;
   if (svgOverlay) svgOverlay.setAttribute('viewBox', `0 0 ${spec.width} ${spec.height}`);
@@ -132,6 +151,76 @@ function switchLevel(lvl, autoZoom = true) {
   if (autoZoom) {
     zoomToOverview(true);
   }
+}
+
+function showFloorTransitionHUD(fromLvl, toLvl, portalNode = null) {
+  const hud = document.getElementById('floor-transition-hud');
+  const card = document.getElementById('floor-transition-card');
+  const icon = document.getElementById('floor-trans-icon');
+  const title = document.getElementById('floor-trans-title');
+  const desc = document.getElementById('floor-trans-desc');
+  const badge = document.getElementById('floor-trans-badge');
+  const fromBadge = document.getElementById('floor-trans-from');
+  const toBadge = document.getElementById('floor-trans-to');
+
+  if (!hud) return;
+
+  const floorNames = {
+    1: 'Planta Baja (PB)',
+    2: 'Nivel 1 (N1)',
+    3: 'Nivel 2 (N2)'
+  };
+  const floorCodes = { 1: 'PB', 2: 'N1', 3: 'N2' };
+
+  const isUp = toLvl > fromLvl;
+  const isElevator = portalNode && ((portalNode.type || '').includes('elevator') || (portalNode.name || '').toLowerCase().includes('elevador'));
+  const isEscalator = portalNode && ((portalNode.type || '').includes('escalator') || (portalNode.name || '').toLowerCase().includes('escalera'));
+
+  let actionText = isUp ? 'Subiendo' : 'Bajando';
+  let portalTypeName = 'Conexión de Piso';
+
+  if (isElevator) {
+    portalTypeName = 'Elevador';
+    if (icon) icon.className = 'fa-solid fa-elevator text-sky-400 text-2xl animate-bounce';
+  } else if (isEscalator) {
+    portalTypeName = 'Escaleras Eléctricas';
+    if (icon) icon.className = 'fa-solid fa-stairs text-amber-400 text-2xl animate-pulse';
+  } else {
+    portalTypeName = 'Escaleras';
+    if (icon) icon.className = 'fa-solid fa-stairs text-sky-400 text-2xl';
+  }
+
+  const portalName = portalNode && portalNode.name ? portalNode.name : portalTypeName;
+
+  if (title) title.innerText = `${actionText} a ${floorNames[toLvl] || 'Piso ' + toLvl}`;
+  if (desc) desc.innerText = `Por ${portalName}`;
+  if (badge) badge.innerText = `${isUp ? '⬆ SUBIENDO' : '⬇ BAJANDO'} · ${portalTypeName.toUpperCase()}`;
+  if (fromBadge) fromBadge.innerText = floorCodes[fromLvl] || `P${fromLvl}`;
+  if (toBadge) toBadge.innerText = floorCodes[toLvl] || `P${toLvl}`;
+
+  hud.classList.remove('hidden');
+  requestAnimationFrame(() => {
+    hud.classList.remove('opacity-0');
+    if (card) {
+      card.classList.remove('scale-95');
+      card.classList.add('scale-100');
+    }
+  });
+}
+
+function hideFloorTransitionHUD() {
+  const hud = document.getElementById('floor-transition-hud');
+  const card = document.getElementById('floor-transition-card');
+  if (!hud) return;
+
+  hud.classList.add('opacity-0');
+  if (card) {
+    card.classList.remove('scale-100');
+    card.classList.add('scale-95');
+  }
+  setTimeout(() => {
+    hud.classList.add('hidden');
+  }, 280);
 }
 
 function setTotemRoute(destId) {

@@ -394,8 +394,11 @@
           
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
-            <!-- Background Floor Plan PNG (Google Maps Dark Theme) -->
-            <img id="floor-plan-img" src="planta-uno-dark.png" alt="Plano Paseo Altozano" class="absolute inset-0 w-full h-full object-contain pointer-events-none opacity-95 transition-opacity duration-300">
+            <!-- Background Floor Plan Layers (Zero-Flicker GPU Layer Stack) -->
+            <img id="floor-plan-img-1" src="planta-baja-dark.png" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img-2" src="planta-uno-dark.png" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
+            <img id="floor-plan-img-3" src="planta-dos-dark.png" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img" src="planta-uno-dark.png" alt="Plano Paseo Altozano" class="hidden">
             
             <!-- Interactive SVG Overlay Layer -->
             <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
@@ -520,6 +523,40 @@
                 </g>
               </g>
             </svg>
+          </div>
+
+          <!-- FLOATING LUXURY FLOOR TRANSITION HUD OVERLAY -->
+          <div id="floor-transition-hud" class="absolute inset-0 z-40 bg-slate-950/75 backdrop-blur-md flex flex-col items-center justify-center pointer-events-none transition-all duration-300 opacity-0 hidden">
+            <div class="bg-gradient-to-b from-slate-900 via-slate-900/95 to-slate-950 border-2 border-sky-500/60 rounded-3xl p-6 sm:p-8 max-w-sm w-11/12 shadow-2xl flex flex-col items-center text-center relative overflow-hidden transform scale-95 transition-transform duration-300" id="floor-transition-card">
+              <!-- Glow Aura -->
+              <div class="absolute -top-10 w-32 h-32 bg-sky-500/20 rounded-full blur-2xl pointer-events-none"></div>
+              
+              <!-- Dynamic Transition Animated Icon -->
+              <div class="w-16 h-16 rounded-2xl bg-gradient-to-tr from-sky-600 via-blue-600 to-teal-400 p-0.5 shadow-xl shadow-sky-500/30 mb-4 flex items-center justify-center">
+                <div class="w-full h-full bg-slate-950 rounded-[14px] flex items-center justify-center" id="floor-trans-icon-box">
+                  <i id="floor-trans-icon" class="fa-solid fa-elevator text-sky-400 text-2xl animate-bounce"></i>
+                </div>
+              </div>
+
+              <span class="text-[10px] font-black text-sky-400 uppercase tracking-widest px-3 py-1 bg-sky-500/15 rounded-full border border-sky-500/30 mb-2" id="floor-trans-badge">
+                CAMBIO DE PISO
+              </span>
+
+              <h3 class="text-lg sm:text-xl font-black text-white" id="floor-trans-title">
+                Subiendo al Nivel 1
+              </h3>
+
+              <p class="text-xs text-slate-300 mt-1 font-medium" id="floor-trans-desc">
+                Por Escaleras Eléctricas (PB ↔ N1)
+              </p>
+
+              <!-- Floor Step Progress Badges -->
+              <div class="flex items-center gap-2.5 mt-5 bg-slate-950/80 px-4 py-2 rounded-2xl border border-slate-800 text-xs font-black">
+                <span id="floor-trans-from" class="text-slate-400">PB</span>
+                <i class="fa-solid fa-arrow-right text-sky-400 text-xs animate-pulse"></i>
+                <span id="floor-trans-to" class="text-emerald-400">N1</span>
+              </div>
+            </div>
           </div>
 
           <!-- Floating Camera Controls Toolbar (Top-Right) -->
