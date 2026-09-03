@@ -39,7 +39,7 @@ function startWalkSimulation() {
   if (mSimIcon) mSimIcon.className = "fa-solid fa-pause";
 
   const nodesLayer = document.getElementById('svg-nodes-layer');
-  if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? 'none' : 'none';
+  if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? 'block' : 'none';
 
   if (currentLevel !== routeSegments[simSegIndex].level) {
     switchLevel(routeSegments[simSegIndex].level, false);

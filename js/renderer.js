@@ -47,8 +47,8 @@ function renderMapOverlay(animate = false) {
   const oldTether = document.getElementById('svg-editor-tether-layer');
   if (oldTether) oldTether.innerHTML = '';
 
-  // In Editor Mode, nodes are always visible so you can edit anything
-  nodesLayer.style.display = (isEditorMode || showStoresAndRestaurants) ? (isSimulating ? 'none' : 'block') : 'none';
+  // Nodes and store logos are always visible for user orientation during navigation
+  nodesLayer.style.display = (isEditorMode || showStoresAndRestaurants) ? 'block' : 'none';
   edgesLayer.style.display = 'block';
 
   // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
