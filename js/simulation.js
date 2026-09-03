@@ -1,8 +1,9 @@
 /**
- * Paseo Altozano · GPS Walkthrough Simulation Engine
- * High-performance 60fps Continuous Motion & Tangent Rotation
+ * Paseo Altozano · High-Performance Continuous Navigation Engine
+ * 60 FPS Continuous Polyline Progression, Slerp Angle & Stable Camera Follow
  */
 
+let activeSimAnim = null;
 let activeSimTimeout = null;
 
 function toggleWalkSimulation() {
@@ -14,29 +15,23 @@ function toggleWalkSimulation() {
   }
 }
 
+function normalizeAngle(a) {
+  while (a < -180) a += 360;
+  while (a > 180) a -= 360;
+  return a;
+}
+
+function slerpAngle(a1, a2, t) {
+  const diff = normalizeAngle(a2 - a1);
+  return a1 + diff * t;
+}
+
 function startWalkSimulation() {
   if (routeSegments.length === 0) return;
   triggerHaptic('medium');
   isFollowingGPS = true;
 
-  // Clear any existing simulation timer
-  if (activeSimTimeout) clearTimeout(activeSimTimeout);
-  if (typeof NavAnimator !== 'undefined' && NavAnimator.activeArrowAnim) {
-    NavAnimator.activeArrowAnim.pause();
-  }
-
-  // If already at the end of the route, restart cleanly from step 0
-  const isAtEnd = currentStepIndex >= currentSteps.length - 1 || 
-                  (simSegIndex >= routeSegments.length - 1 && simNodeIndex >= (routeSegments[simSegIndex]?.path?.length || 0) - 1);
-  
-  if (isAtEnd) {
-    simSegIndex = 0;
-    simNodeIndex = 0;
-    currentStepIndex = 0;
-    if (currentLevel !== routeSegments[0].level) {
-      switchLevel(routeSegments[0].level, false);
-    }
-  }
+  stopWalkSimulation();
 
   isSimulating = true;
   isTransitioningFloor = false;
@@ -51,152 +46,224 @@ function startWalkSimulation() {
   const nodesLayer = document.getElementById('svg-nodes-layer');
   if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? 'block' : 'none';
 
-  if (currentLevel !== routeSegments[simSegIndex].level) {
-    switchLevel(routeSegments[simSegIndex].level, false);
+  simSegIndex = 0;
+  simNodeIndex = 0;
+  currentStepIndex = 0;
+
+  if (currentLevel !== routeSegments[0].level) {
+    switchLevel(routeSegments[0].level, false);
   }
 
-  const seg = routeSegments[simSegIndex];
-  if (seg && seg.path.length > 0) {
-    const startNode = seg.path[Math.min(simNodeIndex, seg.path.length - 1)];
-    const nextNode = seg.path[Math.min(simNodeIndex + 1, seg.path.length - 1)];
-    const heading = getNodeHeading(startNode, nextNode);
-    positionNavArrowOnNode(startNode, nextNode, false);
-    if (isFollowingGPS) {
-      zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, 400, heading);
-    }
-  }
-
-  // Start continuous sequential stepping
-  stepToNextNode();
+  playCurrentFloorSegment();
 }
 
-function stepToNextNode() {
-  if (!isSimulating || isTransitioningFloor) return;
-
-  if (simSegIndex >= routeSegments.length) {
+function playCurrentFloorSegment() {
+  if (!isSimulating || simSegIndex >= routeSegments.length) {
     stopWalkSimulation();
-    simSegIndex = 0;
-    simNodeIndex = 0;
     return;
   }
 
   const seg = routeSegments[simSegIndex];
-  const pathNodes = seg.path;
-
-  // Reached the end of current floor path!
-  if (simNodeIndex >= pathNodes.length - 1) {
-    if (simSegIndex < routeSegments.length - 1) {
-      // Cross-floor transition (Escalator / Elevator)
-      isTransitioningFloor = true;
-      const nextSeg = routeSegments[simSegIndex + 1];
-      triggerHaptic('medium');
-
-      const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
-      if (transStepIdx !== -1) {
-        currentStepIndex = transStepIdx;
-        updateTotemUI(false);
-      }
-
-      activeSimTimeout = setTimeout(() => {
-        if (!isSimulating) return;
-        simSegIndex++;
-        simNodeIndex = 0;
-        isTransitioningFloor = false;
-        switchLevel(nextSeg.level, false);
-
-        if (nextSeg.path.length > 0) {
-          const startN = nextSeg.path[0];
-          const nextN = nextSeg.path.length > 1 ? nextSeg.path[1] : startN;
-          const heading = getNodeHeading(startN, nextN);
-          positionNavArrowOnNode(startN, nextN, false);
-          updatePlaceCard(startN);
-          if (isFollowingGPS) {
-            zoomToCoordinates(startN.coordinates.x, startN.coordinates.y, getDynamicZoomLevel(true), true, 450, heading);
-          }
-          activeSimTimeout = setTimeout(() => {
-            if (isSimulating) stepToNextNode();
-          }, 350);
-        }
-      }, 700);
-      return;
-    } else {
-      // Reached final destination!
-      currentStepIndex = currentSteps.length - 1;
-      const destN = seg.path[seg.path.length - 1];
-      updatePlaceCard(destN, true);
-      updateTotemUI(false);
-      isTransitioningFloor = true;
-      triggerHaptic('success');
-
-      activeSimTimeout = setTimeout(() => {
-        if (!isSimulating) return;
-        simSegIndex = 0;
-        simNodeIndex = 0;
-        currentStepIndex = 0;
-        isTransitioningFloor = false;
-
-        if (currentLevel !== routeSegments[0].level) {
-          switchLevel(routeSegments[0].level, false);
-        }
-        updateTotemUI(false);
-
-        if (routeSegments[0] && routeSegments[0].path.length > 0) {
-          const startNode = routeSegments[0].path[0];
-          const nextNode = routeSegments[0].path.length > 1 ? routeSegments[0].path[1] : startNode;
-          const heading = getNodeHeading(startNode, nextNode);
-          positionNavArrowOnNode(startNode, nextNode, false);
-          updatePlaceCard(startNode);
-          if (isFollowingGPS) {
-            zoomToCoordinates(startNode.coordinates.x, startNode.coordinates.y, getDynamicZoomLevel(true), true, 450, heading);
-          }
-          activeSimTimeout = setTimeout(() => {
-            if (isSimulating) stepToNextNode();
-          }, 600);
-        }
-      }, 1500);
-      return;
-    }
+  if (!seg || !seg.path || seg.path.length === 0) {
+    stopWalkSimulation();
+    return;
   }
 
-  const curr = pathNodes[simNodeIndex];
-  const next = pathNodes[simNodeIndex + 1];
-  const heading = getNodeHeading(curr, next);
+  if (currentLevel !== seg.level) {
+    switchLevel(seg.level, false);
+  }
 
-  const dist = Math.hypot(next.coordinates.x - curr.coordinates.x, next.coordinates.y - curr.coordinates.y);
-  // Natural human walking velocity (~110 px/s) gives 100% fluid, uniform camera & arrow movement
-  const stepDuration = Math.max(280, Math.min(800, Math.round(dist * 7.5)));
-  const isDestinationNode = (simSegIndex === routeSegments.length - 1) && (simNodeIndex + 1 === pathNodes.length - 1);
+  const points = seg.path.map(n => ({
+    x: n.coordinates.x,
+    y: n.coordinates.y,
+    node: n
+  }));
 
-  // Smooth continuous vector motion
-  if (typeof NavAnimator !== 'undefined' && NavAnimator.animateArrowTo) {
-    NavAnimator.animateArrowTo(next.coordinates.x, next.coordinates.y, heading, stepDuration, 'linear', () => {
-      if (!isSimulating) return;
-      simNodeIndex++;
-      updatePlaceCard(next, isDestinationNode);
+  if (points.length <= 1) {
+    positionNavArrowOnNode(points[0].node, points[0].node, false);
+    handleSegmentComplete();
+    return;
+  }
 
-      const matchingStepIdx = currentSteps.findIndex((s) => s.node && s.node.id === next.id && s.level === seg.level);
-      if (matchingStepIdx !== -1 && matchingStepIdx !== currentStepIndex) {
-        currentStepIndex = matchingStepIdx;
-        updateTotemUI(false);
-        triggerHaptic('light');
-      }
+  // 1. Calculate cumulative distances along the polyline
+  const cumDist = [0];
+  const segHeadings = [];
 
-      stepToNextNode();
-    });
-  } else {
-    positionNavArrowOnNode(next, next, false);
-    simNodeIndex++;
-    stepToNextNode();
+  for (let i = 0; i < points.length - 1; i++) {
+    const dx = points[i + 1].x - points[i].x;
+    const dy = points[i + 1].y - points[i].y;
+    const d = Math.hypot(dx, dy);
+    cumDist.push(cumDist[i] + d);
+    const heading = (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
+    segHeadings.push(heading);
+  }
+
+  const totalDist = cumDist[cumDist.length - 1];
+  if (totalDist <= 0) {
+    handleSegmentComplete();
+    return;
+  }
+
+  // Natural walking velocity: ~115 px/second
+  const walkingSpeed = 115;
+  const totalDurationMs = Math.max(1200, Math.round((totalDist / walkingSpeed) * 1000));
+
+  // Initialize arrow at segment start
+  const arrowEl = document.getElementById('svg-nav-arrow-cursor');
+  if (arrowEl) {
+    arrowEl.style.display = 'block';
+    arrowEl.setAttribute('transform', `translate(${points[0].x.toFixed(2)}, ${points[0].y.toFixed(2)}) rotate(${segHeadings[0].toFixed(2)})`);
+  }
+
+  if (typeof NavAnimator !== 'undefined') {
+    NavAnimator.arrowState = { x: points[0].x, y: points[0].y, angle: segHeadings[0] };
   }
 
   if (isFollowingGPS) {
-    zoomToCoordinates(next.coordinates.x, next.coordinates.y, getDynamicZoomLevel(true), true, stepDuration, heading);
+    zoomToCoordinates(points[0].x, points[0].y, getDynamicZoomLevel(true), true, 450);
+  }
+
+  updatePlaceCard(points[0].node);
+
+  // 2. Animate continuously from distance 0 to totalDist
+  const progressObj = { dist: 0 };
+  let lastReportedStepIdx = -1;
+  let lastHeading = segHeadings[0];
+
+  if (activeSimAnim) anime.remove(progressObj);
+
+  activeSimAnim = anime({
+    targets: progressObj,
+    dist: totalDist,
+    duration: totalDurationMs,
+    easing: 'linear',
+    update: function() {
+      if (!isSimulating) return;
+
+      const s = progressObj.dist;
+
+      // Find current polyline segment
+      let i = 0;
+      while (i < cumDist.length - 2 && cumDist[i + 1] < s) {
+        i++;
+      }
+
+      const segLen = cumDist[i + 1] - cumDist[i];
+      const u = segLen > 0 ? (s - cumDist[i]) / segLen : 0;
+      const currentHeading = segHeadings[i];
+
+      // Smooth turn slerp near corners (within 18px radius of vertex)
+      let displayAngle = currentHeading;
+      const distFromStart = s - cumDist[i];
+      const distToEnd = cumDist[i + 1] - s;
+
+      if (distFromStart < 16 && i > 0) {
+        const t = distFromStart / 16;
+        displayAngle = slerpAngle(segHeadings[i - 1], currentHeading, (t + 1) / 2);
+      } else if (distToEnd < 16 && i < segHeadings.length - 1) {
+        const t = (16 - distToEnd) / 16;
+        displayAngle = slerpAngle(currentHeading, segHeadings[i + 1], t / 2);
+      }
+
+      const curX = points[i].x + u * (points[i + 1].x - points[i].x);
+      const curY = points[i].y + u * (points[i + 1].y - points[i].y);
+
+      if (arrowEl) {
+        arrowEl.setAttribute('transform', `translate(${curX.toFixed(2)}, ${curY.toFixed(2)}) rotate(${displayAngle.toFixed(2)})`);
+      }
+
+      if (typeof NavAnimator !== 'undefined') {
+        NavAnimator.arrowState.x = curX;
+        NavAnimator.arrowState.y = curY;
+        NavAnimator.arrowState.angle = displayAngle;
+      }
+
+      // Smooth camera follow without shaking or spinning
+      if (isFollowingGPS && Math.abs(s - (progressObj._lastCameraS || 0)) > 25) {
+        progressObj._lastCameraS = s;
+        zoomToCoordinates(curX, curY, getDynamicZoomLevel(true), true, 280);
+      }
+
+      // Active place card and steps update
+      const activeNode = u > 0.5 ? points[i + 1].node : points[i].node;
+      const matchingStepIdx = currentSteps.findIndex((st) => st.node && st.node.id === activeNode.id && st.level === seg.level);
+      if (matchingStepIdx !== -1 && matchingStepIdx !== lastReportedStepIdx) {
+        lastReportedStepIdx = matchingStepIdx;
+        currentStepIndex = matchingStepIdx;
+        updateTotemUI(false);
+        updatePlaceCard(activeNode);
+      }
+    },
+    complete: function() {
+      if (!isSimulating) return;
+      handleSegmentComplete();
+    }
+  });
+}
+
+function handleSegmentComplete() {
+  if (!isSimulating) return;
+
+  const seg = routeSegments[simSegIndex];
+  const isFinalSeg = simSegIndex >= routeSegments.length - 1;
+
+  if (!isFinalSeg) {
+    // Cross-floor transition
+    isTransitioningFloor = true;
+    const nextSeg = routeSegments[simSegIndex + 1];
+    triggerHaptic('medium');
+
+    const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
+    if (transStepIdx !== -1) {
+      currentStepIndex = transStepIdx;
+      updateTotemUI(false);
+    }
+
+    activeSimTimeout = setTimeout(() => {
+      if (!isSimulating) return;
+      simSegIndex++;
+      isTransitioningFloor = false;
+      switchLevel(nextSeg.level, false);
+      
+      activeSimTimeout = setTimeout(() => {
+        if (isSimulating) playCurrentFloorSegment();
+      }, 400);
+    }, 750);
+  } else {
+    // Destination reached!
+    currentStepIndex = currentSteps.length - 1;
+    const destNode = seg.path[seg.path.length - 1];
+    updatePlaceCard(destNode, true);
+    updateTotemUI(false);
+    isTransitioningFloor = true;
+    triggerHaptic('success');
+
+    activeSimTimeout = setTimeout(() => {
+      if (!isSimulating) return;
+      simSegIndex = 0;
+      currentStepIndex = 0;
+      isTransitioningFloor = false;
+
+      if (currentLevel !== routeSegments[0].level) {
+        switchLevel(routeSegments[0].level, false);
+      }
+      updateTotemUI(false);
+
+      activeSimTimeout = setTimeout(() => {
+        if (isSimulating) playCurrentFloorSegment();
+      }, 600);
+    }, 2200);
   }
 }
 
 function stopWalkSimulation() {
   isSimulating = false;
   isTransitioningFloor = false;
+
+  if (activeSimAnim) {
+    activeSimAnim.pause();
+    activeSimAnim = null;
+  }
   if (activeSimTimeout) {
     clearTimeout(activeSimTimeout);
     activeSimTimeout = null;

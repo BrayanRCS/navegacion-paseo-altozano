@@ -5,9 +5,9 @@
 function getDynamicZoomLevel(isSim = false) {
   const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
   if (isMobile) {
-    return isSim ? 2.95 : 2.25;
+    return isSim ? 1.35 : 1.2;
   }
-  return isSim ? 2.15 : 1.6;
+  return isSim ? 1.25 : 1.1;
 }
 
 function getMapViewport(forceRefresh = false) {
@@ -93,18 +93,16 @@ function updateCompassUI() {
 }
 
 function getNodeHeading(curr, next) {
-  if (!curr || !next) return null;
-  if (next.coordinates.x === curr.coordinates.x && next.coordinates.y === curr.coordinates.y) return null;
+  if (!curr || !next) return 0;
+  if (next.coordinates.x === curr.coordinates.x && next.coordinates.y === curr.coordinates.y) return 0;
   const dx = next.coordinates.x - curr.coordinates.x;
   const dy = next.coordinates.y - curr.coordinates.y;
   return (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
 }
 
-function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 600, targetHeadingDeg = null) {
+function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 450) {
   const stage = document.getElementById('map-camera-stage');
   if (!stage) return;
-
-  const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
 
   if (targetScale === null) {
     targetScale = getDynamicZoomLevel(isSimulating);
@@ -116,19 +114,8 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
   const pixelX = vp.offsetX + u * vp.renderW;
   const pixelY = vp.offsetY + v * vp.renderH;
 
-  // Target rotation
-  let targetRot = isVerticalMode ? -90 : 0;
-  if (isMobile && targetHeadingDeg !== null) {
-    targetRot = -targetHeadingDeg;
-  }
-
-  let currentRot = currentCamera.rotation || (isVerticalMode ? -90 : 0);
-  if (!isMobile) currentRot = isVerticalMode ? -90 : 0;
-
-  let diffAngle = (targetRot - (currentRot % 360));
-  while (diffAngle < -180) diffAngle += 360;
-  while (diffAngle > 180) diffAngle -= 360;
-  const finalRot = isMobile ? (currentRot + diffAngle) : (isVerticalMode ? -90 : 0);
+  // Rock-solid fixed orientation: Map NEVER spins violently
+  const finalRot = isVerticalMode ? -90 : 0;
 
   const rad = finalRot * Math.PI / 180;
   const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
@@ -147,7 +134,7 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
     currentCamera.panX = panX;
     currentCamera.panY = panY;
     currentCamera.rotation = finalRot;
-    currentCamera.isZoomed = targetScale > 1.1;
+    currentCamera.isZoomed = targetScale > 1.05;
     updateCameraTransform();
     updateZoomButtonUI();
     updateCompassUI();
