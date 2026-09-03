@@ -399,6 +399,90 @@ function createNewRestroomAtCenter() {
   createNewRestroom(centerX, centerY);
 }
 
+function createNewElevator(svgX, svgY) {
+  if (!mallGraph) return;
+  const uniqueId = `n_lvl${currentLevel}_portal_elev_${Date.now().toString(36)}`;
+  const count = mallGraph.nodes.filter(n => n.level === currentLevel && n.type === 'portal_elevator').length + 1;
+
+  const newNode = {
+    id: uniqueId,
+    level: currentLevel,
+    type: "portal_elevator",
+    name: `Elevador ${count} (Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')})`,
+    coordinates: { x: svgX, y: svgY },
+    context_element: `Elevador Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}`
+  };
+
+  mallGraph.nodes.push(newNode);
+  saveCustomGraphToStorage();
+
+  selectedEditorNodeId = uniqueId;
+  AltozanoState.selectedEditorNodeId = uniqueId;
+
+  if (isConnectMode) {
+    if (editorConnectSourceNodeId) {
+      mallGraph.edges.push({ from: editorConnectSourceNodeId, to: uniqueId, bidirectional: true });
+      mallGraph.edges.push({ from: uniqueId, to: editorConnectSourceNodeId, bidirectional: true });
+      saveCustomGraphToStorage();
+    }
+    editorConnectSourceNodeId = uniqueId;
+    AltozanoState.editorConnectSourceNodeId = uniqueId;
+  }
+
+  renderMapOverlay();
+  updateEditorHudInfo(newNode, newNode.coordinates, `🛗 Ascensor creado. Puedes asignarle pisos y enlazarlo.`);
+  triggerHaptic('medium');
+}
+
+function createNewElevatorAtCenter() {
+  const vp = getMapViewport();
+  const centerX = Math.round(vp.spec.width / 2);
+  const centerY = Math.round(vp.spec.height / 2);
+  createNewElevator(centerX, centerY);
+}
+
+function createNewEscalator(svgX, svgY) {
+  if (!mallGraph) return;
+  const uniqueId = `n_lvl${currentLevel}_portal_esc_${Date.now().toString(36)}`;
+  const count = mallGraph.nodes.filter(n => n.level === currentLevel && n.type === 'portal_escalator').length + 1;
+
+  const newNode = {
+    id: uniqueId,
+    level: currentLevel,
+    type: "portal_escalator",
+    name: `Escaleras Eléctricas ${count} (Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')})`,
+    coordinates: { x: svgX, y: svgY },
+    context_element: `Escaleras Nivel ${currentLevel === 1 ? 'PB' : (currentLevel === 2 ? '1' : '2')}`
+  };
+
+  mallGraph.nodes.push(newNode);
+  saveCustomGraphToStorage();
+
+  selectedEditorNodeId = uniqueId;
+  AltozanoState.selectedEditorNodeId = uniqueId;
+
+  if (isConnectMode) {
+    if (editorConnectSourceNodeId) {
+      mallGraph.edges.push({ from: editorConnectSourceNodeId, to: uniqueId, bidirectional: true });
+      mallGraph.edges.push({ from: uniqueId, to: editorConnectSourceNodeId, bidirectional: true });
+      saveCustomGraphToStorage();
+    }
+    editorConnectSourceNodeId = uniqueId;
+    AltozanoState.editorConnectSourceNodeId = uniqueId;
+  }
+
+  renderMapOverlay();
+  updateEditorHudInfo(newNode, newNode.coordinates, `🪜 Escalera creada. Puedes asignarle pisos y enlazarla.`);
+  triggerHaptic('medium');
+}
+
+function createNewEscalatorAtCenter() {
+  const vp = getMapViewport();
+  const centerX = Math.round(vp.spec.width / 2);
+  const centerY = Math.round(vp.spec.height / 2);
+  createNewEscalator(centerX, centerY);
+}
+
 function handleSelectedNodeNameChange(newName) {
   if (!selectedEditorNodeId || !mallGraph) return;
   const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
