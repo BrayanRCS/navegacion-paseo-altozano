@@ -31,12 +31,31 @@
       background: linear-gradient(180deg, rgba(6, 64, 43, 0.85) 0%, rgba(3, 30, 22, 0.95) 100%);
     }
 
-    /* Clean Google Maps Blue River Flow Styling */
-    .stream-water-glow {
-      stroke: #3b82f6;
+    /* High-End Dotted Walking Navigation Route (Pedestrian GPS Style) */
+    .route-dotted-active {
+      stroke: #38bdf8;
+      stroke-width: 6.5px;
       stroke-linecap: round;
       stroke-linejoin: round;
-      filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
+      stroke-dasharray: 0 16px;
+      filter: drop-shadow(0 2px 6px rgba(14, 165, 233, 0.7));
+      animation: routeDottedFlow 1.4s linear infinite;
+    }
+    .route-dotted-casing {
+      stroke: rgba(11, 18, 30, 0.92);
+      stroke-width: 12px;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      stroke-dasharray: 0 16px;
+      animation: routeDottedFlow 1.4s linear infinite;
+    }
+    @keyframes routeDottedFlow {
+      from {
+        stroke-dashoffset: 0;
+      }
+      to {
+        stroke-dashoffset: -32;
+      }
     }
 
     /* Ad Banner Shimmer Reflection */
@@ -467,11 +486,11 @@
               <!-- Walkway Corridors (Subtle background paths) -->
               <g id="svg-edges-layer" stroke="rgba(255,255,255,0.15)" stroke-width="2.5" stroke-linecap="round"></g>
               
-              <!-- LAYER 1: Dark Casing Border for High Contrast -->
-              <path id="svg-water-bed" d="" fill="none" stroke="rgba(11, 18, 30, 0.85)" stroke-width="11" stroke-linecap="round" stroke-linejoin="round"></path>
+              <!-- LAYER 1: Dark Casing Border for High Contrast Dotted Path -->
+              <path id="svg-water-bed" d="" fill="none" class="route-dotted-casing"></path>
 
-              <!-- LAYER 2: Main Clean Blue Navigation Path (Google Maps Solid River Style) -->
-              <path id="svg-active-route" d="" fill="none" stroke="#2563eb" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round" class="stream-water-glow"></path>
+              <!-- LAYER 2: Modern Glowing Dotted Navigation Path (Pedestrian Style) -->
+              <path id="svg-active-route" d="" fill="none" class="route-dotted-active"></path>
 
               <!-- Interactive Nodes & Badges -->
               <g id="svg-nodes-layer"></g>

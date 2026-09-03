@@ -407,7 +407,7 @@ function renderMapOverlay(animate = false) {
     nodesLayer.appendChild(g);
   });
 
-  // Draw Google Maps Solid Blue River Route
+  // Draw Modern Pedestrian Dotted Navigation Route
   const activeSeg = routeSegments.find(s => s.level === currentLevel);
   if (activeSeg && activeSeg.path.length > 0 && waterBedEl && pathEl && destPinEl) {
     let d = '';

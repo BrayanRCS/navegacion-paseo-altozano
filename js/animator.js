@@ -7,34 +7,22 @@ const NavAnimator = {
   activeArrowAnim: null,
   arrowState: { x: 0, y: 0, angle: 0 },
 
-  // 1. Line Drawing Animation on SVG Route Paths
+  // 1. Smooth Fade-in Reveal Animation on SVG Dotted Route Paths
   animateRoutePath: function() {
     const pathEl = document.getElementById('svg-active-route');
     const waterBedEl = document.getElementById('svg-water-bed');
     if (!pathEl || typeof anime === 'undefined') return;
 
-    let pathLength = 0;
-    try {
-      pathLength = pathEl.getTotalLength ? pathEl.getTotalLength() : 0;
-    } catch (e) {
-      pathLength = 0;
-    }
-    if (pathLength <= 0) return;
-
     anime.remove([pathEl, waterBedEl]);
     
-    pathEl.style.strokeDasharray = pathLength;
-    waterBedEl.style.strokeDasharray = pathLength;
+    pathEl.style.opacity = '0';
+    if (waterBedEl) waterBedEl.style.opacity = '0';
 
     anime({
-      targets: [pathEl, waterBedEl],
-      strokeDashoffset: [pathLength, 0],
-      duration: Math.min(850, Math.max(380, pathLength * 0.55)),
-      easing: 'easeOutCubic',
-      complete: function() {
-        pathEl.style.strokeDasharray = 'none';
-        waterBedEl.style.strokeDasharray = 'none';
-      }
+      targets: [pathEl, waterBedEl].filter(Boolean),
+      opacity: [0, 1],
+      duration: 380,
+      easing: 'easeOutQuad'
     });
   },
 
