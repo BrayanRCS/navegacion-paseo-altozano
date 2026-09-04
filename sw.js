@@ -3,7 +3,7 @@
  * Guarantees 100% standalone totem kiosk operation even without internet.
  */
 
-const CACHE_NAME = 'altozano-kiosk-v2.1';
+const CACHE_NAME = 'altozano-kiosk-v3.2.0';
 
 const PRECACHE_ASSETS = [
   './',

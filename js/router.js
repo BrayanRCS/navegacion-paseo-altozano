@@ -61,7 +61,7 @@ function getDynamicPortals() {
 
   // Fallback to static PORTALS if any missing
   if (typeof PORTALS !== "undefined" && Array.isArray(PORTALS)) {
-    getDynamicPortals().forEach(p => {
+    PORTALS.forEach(p => {
       if (!dynamicPortals.some(dp => dp.id === p.id || (p.twin_code && dp.twin_code === p.twin_code))) {
         dynamicPortals.push(p);
       }
