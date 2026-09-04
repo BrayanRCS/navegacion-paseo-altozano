@@ -300,44 +300,118 @@ function showMapView(destId = null) {
   }
 }
 
+
+let currentDirectoryFloorFilter = 'all'; // 'all' | 1 | 2 | 3
+
+function renderCategoryHub() {
+  const container = document.getElementById('category-hub-grid');
+  if (!container || typeof DIRECTORY_CATEGORIES === 'undefined') return;
+
+  // Calculate store counts per category dynamically
+  const categoryCounts = {};
+  DIRECTORY_CATEGORIES.forEach(c => categoryCounts[c.id] = 0);
+
+  if (mallLegends) {
+    [1, 2, 3].forEach(lvl => {
+      const spec = FLOOR_SPECS[lvl];
+      const legendFloor = mallLegends[spec.legendKey];
+      if (!legendFloor) return;
+      (legendFloor.stores || []).forEach(s => {
+        const cat = matchNodeCategory(s);
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+        categoryCounts['all']++;
+      });
+      (legendFloor.islas || []).forEach(isl => {
+        const cat = matchNodeCategory(isl);
+        categoryCounts[cat] = (categoryCounts[cat] || 0) + 1;
+        categoryCounts['all']++;
+      });
+    });
+  }
+
+  container.innerHTML = '';
+  DIRECTORY_CATEGORIES.forEach(cat => {
+    const isActive = currentCategoryFilter === cat.id;
+    const count = categoryCounts[cat.id] || 0;
+
+    const btn = document.createElement('button');
+    btn.className = `group relative overflow-hidden rounded-3xl p-4 sm:p-5 text-left transition-all duration-300 transform active:scale-95 shadow-xl border cursor-pointer flex flex-col justify-between min-h-[110px] sm:min-h-[125px] ${
+      isActive 
+        ? 'bg-gradient-to-br ' + cat.gradient + ' text-white border-white/60 ring-4 ring-sky-500/30 scale-[1.02]' 
+        : 'bg-slate-900/90 hover:bg-slate-850 text-slate-200 border-slate-800 hover:border-slate-700'
+    }`;
+
+    btn.onclick = () => {
+      filterByCategory(cat.id);
+      const listEl = document.getElementById('legend-items-container');
+      if (listEl) {
+        listEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    };
+
+    btn.innerHTML = `
+      <!-- Ambient Card Glow -->
+      <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full blur-2xl pointer-events-none opacity-20 ${isActive ? 'bg-white' : 'bg-sky-500'}"></div>
+      
+      <div class="flex items-start justify-between w-full relative z-10">
+        <div class="w-12 h-12 rounded-2xl ${isActive ? 'bg-white/20 text-white' : 'bg-slate-950 text-sky-400 border border-slate-800'} flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">
+          <i class="fa-solid ${cat.icon}"></i>
+        </div>
+        <span class="px-2.5 py-1 rounded-xl text-[11px] font-black ${isActive ? 'bg-white/25 text-white' : 'bg-slate-950/80 text-slate-400 border border-slate-800'}">
+          ${count} ${count === 1 ? 'lugar' : 'locales'}
+        </span>
+      </div>
+
+      <div class="mt-3 relative z-10">
+        <div class="flex items-center gap-1.5">
+          <span class="text-sm">${cat.emoji}</span>
+          <h3 class="text-sm sm:text-base font-black leading-tight ${isActive ? 'text-white' : 'text-slate-100 group-hover:text-sky-300'}">${cat.name}</h3>
+        </div>
+        <p class="text-[11px] ${isActive ? 'text-white/80' : 'text-slate-400'} font-medium mt-0.5 line-clamp-1">${cat.desc}</p>
+      </div>
+    `;
+
+    container.appendChild(btn);
+  });
+}
+
 function filterByCategory(cat) {
   currentCategoryFilter = cat;
-
-  const chipIds = ['all', 'coffee', 'food', 'fashion', 'anchor', 'portal'];
-  chipIds.forEach(id => {
-    const btn = document.getElementById(`cat-chip-${id}`);
-    if (btn) {
-      if (id === cat) {
-        btn.className = "category-chip active px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md flex items-center gap-1.5 flex-shrink-0 cursor-pointer";
-      } else {
-        btn.className = "category-chip px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-900 border border-slate-800 text-slate-300 hover:text-white flex items-center gap-1.5 flex-shrink-0 cursor-pointer";
-      }
-    }
-  });
-
+  renderCategoryHub();
   renderMapOverlay();
   renderLegendList();
 }
 
+function filterByFloor(floor) {
+  currentDirectoryFloorFilter = floor;
+  const floorBtns = ['all', '1', '2', '3'];
+  floorBtns.forEach(f => {
+    const el = document.getElementById(`dir-floor-btn-${f}`);
+    if (el) {
+      if (String(currentDirectoryFloorFilter) === String(f)) {
+        el.className = "px-4 py-2 rounded-2xl text-xs font-black transition-all bg-blue-600 text-white shadow-md cursor-pointer";
+      } else {
+        el.className = "px-4 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-950 text-slate-400 hover:text-white border border-slate-800 cursor-pointer";
+      }
+    }
+  });
+  renderLegendList();
+}
+
+function clearSearchInput() {
+  const input = document.getElementById('legend-search-input');
+  const clearBtn = document.getElementById('legend-search-clear-btn');
+  if (input) {
+    input.value = '';
+    input.focus();
+    if (clearBtn) clearBtn.classList.add('hidden');
+    filterLegendList();
+  }
+}
+
 function getNodeCategoryGroup(node) {
-  if (!node) return 'other';
-  const name = (node.name || node.context_element || '').toLowerCase();
-  const type = node.type || '';
-  
-  if (type === 'portal_escalator' || type === 'portal_elevator' || name.includes('escalera') || name.includes('elevador')) {
-    return 'portal';
-  }
-  if (type === 'anchor_store' || name.includes('liverpool') || name.includes('sears') || name.includes('chedraui') || name.includes('cinelia')) {
-    return 'anchor';
-  }
-  if (name.includes('starbucks') || name.includes('cafe') || name.includes('café') || name.includes('moyo') || name.includes('nutrisa') || name.includes('helad') || name.includes('ice') || name.includes('crepe') || name.includes('chocolat')) {
-    return 'coffee';
-  }
-  if (name.includes('sanborns') || name.includes('burger') || name.includes('carl') || name.includes('domino') || name.includes('pizza') || name.includes('wing') || name.includes('infierno') || name.includes('taco') || name.includes('chilim') || name.includes('fisher') || name.includes('unagi') || name.includes('jana') || name.includes('mammut') || name.includes('jimenez') || name.includes('jiménez') || name.includes('bistrot') || name.includes('restauran') || name.includes('food') || name.includes('sushi')) {
-    return 'food';
-  }
-  if (name.includes('sfera') || name.includes('zara') || name.includes('h&m') || name.includes('c&a') || name.includes('gap') || name.includes('studio') || name.includes('guess') || name.includes('eagle') || name.includes('tommy') || name.includes('springfield') || name.includes('women') || name.includes('flexi') || name.includes('adidas') || name.includes('salomon') || name.includes('sport') || name.includes('dpstreet') || name.includes('dportenis') || name.includes('moda') || name.includes('shoes') || name.includes('boutique')) {
-    return 'fashion';
+  if (typeof matchNodeCategory === 'function') {
+    return matchNodeCategory(node);
   }
   return 'other';
 }
@@ -428,18 +502,46 @@ function renderLegendList() {
   });
 
   const filtered = allItems.filter(item => {
+    // 1. Category filter
     const cat = getNodeCategoryGroup(item.node);
-    return currentCategoryFilter === 'all' || cat === currentCategoryFilter;
+    const passCategory = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
+    
+    // 2. Floor filter
+    const passFloor = currentDirectoryFloorFilter === 'all' || String(item.level) === String(currentDirectoryFloorFilter);
+
+    return passCategory && passFloor;
   });
 
   filtered.sort((a, b) => (a.name || '').localeCompare(b.name || '', 'es', { sensitivity: 'base' }));
+
+  const countBadgeEl = document.getElementById('legend-results-count');
+  if (countBadgeEl) {
+    countBadgeEl.innerText = `${filtered.length} ${filtered.length === 1 ? 'local encontrado' : 'locales encontrados'}`;
+  }
+
+  if (filtered.length === 0) {
+    const emptyDiv = document.createElement('div');
+    emptyDiv.className = 'col-span-full py-12 px-4 text-center flex flex-col items-center justify-center';
+    emptyDiv.innerHTML = `
+      <div class="w-16 h-16 rounded-3xl bg-slate-950 border border-slate-800 flex items-center justify-center text-2xl text-slate-500 mb-3 shadow-inner">
+        <i class="fa-solid fa-store-slash"></i>
+      </div>
+      <h4 class="text-base font-bold text-slate-300">No encontramos locales en este filtro</h4>
+      <p class="text-xs text-slate-500 mt-1 max-w-xs">Prueba seleccionando otra categoría o cambiando el piso.</p>
+      <button onclick="filterByCategory('all'); filterByFloor('all');" class="mt-4 px-4 py-2 rounded-2xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all shadow-md">
+        Ver Todos los Locales
+      </button>
+    `;
+    container.appendChild(emptyDiv);
+    return;
+  }
 
   filtered.forEach(item => {
     const info = getPlaceVisualInfo(item.node);
     const logoUrl = (item.node && item.node.logo) || item.logo || (item.node && item.node.logo_white);
 
     const div = document.createElement('div');
-    div.className = "p-3.5 rounded-2xl bg-slate-950/85 hover:bg-slate-900 border border-slate-800/90 hover:border-sky-500/50 cursor-pointer transition-all flex items-center justify-between gap-3 group shadow-lg active:scale-[0.98]";
+    div.className = "p-4 rounded-2xl bg-slate-950/90 hover:bg-slate-900 border border-slate-800/90 hover:border-sky-500/60 cursor-pointer transition-all flex items-center justify-between gap-3.5 group shadow-lg active:scale-[0.98]";
     
     div.onclick = () => {
       showMapView(item.nodeId);
@@ -451,35 +553,35 @@ function renderLegendList() {
     let avatarHtml = '';
     if (logoUrl) {
       avatarHtml = `
-        <div class="w-12 h-12 rounded-2xl bg-white p-2 flex items-center justify-center shadow-md border border-slate-700/60 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
+        <div class="w-14 h-14 rounded-2xl bg-white p-2.5 flex items-center justify-center shadow-md border border-slate-700/60 flex-shrink-0 group-hover:scale-105 transition-transform duration-200">
           ${getLogoHtml(logoUrl, item.name, 'w-full h-full object-contain brand-logo-img')}
         </div>
       `;
     } else if (item.isIsland) {
       avatarHtml = `
-        <span class="w-12 h-12 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-xs font-bold font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0 shadow-md">I${item.islandId || 'S'}</span>
+        <span class="w-14 h-14 rounded-2xl bg-sky-500/20 text-sky-400 border border-sky-500/40 flex items-center justify-center text-sm font-black font-mono group-hover:bg-sky-500 group-hover:text-white transition-all flex-shrink-0 shadow-md">I${item.islandId || 'S'}</span>
       `;
     } else {
       avatarHtml = `
-        <span class="w-12 h-12 rounded-2xl ${item.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-lg font-bold font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0 shadow-md">${info.emoji}</span>
+        <span class="w-14 h-14 rounded-2xl ${item.type === 'anchor_store' ? 'bg-gradient-to-tr from-pink-600 to-rose-600 text-white shadow-md' : 'bg-slate-800 text-slate-300 border border-slate-700'} flex items-center justify-center text-xl font-black font-mono group-hover:bg-blue-600 group-hover:text-white transition-all flex-shrink-0 shadow-md">${info.emoji}</span>
       `;
     }
 
     div.innerHTML = `
-      <div class="flex items-center gap-3 min-w-0">
+      <div class="flex items-center gap-3.5 min-w-0">
         ${avatarHtml}
         <div class="truncate">
-          <p class="text-xs font-black text-white group-hover:text-sky-300 truncate">${item.name}</p>
-          <div class="flex items-center gap-1.5 mt-1">
-            <span class="text-[9px] px-2 py-0.5 rounded-lg border font-bold ${levelBadgeColor}">${levelBadgeText}</span>
-            <span class="text-[10px] text-slate-400 font-medium truncate">${info.category}</span>
+          <h4 class="text-sm font-black text-white group-hover:text-sky-300 truncate leading-snug">${item.name}</h4>
+          <div class="flex items-center gap-1.5 mt-1 flex-wrap">
+            <span class="text-[9px] px-2.5 py-0.5 rounded-lg border font-black ${levelBadgeColor}">${levelBadgeText}</span>
+            <span class="text-[11px] text-slate-400 font-medium truncate">${info.category}</span>
           </div>
         </div>
       </div>
-      <div class="flex items-center gap-1.5 text-xs font-bold text-sky-400 group-hover:text-white bg-sky-950/70 group-hover:bg-blue-600 px-3 py-2 rounded-xl border border-sky-800/60 group-hover:border-blue-400 transition-all flex-shrink-0 shadow-sm">
-        <span>Ruta</span>
-        <i class="fa-solid fa-arrow-right text-[10px]"></i>
-      </div>
+      <button class="flex items-center gap-2 text-xs font-black text-white bg-gradient-to-r from-blue-600 to-sky-500 group-hover:from-blue-500 group-hover:to-sky-400 px-4 py-2.5 rounded-2xl border border-sky-400/40 shadow-lg shadow-blue-600/30 transition-all flex-shrink-0">
+        <i class="fa-solid fa-map-location-dot text-sm"></i>
+        <span>Cómo llegar</span>
+      </button>
     `;
 
     fragment.appendChild(div);
@@ -494,15 +596,29 @@ function filterLegendList() {
   if (filterLegendRaf) cancelAnimationFrame(filterLegendRaf);
   filterLegendRaf = requestAnimationFrame(() => {
     const input = document.getElementById('legend-search-input');
+    const clearBtn = document.getElementById('legend-search-clear-btn');
     if (!input) return;
     const q = input.value.toLowerCase().trim();
+    if (clearBtn) {
+      if (q.length > 0) clearBtn.classList.remove('hidden');
+      else clearBtn.classList.add('hidden');
+    }
     const items = document.querySelectorAll('#legend-items-container > div');
+    let visibleCount = 0;
     items.forEach(el => {
       const text = el.innerText.toLowerCase();
-      el.style.display = text.includes(q) ? 'flex' : 'none';
+      const match = text.includes(q);
+      el.style.display = match ? 'flex' : 'none';
+      if (match) visibleCount++;
     });
+
+    const countBadgeEl = document.getElementById('legend-results-count');
+    if (countBadgeEl) {
+      countBadgeEl.innerText = `${visibleCount} ${visibleCount === 1 ? 'local encontrado' : 'locales encontrados'}`;
+    }
   });
 }
+
 
 function getNodePixelPosition(nodeX, nodeY) {
   const vp = getMapViewport();

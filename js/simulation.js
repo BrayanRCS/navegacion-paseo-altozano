@@ -39,7 +39,11 @@ function startWalkSimulation() {
   const hudIcon = document.getElementById('hud-sim-icon');
   if (hudIcon) hudIcon.className = "fa-solid fa-pause";
   const hudText = document.getElementById('hud-sim-btn-text');
-  if (hudText) hudText.innerText = "Pausar";
+  if (hudText) hudText.innerText = "Pausar Recorrido";
+  const floatIcon = document.getElementById('btn-floating-nav-icon');
+  if (floatIcon) floatIcon.className = "fa-solid fa-pause text-base";
+  const floatText = document.getElementById('btn-floating-nav-text');
+  if (floatText) floatText.innerText = "Pausar";
   const mSimIcon = document.getElementById('mobile-sim-icon');
   if (mSimIcon) mSimIcon.className = "fa-solid fa-pause";
 
@@ -265,6 +269,10 @@ function handleSegmentComplete() {
   if (hudIcon) hudIcon.className = "fa-solid fa-rotate-right text-base text-emerald-400";
   const hudText = document.getElementById('hud-sim-btn-text');
   if (hudText) hudText.innerText = "¿Reiniciar ruta?";
+  const floatIcon = document.getElementById('btn-floating-nav-icon');
+  if (floatIcon) floatIcon.className = "fa-solid fa-rotate-right text-base text-emerald-400";
+  const floatText = document.getElementById('btn-floating-nav-text');
+  if (floatText) floatText.innerText = "¿Reiniciar ruta?";
   const mSimIcon = document.getElementById('mobile-sim-icon');
   if (mSimIcon) mSimIcon.className = "fa-solid fa-rotate-right text-emerald-400";
   const mSimText = document.getElementById('mobile-sim-btn-text');
@@ -296,6 +304,10 @@ function stopWalkSimulation() {
   if (hudIcon) hudIcon.className = "fa-solid fa-location-arrow text-base";
   const hudText = document.getElementById('hud-sim-btn-text');
   if (hudText) hudText.innerText = "Recorrer con Flecha GPS";
+  const floatIcon = document.getElementById('btn-floating-nav-icon');
+  if (floatIcon) floatIcon.className = "fa-solid fa-location-arrow text-base";
+  const floatText = document.getElementById('btn-floating-nav-text');
+  if (floatText) floatText.innerText = "Llevar en el Mapa (GPS)";
   const mSimIcon = document.getElementById('mobile-sim-icon');
   if (mSimIcon) mSimIcon.className = "fa-solid fa-location-arrow";
   const mSimText = document.getElementById('mobile-sim-btn-text');

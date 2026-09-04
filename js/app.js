@@ -1,5 +1,6 @@
 /**
- * Paseo Altozano · Application Bootstrap & Full System Preloader
+ * Paseo Altozano · Application Bootstrap & Offline-First Preloader
+ * Guarantees 100% Standalone Totem Kiosk Operation & Fast Cold-Start
  */
 
 function setPreloaderProgress(percent, message) {
@@ -28,8 +29,14 @@ function preloadSingleImage(url) {
   return new Promise((resolve) => {
     if (!url || typeof Image === 'undefined') return resolve(url);
     const img = new Image();
-    img.onload = () => resolve(url);
-    img.onerror = () => resolve(null); // Never block the entire app if one minor image fails
+    img.onload = () => {
+      if (typeof img.decode === 'function') {
+        img.decode().then(() => resolve(url)).catch(() => resolve(url));
+      } else {
+        resolve(url);
+      }
+    };
+    img.onerror = () => resolve(null); // Never block app if a single logo fails
     img.src = url;
   });
 }
@@ -104,8 +111,21 @@ function populateSelects() {
   originSel.value = TOTEM_NODE_ID;
 }
 
+function registerServiceWorker() {
+  if (typeof navigator !== 'undefined' && 'serviceWorker' in navigator && window.location.protocol.startsWith('http')) {
+    navigator.serviceWorker.register('./sw.js')
+      .then(reg => {
+        console.log('[Offline Engine] Service Worker registered with scope:', reg.scope);
+      })
+      .catch(err => {
+        console.warn('[Offline Engine] Service Worker registration failed:', err);
+      });
+  }
+}
+
 async function initApp() {
   try {
+    registerServiceWorker();
     setPreloaderProgress(15, "Descargando planos y grafos de navegación...");
     
     // 1. Fetch core graph and legends
@@ -122,14 +142,14 @@ async function initApp() {
 
     setPreloaderProgress(45, "Cargando planos arquitectónicos HD...");
 
-    // 2. Preload all 6 architectural floor map images in parallel
+    // 2. Preload and hardware-decode all architectural floor map images in parallel
     const mapImageUrls = [
-      'planta-baja.png',
-      'planta-uno.png',
-      'planta-dos.png',
       'planta-baja-dark.png',
       'planta-uno-dark.png',
-      'planta-dos-dark.png'
+      'planta-dos-dark.png',
+      'planta-baja.png',
+      'planta-uno.png',
+      'planta-dos.png'
     ];
     await Promise.all(mapImageUrls.map(url => preloadSingleImage(url)));
 
@@ -149,6 +169,7 @@ async function initApp() {
     // 4. Build subgraphs and initialize UI
     buildFloorSubgraphs();
     populateSelects();
+    if (typeof renderCategoryHub === 'function') renderCategoryHub();
     renderLegendList();
     setupInteractiveCameraPan();
     if (typeof setupEditorDragListeners === 'function') setupEditorDragListeners();
@@ -165,6 +186,8 @@ async function initApp() {
 }
 
 // Attach lifecycle events
-document.addEventListener('DOMContentLoaded', () => {
-  initApp();
-});
+if (typeof document !== 'undefined') {
+  document.addEventListener('DOMContentLoaded', () => {
+    initApp();
+  });
+}
