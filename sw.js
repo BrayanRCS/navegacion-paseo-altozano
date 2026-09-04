@@ -1,9 +1,9 @@
 /**
- * Paseo Altozano · Offline-First Service Worker
- * Guarantees 100% standalone totem kiosk operation even without internet.
+ * Paseo Altozano · Offline-First Service Worker (Network-First Strategy)
+ * Guarantees instant live updates when online + 100% standalone offline operation.
  */
 
-const CACHE_NAME = 'altozano-kiosk-v3.3.0';
+const CACHE_NAME = 'altozano-kiosk-v3.4.0';
 
 const PRECACHE_ASSETS = [
   './',
@@ -32,7 +32,7 @@ self.addEventListener('install', (event) => {
   event.waitUntil(
     caches.open(CACHE_NAME).then((cache) => {
       return cache.addAll(PRECACHE_ASSETS).catch((err) => {
-        console.warn('[ServiceWorker] Some pre-cache assets failed to load:', err);
+        console.warn('[ServiceWorker] Pre-cache asset warning:', err);
       });
     }).then(() => self.skipWaiting())
   );
@@ -44,6 +44,7 @@ self.addEventListener('activate', (event) => {
       return Promise.all(
         cacheNames.map((name) => {
           if (name !== CACHE_NAME) {
+            console.log('[ServiceWorker] Purging old cache:', name);
             return caches.delete(name);
           }
         })
@@ -56,38 +57,26 @@ self.addEventListener('fetch', (event) => {
   const req = event.request;
   if (req.method !== 'GET') return;
 
-  // Cache-First strategy with Network Fallback & Runtime Dynamic Caching
+  // NETWORK-FIRST STRATEGY: Always fetch fresh code when online, fallback to cache when offline
   event.respondWith(
-    caches.match(req).then((cachedResponse) => {
-      if (cachedResponse) {
-        // Fetch fresh copy in background if online (Stale-While-Revalidate for app assets)
-        fetch(req).then((networkResponse) => {
-          if (networkResponse && networkResponse.status === 200) {
-            caches.open(CACHE_NAME).then((cache) => {
-              cache.put(req, networkResponse.clone());
-            });
-          }
-        }).catch(() => {});
-        return cachedResponse;
-      }
-
-      return fetch(req).then((networkResponse) => {
-        if (!networkResponse || networkResponse.status !== 200 || (networkResponse.type === 'opaque' && !req.url.includes('cdn') && !req.url.includes('cdnjs') && !req.url.includes('fonts'))) {
-          return networkResponse;
+    fetch(req)
+      .then((networkResponse) => {
+        if (networkResponse && networkResponse.status === 200) {
+          const responseToCache = networkResponse.clone();
+          caches.open(CACHE_NAME).then((cache) => {
+            cache.put(req, responseToCache);
+          });
         }
-
-        const responseToCache = networkResponse.clone();
-        caches.open(CACHE_NAME).then((cache) => {
-          cache.put(req, responseToCache);
-        });
-
         return networkResponse;
-      }).catch(() => {
-        // Fallback for HTML documents when offline
-        if (req.headers.get('accept') && req.headers.get('accept').includes('text/html')) {
-          return caches.match('./index.html');
-        }
-      });
-    })
+      })
+      .catch(() => {
+        // When offline or network fails, serve from cache
+        return caches.match(req).then((cachedResponse) => {
+          if (cachedResponse) return cachedResponse;
+          if (req.headers.get('accept') && req.headers.get('accept').includes('text/html')) {
+            return caches.match('./index.html');
+          }
+        });
+      })
   );
 });
