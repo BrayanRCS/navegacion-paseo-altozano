@@ -641,6 +641,78 @@ function setPortalFloorConnection(preset) {
   triggerHaptic('medium');
 }
 
+function handleSelectedNodeTwinCodeChange(newCode) {
+  if (!selectedEditorNodeId || !mallGraph) return;
+  const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
+  if (!node) return;
+
+  const cleanCode = (newCode || "").trim().toUpperCase();
+  node.twin_code = cleanCode;
+  if (levelNodes[currentLevel] && levelNodes[currentLevel][node.id]) {
+    levelNodes[currentLevel][node.id].twin_code = cleanCode;
+  }
+
+  saveCustomGraphToStorage();
+  updateTwinCodeUi(node);
+  triggerHaptic("light");
+}
+
+function updateTwinCodeUi(node) {
+  const twinContainer = document.getElementById("editor-portal-twin-container");
+  const twinInput = document.getElementById("editor-node-twin-code-input");
+  const twinBadge = document.getElementById("editor-twin-status-badge");
+  const twinSelect = document.getElementById("editor-twin-code-select");
+
+  if (!twinContainer) return;
+
+  const isPortal = node && node.type && (node.type.startsWith("portal_") || (node.name && (node.name.includes("Escalera") || node.name.includes("Elevador"))));
+  if (!isPortal) {
+    twinContainer.classList.add("hidden");
+    return;
+  }
+
+  twinContainer.classList.remove("hidden");
+
+  if (twinInput) {
+    twinInput.value = node.twin_code || "";
+  }
+
+  // Populate twinSelect with all unique twin codes in mall
+  if (twinSelect && mallGraph && Array.isArray(mallGraph.nodes)) {
+    const existingCodes = new Set();
+    mallGraph.nodes.forEach(n => {
+      if (n.twin_code) existingCodes.add(n.twin_code);
+    });
+
+    twinSelect.innerHTML = "<option value=\"\">-- Códigos --</option>";
+    Array.from(existingCodes).sort().forEach(code => {
+      const opt = document.createElement("option");
+      opt.value = code;
+      opt.innerText = code;
+      if (node.twin_code === code) opt.selected = true;
+      twinSelect.appendChild(opt);
+    });
+  }
+
+  // Check if twin exists on another floor
+  if (twinBadge) {
+    if (!node.twin_code) {
+      twinBadge.className = "px-2 py-0.5 rounded-md bg-amber-500/20 text-amber-300 border border-amber-500/40 text-[10px] font-bold";
+      twinBadge.innerText = "⚠️ Sin código gemelo asignado";
+    } else {
+      const twins = mallGraph.nodes.filter(n => n.id !== node.id && n.twin_code === node.twin_code);
+      if (twins.length > 0) {
+        const twinFloors = twins.map(t => "Nivel " + (t.level === 1 ? "PB" : (t.level === 2 ? "1" : "2"))).join(", ");
+        twinBadge.className = "px-2 py-0.5 rounded-md bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 text-[10px] font-bold";
+        twinBadge.innerText = "🔗 Gemela vinculada en: " + twinFloors;
+      } else {
+        twinBadge.className = "px-2 py-0.5 rounded-md bg-sky-500/20 text-sky-300 border border-sky-500/40 text-[10px] font-bold";
+        twinBadge.innerText = "ℹ️ Código único [" + node.twin_code + "] (Asigna el mismo en el otro piso)";
+      }
+    }
+  }
+}
+
 function deleteSelectedNode() {
   if (!selectedEditorNodeId || !mallGraph) return;
 
@@ -949,6 +1021,7 @@ function updateEditorHudInfo(node, pos, customMsg = null) {
     nameInput.value = node.name || node.id || '';
   }
 
+  if (typeof updateTwinCodeUi === "function") updateTwinCodeUi(node);
   if (portalPresets) {
     const isPortal = node.type === 'portal_escalator' || node.type === 'portal_elevator';
     if (isPortal) {

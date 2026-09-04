@@ -29,6 +29,48 @@ function buildFloorSubgraphs() {
   });
 }
 
+function getDynamicPortals() {
+  const dynamicPortals = [];
+  
+  if (mallGraph && Array.isArray(mallGraph.nodes)) {
+    const portalGroups = new Map();
+    mallGraph.nodes.forEach(n => {
+      const isPortal = n.type && (n.type.startsWith("portal_") || n.id.includes("portal_") || (n.name && (n.name.includes("Escalera") || n.name.includes("Elevador"))));
+      const code = n.twin_code || n.portal_code;
+      if (code && isPortal) {
+        if (!portalGroups.has(code)) {
+          portalGroups.set(code, {
+            id: "p_twin_" + code.toLowerCase().replace(/[^a-z0-9_]/g, "_"),
+            twin_code: code,
+            type: (n.type === "portal_elevator" || (n.name && n.name.toLowerCase().includes("elevador"))) ? "elevator" : "escalator",
+            name: (n.name || "Conexión").replace(/\s*\([^)]*\)/g, "").trim() + " [" + code + "]"
+          });
+        }
+        const group = portalGroups.get(code);
+        group[n.level] = n.id;
+      }
+    });
+
+    portalGroups.forEach(group => {
+      const floors = [1, 2, 3].filter(lvl => group[lvl]);
+      if (floors.length >= 2) {
+        dynamicPortals.push(group);
+      }
+    });
+  }
+
+  // Fallback to static PORTALS if any missing
+  if (typeof PORTALS !== "undefined" && Array.isArray(PORTALS)) {
+    getDynamicPortals().forEach(p => {
+      if (!dynamicPortals.some(dp => dp.id === p.id || (p.twin_code && dp.twin_code === p.twin_code))) {
+        dynamicPortals.push(p);
+      }
+    });
+  }
+
+  return dynamicPortals;
+}
+
 function aStarSingleFloor(lvl, startId, goalId) {
   const nodes = levelNodes[lvl];
   const graph = levelGraphs[lvl];
@@ -131,7 +173,7 @@ function calculateMultiFloorRoute(startId, goalId, preferElevator = false) {
   // Adjacent floors
   if (Math.abs(startLvl - goalLvl) === 1) {
     let candidatePortals = [];
-    PORTALS.forEach(p => {
+    getDynamicPortals().forEach(p => {
       if (p[startLvl] && p[goalLvl]) {
         if (preferElevator && p.type !== 'elevator') return;
         candidatePortals.push(p);
@@ -139,7 +181,7 @@ function calculateMultiFloorRoute(startId, goalId, preferElevator = false) {
     });
 
     if (candidatePortals.length === 0) {
-      candidatePortals = PORTALS.filter(p => p[startLvl] && p[goalLvl]);
+      candidatePortals = getDynamicPortals().filter(p => p[startLvl] && p[goalLvl]);
     }
 
     let bestRoute = null;
@@ -203,9 +245,9 @@ function calculateMultiFloorRoute(startId, goalId, preferElevator = false) {
     let bestRoute = null;
     let minTotalDist = Infinity;
 
-    PORTALS.forEach(p1 => {
+    getDynamicPortals().forEach(p1 => {
       if (!p1[startLvl] || !p1[midLvl]) return;
-      PORTALS.forEach(p2 => {
+      getDynamicPortals().forEach(p2 => {
         if (!p2[midLvl] || !p2[goalLvl]) return;
 
         const path1 = aStarSingleFloor(startLvl, startId, p1[startLvl]);

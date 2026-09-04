@@ -653,6 +653,18 @@
                   <input id="editor-node-name-input" type="text" oninput="handleSelectedNodeNameChange(this.value)" placeholder="Nombre del elemento..." title="Cambiar nombre de este nodo/baño/escalera" class="px-2.5 py-1 bg-slate-950 border border-slate-700 rounded-lg text-xs text-amber-300 font-bold focus:border-amber-400 focus:outline-none w-36 sm:w-56">
                 </div>
 
+                                <!-- Escalator / Elevator Twin Code Identifier Bar -->
+                <div id="editor-portal-twin-container" class="flex items-center gap-1.5 flex-wrap hidden bg-slate-950 px-2.5 py-1 rounded-xl border border-sky-500/40 shadow-inner">
+                  <span class="text-[10px] font-black text-sky-400 uppercase flex items-center gap-1">
+                    <i class="fa-solid fa-link text-[10px]"></i> Código Gemelo:
+                  </span>
+                  <input id="editor-node-twin-code-input" type="text" oninput="handleSelectedNodeTwinCodeChange(this.value)" placeholder="ej. ESC-CHEDRAUI, ELEV-01" title="Código único compartido entre la escalera de N1 y su gemela en N2" class="px-2 py-0.5 bg-slate-900 border border-sky-500/50 rounded-lg text-xs text-sky-300 font-mono font-black focus:border-sky-400 focus:outline-none w-32 sm:w-44 uppercase">
+                  <select id="editor-twin-code-select" onchange="handleSelectedNodeTwinCodeChange(this.value)" title="Elegir de códigos existentes en el centro comercial" class="px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded-lg text-[11px] text-slate-300 font-bold focus:outline-none cursor-pointer">
+                    <option value="">-- Códigos --</option>
+                  </select>
+                  <span id="editor-twin-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-md"></span>
+                </div>
+
                 <!-- Escalator / Elevator Floor Presets Bar -->
                 <div id="editor-portal-floor-presets" class="flex items-center gap-1 flex-wrap hidden">
                   <span class="text-[10px] font-bold text-slate-400 uppercase">Conectar:</span>

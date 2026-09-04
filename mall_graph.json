@@ -396,7 +396,8 @@
       "coordinates": {
         "x": 531,
         "y": 511
-      }
+      },
+      "twin_code": "ESC-LIVERPOOL"
     },
     {
       "id": "n_lvl1_portal_elev_liverpool",
@@ -406,7 +407,8 @@
       "coordinates": {
         "x": 594,
         "y": 503
-      }
+      },
+      "twin_code": "ELEV-LIVERPOOL"
     },
     {
       "id": "n_lvl1_portal_esc_oval",
@@ -416,7 +418,8 @@
       "coordinates": {
         "x": 834,
         "y": 317
-      }
+      },
+      "twin_code": "ESC-SANBORNS-OVAL"
     },
     {
       "id": "n_lvl1_portal_elev_central",
@@ -426,7 +429,8 @@
       "coordinates": {
         "x": 792,
         "y": 248
-      }
+      },
+      "twin_code": "ELEV-CENTRAL"
     },
     {
       "id": "n_lvl1_service_maint",
@@ -1832,7 +1836,8 @@
         "x": 340,
         "y": 491
       },
-      "context_element": "Conexión Planta Baja y Nivel 1"
+      "context_element": "Conexión Planta Baja y Nivel 1",
+      "twin_code": "ESC-LIVERPOOL"
     },
     {
       "id": "n_lvl2_portal_elev_liverpool",
@@ -1842,7 +1847,8 @@
       "coordinates": {
         "x": 424,
         "y": 522
-      }
+      },
+      "twin_code": "ELEV-LIVERPOOL"
     },
     {
       "id": "n_lvl2_portal_esc_rotunda_left",
@@ -1853,7 +1859,8 @@
         "x": 615,
         "y": 304
       },
-      "context_element": "Acceso Nivel 1"
+      "context_element": "Acceso Nivel 1",
+      "twin_code": "ESC-ROTONDA-IZQ"
     },
     {
       "id": "n_lvl2_portal_esc_rotunda_bot",
@@ -1864,7 +1871,8 @@
         "x": 623,
         "y": 338
       },
-      "context_element": "Acceso Nivel 2"
+      "context_element": "Acceso Nivel 2",
+      "twin_code": "ESC-ROTONDA-N2"
     },
     {
       "id": "n_lvl2_portal_esc_rotunda_right",
@@ -1875,7 +1883,8 @@
         "x": 657,
         "y": 322
       },
-      "context_element": "Conexión Planta Baja y Nivel 1"
+      "context_element": "Conexión Planta Baja y Nivel 1",
+      "twin_code": "ESC-ROTONDA-PB"
     },
     {
       "id": "n_lvl2_portal_esc_sanborns",
@@ -1886,7 +1895,8 @@
         "x": 629,
         "y": 556
       },
-      "context_element": "Conexión Planta Baja y Nivel 1"
+      "context_element": "Conexión Planta Baja y Nivel 1",
+      "twin_code": "ESC-SANBORNS-OVAL"
     },
     {
       "id": "n_lvl2_portal_esc_sears",
@@ -1897,7 +1907,8 @@
         "x": 1178,
         "y": 443
       },
-      "context_element": "Acceso Nivel 2"
+      "context_element": "Acceso Nivel 2",
+      "twin_code": "ESC-SEARS-CINELIA"
     },
     {
       "id": "n_lvl2_portal_elev_chedraui",
@@ -1907,7 +1918,8 @@
       "coordinates": {
         "x": 1150,
         "y": 488
-      }
+      },
+      "twin_code": "ELEV-CHEDRAUI"
     },
     {
       "id": "n_lvl2_restroom_2",
@@ -2336,7 +2348,8 @@
       "coordinates": {
         "x": 989,
         "y": 229
-      }
+      },
+      "twin_code": "ESC-SEARS-CINELIA"
     },
     {
       "id": "n_lvl3_portal_elev_cinelia",
@@ -2346,7 +2359,8 @@
       "coordinates": {
         "x": 988,
         "y": 202
-      }
+      },
+      "twin_code": "ELEV-CHEDRAUI"
     },
     {
       "id": "n_lvl3_portal_esc_anytime",
@@ -2357,7 +2371,8 @@
         "x": 1165,
         "y": 252
       },
-      "context_element": "Conexión Nivel 1 y Nivel 2"
+      "context_element": "Conexión Nivel 1 y Nivel 2",
+      "twin_code": "ESC-AUTOS-ANYTIME"
     },
     {
       "id": "n_lvl3_portal_esc_central_top",
@@ -2368,7 +2383,8 @@
         "x": 820,
         "y": 337
       },
-      "context_element": "Acceso Nivel 1"
+      "context_element": "Acceso Nivel 1",
+      "twin_code": "ESC-ROTONDA-NORTE"
     },
     {
       "id": "n_lvl3_portal_esc_central_bot",
@@ -2379,7 +2395,8 @@
         "x": 847,
         "y": 383
       },
-      "context_element": "Acceso Nivel 2"
+      "context_element": "Acceso Nivel 2",
+      "twin_code": "ESC-ROTONDA-N2"
     },
     {
       "id": "n_lvl3_portal_esc_terrace",
@@ -2390,7 +2407,8 @@
         "x": 1058,
         "y": 449
       },
-      "context_element": "Acceso Nivel 1"
+      "context_element": "Acceso Nivel 1",
+      "twin_code": "ESC-CHEDRAUI-TERRAZA"
     },
     {
       "id": "n_lvl3_restroom_1",
@@ -2456,7 +2474,8 @@
         "x": 1246,
         "y": 279
       },
-      "context_element": "Conexión Nivel 1 y Nivel 2"
+      "context_element": "Conexión Nivel 1 y Nivel 2",
+      "twin_code": "ESC-AUTOS-ANYTIME"
     },
     {
       "id": "n_lvl2_c_liv_door",
@@ -2558,7 +2577,8 @@
         "x": 960,
         "y": 371
       },
-      "context_element": "Conexión Nivel 1 y Nivel 2"
+      "context_element": "Conexión Nivel 1 y Nivel 2",
+      "twin_code": "ESC-CHEDRAUI-TERRAZA"
     },
     {
       "id": "n_lvl2_portal_elev_sears_plaza",
@@ -2568,7 +2588,8 @@
       "coordinates": {
         "x": 1120,
         "y": 207
-      }
+      },
+      "twin_code": "ELEV-SEARS-PLAZA"
     },
     {
       "id": "n_lvl1_c_wp_mtkh0u6r",
@@ -3685,7 +3706,8 @@
         "x": 987,
         "y": 483
       },
-      "context_element": "Elevador Nivel 2"
+      "context_element": "Elevador Nivel 2",
+      "twin_code": "ELEV-TERRAZA-N2"
     },
     {
       "id": "n_lvl3_c_wp_mtkzlcl4",
@@ -3706,7 +3728,8 @@
         "x": 1220,
         "y": 194
       },
-      "context_element": "Elevador Nivel 2"
+      "context_element": "Elevador Nivel 2",
+      "twin_code": "ELEV-SEARS-PLAZA"
     },
     {
       "id": "n_lvl3_c_wp_mtkzmqqh",
