@@ -654,6 +654,9 @@ function handleSelectedNodeTwinCodeChange(newCode) {
 
   saveCustomGraphToStorage();
   updateTwinCodeUi(node);
+  if (routeSegments && routeSegments.length > 0 && typeof calculateRoute === "function") {
+    calculateRoute();
+  }
   triggerHaptic("light");
 }
 

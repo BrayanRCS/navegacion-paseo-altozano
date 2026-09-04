@@ -31,42 +31,36 @@ function buildFloorSubgraphs() {
 
 function getDynamicPortals() {
   const dynamicPortals = [];
-  
-  if (mallGraph && Array.isArray(mallGraph.nodes)) {
-    const portalGroups = new Map();
-    mallGraph.nodes.forEach(n => {
-      const isPortal = n.type && (n.type.startsWith("portal_") || n.id.includes("portal_") || (n.name && (n.name.includes("Escalera") || n.name.includes("Elevador"))));
-      const code = n.twin_code || n.portal_code;
-      if (code && isPortal) {
-        if (!portalGroups.has(code)) {
-          portalGroups.set(code, {
-            id: "p_twin_" + code.toLowerCase().replace(/[^a-z0-9_]/g, "_"),
-            twin_code: code,
-            type: (n.type === "portal_elevator" || (n.name && n.name.toLowerCase().includes("elevador"))) ? "elevator" : "escalator",
-            name: (n.name || "Conexión").replace(/\s*\([^)]*\)/g, "").trim() + " [" + code + "]"
-          });
-        }
-        const group = portalGroups.get(code);
-        group[n.level] = n.id;
-      }
-    });
+  if (!mallGraph || !Array.isArray(mallGraph.nodes)) return dynamicPortals;
 
-    portalGroups.forEach(group => {
-      const floors = [1, 2, 3].filter(lvl => group[lvl]);
-      if (floors.length >= 2) {
-        dynamicPortals.push(group);
-      }
-    });
-  }
+  const portalGroups = new Map();
 
-  // Fallback to static PORTALS if any missing
-  if (typeof PORTALS !== "undefined" && Array.isArray(PORTALS)) {
-    PORTALS.forEach(p => {
-      if (!dynamicPortals.some(dp => dp.id === p.id || (p.twin_code && dp.twin_code === p.twin_code))) {
-        dynamicPortals.push(p);
+  mallGraph.nodes.forEach(n => {
+    const isPortal = n.type && (n.type.startsWith("portal_") || n.id.includes("portal_") || (n.name && (n.name.includes("Escalera") || n.name.includes("Elevador"))));
+    const rawCode = (n.twin_code || n.portal_code || "").trim();
+    if (rawCode && isPortal) {
+      const codeKey = rawCode.toUpperCase();
+      if (!portalGroups.has(codeKey)) {
+        const isElev = n.type === "portal_elevator" || (n.name && n.name.toLowerCase().includes("elevador"));
+        portalGroups.set(codeKey, {
+          id: "p_twin_" + codeKey.toLowerCase().replace(/[^a-z0-9_]/g, "_"),
+          twin_code: rawCode,
+          type: isElev ? "elevator" : "escalator",
+          name: (n.name || "Conexión").replace(/\s*\([^)]*\)/g, "").trim() + " [" + rawCode + "]"
+        });
       }
-    });
-  }
+      const group = portalGroups.get(codeKey);
+      group[n.level] = n.id;
+    }
+  });
+
+  // ONLY include portals that have at least 2 distinct levels sharing the EXACT same twin_code!
+  portalGroups.forEach(group => {
+    const floors = [1, 2, 3].filter(lvl => Boolean(group[lvl]));
+    if (floors.length >= 2) {
+      dynamicPortals.push(group);
+    }
+  });
 
   return dynamicPortals;
 }
@@ -440,7 +434,7 @@ function buildStepByStepList() {
   renderStepsList();
 }
 
-function calculateRoute() {
+function calculateRoute(explicitOrig = null, explicitDest = null) {
   stopWalkSimulation();
   simSegIndex = 0;
   simNodeIndex = 0;
@@ -448,8 +442,11 @@ function calculateRoute() {
 
   const origSelect = document.getElementById('origin-select');
   const destSelect = document.getElementById('dest-select');
-  const origId = origSelect ? origSelect.value : TOTEM_NODE_ID;
-  const destId = destSelect ? destSelect.value : null;
+  const origId = explicitOrig || (origSelect && origSelect.value) || TOTEM_NODE_ID;
+  const destId = explicitDest || (destSelect && destSelect.value) || null;
+
+  if (origSelect && origId) origSelect.value = origId;
+  if (destSelect && destId) destSelect.value = destId;
 
   if (!origId || !destId || !mallGraph) return;
 

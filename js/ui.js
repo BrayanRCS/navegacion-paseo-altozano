@@ -281,7 +281,7 @@ function showMapView(destId = null) {
     requestAnimationFrame(() => {
       cachedViewport = null;
       if (destId) {
-        calculateRoute();
+        calculateRoute(TOTEM_NODE_ID, destId);
       } else {
         renderMapOverlay();
         zoomToOverview(false);
