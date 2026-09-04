@@ -218,7 +218,12 @@
     </div>
 
     <!-- Header Actions & Totem Location Indicator -->
-    <div class="flex items-center gap-3 text-xs">
+    <div class="flex items-center gap-2.5 text-xs">
+      <button id="btn-header-navigate" onclick="toggleWalkSimulation()" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 hover:from-blue-500 hover:to-sky-400 text-white font-extrabold flex items-center gap-2 shadow-lg shadow-sky-500/25 transition-all active:scale-95 border border-sky-400/40 cursor-pointer">
+        <i id="btn-header-nav-icon" class="fa-solid fa-location-arrow text-sm"></i>
+        <span id="btn-header-nav-text">Iniciar Ruta (GPS)</span>
+      </button>
+
       <button onclick="showQrModal()" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all active:scale-95 border border-emerald-400/40 cursor-pointer">
         <i class="fa-solid fa-qrcode text-sm"></i> <span>Llevar a Celular (QR)</span>
       </button>
@@ -741,15 +746,6 @@
                 <i class="fa-solid fa-location-crosshairs text-[10px]"></i>
               </button>
             </div>
-          <!-- FLOATING ERGONOMIC BOTTOM-RIGHT MAP ACTION BAR ("Llevar en el mapa" / Iniciar Recorrido GPS) -->
-          <div id="map-floating-bottom-cta" class="absolute bottom-4 right-4 z-30 flex items-center gap-2 pointer-events-auto">
-            <button id="btn-floating-navigate" onclick="toggleWalkSimulation()" class="py-3.5 px-5 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 hover:from-blue-500 hover:to-sky-400 text-white font-black text-xs sm:text-sm shadow-2xl shadow-sky-500/40 border-2 border-white/30 flex items-center gap-2.5 transition-all active:scale-95 cursor-pointer backdrop-blur-md">
-              <i id="btn-floating-nav-icon" class="fa-solid fa-location-arrow text-base"></i>
-              <span id="btn-floating-nav-text">Llevar en el Mapa (GPS)</span>
-            </button>
-            <button onclick="showQrModal()" title="Llevar ruta en tu celular con Código QR" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white flex items-center justify-center text-lg shadow-xl shadow-emerald-500/30 border border-emerald-400/40 transition-all active:scale-95 cursor-pointer">
-              <i class="fa-solid fa-qrcode"></i>
-            </button>
           </div>
 
         </div>
