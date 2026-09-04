@@ -27,6 +27,32 @@ function buildFloorSubgraphs() {
       levelGraphs[fromLvl][e.to].push({ to: e.from, dist: dist, from: e.to });
     }
   });
+
+  // 100% Fail-Safe Guarantee: Auto-connect any isolated store/island to nearest walkway
+  [1, 2, 3].forEach(lvl => {
+    const nodes = levelNodes[lvl] || {};
+    const waypoints = Object.values(nodes).filter(n => n.id.startsWith(`n_lvl${lvl}_c_`) || n.type === 'corridor_waypoint' || n.type === 'waypoint');
+    
+    Object.values(nodes).forEach(n => {
+      const isWalkway = n.id.startsWith(`n_lvl${lvl}_c_`) || n.type === 'corridor_waypoint' || n.type === 'waypoint';
+      const edgeList = levelGraphs[lvl][n.id] || [];
+      if (!isWalkway && edgeList.length === 0 && waypoints.length > 0) {
+        let nearest = null;
+        let minDist = Infinity;
+        waypoints.forEach(w => {
+          const d = Math.hypot(w.coordinates.x - n.coordinates.x, w.coordinates.y - n.coordinates.y);
+          if (d < minDist) {
+            minDist = d;
+            nearest = w;
+          }
+        });
+        if (nearest) {
+          levelGraphs[lvl][n.id].push({ to: nearest.id, dist: minDist, from: n.id });
+          levelGraphs[lvl][nearest.id].push({ to: n.id, dist: minDist, from: nearest.id });
+        }
+      }
+    });
+  });
 }
 
 function getDynamicPortals() {

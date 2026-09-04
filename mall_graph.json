@@ -1,7 +1,7 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 428,
-  "total_edges": 930,
+  "total_nodes": 429,
+  "total_edges": 942,
   "nodes": [
     {
       "id": "n_lvl1_store_1",
@@ -4842,6 +4842,16 @@
         "x": 502,
         "y": 479
       }
+    },
+    {
+      "id": "n_lvl3_island_1",
+      "level": 3,
+      "type": "island",
+      "name": "Jurassic Ride",
+      "coordinates": {
+        "x": 1260,
+        "y": 275
+      }
     }
   ],
   "edges": [
@@ -9494,6 +9504,54 @@
       "from": "n_lvl3_c_wp_mtlw6jkj",
       "to": "n_lvl3_c_wp_mtlw4eg8",
       "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_6",
+      "to": "n_lvl2_c_wp_mtkiyj6k"
+    },
+    {
+      "from": "n_lvl2_store_25",
+      "to": "n_lvl2_c_wp_mtko3akp"
+    },
+    {
+      "from": "n_lvl3_store_8",
+      "to": "n_lvl3_c_wp_mtkzmw4n"
+    },
+    {
+      "from": "n_lvl3_games_zone",
+      "to": "n_lvl3_c_wp_mtl0d7x2"
+    },
+    {
+      "from": "n_lvl1_island_2",
+      "to": "n_lvl1_c_nw_3"
+    },
+    {
+      "from": "n_lvl1_island_3",
+      "to": "n_lvl1_c_wp_mtkh8pas"
+    },
+    {
+      "from": "n_lvl2_store_3",
+      "to": "n_lvl2_c_wp_mtkiyal3"
+    },
+    {
+      "from": "n_lvl2_store_21",
+      "to": "n_lvl2_c_wp_mtknw7sn"
+    },
+    {
+      "from": "n_lvl2_store_22",
+      "to": "n_lvl2_c_wp_mtknw7sn"
+    },
+    {
+      "from": "n_lvl2_store_64",
+      "to": "n_lvl2_c_wp_mtkiytpp"
+    },
+    {
+      "from": "n_lvl2_island_13",
+      "to": "n_lvl2_c_wp_mtkr7lmd"
+    },
+    {
+      "from": "n_lvl3_island_1",
+      "to": "n_lvl3_c_wp_mtl1h2qr"
     }
   ]
 }
