@@ -35,19 +35,25 @@ const FLOOR_SPECS = {
   }
 };
 
-// Explicit vertical portals linking floors (Escalators & Elevators)
+// Explicit vertical portals linking floors (Escalators & Elevators strictly respecting PB, N1, N2)
 const PORTALS = [
-  { id: "p_liverpool_esc", type: "escalator", name: "Escaleras Eléctricas Plaza Liverpool", 1: "n_lvl1_portal_esc_liverpool", 2: "n_lvl2_portal_esc_liverpool" },
-  { id: "p_liverpool_elev", type: "elevator", name: "Elevador Plaza Liverpool", 1: "n_lvl1_portal_elev_liverpool", 2: "n_lvl2_portal_elev_liverpool" },
-  { id: "p_central_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Central", 1: "n_lvl1_portal_esc_central", 2: "n_lvl2_portal_esc_rotunda_left" },
-  { id: "p_oval_sanborns_esc", type: "escalator", name: "Escaleras Eléctricas Plaza Oval / Sanborns", 1: "n_lvl1_portal_esc_oval", 2: "n_lvl2_portal_esc_sanborns" },
-  { id: "p_sears_cinelia_esc", type: "escalator", name: "Escaleras Eléctricas Sears / Cinelia", 2: "n_lvl2_portal_esc_sears", 3: "n_lvl3_portal_esc_cinelia" },
-  { id: "p_chedraui_cinelia_elev", type: "elevator", name: "Elevador Chedraui / Cinelia", 2: "n_lvl2_portal_elev_chedraui", 3: "n_lvl3_portal_elev_cinelia" },
-  { id: "p_rotunda_top_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Norte", 2: "n_lvl2_portal_esc_rotunda_right", 3: "n_lvl3_portal_esc_central_top" },
-  { id: "p_rotunda_bot_esc", type: "escalator", name: "Escaleras Eléctricas Rotonda Sur", 2: "n_lvl2_portal_esc_rotunda_bot", 3: "n_lvl3_portal_esc_central_bot" },
-  { id: "p_sanborns_terrace_esc", type: "escalator", name: "Escaleras Eléctricas Terraza", 2: "n_lvl2_portal_esc_sanborns", 3: "n_lvl3_portal_esc_terrace" },
-  { id: "p_auto_anytime_esc", type: "escalator", name: "Escaleras Eléctricas Autos / Anytime", 2: "n_lvl2_portal_esc_automotive", 3: "n_lvl3_portal_esc_anytime" },
-  { id: "p_sears_plaza_elev", type: "elevator", name: "Elevador Plaza Sears / Trampoline", 2: "n_lvl2_portal_elev_sears_plaza", 3: "n_lvl3_portal_elev_cinelia" }
+  // --- CONEXIONES PLANTA BAJA (PB) ↔ NIVEL 1 (N1) ---
+  { id: "p_liverpool_esc_pb_n1", type: "escalator", name: "Escaleras Eléctricas Plaza Liverpool (PB ↔ N1)", 1: "n_lvl1_portal_esc_liverpool", 2: "n_lvl2_portal_esc_liverpool" },
+  { id: "p_liverpool_elev_pb_n1", type: "elevator", name: "Elevador Plaza Liverpool (PB ↔ N1)", 1: "n_lvl1_portal_elev_liverpool", 2: "n_lvl2_portal_elev_liverpool" },
+  { id: "p_oval_rotunda_esc_pb_n1", type: "escalator", name: "Escaleras Eléctricas Plaza Oval (PB ↔ N1)", 1: "n_lvl1_portal_esc_oval", 2: "n_lvl2_portal_esc_rotunda_right" },
+  { id: "p_oval_sanborns_esc_pb_n1", type: "escalator", name: "Escaleras Eléctricas Sanborns (PB ↔ N1)", 1: "n_lvl1_portal_esc_oval", 2: "n_lvl2_portal_esc_sanborns" },
+  { id: "p_central_esc_pb_n1", type: "escalator", name: "Escaleras Eléctricas Rotonda Izquierda (PB ↔ N1)", 1: "n_lvl1_portal_esc_oval", 2: "n_lvl2_portal_esc_rotunda_left" },
+  { id: "p_central_elev_pb_n1", type: "elevator", name: "Elevador Central (PB ↔ N1)", 1: "n_lvl1_portal_elev_central", 2: "n_lvl2_portal_elev_chedraui" },
+
+  // --- CONEXIONES NIVEL 1 (N1) ↔ NIVEL 2 (N2 / TERRAZA) ---
+  { id: "p_chedraui_terrace_esc_n1_n2", type: "escalator", name: "Escaleras Eléctricas Chedraui / Terraza (N1 ↔ N2)", 2: "n_lvl2_portal_esc_chedraui_front", 3: "n_lvl3_portal_esc_terrace" },
+  { id: "p_rotunda_bot_esc_n1_n2", type: "escalator", name: "Escaleras Eléctricas Rotonda Sur (N1 ↔ N2)", 2: "n_lvl2_portal_esc_rotunda_bot", 3: "n_lvl3_portal_esc_central_bot" },
+  { id: "p_rotunda_top_esc_n1_n2", type: "escalator", name: "Escaleras Eléctricas Rotonda Norte (N1 ↔ N2)", 2: "n_lvl2_portal_esc_rotunda_bot", 3: "n_lvl3_portal_esc_central_top" },
+  { id: "p_sears_cinelia_esc_n1_n2", type: "escalator", name: "Escaleras Eléctricas Sears / Cinelia (N1 ↔ N2)", 2: "n_lvl2_portal_esc_sears", 3: "n_lvl3_portal_esc_cinelia" },
+  { id: "p_auto_anytime_esc_n1_n2", type: "escalator", name: "Escaleras Eléctricas Autos / Anytime (N1 ↔ N2)", 2: "n_lvl2_portal_esc_automotive", 3: "n_lvl3_portal_esc_anytime" },
+  { id: "p_chedraui_cinelia_elev_n1_n2", type: "elevator", name: "Elevador Chedraui / Cinelia (N1 ↔ N2)", 2: "n_lvl2_portal_elev_chedraui", 3: "n_lvl3_portal_elev_cinelia" },
+  { id: "p_chedraui_terrace_elev_n1_n2", type: "elevator", name: "Elevador Chedraui / Terraza (N1 ↔ N2)", 2: "n_lvl2_portal_elev_chedraui", 3: "n_lvl3_portal_elev_mtkzl8ol" },
+  { id: "p_sears_plaza_elev_n1_n2", type: "elevator", name: "Elevador Plaza Sears / Trampoline (N1 ↔ N2)", 2: "n_lvl2_portal_elev_sears_plaza", 3: "n_lvl3_portal_elev_mtkzlf42" }
 ];
 
 // Extensible & Dynamic Category System with High-Impact Visuals
