@@ -1,7 +1,9 @@
 /**
- * Paseo Altozano · Camera & Viewport Engine
+ * Paseo Altozano · High-Performance Hardware-Accelerated Camera Engine
+ * Unified Kinetic Loop, Lerp Smooth Interpolation & Momentum Inertia Physics
  */
 
+// 1. Dynamic Viewport & Zoom Calculations
 function getDynamicZoomLevel(isSim = false) {
   const isMobile = document.body.classList.contains('mobile-navigation-mode') || window.innerWidth < 768;
   if (isMobile) {
@@ -46,6 +48,59 @@ function getMapViewport(forceRefresh = false) {
 
 window.addEventListener('resize', () => { cachedViewport = null; });
 
+// 2. Camera Physics & Target State
+const cameraTarget = {
+  panX: 0,
+  panY: 0,
+  scale: 1.0,
+  rotation: -90
+};
+
+const cameraPhysics = {
+  velocityX: 0,
+  velocityY: 0,
+  isDragging: false,
+  friction: 0.92,       // Inertial decay factor per frame
+  minVelocity: 0.05,    // Stopping threshold
+  lerpPan: 0.20,        // Smooth tracking speed for panning (0 < factor <= 1)
+  lerpScale: 0.16,      // Smooth tracking speed for zoom
+  lerpRot: 0.15         // Smooth tracking speed for rotation
+};
+
+// Pointer tracking for release velocity estimation
+const pointerHistory = [];
+const POINTER_HISTORY_MAX_AGE_MS = 100;
+
+function recordPointerPosition(x, y) {
+  const now = performance.now();
+  pointerHistory.push({ x, y, time: now });
+  while (pointerHistory.length > 0 && (now - pointerHistory[0].time) > POINTER_HISTORY_MAX_AGE_MS) {
+    pointerHistory.shift();
+  }
+}
+
+function calculateReleaseVelocity() {
+  if (pointerHistory.length < 2) return { vx: 0, vy: 0 };
+  const last = pointerHistory[pointerHistory.length - 1];
+  const first = pointerHistory[0];
+  const dt = last.time - first.time;
+  if (dt <= 8) return { vx: 0, vy: 0 };
+
+  // Calculate velocity in pixels per standard 60fps frame (16.67ms)
+  const vx = ((last.x - first.x) / dt) * 16.67;
+  const vy = ((last.y - first.y) / dt) * 16.67;
+
+  // Clamp velocity to comfortable max impulse
+  const maxImpulse = 42;
+  const speed = Math.hypot(vx, vy);
+  if (speed > maxImpulse) {
+    const factor = maxImpulse / speed;
+    return { vx: vx * factor, vy: vy * factor };
+  }
+  return { vx, vy };
+}
+
+// 3. Hardware-Accelerated GPU Transform Engine
 function updateCameraTransform() {
   const stage = document.getElementById('map-camera-stage');
   if (!stage) return;
@@ -53,25 +108,68 @@ function updateCameraTransform() {
   stage.style.transform = `translate3d(${currentCamera.panX.toFixed(2)}px, ${currentCamera.panY.toFixed(2)}px, 0) scale(${currentCamera.scale.toFixed(4)}) rotate(${rot.toFixed(2)}deg)`;
 }
 
+// 4. Unified CinemaKinetic Loop (Single persistent requestAnimationFrame)
+let isKineticLoopActive = false;
+
+function startCameraKineticLoop() {
+  if (isKineticLoopActive) return;
+  isKineticLoopActive = true;
+  if (typeof requestAnimationFrame !== 'undefined') {
+    requestAnimationFrame(cameraKineticTick);
+  }
+}
+
+function cameraKineticTick() {
+  // A. Apply Inertial Momentum when released
+  if (!cameraPhysics.isDragging) {
+    if (Math.abs(cameraPhysics.velocityX) > cameraPhysics.minVelocity || Math.abs(cameraPhysics.velocityY) > cameraPhysics.minVelocity) {
+      cameraTarget.panX += cameraPhysics.velocityX;
+      cameraTarget.panY += cameraPhysics.velocityY;
+      cameraPhysics.velocityX *= cameraPhysics.friction;
+      cameraPhysics.velocityY *= cameraPhysics.friction;
+    } else {
+      cameraPhysics.velocityX = 0;
+      cameraPhysics.velocityY = 0;
+    }
+  }
+
+  // B. Linear Interpolation (Lerp) towards Target State
+  const prevPanX = currentCamera.panX;
+  const prevPanY = currentCamera.panY;
+  const prevScale = currentCamera.scale;
+  const prevRot = currentCamera.rotation || 0;
+
+  currentCamera.panX += (cameraTarget.panX - currentCamera.panX) * cameraPhysics.lerpPan;
+  currentCamera.panY += (cameraTarget.panY - currentCamera.panY) * cameraPhysics.lerpPan;
+  currentCamera.scale += (cameraTarget.scale - currentCamera.scale) * cameraPhysics.lerpScale;
+  currentCamera.rotation += (cameraTarget.rotation - prevRot) * cameraPhysics.lerpRot;
+
+  // C. Apply Transform only when values actually change
+  const dPanX = Math.abs(currentCamera.panX - prevPanX);
+  const dPanY = Math.abs(currentCamera.panY - prevPanY);
+  const dScale = Math.abs(currentCamera.scale - prevScale);
+  const dRot = Math.abs((currentCamera.rotation || 0) - prevRot);
+
+  if (dPanX > 0.001 || dPanY > 0.001 || dScale > 0.0001 || dRot > 0.01) {
+    updateCameraTransform();
+    if (typeof updatePopupPosition === 'function') {
+      updatePopupPosition();
+    }
+  }
+
+  if (typeof requestAnimationFrame !== 'undefined') {
+    requestAnimationFrame(cameraKineticTick);
+  }
+}
+
+// 5. Compass & Orientation UI
 function resetCameraRotation() {
   const baseRot = isVerticalMode ? -90 : 0;
-  if (typeof anime !== 'undefined') {
-    anime({
-      targets: currentCamera,
-      rotation: baseRot,
-      duration: 350,
-      easing: 'easeInOutSine',
-      update: () => {
-        updateCameraTransform();
-        updateCompassUI();
-      }
-    });
-  } else {
-    currentCamera.rotation = baseRot;
-    updateCameraTransform();
-    updateCompassUI();
-  }
+  cameraPhysics.velocityX = 0;
+  cameraPhysics.velocityY = 0;
+  cameraTarget.rotation = baseRot;
   triggerHaptic('light');
+  updateCompassUI();
 }
 
 function updateCompassUI() {
@@ -79,7 +177,7 @@ function updateCompassUI() {
   const compassNeedle = document.getElementById('compass-needle');
   if (!compassBtn) return;
   const baseRot = isVerticalMode ? -90 : 0;
-  const rot = currentCamera.rotation || 0;
+  const rot = cameraTarget.rotation || 0;
   const isVisible = Math.abs(rot - baseRot) > 2;
 
   if (isVisible) {
@@ -100,6 +198,7 @@ function getNodeHeading(curr, next) {
   return (Math.atan2(dy, dx) * 180 / Math.PI) + 90;
 }
 
+// 6. Programmatic Camera Actions (Targets assigned to Lerp Engine)
 function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 450) {
   const stage = document.getElementById('map-camera-stage');
   if (!stage) return;
@@ -114,9 +213,7 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
   const pixelX = vp.offsetX + u * vp.renderW;
   const pixelY = vp.offsetY + v * vp.renderH;
 
-  // Rock-solid fixed orientation: Map NEVER spins violently
   const finalRot = isVerticalMode ? -90 : 0;
-
   const rad = finalRot * Math.PI / 180;
   const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
   const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
@@ -127,14 +224,29 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
   const panX = targetScreenX - rx;
   const panY = targetScreenY - ry;
 
+  cameraPhysics.velocityX = 0;
+  cameraPhysics.velocityY = 0;
+
   if (animate) {
-    NavAnimator.animateCameraTo(panX, panY, targetScale, duration, finalRot);
+    cameraTarget.panX = panX;
+    cameraTarget.panY = panY;
+    cameraTarget.scale = targetScale;
+    cameraTarget.rotation = finalRot;
+    currentCamera.isZoomed = targetScale > 1.05;
+    updateZoomButtonUI();
+    updateCompassUI();
   } else {
-    currentCamera.scale = targetScale;
+    cameraTarget.panX = panX;
+    cameraTarget.panY = panY;
+    cameraTarget.scale = targetScale;
+    cameraTarget.rotation = finalRot;
+
     currentCamera.panX = panX;
     currentCamera.panY = panY;
+    currentCamera.scale = targetScale;
     currentCamera.rotation = finalRot;
     currentCamera.isZoomed = targetScale > 1.05;
+
     updateCameraTransform();
     updateZoomButtonUI();
     updateCompassUI();
@@ -163,7 +275,6 @@ function zoomToRouteBoundingBox(pathNodes, duration = 500) {
   const midX = (minX + maxX) / 2;
   const midY = (minY + maxY) / 2;
 
-  // Add comfortable padding around the route for clear context
   const paddedW = Math.max(routeW + 320, 520);
   const paddedH = Math.max(routeH + 260, 380);
 
@@ -194,18 +305,17 @@ function zoomToRouteBoundingBox(pathNodes, duration = 500) {
   const panX = targetScreenX - rx;
   const panY = targetScreenY - ry;
 
-  if (typeof NavAnimator !== 'undefined' && NavAnimator.animateCameraTo) {
-    NavAnimator.animateCameraTo(panX, panY, targetScale, duration, finalRot);
-  } else {
-    currentCamera.scale = targetScale;
-    currentCamera.panX = panX;
-    currentCamera.panY = panY;
-    currentCamera.rotation = finalRot;
-    currentCamera.isZoomed = targetScale > 1.05;
-    updateCameraTransform();
-    updateZoomButtonUI();
-    updateCompassUI();
-  }
+  cameraPhysics.velocityX = 0;
+  cameraPhysics.velocityY = 0;
+
+  cameraTarget.panX = panX;
+  cameraTarget.panY = panY;
+  cameraTarget.scale = targetScale;
+  cameraTarget.rotation = finalRot;
+  currentCamera.isZoomed = targetScale > 1.05;
+
+  updateZoomButtonUI();
+  updateCompassUI();
 }
 
 function zoomToOverview(animate = true) {
@@ -215,8 +325,6 @@ function zoomToOverview(animate = true) {
   const vp = getMapViewport();
   const spec = vp.spec;
   const baseRot = isVerticalMode ? -90 : 0;
-  currentCamera.rotation = baseRot;
-  updateCompassUI();
 
   let targetScale = 1.0;
   if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
@@ -239,16 +347,32 @@ function zoomToOverview(animate = true) {
   const panX = (vp.cw / 2) - rx;
   const panY = (vp.ch / 2) - ry;
 
+  cameraPhysics.velocityX = 0;
+  cameraPhysics.velocityY = 0;
+
   if (animate) {
-    NavAnimator.animateCameraTo(panX, panY, targetScale, 450, baseRot);
+    cameraTarget.panX = panX;
+    cameraTarget.panY = panY;
+    cameraTarget.scale = targetScale;
+    cameraTarget.rotation = baseRot;
+    currentCamera.isZoomed = false;
+    updateZoomButtonUI();
+    updateCompassUI();
   } else {
-    currentCamera.scale = targetScale;
+    cameraTarget.panX = panX;
+    cameraTarget.panY = panY;
+    cameraTarget.scale = targetScale;
+    cameraTarget.rotation = baseRot;
+
     currentCamera.panX = panX;
     currentCamera.panY = panY;
+    currentCamera.scale = targetScale;
     currentCamera.rotation = baseRot;
     currentCamera.isZoomed = false;
+
     updateCameraTransform();
     updateZoomButtonUI();
+    updateCompassUI();
   }
 }
 
@@ -289,59 +413,64 @@ function centerOnNavArrow() {
 
   if (!targetNode) return;
 
-  const heading = getNodeHeading(targetNode, nextNode);
-
   if (currentLevel !== targetLevel) {
     switchLevel(targetLevel, false);
     setTimeout(() => {
-      zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, getDynamicZoomLevel(isSimulating), true, 600, heading);
+      zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, getDynamicZoomLevel(isSimulating), true, 600);
     }, 80);
   } else {
-    zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, getDynamicZoomLevel(isSimulating), true, 600, heading);
+    zoomToCoordinates(targetNode.coordinates.x, targetNode.coordinates.y, getDynamicZoomLevel(isSimulating), true, 600);
   }
 }
 
 function manualZoom(factor) {
   const container = document.getElementById('map-container');
-  const stage = document.getElementById('map-camera-stage');
-  if (!container || !stage) return;
-  if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
+  if (!container) return;
 
   const rect = container.getBoundingClientRect();
   const centerX = rect.width / 2;
   const centerY = rect.height / 2;
 
-  const rotRad = (currentCamera.rotation || 0) * Math.PI / 180;
+  const rotRad = (cameraTarget.rotation || 0) * Math.PI / 180;
   const cos = Math.cos(-rotRad);
   const sin = Math.sin(-rotRad);
-  const dx = centerX - currentCamera.panX;
-  const dy = centerY - currentCamera.panY;
-  const localX = (dx * cos - dy * sin) / currentCamera.scale;
-  const localY = (dx * sin + dy * cos) / currentCamera.scale;
+  const dx = centerX - cameraTarget.panX;
+  const dy = centerY - cameraTarget.panY;
+  const localX = (dx * cos - dy * sin) / cameraTarget.scale;
+  const localY = (dx * sin + dy * cos) / cameraTarget.scale;
 
-  const newScale = Math.min(8.0, Math.max(0.65, currentCamera.scale * factor));
+  const newScale = Math.min(8.0, Math.max(0.65, cameraTarget.scale * factor));
   const newDx = (localX * newScale) * Math.cos(rotRad) - (localY * newScale) * Math.sin(rotRad);
   const newDy = (localX * newScale) * Math.sin(rotRad) + (localY * newScale) * Math.cos(rotRad);
 
-  const targetPanX = centerX - newDx;
-  const targetPanY = centerY - newDy;
+  cameraPhysics.velocityX = 0;
+  cameraPhysics.velocityY = 0;
+  cameraTarget.panX = centerX - newDx;
+  cameraTarget.panY = centerY - newDy;
+  cameraTarget.scale = newScale;
+  currentCamera.isZoomed = newScale > 1.1;
 
-  NavAnimator.animateCameraTo(targetPanX, targetPanY, newScale, 220);
+  updateZoomButtonUI();
   triggerHaptic('light');
 }
 
+// 7. Interactive Event Listeners (Drag, Wheel, Touch, Pinch & Inertia Momentum)
 function setupInteractiveCameraPan() {
   const container = document.getElementById('map-container');
   if (!container) return;
 
+  // Start persistent cinema-kinetic loop
+  startCameraKineticLoop();
+
   let isMouseDown = false;
   let startMouseX = 0;
   let startMouseY = 0;
-  let origPanX = 0;
-  let origPanY = 0;
+  let startTargetPanX = 0;
+  let startTargetPanY = 0;
   let hasDraggedMap = false;
   const DRAG_THRESHOLD = 5;
 
+  // --- MOUSE DRAG & INERTIA ---
   container.addEventListener('mousedown', (e) => {
     if (e.target.closest('#map-node-popup') || e.target.closest('#editor-hud-bar')) return;
     if (isEditorMode && (e.target.closest('[data-logo-node-id]') || e.target.closest('[data-graph-node-id]'))) return;
@@ -349,31 +478,27 @@ function setupInteractiveCameraPan() {
 
     isMouseDown = true;
     hasDraggedMap = false;
-    if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
+    cameraPhysics.isDragging = true;
+    cameraPhysics.velocityX = 0;
+    cameraPhysics.velocityY = 0;
+
     startMouseX = e.clientX;
     startMouseY = e.clientY;
-    origPanX = currentCamera.panX;
-    origPanY = currentCamera.panY;
-  });
+    startTargetPanX = cameraTarget.panX;
+    startTargetPanY = cameraTarget.panY;
 
-  let panRafScheduled = false;
-  function requestPanUpdate() {
-    if (!panRafScheduled) {
-      panRafScheduled = true;
-      requestAnimationFrame(() => {
-        updateCameraTransform();
-        updatePopupPosition();
-        panRafScheduled = false;
-      });
-    }
-  }
+    pointerHistory.length = 0;
+    recordPointerPosition(e.clientX, e.clientY);
+  });
 
   window.addEventListener('mousemove', (e) => {
     if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) {
       isMouseDown = false;
+      cameraPhysics.isDragging = false;
       return;
     }
     if (!isMouseDown) return;
+
     const dx = e.clientX - startMouseX;
     const dy = e.clientY - startMouseY;
 
@@ -383,25 +508,35 @@ function setupInteractiveCameraPan() {
     }
 
     if (hasDraggedMap) {
-      currentCamera.panX = origPanX + dx;
-      currentCamera.panY = origPanY + dy;
-      requestPanUpdate();
+      cameraTarget.panX = startTargetPanX + dx;
+      cameraTarget.panY = startTargetPanY + dy;
+      recordPointerPosition(e.clientX, e.clientY);
     }
   });
 
   window.addEventListener('mouseup', () => {
     if (isMouseDown) {
       isMouseDown = false;
+      cameraPhysics.isDragging = false;
       container.classList.remove('is-dragging');
+
+      if (hasDraggedMap) {
+        const vel = calculateReleaseVelocity();
+        cameraPhysics.velocityX = vel.vx;
+        cameraPhysics.velocityY = vel.vy;
+      }
+
       setTimeout(() => {
         hasDraggedMap = false;
       }, 80);
     }
   });
 
+  // --- MOUSE WHEEL ZOOM WITH FOCAL POINT ANCHORING ---
   container.addEventListener('wheel', (e) => {
     e.preventDefault();
-    if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
+    cameraPhysics.velocityX = 0;
+    cameraPhysics.velocityY = 0;
 
     const rect = container.getBoundingClientRect();
     const mouseX = e.clientX - rect.left;
@@ -410,37 +545,35 @@ function setupInteractiveCameraPan() {
     let delta = -e.deltaY;
     if (e.ctrlKey) delta *= 2.5;
 
-    const zoomFactor = Math.exp(delta * 0.002);
-    const newScale = Math.min(8.0, Math.max(0.65, currentCamera.scale * zoomFactor));
+    const zoomFactor = Math.exp(delta * 0.0018);
+    const newTargetScale = Math.min(8.0, Math.max(0.65, cameraTarget.scale * zoomFactor));
 
-    const rotRad = (currentCamera.rotation || 0) * Math.PI / 180;
+    const rotRad = (cameraTarget.rotation || 0) * Math.PI / 180;
     const cos = Math.cos(-rotRad);
     const sin = Math.sin(-rotRad);
-    const dx = mouseX - currentCamera.panX;
-    const dy = mouseY - currentCamera.panY;
-    const localX = (dx * cos - dy * sin) / currentCamera.scale;
-    const localY = (dx * sin + dy * cos) / currentCamera.scale;
+    const dx = mouseX - cameraTarget.panX;
+    const dy = mouseY - cameraTarget.panY;
+    const localX = (dx * cos - dy * sin) / cameraTarget.scale;
+    const localY = (dx * sin + dy * cos) / cameraTarget.scale;
 
-    const newDx = (localX * newScale) * Math.cos(rotRad) - (localY * newScale) * Math.sin(rotRad);
-    const newDy = (localX * newScale) * Math.sin(rotRad) + (localY * newScale) * Math.cos(rotRad);
+    const newDx = (localX * newTargetScale) * Math.cos(rotRad) - (localY * newTargetScale) * Math.sin(rotRad);
+    const newDy = (localX * newTargetScale) * Math.sin(rotRad) + (localY * newTargetScale) * Math.cos(rotRad);
 
-    currentCamera.panX = mouseX - newDx;
-    currentCamera.panY = mouseY - newDy;
-    currentCamera.scale = newScale;
-    currentCamera.isZoomed = newScale > 1.1;
+    cameraTarget.panX = mouseX - newDx;
+    cameraTarget.panY = mouseY - newDy;
+    cameraTarget.scale = newTargetScale;
+    currentCamera.isZoomed = newTargetScale > 1.1;
 
-    requestPanUpdate();
     updateZoomButtonUI();
   }, { passive: false });
 
+  // --- TOUCH, PINCH-TO-ZOOM & MOBILE INERTIA ---
   let initialTouchDist = 0;
-  let initialScale = 1;
-  let initialTouchAngle = 0;
-  let initialRotation = 0;
+  let startPinchScale = 1;
   let touchStartMidX = 0;
   let touchStartMidY = 0;
-  let touchStartPanX = 0;
-  let touchStartPanY = 0;
+  let startPinchPanX = 0;
+  let startPinchPanY = 0;
 
   container.addEventListener('touchstart', (e) => {
     if (e.touches.length === 1) {
@@ -450,79 +583,88 @@ function setupInteractiveCameraPan() {
 
       isMouseDown = true;
       hasDraggedMap = false;
-      if (NavAnimator.activeCameraAnim) NavAnimator.activeCameraAnim.pause();
+      cameraPhysics.isDragging = true;
+      cameraPhysics.velocityX = 0;
+      cameraPhysics.velocityY = 0;
+
       startMouseX = e.touches[0].clientX;
       startMouseY = e.touches[0].clientY;
-      origPanX = currentCamera.panX;
-      origPanY = currentCamera.panY;
+      startTargetPanX = cameraTarget.panX;
+      startTargetPanY = cameraTarget.panY;
+
+      pointerHistory.length = 0;
+      recordPointerPosition(e.touches[0].clientX, e.touches[0].clientY);
     } else if (e.touches.length === 2) {
       isMouseDown = false;
       hasDraggedMap = true;
+      cameraPhysics.isDragging = true;
+      cameraPhysics.velocityX = 0;
+      cameraPhysics.velocityY = 0;
+
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       initialTouchDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-      initialScale = currentCamera.scale;
-      initialTouchAngle = Math.atan2(t2.clientY - t1.clientY, t2.clientX - t1.clientX) * 180 / Math.PI;
-      initialRotation = currentCamera.rotation || 0;
-      
+      startPinchScale = cameraTarget.scale;
+
       const rect = container.getBoundingClientRect();
       touchStartMidX = ((t1.clientX + t2.clientX) / 2) - rect.left;
       touchStartMidY = ((t1.clientY + t2.clientY) / 2) - rect.top;
-      touchStartPanX = currentCamera.panX;
-      touchStartPanY = currentCamera.panY;
+      startPinchPanX = cameraTarget.panX;
+      startPinchPanY = cameraTarget.panY;
+
+      pointerHistory.length = 0;
+      recordPointerPosition(touchStartMidX, touchStartMidY);
     }
   }, { passive: false });
 
   container.addEventListener('touchmove', (e) => {
     if (typeof activeDraggedNodeId !== 'undefined' && activeDraggedNodeId) {
       isMouseDown = false;
+      cameraPhysics.isDragging = false;
       return;
     }
+
     if (e.touches.length === 1 && isMouseDown) {
       const dx = e.touches[0].clientX - startMouseX;
       const dy = e.touches[0].clientY - startMouseY;
+
       if (!hasDraggedMap && Math.hypot(dx, dy) > DRAG_THRESHOLD) {
         hasDraggedMap = true;
         container.classList.add('is-dragging');
       }
+
       if (hasDraggedMap) {
-        currentCamera.panX = origPanX + dx;
-        currentCamera.panY = origPanY + dy;
-        requestPanUpdate();
+        cameraTarget.panX = startTargetPanX + dx;
+        cameraTarget.panY = startTargetPanY + dy;
+        recordPointerPosition(e.touches[0].clientX, e.touches[0].clientY);
       }
     } else if (e.touches.length === 2) {
       e.preventDefault();
       const t1 = e.touches[0];
       const t2 = e.touches[1];
       const currentDist = Math.hypot(t1.clientX - t2.clientX, t1.clientY - t2.clientY);
-      const currentAngle = Math.atan2(t2.clientY - t1.clientY, t2.clientX - t1.clientX) * 180 / Math.PI;
 
       if (initialTouchDist > 0) {
         const factor = currentDist / initialTouchDist;
-        const newScale = Math.min(8.0, Math.max(0.65, initialScale * factor));
-        
-        const rotRad = (currentCamera.rotation || 0) * Math.PI / 180;
+        const newTargetScale = Math.min(8.0, Math.max(0.65, startPinchScale * factor));
+
+        const rotRad = (cameraTarget.rotation || 0) * Math.PI / 180;
         const cos = Math.cos(-rotRad);
         const sin = Math.sin(-rotRad);
-        const dx = touchStartMidX - touchStartPanX;
-        const dy = touchStartMidY - touchStartPanY;
-        const localX = (dx * cos - dy * sin) / initialScale;
-        const localY = (dx * sin + dy * cos) / initialScale;
+        const dx = touchStartMidX - startPinchPanX;
+        const dy = touchStartMidY - startPinchPanY;
+        const localX = (dx * cos - dy * sin) / startPinchScale;
+        const localY = (dx * sin + dy * cos) / startPinchScale;
 
-        const newDx = (localX * newScale) * Math.cos(rotRad) - (localY * newScale) * Math.sin(rotRad);
-        const newDy = (localX * newScale) * Math.sin(rotRad) + (localY * newScale) * Math.cos(rotRad);
+        const newDx = (localX * newTargetScale) * Math.cos(rotRad) - (localY * newTargetScale) * Math.sin(rotRad);
+        const newDy = (localX * newTargetScale) * Math.sin(rotRad) + (localY * newTargetScale) * Math.cos(rotRad);
 
-        currentCamera.scale = newScale;
-        currentCamera.panX = touchStartMidX - newDx;
-        currentCamera.panY = touchStartMidY - newDy;
-        currentCamera.isZoomed = newScale > 1.1;
+        cameraTarget.scale = newTargetScale;
+        cameraTarget.panX = touchStartMidX - newDx;
+        cameraTarget.panY = touchStartMidY - newDy;
+        currentCamera.isZoomed = newTargetScale > 1.1;
 
-        let deltaAngle = currentAngle - initialTouchAngle;
-        currentCamera.rotation = (initialRotation + deltaAngle) % 360;
-
-        requestPanUpdate();
         updateZoomButtonUI();
-        updateCompassUI();
       }
     }
   }, { passive: false });
@@ -530,8 +672,23 @@ function setupInteractiveCameraPan() {
   container.addEventListener('touchend', (e) => {
     if (e.touches.length === 0) {
       isMouseDown = false;
+      cameraPhysics.isDragging = false;
       container.classList.remove('is-dragging');
+
+      if (hasDraggedMap) {
+        const vel = calculateReleaseVelocity();
+        cameraPhysics.velocityX = vel.vx;
+        cameraPhysics.velocityY = vel.vy;
+      }
+
       setTimeout(() => { hasDraggedMap = false; }, 100);
+    } else if (e.touches.length === 1) {
+      startMouseX = e.touches[0].clientX;
+      startMouseY = e.touches[0].clientY;
+      startTargetPanX = cameraTarget.panX;
+      startTargetPanY = cameraTarget.panY;
+      pointerHistory.length = 0;
+      recordPointerPosition(e.touches[0].clientX, e.touches[0].clientY);
     }
   });
 }
