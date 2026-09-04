@@ -125,7 +125,7 @@ function renderMapOverlay(animate = false) {
 
     const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
     g.setAttribute('class', isEditorMode ? 'map-node-interactive map-node-editable' : 'map-node-interactive');
-    g.style.opacity = isCategoryMatch ? '1' : '0.15';
+    g.style.opacity = '1';
     if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
       g.setAttribute('transform', `rotate(90, ${posX}, ${posY})`);
     }
