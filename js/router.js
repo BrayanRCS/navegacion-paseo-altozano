@@ -529,6 +529,8 @@ function calculateRoute(explicitOrig = null, explicitDest = null) {
       targetIconBox.innerHTML = `<span id="map-target-emoji">${visualInfo.emoji}</span>`;
     }
   }
+  const btnNav = document.getElementById('btn-map-banner-navigate');
+  if (btnNav) btnNav.style.display = 'flex';
 
   // Sync Mobile View Header
   const mTargetTitle = document.getElementById('mobile-target-title');

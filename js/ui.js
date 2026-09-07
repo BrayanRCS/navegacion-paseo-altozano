@@ -228,6 +228,10 @@ function setTotemRoute(destId) {
 }
 
 function showDirectoryView() {
+  if (window.KioskBridge && window.KioskBridge.isEmbedded) {
+    window.KioskBridge.notifyCloseMap();
+    return;
+  }
   currentKioskView = 'directory';
   const dirEl = document.getElementById('view-directory');
   const mapEl = document.getElementById('view-map');
@@ -260,6 +264,8 @@ function showMapView(destId = null) {
       const destSel = document.getElementById('dest-select');
       if (origSel) origSel.value = TOTEM_NODE_ID;
       if (destSel) destSel.value = destId;
+      const btnNav = document.getElementById('btn-map-banner-navigate');
+      if (btnNav) btnNav.style.display = 'flex';
     } else {
       // Exploring / browsing map freely without active route
       stopWalkSimulation();
@@ -276,6 +282,15 @@ function showMapView(destId = null) {
       if (destPinEl) destPinEl.style.display = 'none';
       if (arrowEl) arrowEl.style.display = 'none';
       if (segsBar) segsBar.style.display = 'none';
+
+      const targetTitle = document.getElementById('map-target-title');
+      if (targetTitle) targetTitle.innerText = "Explorando Mapa General";
+      const targetMetrics = document.getElementById('map-target-metrics');
+      if (targetMetrics) targetMetrics.innerText = "Toca cualquier local o servicio para ver detalles o trazar ruta";
+      const targetEmoji = document.getElementById('map-target-emoji');
+      if (targetEmoji) targetEmoji.innerText = "🗺️";
+      const btnNav = document.getElementById('btn-map-banner-navigate');
+      if (btnNav) btnNav.style.display = 'none';
     }
 
     requestAnimationFrame(() => {
@@ -645,6 +660,9 @@ function updatePopupPosition() {
 function showNodePopup(node) {
   if (!node) return;
   selectedPopupNode = node;
+  if (window.KioskBridge && typeof window.KioskBridge.notifySelectTenant === 'function') {
+    window.KioskBridge.notifySelectTenant(node);
+  }
   const popup = document.getElementById('map-node-popup');
   if (!popup) return;
 
@@ -1005,9 +1023,19 @@ function openMobileRouteTab() {
 
 function initFromUrlParams() {
   const params = new URLSearchParams(window.location.search);
-  const orig = params.get('orig') || params.get('origin');
+  const orig = params.get('orig') || params.get('origin') || params.get('totem');
   const dest = params.get('dest') || params.get('destination');
   const mode = params.get('mode');
+  const view = params.get('view');
+  const levelParam = params.get('level');
+  if (levelParam && typeof switchLevel === 'function') {
+    let targetLvl = 2;
+    const u = levelParam.toUpperCase();
+    if (u === 'L0' || u === 'PB' || u === '1') targetLvl = 1;
+    else if (u === 'L1' || u === 'N1' || u === '2') targetLvl = 2;
+    else if (u === 'L2' || u === 'N2' || u === '3') targetLvl = 3;
+    switchLevel(targetLvl, false);
+  }
 
   if (orig && document.getElementById('origin-select')) {
     document.getElementById('origin-select').value = orig;
@@ -1018,6 +1046,8 @@ function initFromUrlParams() {
 
   if (dest) {
     showMapView(dest);
+  } else if (view === 'map' || isEmbedded) {
+    showMapView();
   } else {
     showDirectoryView();
     if (document.getElementById('origin-select')) document.getElementById('origin-select').value = TOTEM_NODE_ID;

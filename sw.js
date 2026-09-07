@@ -3,7 +3,7 @@
  * Guarantees instant live updates when online + 100% standalone offline operation.
  */
 
-const CACHE_NAME = 'altozano-kiosk-v3.5.0';
+const CACHE_NAME = 'altozano-kiosk-v3.7.0';
 
 const PRECACHE_ASSETS = [
   './',
@@ -18,14 +18,12 @@ const PRECACHE_ASSETS = [
   './js/editor.js',
   './js/ui.js',
   './js/app.js',
+  './js/kiosk-bridge.js',
   './mall_graph.json',
   './gemini-code-1787086839436.json',
   './planta-baja-dark.png',
   './planta-uno-dark.png',
-  './planta-dos-dark.png',
-  './planta-baja.png',
-  './planta-uno.png',
-  './planta-dos.png'
+  './planta-dos-dark.png'
 ];
 
 self.addEventListener('install', (event) => {

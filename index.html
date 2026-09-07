@@ -608,10 +608,6 @@
 
           <!-- Floating Camera Controls Toolbar (Top-Right) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 shadow-xl flex-wrap">
-            <button onclick="toggleEditorMode()" id="btn-editor-mode-toggle" title="Editar ubicación visual de logotipos (Drag & Drop)" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-amber-400 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700">
-              <i class="fa-solid fa-arrows-up-down-left-right text-xs"></i>
-              <span id="btn-editor-mode-text">Mover Logos</span>
-            </button>
             <button onclick="toggleMapOrientation()" id="btn-orientation-toggle" title="Alternar Orientación Vertical (Tótem) / Horizontal" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 flex items-center justify-center transition-all border border-slate-700 shadow-md active:scale-95">
               <i id="orientation-icon" class="fa-solid fa-arrows-rotate text-xs"></i>
             </button>
@@ -632,124 +628,6 @@
             <button onclick="manualZoom(0.8)" title="Alejar (Zoom Out)" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition-all">
               <i class="fa-solid fa-minus text-xs"></i>
             </button>
-          </div>
-
-          <!-- Floating Visual Graph & Logo Studio HUD Bar (Visible when isEditorMode is active) -->
-          <div id="editor-hud-bar" class="absolute bottom-3 left-3 right-3 z-30 pointer-events-auto bg-slate-900/95 backdrop-blur-xl border-2 border-amber-500/80 rounded-2xl p-3 shadow-2xl text-white flex flex-col gap-2.5 hidden">
-            
-            <!-- Row 1: Submode Tabs, Selected Node Info & Status -->
-            <div class="flex items-center justify-between gap-2 flex-wrap pb-2 border-b border-slate-800">
-              <div class="flex items-center gap-2">
-                <div class="flex items-center bg-slate-950 p-1 rounded-xl border border-slate-800">
-                  <button id="tab-editor-graph" onclick="setEditorSubMode('graph')" class="px-2.5 py-1 rounded-lg bg-emerald-500 text-slate-950 font-black text-xs shadow-sm transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-circle-nodes"></i> Nodos y Aristas
-                  </button>
-                  <button id="tab-editor-logos" onclick="setEditorSubMode('logos')" class="px-2.5 py-1 rounded-lg bg-slate-800 text-slate-300 hover:text-white text-xs font-bold transition-all flex items-center gap-1.5">
-                    <i class="fa-solid fa-tag"></i> Posición Logos
-                  </button>
-                </div>
-                <span id="editor-hud-submode-badge" class="text-[10px] font-black uppercase tracking-wider px-2 py-0.5 rounded-md bg-emerald-500 text-slate-950">NODOS Y ARISTAS</span>
-              </div>
-
-              <!-- Live Coordinates & Neighbor Count -->
-              <div class="flex items-center gap-3 text-xs font-mono text-amber-300">
-                <span id="editor-hud-coords" class="font-extrabold bg-slate-950 px-2 py-1 rounded-lg border border-slate-800">X: --, Y: --</span>
-                <span id="editor-hud-delta" class="text-slate-400 hidden sm:inline">Selecciona o arrastra cualquier nodo</span>
-              </div>
-            </div>
-
-            <!-- Row 2: Selected Node Title, Name Input, Floor Presets & Interactive Action Buttons -->
-            <div class="flex items-center justify-between gap-2 flex-wrap">
-              <div class="flex items-center gap-2 flex-wrap min-w-0 max-w-full sm:max-w-[55%]">
-                <span id="editor-hud-title" class="text-xs font-extrabold text-white truncate">Toca o arrastra cualquier nodo</span>
-                
-                <!-- Inline Editable Node / Restroom / Escalator Name -->
-                <div id="editor-node-name-container" class="flex items-center gap-1.5">
-                  <input id="editor-node-name-input" type="text" oninput="handleSelectedNodeNameChange(this.value)" placeholder="Nombre del elemento..." title="Cambiar nombre de este nodo/baño/escalera" class="px-2.5 py-1 bg-slate-950 border border-slate-700 rounded-lg text-xs text-amber-300 font-bold focus:border-amber-400 focus:outline-none w-36 sm:w-56">
-                </div>
-
-                                <!-- Escalator / Elevator Twin Code Identifier Bar -->
-                <div id="editor-portal-twin-container" class="flex items-center gap-1.5 flex-wrap hidden bg-slate-950 px-2.5 py-1 rounded-xl border border-sky-500/40 shadow-inner">
-                  <span class="text-[10px] font-black text-sky-400 uppercase flex items-center gap-1">
-                    <i class="fa-solid fa-link text-[10px]"></i> Código Gemelo:
-                  </span>
-                  <input id="editor-node-twin-code-input" type="text" oninput="handleSelectedNodeTwinCodeChange(this.value)" placeholder="ej. ESC-CHEDRAUI, ELEV-01" title="Código único compartido entre la escalera de N1 y su gemela en N2" class="px-2 py-0.5 bg-slate-900 border border-sky-500/50 rounded-lg text-xs text-sky-300 font-mono font-black focus:border-sky-400 focus:outline-none w-32 sm:w-44 uppercase">
-                  <select id="editor-twin-code-select" onchange="handleSelectedNodeTwinCodeChange(this.value)" title="Elegir de códigos existentes en el centro comercial" class="px-1.5 py-0.5 bg-slate-900 border border-slate-700 rounded-lg text-[11px] text-slate-300 font-bold focus:outline-none cursor-pointer">
-                    <option value="">-- Códigos --</option>
-                  </select>
-                  <span id="editor-twin-status-badge" class="text-[10px] font-bold px-2 py-0.5 rounded-md"></span>
-                </div>
-
-                <!-- Escalator / Elevator Floor Presets Bar -->
-                <div id="editor-portal-floor-presets" class="flex items-center gap-1 flex-wrap hidden">
-                  <span class="text-[10px] font-bold text-slate-400 uppercase">Conectar:</span>
-                  <button onclick="setPortalFloorConnection('pb_n1')" title="Escalera/Elevador conecta Planta Baja y Nivel 1" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-sky-300 text-[10px] font-bold border border-slate-700">PB ↔ N1</button>
-                  <button onclick="setPortalFloorConnection('n1_n2')" title="Escalera/Elevador conecta Nivel 1 y Nivel 2" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-sky-300 text-[10px] font-bold border border-slate-700">N1 ↔ N2</button>
-                  <button onclick="setPortalFloorConnection('all')" title="Conecta todos los pisos (Multinivel)" class="px-2 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-emerald-400 text-[10px] font-bold border border-slate-700">PB ↔ N1 ↔ N2</button>
-                  <button onclick="setPortalFloorConnection('pb_only')" class="px-1.5 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold border border-slate-700">Solo PB</button>
-                  <button onclick="setPortalFloorConnection('n1_only')" class="px-1.5 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold border border-slate-700">Solo N1</button>
-                  <button onclick="setPortalFloorConnection('n2_only')" class="px-1.5 py-0.5 rounded-md bg-slate-800 hover:bg-slate-700 text-slate-300 text-[10px] font-bold border border-slate-700">Solo N2</button>
-                </div>
-              </div>
-
-              <!-- Dynamic Action Buttons based on Active Submode -->
-              <div class="flex items-center gap-1.5 flex-wrap">
-                <!-- Graph Mode Tools -->
-                <div id="editor-graph-actions" class="flex items-center gap-1.5 flex-wrap">
-                  <button onclick="createNewWaypointAtCenter()" title="Crear nuevo punto guía (O doble clic en mapa)" class="px-2.5 py-1.5 rounded-xl bg-cyan-600 hover:bg-cyan-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-cyan-600/25">
-                    <i class="fa-solid fa-plus text-xs"></i> + Nodo
-                  </button>
-                  <button onclick="createNewRestroomAtCenter()" title="Insertar nuevo sanitario en este nivel" class="px-2.5 py-1.5 rounded-xl bg-amber-600 hover:bg-amber-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-amber-600/25">
-                    <i class="fa-solid fa-restroom text-xs"></i> + Baño
-                  </button>
-                  <button onclick="createNewElevatorAtCenter()" title="Insertar nuevo elevador/ascensor en este nivel" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-blue-600/25">
-                    <i class="fa-solid fa-elevator text-xs"></i> + Ascensor
-                  </button>
-                  <button onclick="createNewEscalatorAtCenter()" title="Insertar nuevas escaleras eléctricas en este nivel" class="px-2.5 py-1.5 rounded-xl bg-teal-600 hover:bg-teal-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-teal-600/25">
-                    <i class="fa-solid fa-stairs text-xs"></i> + Escalera
-                  </button>
-                  <button onclick="createNewParkingAtCenter()" title="Insertar nuevo acceso a estacionamiento" class="px-2.5 py-1.5 rounded-xl bg-indigo-600 hover:bg-indigo-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-indigo-600/25">
-                    <i class="fa-solid fa-square-parking text-xs"></i> + Parking
-                  </button>
-                  <button onclick="createNewAdminAtCenter()" title="Insertar oficina de administración o servicios" class="px-2.5 py-1.5 rounded-xl bg-purple-600 hover:bg-purple-500 text-white text-xs font-bold transition-all flex items-center gap-1 shadow-md shadow-purple-600/25">
-                    <i class="fa-solid fa-building text-xs"></i> + Admin
-                  </button>
-                  <button id="btn-editor-connect-mode" onclick="toggleConnectMode()" title="Enlazar aristas (Toca nodo A y luego nodo B para unir/desunir)" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold border border-slate-700 transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-link text-xs"></i> Enlazar
-                  </button>
-                  <button onclick="deleteSelectedNode()" title="Eliminar el nodo seleccionado" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-900/80 text-rose-400 hover:text-rose-200 text-xs font-bold border border-slate-700 transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-trash-can text-xs"></i> Borrar
-                  </button>
-                  <button onclick="cleanOrphanWaypoints()" title="Limpiar nodos guía sueltos que no tienen aristas" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-amber-400 text-xs font-bold border border-slate-700 transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-broom text-xs"></i> Limpiar
-                  </button>
-                </div>
-
-                <!-- Logo Mode Tools -->
-                <div id="editor-logo-actions" class="flex items-center gap-1.5 hidden">
-                  <button onclick="resetCurrentFloorLogoPositions()" title="Restablecer logos de este nivel" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-200 text-xs font-bold border border-slate-700 transition-all flex items-center gap-1">
-                    <i class="fa-solid fa-rotate-left text-xs text-rose-400"></i> Restablecer piso
-                  </button>
-                </div>
-
-                <div class="h-4 w-px bg-slate-800 mx-0.5"></div>
-
-                <!-- General Export, Save & Reset Tools -->
-                <button id="btn-editor-manual-save" onclick="manualSaveEditorChanges()" title="Guardar cambios de inmediato en tu navegador" class="px-2.5 py-1.5 rounded-xl bg-slate-800 hover:bg-slate-700 text-emerald-400 text-xs font-bold border border-slate-700 transition-all flex items-center gap-1 shadow-sm">
-                  <i class="fa-solid fa-floppy-disk text-xs"></i> Guardar
-                </button>
-                <button onclick="openExportLogoPositionsModal()" title="Exportar mall_graph.json o descargar archivo" class="px-2.5 py-1.5 rounded-xl bg-blue-600 hover:bg-blue-500 text-white text-xs font-extrabold shadow-md shadow-blue-600/30 transition-all flex items-center gap-1">
-                  <i class="fa-solid fa-file-code text-xs"></i> Exportar JSON
-                </button>
-                <button onclick="resetEntireGraphToFactory()" title="Restablecer todo a versión original de fábrica" class="px-2 py-1.5 rounded-xl bg-slate-800 hover:bg-rose-950 text-rose-400 hover:text-rose-200 text-xs font-bold border border-slate-700 transition-all">
-                  <i class="fa-solid fa-arrows-rotate text-xs"></i>
-                </button>
-                <button onclick="toggleEditorMode()" class="px-3 py-1.5 rounded-xl bg-amber-500 hover:bg-amber-400 text-slate-950 text-xs font-black shadow-md transition-all flex items-center gap-1">
-                  <i class="fa-solid fa-check text-xs"></i> Salir
-                </button>
-              </div>
-            </div>
-
           </div>
 
           <!-- Floating Google Maps Style Node Info Popup -->
@@ -971,55 +849,21 @@
       </div>
     </div>
   </div>
-
-  <!-- VISUAL GRAPH & LOGO STUDIO EXPORT JSON MODAL -->
-  <div id="editor-export-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md flex items-center justify-center p-4 hidden">
-    <div class="bg-slate-900 border border-amber-500/40 rounded-3xl p-6 max-w-2xl w-full shadow-2xl relative flex flex-col gap-3">
-      <div class="flex items-center justify-between pb-2 border-b border-slate-800">
-        <div class="flex items-center gap-2">
-          <i class="fa-solid fa-code text-amber-400 text-base"></i>
-          <h3 class="text-base font-extrabold text-white">Grafo Actualizado (mall_graph.json)</h3>
-        </div>
-        <button onclick="closeExportLogoPositionsModal()" class="w-8 h-8 rounded-full bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white flex items-center justify-center text-sm">
-          <i class="fa-solid fa-xmark"></i>
-        </button>
-      </div>
-
-      <p class="text-xs text-slate-300">
-        Este JSON contiene el grafo completo y actualizado con todos los nodos, aristas y modificaciones que hiciste en tiempo real. Puedes copiarlo o descargarlo directamente como archivo <code class="text-amber-300 bg-slate-950 px-1 py-0.5 rounded">mall_graph.json</code>.
-      </p>
-
-      <textarea id="editor-export-json" readonly rows="12" class="w-full bg-slate-950 border border-slate-800 rounded-xl p-3 font-mono text-[11px] text-emerald-300 focus:outline-none select-all"></textarea>
-
-      <div class="flex items-center justify-between gap-2 pt-2 flex-wrap">
-        <button onclick="downloadMallGraphJsonFile()" class="px-4 py-2 bg-emerald-600 hover:bg-emerald-500 text-white font-black rounded-xl text-xs shadow-lg shadow-emerald-600/25 flex items-center gap-1.5">
-          <i class="fa-solid fa-download"></i> Descargar mall_graph.json
-        </button>
-
-        <div class="flex items-center gap-2">
-          <button onclick="closeExportLogoPositionsModal()" class="px-4 py-2 bg-slate-800 hover:bg-slate-700 text-slate-200 rounded-xl text-xs font-bold border border-slate-700">
-            Cerrar
-          </button>
-          <button id="btn-copy-export-json" onclick="copyExportedJson()" class="px-4 py-2 bg-amber-500 hover:bg-amber-400 text-slate-950 font-black rounded-xl text-xs shadow-lg shadow-amber-500/25 flex items-center gap-1.5">
-            <i class="fa-solid fa-copy"></i> Copiar JSON
-          </button>
-        </div>
-      </div>
-    </div>
   </div>
 
   <!-- ======================================================== -->
   <!-- MODULAR JAVASCRIPT ARCHITECTURE                          -->
   <!-- ======================================================== -->
-  <script src="js/config.js?v=3.5.0"></script>
-  <script src="js/state.js?v=3.5.0"></script>
-  <script src="js/animator.js?v=3.5.0"></script>
-  <script src="js/camera.js?v=3.5.0"></script>
-  <script src="js/router.js?v=3.5.0"></script>
-  <script src="js/renderer.js?v=3.5.0"></script>
-  <script src="js/simulation.js?v=3.5.0"></script>
-  <script src="js/editor.js?v=3.5.0"></script>
-  <script src="js/ui.js?v=3.5.0"></script>
-  <script src="js/app.js?v=3.5.0"></script>
+  <script src="js/config.js?v=3.7.0"></script>
+  <script src="js/state.js?v=3.7.0"></script>
+  <script src="js/animator.js?v=3.7.0"></script>
+  <script src="js/camera.js?v=3.7.0"></script>
+  <script src="js/router.js?v=3.7.0"></script>
+  <script src="js/renderer.js?v=3.7.0"></script>
+  <script src="js/simulation.js?v=3.7.0"></script>
+  <script src="js/editor.js?v=3.7.0"></script>
+  <script src="js/ui.js?v=3.7.0"></script>
+  <script src="js/app.js?v=3.7.0"></script>
+  <script src="js/kiosk-bridge.js?v=3.7.0"></script>
 </body>
 </html>

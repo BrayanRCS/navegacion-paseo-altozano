@@ -1,0 +1,15 @@
+{
+  "projects": {
+    "default": "naranti-smartcity"
+  },
+  "targets": {
+    "naranti-smartcity": {
+      "hosting": {
+        "mapa-altozano": [
+          "mapa-altozano"
+        ]
+      }
+    }
+  },
+  "etags": {}
+}
