@@ -196,50 +196,7 @@
     </div>
   </div>
 
-  <!-- TOP APP BAR: PASEO ALTOZANO LUXURY EDITION -->
-  <header class="border-b border-emerald-500/20 bg-gradient-to-r from-[#06151b] via-[#09131f] to-[#06151b] sticky top-0 z-50 backdrop-blur-xl px-5 md:px-8 py-3.5 flex items-center justify-between shadow-2xl">
-    <div class="flex items-center gap-3.5">
-      <div class="w-10 h-10 rounded-2xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-400 p-0.5 shadow-lg shadow-emerald-500/25 flex items-center justify-center flex-shrink-0">
-        <div class="w-full h-full bg-slate-950/90 rounded-[14px] flex items-center justify-center">
-          <i class="fa-solid fa-compass text-emerald-400 text-lg animate-pulse"></i>
-        </div>
-      </div>
-      <div>
-        <div class="flex items-center gap-2">
-          <h1 class="text-sm md:text-base font-black text-white tracking-wider">
-            PASEO ALTOZANO
-          </h1>
-          <span class="text-[10px] font-extrabold px-2 py-0.5 bg-emerald-500/15 text-emerald-300 rounded-full border border-emerald-500/30 tracking-widest uppercase shadow-sm">
-            Navegación GPS
-          </span>
-        </div>
-        <p class="text-[11px] text-slate-400 font-medium hidden sm:block">Directorio Digital & Señalética Interactiva A*</p>
-      </div>
-    </div>
 
-    <!-- Header Actions & Totem Location Indicator -->
-    <div class="flex items-center gap-2.5 text-xs flex-wrap">
-      <button id="btn-header-directory" onclick="showDirectoryView()" class="px-3.5 py-2 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-extrabold flex items-center gap-2 shadow-lg transition-all active:scale-95 border border-slate-700 cursor-pointer">
-        <i class="fa-solid fa-store text-sky-400 text-sm"></i>
-        <span>Volver al Directorio</span>
-      </button>
-
-      <button id="btn-header-navigate" onclick="toggleWalkSimulation()" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 hover:from-blue-500 hover:to-sky-400 text-white font-extrabold flex items-center gap-2 shadow-lg shadow-sky-500/25 transition-all active:scale-95 border border-sky-400/40 cursor-pointer">
-        <i id="btn-header-nav-icon" class="fa-solid fa-location-arrow text-sm"></i>
-        <span id="btn-header-nav-text">Iniciar Ruta (GPS)</span>
-      </button>
-
-      <button onclick="showQrModal()" class="px-4 py-2 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold flex items-center gap-2 shadow-lg shadow-emerald-500/25 transition-all active:scale-95 border border-emerald-400/40 cursor-pointer">
-        <i class="fa-solid fa-qrcode text-sm"></i> <span>Llevar a Celular (QR)</span>
-      </button>
-
-      <div class="hidden md:flex px-3.5 py-2 rounded-2xl bg-slate-900/90 border border-slate-700/80 items-center gap-2.5 shadow-inner">
-        <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-        <span class="text-slate-400 font-medium">Tótem:</span>
-        <span class="text-rose-400 font-black">Punto 12 · Nivel 1</span>
-      </div>
-    </div>
-  </header>
 
   <!-- MAIN WORKSPACE: VERTICAL KIOSK PORTRAIT FLOW (SCREEN 1: DIRECTORY -> SCREEN 2: MAP) -->
   <main class="flex-1 w-full max-w-[1750px] mx-auto p-2 sm:p-3 md:p-4 flex flex-col gap-3">
@@ -353,72 +310,10 @@
     <!-- ======================================================== -->
     <!-- SCREEN 2: MAPA Y NAVEGACIÓN DE RUTA (PANTALLA DE RUTA)  -->
     <!-- ======================================================== -->
-    <div id="view-map" class="flex flex-col gap-4 hidden">
+    <div id="view-map" class="flex flex-col gap-3.5 hidden flex-1">
       
-      <!-- Top Map Navigation Bar (Back to Directory + Route Info + QR) -->
-      <div class="bg-slate-900/90 backdrop-blur-xl rounded-3xl p-4 border border-slate-800 shadow-xl flex flex-col gap-3">
-        <div class="flex items-center justify-between gap-2">
-          <!-- Back Button to Directory -->
-          <button onclick="showDirectoryView()" class="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-bold text-xs flex items-center gap-2 border border-slate-700 shadow-md transition-all active:scale-95">
-            <i class="fa-solid fa-arrow-left text-sky-400"></i>
-            <span>Volver al Directorio</span>
-          </button>
-
-          <!-- Floor Switcher in Map -->
-          <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
-            <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
-              PB
-            </button>
-            <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md">
-              Nivel 1
-            </button>
-            <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white">
-              Nivel 2
-            </button>
-          </div>
-        </div>
-
-        <!-- Destination Info Banner & QR Action -->
-        <div class="bg-slate-950/90 rounded-2xl p-3.5 border border-slate-800 flex items-center justify-between gap-3 shadow-inner">
-          <div class="flex items-center gap-3 min-w-0">
-            <div id="map-target-icon-box" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-700 flex items-center justify-center text-2xl shadow-md flex-shrink-0">
-              <span id="map-target-emoji">🎯</span>
-            </div>
-            <div class="truncate">
-              <span class="text-[10px] uppercase font-extrabold text-sky-400 tracking-wider block">DESTINO SELECCIONADO</span>
-              <h3 id="map-target-title" class="text-base font-black text-white truncate">Liverpool</h3>
-              <p id="map-target-metrics" class="text-xs text-emerald-400 font-bold mt-0.5">85 m · ~1 min a pie</p>
-            </div>
-          </div>
-
-          <!-- Action Buttons Group (Volver al Directorio + Iniciar Ruta GPS + Llevar a Celular) -->
-          <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
-            <button onclick="showDirectoryView()" class="px-3.5 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-slate-200 hover:text-white font-extrabold text-xs shadow-md flex items-center gap-2 transition-all active:scale-95 border border-slate-700 cursor-pointer">
-              <i class="fa-solid fa-arrow-left text-sky-400 text-sm"></i>
-              <span>Volver al Directorio</span>
-            </button>
-            <button id="btn-map-banner-navigate" onclick="toggleWalkSimulation()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 hover:from-blue-500 hover:to-sky-400 text-white font-extrabold text-xs shadow-lg shadow-sky-500/25 flex items-center gap-2 transition-all active:scale-95 border border-sky-400/40 cursor-pointer">
-              <i id="btn-map-banner-nav-icon" class="fa-solid fa-location-arrow text-sm"></i>
-              <span id="btn-map-banner-nav-text">Iniciar Ruta (GPS)</span>
-            </button>
-            <button onclick="showQrModal()" class="px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition-all active:scale-95 border border-emerald-400/30 flex-shrink-0 cursor-pointer">
-              <i class="fa-solid fa-qrcode text-base"></i>
-              <span class="hidden sm:inline">Llevar en Celular</span>
-            </button>
-          </div>
-        </div>
-
-        <!-- Multi-floor Segment Chips (Tramos de la Ruta) -->
-        <div id="route-segments-bar" class="flex flex-wrap items-center gap-2 pt-1 text-xs" style="display: none;">
-          <span class="text-slate-400 font-bold flex items-center gap-1.5">
-            <i class="fa-solid fa-layer-group text-sky-400"></i> Tramos:
-          </span>
-          <div id="segments-container" class="flex flex-wrap gap-2"></div>
-        </div>
-      </div>
-
-      <!-- 2D MAP CANVAS WITH DYNAMIC CAMERA ZOOM -->
-      <div class="bg-slate-900/85 backdrop-blur-xl rounded-3xl p-4 border border-slate-800 relative flex flex-col min-h-[480px]">
+      <!-- 2D MAP CANVAS WITH DYNAMIC CAMERA ZOOM (TOP & EYE LEVEL ZONE) -->
+      <div class="bg-slate-900/85 backdrop-blur-xl rounded-3xl p-3 sm:p-4 border border-slate-800 relative flex flex-col flex-1 min-h-[480px]">
         
         <!-- Header Bar with Map Level & Controls -->
         <div class="flex items-center justify-between mb-2 text-xs flex-wrap gap-2">
@@ -434,44 +329,18 @@
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Tienda</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Isla</span>
           </div>
-        <!-- QUICK CATEGORY FILTER CHIPS FOR MAP -->
-        <div class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-1 text-xs select-none scrollbar-none" id="map-category-filter-chips">
-          <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="px-3.5 py-1.5 rounded-xl font-black bg-blue-600 text-white shadow-md cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all scale-105 border border-sky-400">
-            <span>🏢 Todos</span>
-          </button>
-          <button onclick="filterMapCategory('food')" id="map-cat-chip-food" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>🍔 Comida</span>
-          </button>
-          <button onclick="filterMapCategory('coffee')" id="map-cat-chip-coffee" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>☕ Cafés</span>
-          </button>
-          <button onclick="filterMapCategory('fashion')" id="map-cat-chip-fashion" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>👗 Moda</span>
-          </button>
-          <button onclick="filterMapCategory('anchor')" id="map-cat-chip-anchor" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>🏬 Anclas</span>
-          </button>
-          <button onclick="filterMapCategory('beauty')" id="map-cat-chip-beauty" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>✨ Belleza</span>
-          </button>
-          <button onclick="filterMapCategory('tech')" id="map-cat-chip-tech" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>📱 Tech</span>
-          </button>
-          <button onclick="filterMapCategory('portal')" id="map-cat-chip-portal" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-            <span>🛎️ Servicios</span>
-          </button>
         </div>
 
         <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Near Full-Screen Format) -->
-        <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="height: 72vh; min-height: 580px; max-height: 84vh;">
+        <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="height: 68vh; min-height: 520px; max-height: 78vh;">
           
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
             <!-- Background Floor Plan Layers (Zero-Flicker GPU Layer Stack) -->
-            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.8.0" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.8.0" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
-            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.8.0" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.8.0" alt="Plano Paseo Altozano" class="hidden">
+            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.9.0" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.9.0" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
+            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.9.0" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.9.0" alt="Plano Paseo Altozano" class="hidden">
             
             <!-- Interactive SVG Overlay Layer -->
             <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
@@ -696,6 +565,96 @@
           </div>
         </div>
 
+      </div>
+
+      <!-- BOTTOM NAVIGATION & CONTROL TOOLBAR (ERGONOMIC TOUCH ZONE FOR VERTICAL KIOSK) -->
+      <div class="bg-slate-900/95 backdrop-blur-xl rounded-3xl p-3.5 sm:p-4 border border-slate-800 shadow-2xl flex flex-col gap-3 mt-auto">
+        
+        <!-- Controls Row: Back Button + Floor Switcher + Category Filter Chips -->
+        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 pb-2.5 border-b border-slate-800/80">
+          <div class="flex items-center justify-between sm:justify-start gap-2.5">
+            <!-- Back Button to Directory -->
+            <button onclick="showDirectoryView()" class="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs flex items-center gap-2 border border-slate-700 shadow-md transition-all active:scale-95 cursor-pointer">
+              <i class="fa-solid fa-arrow-left text-sky-400"></i>
+              <span>Volver al Directorio</span>
+            </button>
+
+            <!-- Floor Switcher in Map -->
+            <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
+              <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white cursor-pointer">
+                PB
+              </button>
+              <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md cursor-pointer">
+                Nivel 1
+              </button>
+              <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white cursor-pointer">
+                Nivel 2
+              </button>
+            </div>
+          </div>
+
+          <!-- Quick Category Filter Chips in Lower Reach Zone -->
+          <div class="flex items-center gap-2 overflow-x-auto py-1 text-xs select-none scrollbar-none" id="map-category-filter-chips">
+            <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="px-3.5 py-1.5 rounded-xl font-black bg-blue-600 text-white shadow-md cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all scale-105 border border-sky-400">
+              <span>🏢 Todos</span>
+            </button>
+            <button onclick="filterMapCategory('food')" id="map-cat-chip-food" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>🍔 Comida</span>
+            </button>
+            <button onclick="filterMapCategory('coffee')" id="map-cat-chip-coffee" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>☕ Cafés</span>
+            </button>
+            <button onclick="filterMapCategory('fashion')" id="map-cat-chip-fashion" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>👗 Moda</span>
+            </button>
+            <button onclick="filterMapCategory('anchor')" id="map-cat-chip-anchor" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>🏬 Anclas</span>
+            </button>
+            <button onclick="filterMapCategory('beauty')" id="map-cat-chip-beauty" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>✨ Belleza</span>
+            </button>
+            <button onclick="filterMapCategory('tech')" id="map-cat-chip-tech" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>📱 Tech</span>
+            </button>
+            <button onclick="filterMapCategory('portal')" id="map-cat-chip-portal" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+              <span>🛎️ Servicios</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Destination Info Banner & Action Buttons -->
+        <div class="bg-slate-950/90 rounded-2xl p-3 sm:p-3.5 border border-slate-800 flex items-center justify-between gap-3 shadow-inner">
+          <div class="flex items-center gap-3 min-w-0">
+            <div id="map-target-icon-box" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-700 flex items-center justify-center text-2xl shadow-md flex-shrink-0">
+              <span id="map-target-emoji">🎯</span>
+            </div>
+            <div class="truncate">
+              <span class="text-[10px] uppercase font-extrabold text-sky-400 tracking-wider block">DESTINO SELECCIONADO</span>
+              <h3 id="map-target-title" class="text-base font-black text-white truncate">Liverpool</h3>
+              <p id="map-target-metrics" class="text-xs text-emerald-400 font-bold mt-0.5">85 m · ~1 min a pie</p>
+            </div>
+          </div>
+
+          <!-- Action Buttons Group (Iniciar Ruta GPS + Llevar a Celular) -->
+          <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
+            <button id="btn-map-banner-navigate" onclick="toggleWalkSimulation()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 hover:from-blue-500 hover:to-sky-400 text-white font-extrabold text-xs shadow-lg shadow-sky-500/25 flex items-center gap-2 transition-all active:scale-95 border border-sky-400/40 cursor-pointer">
+              <i id="btn-map-banner-nav-icon" class="fa-solid fa-location-arrow text-sm"></i>
+              <span id="btn-map-banner-nav-text">Iniciar Ruta (GPS)</span>
+            </button>
+            <button onclick="showQrModal()" class="px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition-all active:scale-95 border border-emerald-400/30 flex-shrink-0 cursor-pointer">
+              <i class="fa-solid fa-qrcode text-base"></i>
+              <span class="hidden sm:inline">Llevar en Celular</span>
+            </button>
+          </div>
+        </div>
+
+        <!-- Multi-floor Segment Chips (Tramos de la Ruta) -->
+        <div id="route-segments-bar" class="flex flex-wrap items-center gap-2 pt-1 text-xs" style="display: none;">
+          <span class="text-slate-400 font-bold flex items-center gap-1.5">
+            <i class="fa-solid fa-layer-group text-sky-400"></i> Tramos:
+          </span>
+          <div id="segments-container" class="flex flex-wrap gap-2"></div>
+        </div>
       </div>
 
     </div>

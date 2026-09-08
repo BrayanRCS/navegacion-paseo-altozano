@@ -2,7 +2,7 @@
  * Paseo Altozano · Configuration & Constants Module
  */
 
-const APP_CACHE_VERSION = 'v3.8.0';
+const APP_CACHE_VERSION = 'v3.9.0';
 const TOTEM_NODE_ID = 'n_totem_12';
 const LOCAL_NETWORK_IP = '192.168.1.121';
 const WALK_STEP_DURATION = 550;
@@ -11,7 +11,7 @@ const NAVIGATION_ZOOM_LEVEL = 1.85;
 const FLOOR_SPECS = {
   1: {
     name: "Planta Baja · Nivel Inferior",
-    img: "planta-baja-dark.png?v=3.8.0",
+    img: "planta-baja-dark.png?v=3.9.0",
     count: "28 locales · 3 islas",
     width: 1536,
     height: 727,
@@ -19,7 +19,7 @@ const FLOOR_SPECS = {
   },
   2: {
     name: "Planta 1 · Nivel Principal (Ubicación del Tótem 📍)",
-    img: "planta-uno-dark.png?v=3.8.0",
+    img: "planta-uno-dark.png?v=3.9.0",
     count: "63 locales · 12 islas · 1 Tótem",
     width: 1536,
     height: 718,
@@ -27,7 +27,7 @@ const FLOOR_SPECS = {
   },
   3: {
     name: "Planta 2 · Nivel Superior",
-    img: "planta-dos-dark.png?v=3.8.0",
+    img: "planta-dos-dark.png?v=3.9.0",
     count: "28 locales · Restaurantes / Cines",
     width: 1536,
     height: 669,
