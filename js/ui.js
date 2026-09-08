@@ -413,6 +413,24 @@ function filterByFloor(floor) {
   renderLegendList();
 }
 
+function filterMapCategory(catId) {
+  currentCategoryFilter = catId;
+  const chipsContainer = document.getElementById('map-category-filter-chips');
+  if (chipsContainer) {
+    chipsContainer.querySelectorAll('button').forEach(btn => {
+      const isTarget = btn.id === `map-cat-chip-${catId}`;
+      if (isTarget) {
+        btn.className = "px-3.5 py-1.5 rounded-xl font-black bg-blue-600 text-white shadow-md cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all scale-105 border border-sky-400";
+      } else {
+        btn.className = "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all";
+      }
+    });
+  }
+  if (typeof renderMapOverlay === 'function') {
+    renderMapOverlay();
+  }
+}
+
 function clearSearchInput() {
   const input = document.getElementById('legend-search-input');
   const clearBtn = document.getElementById('legend-search-clear-btn');
@@ -1043,6 +1061,8 @@ function initFromUrlParams() {
   if (dest && document.getElementById('dest-select')) {
     document.getElementById('dest-select').value = dest;
   }
+
+  const isEmbedded = (window.self !== window.top) || (window.KioskBridge && window.KioskBridge.isEmbedded);
 
   if (dest) {
     showMapView(dest);

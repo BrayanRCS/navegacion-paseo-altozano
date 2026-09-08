@@ -434,6 +434,32 @@
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Tienda</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Isla</span>
           </div>
+        <!-- QUICK CATEGORY FILTER CHIPS FOR MAP -->
+        <div class="flex items-center gap-2 overflow-x-auto pb-2.5 pt-1 text-xs select-none scrollbar-none" id="map-category-filter-chips">
+          <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="px-3.5 py-1.5 rounded-xl font-black bg-blue-600 text-white shadow-md cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all scale-105 border border-sky-400">
+            <span>🏢 Todos</span>
+          </button>
+          <button onclick="filterMapCategory('food')" id="map-cat-chip-food" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>🍔 Comida</span>
+          </button>
+          <button onclick="filterMapCategory('coffee')" id="map-cat-chip-coffee" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>☕ Cafés</span>
+          </button>
+          <button onclick="filterMapCategory('fashion')" id="map-cat-chip-fashion" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>👗 Moda</span>
+          </button>
+          <button onclick="filterMapCategory('anchor')" id="map-cat-chip-anchor" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>🏬 Anclas</span>
+          </button>
+          <button onclick="filterMapCategory('beauty')" id="map-cat-chip-beauty" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>✨ Belleza</span>
+          </button>
+          <button onclick="filterMapCategory('tech')" id="map-cat-chip-tech" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>📱 Tech</span>
+          </button>
+          <button onclick="filterMapCategory('portal')" id="map-cat-chip-portal" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
+            <span>🛎️ Servicios</span>
+          </button>
         </div>
 
         <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Near Full-Screen Format) -->
@@ -442,10 +468,10 @@
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
             <!-- Background Floor Plan Layers (Zero-Flicker GPU Layer Stack) -->
-            <img id="floor-plan-img-1" src="planta-baja-dark.png" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img-2" src="planta-uno-dark.png" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
-            <img id="floor-plan-img-3" src="planta-dos-dark.png" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img" src="planta-uno-dark.png" alt="Plano Paseo Altozano" class="hidden">
+            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.8.0" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.8.0" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
+            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.8.0" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.8.0" alt="Plano Paseo Altozano" class="hidden">
             
             <!-- Interactive SVG Overlay Layer -->
             <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
@@ -854,16 +880,16 @@
   <!-- ======================================================== -->
   <!-- MODULAR JAVASCRIPT ARCHITECTURE                          -->
   <!-- ======================================================== -->
-  <script src="js/config.js?v=3.7.0"></script>
-  <script src="js/state.js?v=3.7.0"></script>
-  <script src="js/animator.js?v=3.7.0"></script>
-  <script src="js/camera.js?v=3.7.0"></script>
-  <script src="js/router.js?v=3.7.0"></script>
-  <script src="js/renderer.js?v=3.7.0"></script>
-  <script src="js/simulation.js?v=3.7.0"></script>
-  <script src="js/editor.js?v=3.7.0"></script>
-  <script src="js/ui.js?v=3.7.0"></script>
-  <script src="js/app.js?v=3.7.0"></script>
-  <script src="js/kiosk-bridge.js?v=3.7.0"></script>
+  <script src="js/config.js?v=3.8.0"></script>
+  <script src="js/state.js?v=3.8.0"></script>
+  <script src="js/animator.js?v=3.8.0"></script>
+  <script src="js/camera.js?v=3.8.0"></script>
+  <script src="js/router.js?v=3.8.0"></script>
+  <script src="js/renderer.js?v=3.8.0"></script>
+  <script src="js/simulation.js?v=3.8.0"></script>
+  <script src="js/editor.js?v=3.8.0"></script>
+  <script src="js/ui.js?v=3.8.0"></script>
+  <script src="js/app.js?v=3.8.0"></script>
+  <script src="js/kiosk-bridge.js?v=3.8.0"></script>
 </body>
 </html>

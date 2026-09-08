@@ -406,6 +406,16 @@ function renderMapOverlay(animate = false) {
       g.appendChild(circle);
     }
 
+    if (!isCategoryMatch) {
+      g.style.opacity = '0.22';
+      g.style.filter = 'grayscale(80%)';
+      g.style.pointerEvents = 'none';
+    } else {
+      g.style.opacity = '1';
+      g.style.filter = 'none';
+      g.style.pointerEvents = 'all';
+    }
+
     nodesLayer.appendChild(g);
   });
 
