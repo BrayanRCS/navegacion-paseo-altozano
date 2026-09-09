@@ -63,6 +63,8 @@ function applyMapOrientation() {
   const icon = document.getElementById('orientation-icon');
   const isMobile = document.body.classList.contains('mobile-navigation-mode');
 
+  if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = isVerticalMode;
+
   if (isVerticalMode) {
     if (container && !isMobile) {
       container.style.aspectRatio = 'auto';
@@ -72,6 +74,7 @@ function applyMapOrientation() {
     }
     if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-sky-400";
     currentCamera.rotation = -90;
+    cameraTarget.rotation = -90;
   } else {
     if (container && !isMobile) {
       container.style.aspectRatio = 'auto';
@@ -81,6 +84,7 @@ function applyMapOrientation() {
     }
     if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-slate-400";
     currentCamera.rotation = 0;
+    cameraTarget.rotation = 0;
   }
 
   cachedViewport = null;

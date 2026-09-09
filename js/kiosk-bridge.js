@@ -132,8 +132,6 @@
         window.routeSegments = [];
         window.currentSteps = [];
         window.currentStepIndex = 0;
-        window.isVerticalMode = true;
-        if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = true;
         let lvl = kioskLevel || 2;
         if (typeof lvl === 'string') {
           const u = lvl.toUpperCase();
@@ -155,8 +153,6 @@
       }
 
       case 'INIT_TOTEM': {
-        window.isVerticalMode = true;
-        if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = true;
         const targetTotemId = totemId || event.data.deviceId || 'n_totem_12';
         if (targetTotemId && typeof window.setActiveTotemId === 'function') {
           window.setActiveTotemId(targetTotemId, false);

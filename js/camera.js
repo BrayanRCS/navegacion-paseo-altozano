@@ -53,7 +53,7 @@ const cameraTarget = {
   panX: 0,
   panY: 0,
   scale: 1.0,
-  rotation: -90
+  rotation: 0
 };
 
 const cameraPhysics = {
@@ -380,10 +380,6 @@ function zoomToOverview(animate = true) {
 }
 
 function zoomToTotem(animate = true, scale = 2.6, duration = 650) {
-  isVerticalMode = true;
-  if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = true;
-  cameraTarget.rotation = -90;
-
   let totemNode = null;
   const totemId = window.TOTEM_NODE_ID || 'n_totem_12';
   if (window.mallGraph && Array.isArray(window.mallGraph.nodes)) {

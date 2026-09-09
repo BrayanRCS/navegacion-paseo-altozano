@@ -12,7 +12,7 @@ const AltozanoState = {
   // Navigation & Routing state
   currentLevel: 2,
   currentView: 'directory', // 'directory' | 'map'
-  isVerticalMode: true,
+  isVerticalMode: false,
   showStoresAndRestaurants: true,
   currentCategoryFilter: 'all',
   
@@ -26,7 +26,7 @@ const AltozanoState = {
     scale: 1.0,
     panX: 0,
     panY: 0,
-    rotation: -90, // -90 for vertical mode default
+    rotation: 0, // 0 for horizontal default view
     isZoomed: false
   },
   isFollowingGPS: true,
