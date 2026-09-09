@@ -83,8 +83,26 @@
     }
   };
 
-  // 3. Incoming orders from React Host Screen (Host -> Map)
+  // 3. Incoming orders from React Host Screen (Host -> Map) with Secure Origin Verification
+  const ALLOWED_HOST_ORIGIN_PATTERNS = [
+    /^https:\/\/naranti-smartcity\.web\.app$/,
+    /^https:\/\/mapa-altozano\.web\.app$/,
+    /^https:\/\/.*\.firebaseapp\.com$/,
+    /^http:\/\/localhost(:\d+)?$/,
+    /^http:\/\/127\.0\.0\.1(:\d+)?$/,
+    /^tauri:\/\/localhost$/
+  ];
+
+  function isHostOriginAllowed(origin) {
+    if (!origin) return false;
+    if (origin === window.location.origin) return true;
+    return ALLOWED_HOST_ORIGIN_PATTERNS.some(function (pattern) {
+      return pattern.test(origin);
+    });
+  }
+
   window.addEventListener('message', function (event) {
+    if (!isHostOriginAllowed(event.origin)) return;
     if (!event.data || typeof event.data !== 'object') return;
     const { type, localId, storeId, storeName, level, totemId, kioskLevel, kioskNode } = event.data;
 

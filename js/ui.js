@@ -68,9 +68,10 @@ function applyMapOrientation() {
   if (isVerticalMode) {
     if (container && !isMobile) {
       container.style.aspectRatio = 'auto';
-      container.style.height = 'calc(100vh - 330px)';
-      container.style.minHeight = '280px';
-      container.style.maxHeight = 'calc(100vh - 310px)';
+      container.style.height = '100%';
+      container.style.flex = '1 1 0%';
+      container.style.minHeight = '220px';
+      container.style.maxHeight = 'none';
     }
     if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-sky-400";
     currentCamera.rotation = -90;
@@ -78,9 +79,10 @@ function applyMapOrientation() {
   } else {
     if (container && !isMobile) {
       container.style.aspectRatio = 'auto';
-      container.style.height = 'calc(100vh - 330px)';
-      container.style.minHeight = '280px';
-      container.style.maxHeight = 'calc(100vh - 310px)';
+      container.style.height = '100%';
+      container.style.flex = '1 1 0%';
+      container.style.minHeight = '220px';
+      container.style.maxHeight = 'none';
     }
     if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-slate-400";
     currentCamera.rotation = 0;
@@ -247,6 +249,7 @@ function showDirectoryView() {
     return;
   }
   currentKioskView = 'directory';
+  document.body.classList.remove('map-view-active');
   const dirEl = document.getElementById('view-directory');
   const mapEl = document.getElementById('view-map');
   if (dirEl && mapEl) {
@@ -266,6 +269,7 @@ function showDirectoryView() {
 
 function showMapView(destId = null) {
   currentKioskView = 'map';
+  document.body.classList.add('map-view-active');
   const dirEl = document.getElementById('view-directory');
   const mapEl = document.getElementById('view-map');
   if (dirEl && mapEl) {

@@ -163,6 +163,19 @@
     ::-webkit-scrollbar-track { background: #0f172a; }
     ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
     ::-webkit-scrollbar-thumb:hover { background: #475569; }
+
+    /* Fluid Viewport Adaptiveness for Totem / Kiosk Screens */
+    body.map-view-active {
+      height: 100vh;
+      max-height: 100vh;
+      overflow: hidden;
+    }
+    body.map-view-active main {
+      height: 100%;
+      max-height: 100%;
+      overflow: hidden;
+      padding: 0.5rem;
+    }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
@@ -309,13 +322,13 @@
     <!-- ======================================================== -->
     <!-- SCREEN 2: MAPA Y NAVEGACIÓN DE RUTA (PANTALLA DE RUTA)  -->
     <!-- ======================================================== -->
-    <div id="view-map" class="flex flex-col gap-3.5 hidden flex-1">
+    <div id="view-map" class="h-full flex-1 flex flex-col justify-between gap-2 sm:gap-2.5 overflow-hidden hidden">
       
       <!-- 2D MAP CANVAS WITH DYNAMIC CAMERA ZOOM (TOP & EYE LEVEL ZONE) -->
-      <div class="bg-slate-900/85 backdrop-blur-xl rounded-3xl p-3 sm:p-4 border border-slate-800 relative flex flex-col flex-1 min-h-0">
+      <div class="bg-slate-900/85 backdrop-blur-xl rounded-3xl p-3 sm:p-3.5 border border-slate-800 relative flex flex-col flex-1 min-h-0 overflow-hidden">
         
         <!-- Header Bar with Map Level & Controls -->
-        <div class="flex items-center justify-between mb-2 text-xs flex-wrap gap-2">
+        <div class="flex items-center justify-between mb-2 text-xs flex-wrap gap-2 flex-none">
           <div class="flex items-center gap-2">
             <span class="font-bold text-white text-sm" id="map-level-title">Planta 1 · Nivel Principal</span>
             <span class="text-slate-500">|</span>
@@ -330,16 +343,16 @@
           </div>
         </div>
 
-        <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Near Full-Screen Format) -->
-        <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="height: calc(100vh - 330px); min-height: 280px; max-height: calc(100vh - 310px);">
+        <!-- MAP CONTAINER (Fluid flex container taking 100% of remaining vertical canvas) -->
+        <div id="map-container" class="relative w-full flex-1 min-h-[220px] bg-[#080d16] rounded-2xl sm:rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="height: 100%;">
           
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly, default horizontal map view) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full" style="transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg); transform-origin: 0 0;">
             <!-- Background Floor Plan Layers (Zero-Flicker GPU Layer Stack) -->
-            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.9.10" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.9.10" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
-            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.9.10" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.9.10" alt="Plano Paseo Altozano" class="hidden">
+            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.9.11" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.9.11" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
+            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.9.11" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.9.11" alt="Plano Paseo Altozano" class="hidden">
             
             <!-- Interactive SVG Overlay Layer -->
             <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
@@ -832,16 +845,16 @@
   <!-- ======================================================== -->
   <!-- MODULAR JAVASCRIPT ARCHITECTURE                          -->
   <!-- ======================================================== -->
-  <script src="js/config.js?v=3.9.10"></script>
-  <script src="js/state.js?v=3.9.10"></script>
-  <script src="js/animator.js?v=3.9.10"></script>
-  <script src="js/camera.js?v=3.9.10"></script>
-  <script src="js/router.js?v=3.9.10"></script>
-  <script src="js/renderer.js?v=3.9.10"></script>
-  <script src="js/simulation.js?v=3.9.10"></script>
-  <script src="js/editor.js?v=3.9.10"></script>
-  <script src="js/ui.js?v=3.9.10"></script>
-  <script src="js/app.js?v=3.9.10"></script>
-  <script src="js/kiosk-bridge.js?v=3.9.10"></script>
+  <script src="js/config.js?v=3.9.11"></script>
+  <script src="js/state.js?v=3.9.11"></script>
+  <script src="js/animator.js?v=3.9.11"></script>
+  <script src="js/camera.js?v=3.9.11"></script>
+  <script src="js/router.js?v=3.9.11"></script>
+  <script src="js/renderer.js?v=3.9.11"></script>
+  <script src="js/simulation.js?v=3.9.11"></script>
+  <script src="js/editor.js?v=3.9.11"></script>
+  <script src="js/ui.js?v=3.9.11"></script>
+  <script src="js/app.js?v=3.9.11"></script>
+  <script src="js/kiosk-bridge.js?v=3.9.11"></script>
 </body>
 </html>
