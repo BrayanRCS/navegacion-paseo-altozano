@@ -54,6 +54,11 @@ function renderMapOverlay(animate = false) {
   // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
   if (totemMarkerEl) {
     totemMarkerEl.style.display = currentLevel === 2 ? 'block' : 'none';
+    if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
+      totemMarkerEl.setAttribute('transform', 'rotate(90, 960, 510)');
+    } else {
+      totemMarkerEl.removeAttribute('transform');
+    }
   }
 
   // Draw Vector Walkable Corridors & Graph Edges (ONLY when in Editor Mode)

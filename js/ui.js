@@ -87,7 +87,12 @@ function applyMapOrientation() {
   renderMapOverlay();
   updateCameraTransform();
   updateCompassUI();
-  zoomToOverview(true);
+  if (currentLevel === 2 && (!routeSegments || routeSegments.length === 0)) {
+    if (typeof zoomToTotem === 'function') zoomToTotem(true, 2.6);
+    else zoomToOverview(true);
+  } else {
+    zoomToOverview(true);
+  }
 }
 
 function switchLevel(lvl, autoZoom = true) {
@@ -109,8 +114,8 @@ function switchLevel(lvl, autoZoom = true) {
     const btnMap = document.getElementById(`map-bar-btn-lvl-${l}`);
     if (btnMap) {
       btnMap.className = l === lvl
-        ? "px-3 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md"
-        : "px-3 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white";
+        ? "px-5 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-md cursor-pointer"
+        : "px-5 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-300 hover:text-white cursor-pointer";
     }
     const btnMob = document.getElementById(`mob-lvl-${l}`);
     if (btnMob) {
@@ -149,7 +154,12 @@ function switchLevel(lvl, autoZoom = true) {
   renderMapOverlay();
   updateSegmentButtons();
   if (autoZoom) {
-    zoomToOverview(true);
+    if (lvl === 2 && (!routeSegments || routeSegments.length === 0)) {
+      if (typeof zoomToTotem === 'function') zoomToTotem(true, 2.6);
+      else zoomToOverview(true);
+    } else {
+      zoomToOverview(true);
+    }
   }
 }
 
@@ -291,6 +301,11 @@ function showMapView(destId = null) {
       if (targetEmoji) targetEmoji.innerText = "🗺️";
       const btnNav = document.getElementById('btn-map-banner-navigate');
       if (btnNav) btnNav.style.display = 'none';
+
+      // Ensure level 2 (Nivel 1 with Totem) is active
+      if (currentLevel !== 2 && typeof switchLevel === 'function') {
+        switchLevel(2, false);
+      }
     }
 
     requestAnimationFrame(() => {
@@ -299,9 +314,21 @@ function showMapView(destId = null) {
         calculateRoute(TOTEM_NODE_ID, destId);
       } else {
         renderMapOverlay();
-        zoomToOverview(false);
+        if (typeof zoomToTotem === 'function') {
+          zoomToTotem(false, 2.6);
+        } else {
+          zoomToOverview(false);
+        }
       }
     });
+
+    // Secondary re-check to guarantee totem zoom once CSS/iframe transitions settle
+    setTimeout(() => {
+      if (!destId && typeof zoomToTotem === 'function') {
+        cachedViewport = null;
+        zoomToTotem(false, 2.6);
+      }
+    }, 150);
 
     if (typeof anime !== 'undefined') {
       anime({
@@ -353,7 +380,7 @@ function renderCategoryHub() {
     btn.className = `group relative overflow-hidden rounded-3xl p-4 sm:p-5 text-left transition-all duration-300 transform active:scale-95 shadow-xl border cursor-pointer flex flex-col justify-between min-h-[110px] sm:min-h-[125px] ${
       isActive 
         ? 'bg-gradient-to-br ' + cat.gradient + ' text-white border-white/60 ring-4 ring-sky-500/30 scale-[1.02]' 
-        : 'bg-slate-900/90 hover:bg-slate-850 text-slate-200 border-slate-800 hover:border-slate-700'
+        : 'bg-slate-800/40 hover:bg-slate-800/60 text-slate-200 border-slate-700/50 hover:border-slate-600'
     }`;
 
     btn.onclick = () => {
@@ -369,10 +396,10 @@ function renderCategoryHub() {
       <div class="absolute -right-6 -bottom-6 w-24 h-24 rounded-full blur-2xl pointer-events-none opacity-20 ${isActive ? 'bg-white' : 'bg-sky-500'}"></div>
       
       <div class="flex items-start justify-between w-full relative z-10">
-        <div class="w-12 h-12 rounded-2xl ${isActive ? 'bg-white/20 text-white' : 'bg-slate-950 text-sky-400 border border-slate-800'} flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">
+        <div class="w-12 h-12 rounded-2xl ${isActive ? 'bg-white/20 text-white' : 'bg-slate-800/50 text-sky-300 border border-slate-700/60'} flex items-center justify-center text-2xl shadow-inner group-hover:scale-110 transition-transform">
           <i class="fa-solid ${cat.icon}"></i>
         </div>
-        <span class="px-2.5 py-1 rounded-xl text-[11px] font-black ${isActive ? 'bg-white/25 text-white' : 'bg-slate-950/80 text-slate-400 border border-slate-800'}">
+        <span class="px-2.5 py-1 rounded-xl text-[11px] font-black ${isActive ? 'bg-white/25 text-white' : 'bg-slate-800/40 text-slate-300 border border-slate-700/60'}">
           ${count} ${count === 1 ? 'lugar' : 'locales'}
         </span>
       </div>
@@ -404,9 +431,9 @@ function filterByFloor(floor) {
     const el = document.getElementById(`dir-floor-btn-${f}`);
     if (el) {
       if (String(currentDirectoryFloorFilter) === String(f)) {
-        el.className = "px-4 py-2 rounded-2xl text-xs font-black transition-all bg-blue-600 text-white shadow-md cursor-pointer";
+        el.className = "px-6 py-3 rounded-2xl text-sm sm:text-base font-black transition-all bg-blue-600 text-white shadow-lg cursor-pointer";
       } else {
-        el.className = "px-4 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-950 text-slate-400 hover:text-white border border-slate-800 cursor-pointer";
+        el.className = "px-5 py-3 rounded-2xl text-sm sm:text-base font-bold transition-all bg-slate-800/40 text-slate-300 hover:text-white border border-slate-700/50 cursor-pointer";
       }
     }
   });

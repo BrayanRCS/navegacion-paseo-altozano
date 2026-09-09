@@ -173,25 +173,24 @@
       <!-- Ambient Glow Effect -->
       <div class="absolute -top-12 w-48 h-48 bg-emerald-500/15 rounded-full blur-3xl pointer-events-none"></div>
       
-      <!-- Brand Icon Badge -->
-      <div class="w-20 h-20 rounded-3xl bg-gradient-to-tr from-emerald-600 via-teal-500 to-sky-400 p-0.5 shadow-2xl shadow-emerald-500/30 mb-6 flex items-center justify-center">
-        <div class="w-full h-full bg-slate-950/95 rounded-[22px] flex items-center justify-center">
-          <i class="fa-solid fa-compass text-emerald-400 text-3xl animate-spin" style="animation-duration: 6s;"></i>
-        </div>
+      <!-- Official Brand Logo -->
+      <div class="w-48 h-20 mb-5 flex items-center justify-center relative">
+        <div class="absolute inset-0 bg-amber-500/15 blur-2xl rounded-full pointer-events-none"></div>
+        <img src="logo-paseo-altozano.png?v=3.9.5" alt="Paseo Altozano" class="w-full h-full object-contain relative z-10 drop-shadow-[0_4px_16px_rgba(245,158,11,0.35)] animate-pulse" style="animation-duration: 2.2s;">
       </div>
 
       <h2 class="text-xl font-black text-white tracking-wider mb-1">PASEO ALTOZANO</h2>
-      <p class="text-xs text-emerald-400 font-bold tracking-widest uppercase mb-6">Cargando Sistema de Navegación</p>
+      <p class="text-xs text-amber-400 font-bold tracking-widest uppercase mb-6">Cargando Sistema de Navegación</p>
 
       <!-- Progress Bar Container -->
       <div class="w-64 h-2 bg-slate-900 rounded-full overflow-hidden border border-slate-800 shadow-inner mb-3">
-        <div id="preloader-progress-bar" class="h-full bg-gradient-to-r from-emerald-500 via-teal-400 to-sky-400 rounded-full transition-all duration-300 ease-out" style="width: 10%;"></div>
+        <div id="preloader-progress-bar" class="h-full bg-gradient-to-r from-amber-500 via-orange-500 to-amber-300 rounded-full transition-all duration-300 ease-out" style="width: 10%;"></div>
       </div>
 
       <!-- Live Status Message -->
       <div class="flex items-center justify-between w-64 text-[11px] text-slate-400 font-mono">
         <span id="preloader-status-text" class="truncate">Inicializando planos y directorio...</span>
-        <span id="preloader-percentage-text" class="font-bold text-emerald-400 ml-2">10%</span>
+        <span id="preloader-percentage-text" class="font-bold text-amber-400 ml-2">10%</span>
       </div>
     </div>
   </div>
@@ -283,17 +282,17 @@
           </div>
 
           <!-- Floor Selector Tabs -->
-          <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800 text-xs font-bold gap-1 flex-wrap">
-            <button id="dir-floor-btn-all" onclick="filterByFloor('all')" class="px-4 py-2 rounded-2xl text-xs font-black transition-all bg-blue-600 text-white shadow-md cursor-pointer">
+          <div class="flex bg-slate-800/40 p-1.5 rounded-2xl border border-slate-700/60 text-sm font-bold gap-2 flex-wrap items-center">
+            <button id="dir-floor-btn-all" onclick="filterByFloor('all')" class="px-6 py-3 rounded-2xl text-sm sm:text-base font-black transition-all bg-blue-600 text-white shadow-lg cursor-pointer">
               🏢 Todos
             </button>
-            <button id="dir-floor-btn-1" onclick="filterByFloor(1)" class="px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-950 text-slate-400 hover:text-white border border-slate-800 cursor-pointer">
+            <button id="dir-floor-btn-1" onclick="filterByFloor(1)" class="px-5 py-3 rounded-2xl text-sm sm:text-base font-bold transition-all bg-slate-800/40 text-slate-300 hover:text-white border border-slate-700/50 cursor-pointer">
               🌿 PB
             </button>
-            <button id="dir-floor-btn-2" onclick="filterByFloor(2)" class="px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-950 text-slate-400 hover:text-white border border-slate-800 cursor-pointer">
+            <button id="dir-floor-btn-2" onclick="filterByFloor(2)" class="px-5 py-3 rounded-2xl text-sm sm:text-base font-bold transition-all bg-slate-800/40 text-slate-300 hover:text-white border border-slate-700/50 cursor-pointer">
               📍 Nivel 1 (Tótem)
             </button>
-            <button id="dir-floor-btn-3" onclick="filterByFloor(3)" class="px-3.5 py-2 rounded-2xl text-xs font-bold transition-all bg-slate-950 text-slate-400 hover:text-white border border-slate-800 cursor-pointer">
+            <button id="dir-floor-btn-3" onclick="filterByFloor(3)" class="px-5 py-3 rounded-2xl text-sm sm:text-base font-bold transition-all bg-slate-800/40 text-slate-300 hover:text-white border border-slate-700/50 cursor-pointer">
               ✨ Nivel 2
             </button>
           </div>
@@ -334,13 +333,13 @@
         <!-- MAP CONTAINER (Zoomable / Pannable Camera Stage in Near Full-Screen Format) -->
         <div id="map-container" class="relative w-full bg-[#080d16] rounded-3xl overflow-hidden border border-slate-800/90 flex items-center justify-center select-none cursor-grab shadow-2xl transition-all duration-300" style="height: 68vh; min-height: 520px; max-height: 78vh;">
           
-          <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly) -->
-          <div id="map-camera-stage" class="absolute inset-0 w-full h-full">
+          <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly, default rotated vertical kiosk mode) -->
+          <div id="map-camera-stage" class="absolute inset-0 w-full h-full" style="transform: translate3d(0px, 0px, 0px) scale(1) rotate(-90deg); transform-origin: 0 0;">
             <!-- Background Floor Plan Layers (Zero-Flicker GPU Layer Stack) -->
-            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.9.0" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.9.0" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
-            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.9.0" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.9.0" alt="Plano Paseo Altozano" class="hidden">
+            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.9.7" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.9.7" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
+            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.9.7" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.9.7" alt="Plano Paseo Altozano" class="hidden">
             
             <!-- Interactive SVG Overlay Layer -->
             <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
@@ -570,24 +569,18 @@
       <!-- BOTTOM NAVIGATION & CONTROL TOOLBAR (ERGONOMIC TOUCH ZONE FOR VERTICAL KIOSK) -->
       <div class="bg-slate-900/95 backdrop-blur-xl rounded-3xl p-3.5 sm:p-4 border border-slate-800 shadow-2xl flex flex-col gap-3 mt-auto">
         
-        <!-- Controls Row: Back Button + Floor Switcher + Category Filter Chips -->
+        <!-- Controls Row: Floor Switcher + Category Filter Chips -->
         <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2.5 pb-2.5 border-b border-slate-800/80">
           <div class="flex items-center justify-between sm:justify-start gap-2.5">
-            <!-- Back Button to Directory -->
-            <button onclick="showDirectoryView()" class="px-4 py-2.5 rounded-2xl bg-slate-800 hover:bg-slate-700 text-white font-extrabold text-xs flex items-center gap-2 border border-slate-700 shadow-md transition-all active:scale-95 cursor-pointer">
-              <i class="fa-solid fa-arrow-left text-sky-400"></i>
-              <span>Volver al Directorio</span>
-            </button>
-
             <!-- Floor Switcher in Map -->
-            <div class="flex bg-slate-950 p-1 rounded-2xl border border-slate-800">
-              <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white cursor-pointer">
+            <div class="flex bg-slate-800/40 p-1.5 rounded-2xl border border-slate-700/60 gap-1">
+              <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-300 hover:text-white cursor-pointer">
                 PB
               </button>
-              <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all bg-blue-600 text-white shadow-md cursor-pointer">
+              <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-md cursor-pointer">
                 Nivel 1
               </button>
-              <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="px-3.5 py-1.5 rounded-xl text-xs font-bold transition-all text-slate-400 hover:text-white cursor-pointer">
+              <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-300 hover:text-white cursor-pointer">
                 Nivel 2
               </button>
             </div>
@@ -839,16 +832,16 @@
   <!-- ======================================================== -->
   <!-- MODULAR JAVASCRIPT ARCHITECTURE                          -->
   <!-- ======================================================== -->
-  <script src="js/config.js?v=3.8.0"></script>
-  <script src="js/state.js?v=3.8.0"></script>
-  <script src="js/animator.js?v=3.8.0"></script>
-  <script src="js/camera.js?v=3.8.0"></script>
-  <script src="js/router.js?v=3.8.0"></script>
-  <script src="js/renderer.js?v=3.8.0"></script>
-  <script src="js/simulation.js?v=3.8.0"></script>
-  <script src="js/editor.js?v=3.8.0"></script>
-  <script src="js/ui.js?v=3.8.0"></script>
-  <script src="js/app.js?v=3.8.0"></script>
-  <script src="js/kiosk-bridge.js?v=3.8.0"></script>
+  <script src="js/config.js?v=3.9.7"></script>
+  <script src="js/state.js?v=3.9.7"></script>
+  <script src="js/animator.js?v=3.9.7"></script>
+  <script src="js/camera.js?v=3.9.7"></script>
+  <script src="js/router.js?v=3.9.7"></script>
+  <script src="js/renderer.js?v=3.9.7"></script>
+  <script src="js/simulation.js?v=3.9.7"></script>
+  <script src="js/editor.js?v=3.9.7"></script>
+  <script src="js/ui.js?v=3.9.7"></script>
+  <script src="js/app.js?v=3.9.7"></script>
+  <script src="js/kiosk-bridge.js?v=3.9.7"></script>
 </body>
 </html>

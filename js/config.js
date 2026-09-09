@@ -2,7 +2,7 @@
  * Paseo Altozano · Configuration & Constants Module
  */
 
-const APP_CACHE_VERSION = 'v3.9.0';
+const APP_CACHE_VERSION = 'v3.9.7';
 const TOTEM_NODE_ID = 'n_totem_12';
 const LOCAL_NETWORK_IP = '192.168.1.121';
 const WALK_STEP_DURATION = 550;

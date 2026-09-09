@@ -175,6 +175,7 @@ async function initApp() {
     if (typeof setupEditorDragListeners === 'function') setupEditorDragListeners();
     
     initFromUrlParams();
+    if (typeof applyMapOrientation === 'function') applyMapOrientation();
     renderMapOverlay();
 
     setPreloaderProgress(100, "¡Carga completa!");

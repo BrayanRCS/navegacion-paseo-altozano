@@ -110,10 +110,12 @@ function updateCameraTransform() {
 
 // 4. Unified CinemaKinetic Loop (Single persistent requestAnimationFrame)
 let isKineticLoopActive = false;
+let hasAppliedInitialTransform = false;
 
 function startCameraKineticLoop() {
   if (isKineticLoopActive) return;
   isKineticLoopActive = true;
+  updateCameraTransform();
   if (typeof requestAnimationFrame !== 'undefined') {
     requestAnimationFrame(cameraKineticTick);
   }
@@ -144,13 +146,14 @@ function cameraKineticTick() {
   currentCamera.scale += (cameraTarget.scale - currentCamera.scale) * cameraPhysics.lerpScale;
   currentCamera.rotation += (cameraTarget.rotation - prevRot) * cameraPhysics.lerpRot;
 
-  // C. Apply Transform only when values actually change
+  // C. Apply Transform only when values actually change (or on very first loop)
   const dPanX = Math.abs(currentCamera.panX - prevPanX);
   const dPanY = Math.abs(currentCamera.panY - prevPanY);
   const dScale = Math.abs(currentCamera.scale - prevScale);
   const dRot = Math.abs((currentCamera.rotation || 0) - prevRot);
 
-  if (dPanX > 0.001 || dPanY > 0.001 || dScale > 0.0001 || dRot > 0.01) {
+  if (!hasAppliedInitialTransform || dPanX > 0.001 || dPanY > 0.001 || dScale > 0.0001 || dRot > 0.01) {
+    hasAppliedInitialTransform = true;
     updateCameraTransform();
     if (typeof updatePopupPosition === 'function') {
       updatePopupPosition();
@@ -207,7 +210,7 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
     targetScale = getDynamicZoomLevel(isSimulating);
   }
 
-  const vp = getMapViewport();
+  const vp = getMapViewport(true);
   const u = x / vp.spec.width;
   const v = y / vp.spec.height;
   const pixelX = vp.offsetX + u * vp.renderW;
@@ -376,13 +379,34 @@ function zoomToOverview(animate = true) {
   }
 }
 
+function zoomToTotem(animate = true, scale = 2.6, duration = 650) {
+  isVerticalMode = true;
+  if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = true;
+  cameraTarget.rotation = -90;
+
+  let totemNode = null;
+  const totemId = window.TOTEM_NODE_ID || 'n_totem_12';
+  if (window.mallGraph && Array.isArray(window.mallGraph.nodes)) {
+    totemNode = window.mallGraph.nodes.find(n => n.id === totemId);
+  }
+  const x = totemNode ? totemNode.coordinates.x : 960;
+  const y = totemNode ? totemNode.coordinates.y : 510;
+  zoomToCoordinates(x, y, scale, animate, duration);
+}
+window.zoomToTotem = zoomToTotem;
+
 function toggleZoomOverview() {
   if (currentCamera.isZoomed) {
     isFollowingGPS = false;
     zoomToOverview(true);
   } else {
-    isFollowingGPS = true;
-    centerOnNavArrow();
+    isFollowingGPS = false;
+    if (routeSegments && routeSegments.length > 0) {
+      isFollowingGPS = true;
+      centerOnNavArrow();
+    } else {
+      zoomToTotem(true, 2.6);
+    }
   }
 }
 

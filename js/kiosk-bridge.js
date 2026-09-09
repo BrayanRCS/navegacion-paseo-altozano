@@ -126,31 +126,55 @@
         break;
       }
 
+      case 'FOCUS_TOTEM':
       case 'RESET_ROUTE': {
         if (typeof window.stopWalkSimulation === 'function') window.stopWalkSimulation();
         window.routeSegments = [];
         window.currentSteps = [];
         window.currentStepIndex = 0;
+        window.isVerticalMode = true;
+        if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = true;
+        let lvl = kioskLevel || 2;
+        if (typeof lvl === 'string') {
+          const u = lvl.toUpperCase();
+          if (u === 'L0' || u === 'PB') lvl = 1;
+          else if (u === 'L1' || u === 'N1') lvl = 2;
+          else if (u === 'L2' || u === 'N2') lvl = 3;
+          else lvl = parseInt(lvl) || 2;
+        }
+        if (typeof window.switchLevel === 'function') {
+          window.switchLevel(lvl, false);
+        }
         if (typeof window.renderMapOverlay === 'function') window.renderMapOverlay();
-        if (typeof window.zoomToOverview === 'function') window.zoomToOverview(false);
+        if (typeof window.zoomToTotem === 'function') {
+          window.zoomToTotem(true, 2.6);
+        } else if (typeof window.zoomToOverview === 'function') {
+          window.zoomToOverview(false);
+        }
         break;
       }
 
       case 'INIT_TOTEM': {
-        const targetTotemId = totemId || event.data.deviceId;
+        window.isVerticalMode = true;
+        if (typeof AltozanoState !== 'undefined') AltozanoState.isVerticalMode = true;
+        const targetTotemId = totemId || event.data.deviceId || 'n_totem_12';
         if (targetTotemId && typeof window.setActiveTotemId === 'function') {
           window.setActiveTotemId(targetTotemId, false);
         }
-        if (kioskLevel && typeof window.switchLevel === 'function') {
-          let lvl = kioskLevel;
-          if (typeof lvl === 'string') {
-            const u = lvl.toUpperCase();
-            if (u === 'L0' || u === 'PB') lvl = 1;
-            else if (u === 'L1' || u === 'N1') lvl = 2;
-            else if (u === 'L2' || u === 'N2') lvl = 3;
-            else lvl = parseInt(lvl) || 2;
-          }
-          window.switchLevel(lvl);
+        let lvl = kioskLevel || 2;
+        if (typeof lvl === 'string') {
+          const u = lvl.toUpperCase();
+          if (u === 'L0' || u === 'PB') lvl = 1;
+          else if (u === 'L1' || u === 'N1') lvl = 2;
+          else if (u === 'L2' || u === 'N2') lvl = 3;
+          else lvl = parseInt(lvl) || 2;
+        }
+        if (typeof window.switchLevel === 'function') {
+          window.switchLevel(lvl, false);
+        }
+        if (typeof window.renderMapOverlay === 'function') window.renderMapOverlay();
+        if (typeof window.zoomToTotem === 'function') {
+          window.zoomToTotem(false, 2.6);
         }
         break;
       }
