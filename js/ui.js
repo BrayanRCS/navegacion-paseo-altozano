@@ -68,9 +68,9 @@ function applyMapOrientation() {
   if (isVerticalMode) {
     if (container && !isMobile) {
       container.style.aspectRatio = 'auto';
-      container.style.height = 'calc(100vh - 215px)';
-      container.style.minHeight = '580px';
-      container.style.maxHeight = 'none';
+      container.style.height = 'calc(100vh - 330px)';
+      container.style.minHeight = '280px';
+      container.style.maxHeight = 'calc(100vh - 310px)';
     }
     if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-sky-400";
     currentCamera.rotation = -90;
@@ -78,9 +78,9 @@ function applyMapOrientation() {
   } else {
     if (container && !isMobile) {
       container.style.aspectRatio = 'auto';
-      container.style.height = 'calc(100vh - 215px)';
-      container.style.minHeight = '580px';
-      container.style.maxHeight = 'none';
+      container.style.height = 'calc(100vh - 330px)';
+      container.style.minHeight = '280px';
+      container.style.maxHeight = 'calc(100vh - 310px)';
     }
     if (icon) icon.className = "fa-solid fa-arrows-rotate text-xs text-slate-400";
     currentCamera.rotation = 0;

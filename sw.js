@@ -3,7 +3,7 @@
  * Guarantees instant live updates when online + 100% standalone offline operation.
  */
 
-const CACHE_NAME = 'altozano-kiosk-v3.9.8';
+const CACHE_NAME = 'altozano-kiosk-v3.9.9';
 
 const PRECACHE_ASSETS = [
   './',
