@@ -119,6 +119,11 @@ function renderMapOverlay(animate = false) {
     const cat = getNodeCategoryGroup(n);
     const isCategoryMatch = currentCategoryFilter === 'all' || cat === currentCategoryFilter;
 
+    // Si hay un filtro activo y el nodo no pertenece a esa categoría, ocultarlo por completo (no mostrar con transparencia)
+    if (!isEditorMode && !isCategoryMatch) {
+      return;
+    }
+
     // Visual Position
     const logoPos = typeof getNodeLogoPosition === 'function' ? getNodeLogoPosition(n) : n.coordinates;
     const isLogoMode = isEditorMode && editorSubMode === 'logos';
@@ -411,7 +416,7 @@ function renderMapOverlay(animate = false) {
       g.appendChild(circle);
     }
 
-    if (!isCategoryMatch) {
+    if (!isCategoryMatch && isEditorMode) {
       g.style.opacity = '0.22';
       g.style.filter = 'grayscale(80%)';
       g.style.pointerEvents = 'none';

@@ -457,6 +457,12 @@ function filterMapCategory(catId) {
       }
     });
   }
+  if (typeof selectedPopupNode !== 'undefined' && selectedPopupNode && currentCategoryFilter !== 'all') {
+    const nodeCat = typeof getNodeCategoryGroup === 'function' ? getNodeCategoryGroup(selectedPopupNode) : 'other';
+    if (nodeCat !== currentCategoryFilter && typeof closeNodePopup === 'function') {
+      closeNodePopup();
+    }
+  }
   if (typeof renderMapOverlay === 'function') {
     renderMapOverlay();
   }
