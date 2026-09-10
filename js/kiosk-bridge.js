@@ -86,8 +86,11 @@
   // 3. Incoming orders from React Host Screen (Host -> Map) with Secure Origin Verification
   const ALLOWED_HOST_ORIGIN_PATTERNS = [
     /^https:\/\/naranti-smartcity\.web\.app$/,
+    /^https:\/\/mall-altozano\.web\.app$/,
     /^https:\/\/mapa-altozano\.web\.app$/,
     /^https:\/\/.*\.firebaseapp\.com$/,
+    /^https:\/\/.*\.web\.app$/,
+    /^https:\/\/.*\.vercel\.app$/,
     /^http:\/\/localhost(:\d+)?$/,
     /^http:\/\/127\.0\.0\.1(:\d+)?$/,
     /^tauri:\/\/localhost$/
