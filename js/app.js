@@ -144,6 +144,9 @@ async function initApp() {
 
     // 2. Preload and hardware-decode all architectural floor map images in parallel
     const mapImageUrls = [
+      'assets/levels/planta-baja.svg',
+      'assets/levels/planta-uno.svg',
+      'assets/levels/planta-dos.svg',
       'planta-baja-dark.png',
       'planta-uno-dark.png',
       'planta-dos-dark.png',

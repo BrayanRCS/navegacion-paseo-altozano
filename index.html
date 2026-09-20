@@ -349,10 +349,10 @@
           <!-- DYNAMIC CAMERA STAGE (Zooms & Pans smoothly, default horizontal map view) -->
           <div id="map-camera-stage" class="absolute inset-0 w-full h-full" style="transform: translate3d(0px, 0px, 0px) scale(1) rotate(0deg); transform-origin: 0 0;">
             <!-- Background Floor Plan Layers (Zero-Flicker GPU Layer Stack) -->
-            <img id="floor-plan-img-1" src="planta-baja-dark.png?v=3.9.11" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img-2" src="planta-uno-dark.png?v=3.9.11" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
-            <img id="floor-plan-img-3" src="planta-dos-dark.png?v=3.9.11" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
-            <img id="floor-plan-img" src="planta-uno-dark.png?v=3.9.11" alt="Plano Paseo Altozano" class="hidden">
+            <img id="floor-plan-img-1" src="assets/levels/planta-baja.svg?v=4.0.0" alt="Plano Planta Baja" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img-2" src="assets/levels/planta-uno.svg?v=4.0.0" alt="Plano Nivel 1" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-95" style="display: block;">
+            <img id="floor-plan-img-3" src="assets/levels/planta-dos.svg?v=4.0.0" alt="Plano Nivel 2" class="floor-plan-layer absolute inset-0 w-full h-full object-contain pointer-events-none transition-opacity duration-300 opacity-0" style="display: none;">
+            <img id="floor-plan-img" src="assets/levels/planta-uno.svg?v=4.0.0" alt="Plano Paseo Altozano" class="hidden">
             
             <!-- Interactive SVG Overlay Layer -->
             <svg id="map-svg-overlay" viewBox="0 0 1536 718" preserveAspectRatio="xMidYMid meet" class="absolute inset-0 w-full h-full">
@@ -415,6 +415,20 @@
                   <rect x="-5" y="-5" width="10" height="10" rx="1.8" fill="none" stroke="#ffffff" stroke-width="1.3"/>
                   <path d="M -2.2 -1.5 l 2.2 -2.2 l 2.2 2.2" fill="none" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
                   <path d="M -2.2 1.5 l 2.2 2.2 l 2.2 -2.2" fill="none" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+
+                <!-- Iconos de categoria del mapa minimalista -->
+                <g id="vec-icon-shirt">
+                  <path d="M -2 -5 l -4 2 l 1.5 3 l 1.5 -0.8 v 6 h 6 v -6 l 1.5 0.8 l 1.5 -3 l -4 -2 a 2 2 0 0 1 -4 0 z" fill="none" stroke="#ffffff" stroke-width="1.2" stroke-linecap="round" stroke-linejoin="round"/>
+                </g>
+
+                <g id="vec-icon-laptop">
+                  <rect x="-4.5" y="-4" width="9" height="6.5" rx="0.8" fill="none" stroke="#ffffff" stroke-width="1.2"/>
+                  <path d="M -6 4 h 12" stroke="#ffffff" stroke-width="1.3" stroke-linecap="round"/>
+                </g>
+
+                <g id="vec-icon-sparkle">
+                  <path d="M 0 -5.5 l 1.4 3.7 l 3.7 1.4 l -3.7 1.4 l -1.4 3.7 l -1.4 -3.7 l -3.7 -1.4 l 3.7 -1.4 z" fill="#ffffff"/>
                 </g>
 
                 <!-- Vector Icon: Restroom / Sanitarios -->

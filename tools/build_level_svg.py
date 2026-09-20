@@ -109,6 +109,11 @@ def main():
     av_p = polys(avail, scale, 1200, 2.0, HOLE_MIN)
 
     svg = f'''<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 {REF_W} {H}" width="{REF_W}" height="{H}">
+<style>
+.mp-foot{{fill:#182a42}}
+.mp-unit{{fill:#263e5c;stroke:#426c96;stroke-width:1.1;stroke-linejoin:round}}
+.mp-avail{{fill:#203248;stroke:#345070}}
+</style>
 <path id="footprint" class="mp-foot" fill-rule="evenodd" d="{path_d(foot)}"/>
 <path id="units-occupied" class="mp-unit" fill-rule="evenodd" d="{path_d(occ_p)}"/>
 <path id="units-available" class="mp-unit mp-avail" fill-rule="evenodd" d="{path_d(av_p)}"/>

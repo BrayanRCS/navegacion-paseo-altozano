@@ -208,6 +208,33 @@ function renderMapOverlay(animate = false) {
       g.appendChild(rect);
       g.appendChild(useIcon);
 
+    } else if (MINIMAL_MAP && (n.type === 'store' || n.type === 'anchor_store' || n.type === 'island')) {
+      // MAPA MINIMALISTA: circulo con icono de categoria; el logo solo vive en la ficha y el destino
+      g.setAttribute('data-graph-node-id', n.id);
+      const style = MINIMAL_CATEGORY_STYLE[cat] || MINIMAL_CATEGORY_STYLE.other;
+      const isAnchor = n.type === 'anchor_store';
+      const r = isSelected || isConnectSource ? 12 : (isAnchor ? 11 : 9);
+
+      const disc = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      disc.setAttribute('cx', posX);
+      disc.setAttribute('cy', posY);
+      disc.setAttribute('r', r);
+      disc.setAttribute('fill', isConnectSource ? '#10b981' : (isSelected ? '#f59e0b' : style.fill));
+      disc.setAttribute('stroke', 'rgba(255,255,255,0.55)');
+      disc.setAttribute('stroke-width', '1.2');
+
+      const useIcon = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+      useIcon.setAttribute('href', style.icon);
+      useIcon.setAttribute('x', posX);
+      useIcon.setAttribute('y', posY);
+      useIcon.setAttribute('transform', `translate(${posX} ${posY}) scale(${isAnchor ? 1.15 : 1}) translate(${-posX} ${-posY})`);
+
+      const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      title.textContent = isEditorMode ? `${n.name} (Arrastra para mover o toca para enlazar arista)` : `${n.name} (Toca para trazar ruta)`;
+      g.appendChild(title);
+      g.appendChild(disc);
+      g.appendChild(useIcon);
+
     } else if (n.logo) {
       // OFFICIAL LUXURY BRAND BADGE WITH PURE VECTOR SVG
       const isAnchor = n.type === 'anchor_store';

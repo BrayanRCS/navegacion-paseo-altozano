@@ -8,10 +8,22 @@ const LOCAL_NETWORK_IP = '192.168.1.121';
 const WALK_STEP_DURATION = 550;
 const NAVIGATION_ZOOM_LEVEL = 1.85;
 
+// Mapa minimalista: cada local es un icono de categoria y el logo solo aparece en el destino.
+const MINIMAL_MAP = true;
+const MINIMAL_CATEGORY_STYLE = {
+  food:    { fill: '#8a5a3c', icon: '#vec-icon-food' },
+  coffee:  { fill: '#2f6b57', icon: '#vec-icon-coffee' },
+  fashion: { fill: '#a45a6a', icon: '#vec-icon-shirt' },
+  anchor:  { fill: '#2f5d55', icon: '#vec-icon-bag' },
+  beauty:  { fill: '#7a5aa6', icon: '#vec-icon-sparkle' },
+  tech:    { fill: '#5b6b7c', icon: '#vec-icon-laptop' },
+  other:   { fill: '#2f5d55', icon: '#vec-icon-bag' }
+};
+
 const FLOOR_SPECS = {
   1: {
     name: "Planta Baja · Nivel Inferior",
-    img: "planta-baja-dark.png?v=3.9.0",
+    img: "assets/levels/planta-baja.svg?v=4.0.0",
     count: "28 locales · 3 islas",
     width: 1536,
     height: 727,
@@ -19,7 +31,7 @@ const FLOOR_SPECS = {
   },
   2: {
     name: "Planta 1 · Nivel Principal (Ubicación del Tótem 📍)",
-    img: "planta-uno-dark.png?v=3.9.0",
+    img: "assets/levels/planta-uno.svg?v=4.0.0",
     count: "63 locales · 12 islas · 1 Tótem",
     width: 1536,
     height: 718,
@@ -27,7 +39,7 @@ const FLOOR_SPECS = {
   },
   3: {
     name: "Planta 2 · Nivel Superior",
-    img: "planta-dos-dark.png?v=3.9.0",
+    img: "assets/levels/planta-dos.svg?v=4.0.0",
     count: "28 locales · Restaurantes / Cines",
     width: 1536,
     height: 669,
