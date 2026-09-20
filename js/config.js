@@ -10,15 +10,44 @@ const NAVIGATION_ZOOM_LEVEL = 1.85;
 
 // Mapa minimalista: cada local es un icono de categoria y el logo solo aparece en el destino.
 const MINIMAL_MAP = true;
+// Estilo por categoria real del locatario (categoriaId de tenants.json)
 const MINIMAL_CATEGORY_STYLE = {
-  food:    { fill: '#8a5a3c', icon: '#vec-icon-food' },
-  coffee:  { fill: '#2f6b57', icon: '#vec-icon-coffee' },
-  fashion: { fill: '#a45a6a', icon: '#vec-icon-shirt' },
-  anchor:  { fill: '#2f5d55', icon: '#vec-icon-bag' },
-  beauty:  { fill: '#7a5aa6', icon: '#vec-icon-sparkle' },
-  tech:    { fill: '#5b6b7c', icon: '#vec-icon-laptop' },
-  other:   { fill: '#2f5d55', icon: '#vec-icon-bag' }
+  'moda':                 { fill: '#a45a6a', icon: '#vec-icon-shirt' },
+  'departamentales':      { fill: '#2f5d55', icon: '#vec-icon-bag' },
+  'tecnologia':           { fill: '#5b6b7c', icon: '#vec-icon-laptop' },
+  'salud-y-belleza':      { fill: '#7a5aa6', icon: '#vec-icon-sparkle' },
+  'agencias':             { fill: '#3f6f8f', icon: '#vec-icon-car' },
+  'restaurantes':         { fill: '#8a5a3c', icon: '#vec-icon-food' },
+  'comida-y-snacks':      { fill: '#a06a3a', icon: '#vec-icon-food' },
+  'cafeterias-y-helados': { fill: '#2f6b57', icon: '#vec-icon-coffee' },
+  'entretenimiento':      { fill: '#3f7fa0', icon: '#vec-icon-film' },
+  'casa-y-hogar':         { fill: '#8a7a3c', icon: '#vec-icon-home' },
+  'servicios':            { fill: '#5b5f9e', icon: '#vec-icon-admin' },
+  'other':                { fill: '#4a5a6a', icon: '#vec-icon-bag' }
 };
+
+// Categoria del locatario -> grupo de los chips de filtro
+const TENANT_CATEGORY_TO_FILTER = {
+  'moda': 'fashion',
+  'departamentales': 'anchor',
+  'tecnologia': 'tech',
+  'entretenimiento': 'tech',
+  'agencias': 'tech',
+  'salud-y-belleza': 'beauty',
+  'restaurantes': 'food',
+  'comida-y-snacks': 'food',
+  'cafeterias-y-helados': 'coffee'
+};
+
+// Categoria fina del nodo: la del locatario si existe; si no, se infiere del grupo de filtro
+function getNodeTenantCategory(node) {
+  if (!node) return 'other';
+  if (typeof STORE_CATEGORY_BY_NODE !== 'undefined' && STORE_CATEGORY_BY_NODE[node.id]) {
+    return STORE_CATEGORY_BY_NODE[node.id];
+  }
+  const groupToTenant = { fashion: 'moda', anchor: 'departamentales', tech: 'tecnologia', beauty: 'salud-y-belleza', food: 'restaurantes', coffee: 'cafeterias-y-helados' };
+  return groupToTenant[matchNodeCategory(node)] || 'other';
+}
 
 const FLOOR_SPECS = {
   1: {
@@ -175,6 +204,10 @@ function matchNodeCategory(node) {
   if (type === "portal_escalator" || type === "portal_elevator" || type === "restroom" || type === "parking" || type === "admin" || name.includes("escalera") || name.includes("elevador") || name.includes("baño") || name.includes("sanitario")) {
     return "portal";
   }
+  const tenantCat = (typeof STORE_CATEGORY_BY_NODE !== 'undefined') ? STORE_CATEGORY_BY_NODE[node.id] : null;
+  if (tenantCat) {
+    return TENANT_CATEGORY_TO_FILTER[tenantCat] || "other";
+  }
   if (type === "anchor_store" || name.includes("liverpool") || name.includes("sears") || name.includes("chedraui") || name.includes("sanborns")) {
     return "anchor";
   }
@@ -190,6 +223,6 @@ function matchNodeCategory(node) {
     }
   }
 
-  return "fashion"; // Default graceful fallback
+  return "other"; // Sin categoria conocida: aparece en "Todos", no se disfraza de moda
 }
 

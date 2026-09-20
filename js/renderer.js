@@ -211,7 +211,7 @@ function renderMapOverlay(animate = false) {
     } else if (MINIMAL_MAP && (n.type === 'store' || n.type === 'anchor_store' || n.type === 'island')) {
       // MAPA MINIMALISTA: circulo con icono de categoria; el logo solo vive en la ficha y el destino
       g.setAttribute('data-graph-node-id', n.id);
-      const style = MINIMAL_CATEGORY_STYLE[cat] || MINIMAL_CATEGORY_STYLE.other;
+      const style = MINIMAL_CATEGORY_STYLE[getNodeTenantCategory(n)] || MINIMAL_CATEGORY_STYLE.other;
       const isAnchor = n.type === 'anchor_store';
       const r = isSelected || isConnectSource ? 12 : (isAnchor ? 11 : 9);
 
