@@ -80,6 +80,19 @@
           timestamp: Date.now()
         }, '*');
       }
+    },
+
+    // When user generates / requests route on mobile (QR Hand-off)
+    notifyQrRouteGenerated: function (campaignId, campaignName, destId) {
+      if (window.parent && window.parent !== window) {
+        window.parent.postMessage({
+          type: 'QR_ROUTE_GENERATED',
+          campaignId: campaignId || null,
+          campaignName: campaignName || null,
+          destId: destId || null,
+          timestamp: Date.now()
+        }, '*');
+      }
     }
   };
 
@@ -91,6 +104,8 @@
     /^https:\/\/.*\.firebaseapp\.com$/,
     /^https:\/\/.*\.web\.app$/,
     /^https:\/\/.*\.vercel\.app$/,
+    /^https:\/\/.*\.orbitasmartcities\.com\.mx$/,
+    /^https:\/\/orbitasmartcities\.com\.mx$/,
     /^http:\/\/localhost(:\d+)?$/,
     /^http:\/\/127\.0\.0\.1(:\d+)?$/,
     /^tauri:\/\/localhost$/
@@ -216,6 +231,17 @@
           window.setCursorVisibility(visible);
         } else {
           document.documentElement.classList.toggle('force-cursor-visible', visible);
+        }
+        break;
+      }
+
+      case 'SET_ACTIVE_CAMPAIGN': {
+        if (event.data.ad) {
+          window.activeTotemCampaign = event.data.ad;
+          console.log('📢 Campaña activa sincronizada desde el tótem:', event.data.ad);
+          if (typeof window.updateQrUrlIfOpen === 'function') {
+            window.updateQrUrlIfOpen();
+          }
         }
         break;
       }

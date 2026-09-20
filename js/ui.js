@@ -983,8 +983,46 @@ function getMobileRouteUrl() {
   }
 
   const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
-  return `${protocol}//${host}/?orig=${encodeURIComponent(origId)}&dest=${encodeURIComponent(destId)}&mode=mobile`;
+  let url = `${protocol}//${host}/?orig=${encodeURIComponent(origId)}&dest=${encodeURIComponent(destId)}&mode=mobile`;
+
+  // Sincronización 1:1 con la campaña publicitaria activa del tótem
+  const ad = window.activeTotemCampaign;
+  if (ad && typeof ad === 'object') {
+    if (ad.id) url += `&adId=${encodeURIComponent(ad.id)}`;
+    if (ad.title || ad.name) url += `&adTitle=${encodeURIComponent(ad.title || ad.name)}`;
+    if (ad.promo) url += `&adPromo=${encodeURIComponent(ad.promo)}`;
+    if (ad.mediaUrl) url += `&adImg=${encodeURIComponent(ad.mediaUrl)}`;
+    if (ad.badge) url += `&adBadge=${encodeURIComponent(ad.badge)}`;
+  }
+
+  return url;
 }
+
+window.updateQrUrlIfOpen = function () {
+  const modal = document.getElementById('qr-modal');
+  if (!modal || modal.classList.contains('hidden')) return;
+
+  const url = getMobileRouteUrl();
+  const input = document.getElementById('qr-custom-url-input');
+  if (input) input.value = url;
+
+  const canvasContainer = document.getElementById('qrcode-canvas');
+  if (canvasContainer && typeof QRCode !== 'undefined') {
+    canvasContainer.innerHTML = '';
+    try {
+      new QRCode(canvasContainer, {
+        text: url,
+        width: 190,
+        height: 190,
+        colorDark: "#0f172a",
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel ? QRCode.CorrectLevel.M : 2
+      });
+    } catch (e) {
+      console.warn("QRCode error:", e);
+    }
+  }
+};
 
 function showQrModal() {
   const modal = document.getElementById('qr-modal');
@@ -1010,6 +1048,12 @@ function showQrModal() {
     document.getElementById('qr-route-desc').innerText = `${timeDist ? timeDist.innerText : 'Ruta guiada'}`;
   }
 
+  // Notificar telemetría al tótem (Hand-off de ruta con campaña activa)
+  if (window.KioskBridge && typeof window.KioskBridge.notifyQrRouteGenerated === 'function') {
+    const camp = window.activeTotemCampaign;
+    window.KioskBridge.notifyQrRouteGenerated(camp?.id, camp?.title || camp?.name, destId);
+  }
+
   const canvasContainer = document.getElementById('qrcode-canvas');
   if (canvasContainer) {
     canvasContainer.innerHTML = '';
@@ -1021,7 +1065,7 @@ function showQrModal() {
           height: 190,
           colorDark: "#0f172a",
           colorLight: "#ffffff",
-          correctLevel: (typeof QRCode !== 'undefined' && QRCode.CorrectLevel) ? QRCode.CorrectLevel.H : 2
+          correctLevel: (typeof QRCode !== 'undefined' && QRCode.CorrectLevel) ? QRCode.CorrectLevel.M : 2
         });
       }
     } catch (e) {
@@ -1159,6 +1203,94 @@ function applyMobileNavigationLayout() {
     if (mTitle) mTitle.innerText = destNode.name || 'Destino';
   }
 
+  // Renderizar dinámicamente el banner publicitario vinculado con el tótem
+  renderMobileAdBannerFromParams();
+
   updateTotemUI(true);
   zoomToOverview(false);
+}
+
+function renderMobileAdBannerFromParams() {
+  const bannerContainer = document.getElementById('mobile-ad-banner');
+  if (!bannerContainer) return;
+
+  const params = new URLSearchParams(window.location.search);
+  const adTitle = params.get('adTitle');
+  const adPromo = params.get('adPromo');
+  const adImg = params.get('adImg');
+  const adBadge = params.get('adBadge') || 'ANUNCIO DESTACADO';
+
+  function escapeHtml(str) {
+    if (!str) return '';
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;')
+      .replace(/'/g, '&#039;');
+  }
+
+  // 1. Si viene una campaña publicitaria activa sincronizada del tótem
+  if (adTitle || adImg) {
+    const titleText = escapeHtml(adTitle || 'Paseo Altozano');
+    const promoText = escapeHtml(adPromo || 'Descubre los beneficios y promociones exclusivas en tu visita');
+    const badgeText = escapeHtml(adBadge);
+
+    let mediaHtml = '';
+    if (adImg) {
+      mediaHtml = `
+        <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-900 border border-amber-400/40 flex items-center justify-center shadow-inner flex-shrink-0">
+          <img src="${escapeHtml(adImg)}" alt="${titleText}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-store text-amber-300 text-xl\\'></i>'" />
+        </div>
+      `;
+    } else {
+      mediaHtml = `
+        <div class="w-12 h-12 rounded-2xl bg-amber-950/80 border border-amber-400/40 flex items-center justify-center shadow-inner flex-shrink-0">
+          <i class="fa-solid fa-tag text-amber-300 text-xl"></i>
+        </div>
+      `;
+    }
+
+    bannerContainer.className = "rounded-3xl p-4 text-white relative overflow-hidden border border-amber-500/30 shadow-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-amber-950/50";
+    bannerContainer.innerHTML = `
+      <div class="ad-shimmer-layer absolute inset-0 pointer-events-none"></div>
+      <div class="flex justify-between items-start gap-3 relative z-10">
+        <div class="flex-1 min-w-0">
+          <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
+            <span class="text-[9px] font-black tracking-widest uppercase bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1">
+              <i class="fa-solid fa-bolt text-[9px]"></i> ${badgeText}
+            </span>
+          </div>
+          <h3 class="text-base font-black leading-tight text-white">${titleText}</h3>
+          <p class="text-[11px] font-semibold text-amber-200/90 mt-1">${promoText}</p>
+        </div>
+        ${mediaHtml}
+      </div>
+      <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400 font-bold relative z-10">
+        <span class="flex items-center gap-1.5 text-amber-300">
+          <i class="fa-solid fa-mobile-screen"></i> Sincronizado desde el Tótem
+        </span>
+        <span class="text-amber-400 font-extrabold uppercase tracking-wide">Paseo Altozano</span>
+      </div>
+    `;
+    return;
+  }
+
+  // 2. Fallback institucional de Paseo Altozano si se abre sin parámetros de anuncio
+  bannerContainer.className = "rounded-3xl p-4 text-white relative overflow-hidden border border-sky-500/30 shadow-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-sky-950/50";
+  bannerContainer.innerHTML = `
+    <div class="ad-shimmer-layer absolute inset-0 pointer-events-none"></div>
+    <div class="flex justify-between items-start gap-3 relative z-10">
+      <div class="flex-1 min-w-0">
+        <div class="flex items-center gap-1.5 mb-1">
+          <span class="text-[9px] font-extrabold tracking-widest uppercase bg-sky-500/20 text-sky-300 px-2.5 py-0.5 rounded-full border border-sky-500/30">PASEO ALTOZANO</span>
+        </div>
+        <h3 class="text-base font-black leading-tight text-white">Tu destino de compras y moda</h3>
+        <p class="text-[11px] font-semibold text-sky-200/90 mt-0.5">Explora las mejores tiendas, restaurantes y entretenimiento</p>
+      </div>
+      <div class="w-11 h-11 rounded-2xl bg-sky-950/80 border border-sky-400/40 flex items-center justify-center p-1 shadow-inner flex-shrink-0">
+        <i class="fa-solid fa-bag-shopping text-sky-300 text-lg"></i>
+      </div>
+    </div>
+  `;
 }
