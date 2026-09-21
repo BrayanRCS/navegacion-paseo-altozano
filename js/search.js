@@ -266,7 +266,23 @@
     clearTimeout(noResultsTimer);
   }
 
-  window.MapSearch = { open: openSearch, close: closeSearch, search, setQuery };
+  // Categoria, nivel e icono de un nodo para la ficha que se abre al tocarlo en el mapa
+  function describe(n) {
+    let cat = n.type === 'service' ? 'servicios' : (typeof getNodeTenantCategory === 'function' ? getNodeTenantCategory(n) : 'other');
+    let label = CATEGORY_LABEL[cat] || 'Local';
+    let icon = null;
+    let fill = '#4a5a6a';
+    if (n.type === 'portal_escalator') { label = 'Escaleras eléctricas'; icon = '#vec-icon-stairs'; fill = '#0891b2'; }
+    else if (n.type === 'portal_elevator') { label = 'Elevador'; icon = '#vec-icon-elevator'; fill = '#2563eb'; }
+    else if (n.type === 'restroom') { label = 'Sanitarios'; icon = '#vec-icon-restroom'; fill = '#eab308'; }
+    else if (typeof MINIMAL_CATEGORY_STYLE !== 'undefined' && MINIMAL_CATEGORY_STYLE[cat]) {
+      icon = MINIMAL_CATEGORY_STYLE[cat].icon;
+      fill = MINIMAL_CATEGORY_STYLE[cat].fill;
+    }
+    return { label, icon, fill, cat };
+  }
+
+  window.MapSearch = { open: openSearch, close: closeSearch, search, setQuery, describe };
   window.openMapSearch = openSearch;
   window.closeMapSearch = closeSearch;
   window.clearMapSearch = () => setQuery('');

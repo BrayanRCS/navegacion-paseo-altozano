@@ -739,13 +739,55 @@ function getNodePixelPosition(nodeX, nodeY) {
   return { x: screenX, y: screenY };
 }
 
+// Posicion de un nodo en pantalla, respecto al contenedor del mapa. Usa la matriz real del SVG, asi que
+// incluye zoom, desplazamiento y el giro de -90 grados del modo vertical.
+function getNodeScreenPosition(node) {
+  const svg = document.getElementById('map-svg-overlay');
+  const container = document.getElementById('map-container');
+  const ctm = svg && svg.getScreenCTM();
+  if (!svg || !container || !ctm) return getNodePixelPosition(node.coordinates.x, node.coordinates.y);
+  const pt = svg.createSVGPoint();
+  pt.x = node.coordinates.x;
+  pt.y = node.coordinates.y;
+  const p = pt.matrixTransform(ctm);
+  const box = container.getBoundingClientRect();
+  return { x: p.x - box.left, y: p.y - box.top };
+}
+
+// Coloca la ficha arriba del icono (o abajo si no cabe) y dentro del contenedor; el piquito apunta al icono
+function placeNodePopup(popup, node) {
+  const container = document.getElementById('map-container');
+  if (!popup || !container) return;
+  const pos = getNodeScreenPosition(node);
+  const cw = container.clientWidth;
+  const ch = container.clientHeight;
+  const w = popup.offsetWidth;
+  const h = popup.offsetHeight;
+  const gap = 34;   // separacion al icono (radio del icono + piquito)
+  const margin = 8;
+  const left = Math.max(margin, Math.min(cw - w - margin, pos.x - w / 2));
+  let top = pos.y - h - gap;
+  let below = false;
+  if (top < margin) { top = pos.y + gap; below = true; }
+  top = Math.max(margin, Math.min(ch - h - margin, top));
+  popup.style.left = `${left}px`;
+  popup.style.top = `${top}px`;
+  popup.style.setProperty('--mm-caret-x', `${Math.max(28, Math.min(w - 28, pos.x - left))}px`);
+  popup.classList.toggle('mm-popup--below', below);
+}
+
 function updatePopupPosition() {
   if (!selectedPopupNode || selectedPopupNode.level !== currentLevel) return;
   const popup = document.getElementById('map-node-popup');
   if (!popup || popup.classList.contains('hidden')) return;
-  const pos = getNodePixelPosition(selectedPopupNode.coordinates.x, selectedPopupNode.coordinates.y);
-  popup.style.left = `${pos.x}px`;
-  popup.style.top = `${pos.y - 10}px`;
+  placeNodePopup(popup, selectedPopupNode);
+}
+
+function markSelectedNode(node) {
+  document.querySelectorAll('#svg-nodes-layer .mm-selected').forEach(e => e.classList.remove('mm-selected'));
+  if (!node) return;
+  const g = document.querySelector(`#svg-nodes-layer g[data-graph-node-id="${node.id}"]`);
+  if (g) g.classList.add('mm-selected');
 }
 
 function showNodePopup(node) {
@@ -758,53 +800,47 @@ function showNodePopup(node) {
   if (!popup) return;
 
   const info = getPlaceVisualInfo(node);
-  const emojiEl = document.getElementById('popup-emoji');
+  const desc = (window.MapSearch && typeof window.MapSearch.describe === 'function') ? window.MapSearch.describe(node) : null;
+
+  // Logo del local; sin logo, un distintivo con el icono de su categoria
+  const logoEl = document.getElementById('popup-emoji');
+  logoEl.textContent = '';
+  logoEl.classList.remove('mm-popup-logo--badge');
+  logoEl.style.background = '';
   if (node.logo) {
-    emojiEl.innerHTML = `<div class="w-7 h-7 rounded-lg bg-white p-1 flex items-center justify-center shadow border border-slate-700/50">${getLogoHtml(node.logo, node.name, 'w-full h-full object-contain brand-logo-img')}</div>`;
+    const img = document.createElement('img');
+    img.src = node.logo;
+    img.alt = node.name || '';
+    logoEl.appendChild(img);
+  } else if (desc && desc.icon) {
+    logoEl.classList.add('mm-popup-logo--badge');
+    logoEl.style.background = desc.fill;
+    logoEl.innerHTML = `<svg viewBox="-8 -8 16 16" width="44" height="44" aria-hidden="true"><use href="${desc.icon}"/></svg>`;
   } else {
-    emojiEl.innerText = info.emoji;
+    logoEl.textContent = info.emoji;
   }
-  document.getElementById('popup-category').innerText = info.category;
-  document.getElementById('popup-title').innerText = node.name || 'Punto';
-  document.getElementById('popup-desc').innerText = info.detail || `Nivel ${node.level === 1 ? 'PB' : (node.level === 2 ? '1' : '2')}`;
 
-  const pos = getNodePixelPosition(node.coordinates.x, node.coordinates.y);
-  popup.style.left = `${pos.x}px`;
-  popup.style.top = `${pos.y - 10}px`;
+  const levelLabel = { 1: 'Planta Baja', 2: 'Nivel 1', 3: 'Nivel 2' }[node.level] || `Nivel ${node.level}`;
+  document.getElementById('popup-category').textContent = desc ? desc.label : info.category;
+  document.getElementById('popup-title').textContent = (node.name || 'Punto').replace(/\s*\[[^\]]*\]/g, '').replace(/\s*\([^)]*\u2194[^)]*\)/g, '').trim();
+  document.getElementById('popup-desc').textContent = levelLabel;
+
+  markSelectedNode(node);
   popup.classList.remove('hidden');
-
-  if (typeof anime !== 'undefined') {
-    anime.remove(popup);
-    anime({
-      targets: popup,
-      opacity: [0, 1],
-      scale: [0.85, 1],
-      translateY: [10, 0],
-      duration: 300,
-      easing: 'easeOutBack'
-    });
-  }
+  popup.classList.remove('mm-popup--in');
+  popup.style.visibility = 'hidden';
+  placeNodePopup(popup, node);   // se mide con la ficha ya en el DOM
+  popup.style.visibility = '';
+  requestAnimationFrame(() => popup.classList.add('mm-popup--in'));
 }
 
 function closeNodePopup() {
   const popup = document.getElementById('map-node-popup');
+  markSelectedNode(null);
   if (!popup || popup.classList.contains('hidden')) return;
-  if (typeof anime !== 'undefined') {
-    anime({
-      targets: popup,
-      opacity: [1, 0],
-      scale: [1, 0.85],
-      duration: 180,
-      easing: 'easeInQuad',
-      complete: () => {
-        popup.classList.add('hidden');
-        selectedPopupNode = null;
-      }
-    });
-  } else {
-    popup.classList.add('hidden');
-    selectedPopupNode = null;
-  }
+  popup.classList.remove('mm-popup--in');
+  selectedPopupNode = null;
+  setTimeout(() => { if (!popup.classList.contains('mm-popup--in')) popup.classList.add('hidden'); }, 180);
 }
 
 function routeToPopupNode() {
