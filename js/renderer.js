@@ -39,7 +39,10 @@ function renderDestinationCard(node, seg) {
   if (!anchor || !bg || !title || !sub || !icon || !shape || !card) return;
 
   const { x, y } = node.coordinates;
-  anchor.setAttribute('transform', `translate(${x}, ${y})`);
+  // En modo vertical el mapa gira -90 grados: el pin se contragira +90 para que el texto quede derecho.
+  // Se hace aqui y no en #svg-dest-pin porque la animacion de aparicion pisa el atributo transform de ese grupo.
+  const vertical = isVerticalMode && !document.body.classList.contains('mobile-navigation-mode');
+  anchor.setAttribute('transform', `translate(${x}, ${y})${vertical ? ' rotate(90)' : ''}`);
 
   let iconHref = '#vec-icon-bag';
   let fill = '#0f2b3a';
@@ -66,7 +69,9 @@ function renderDestinationCard(node, seg) {
   // Ancho segun el texto; la tarjeta se voltea a la izquierda si no cabe a la derecha del pin
   const textW = Math.max(title.getComputedTextLength ? title.getComputedTextLength() : 0, sub.getComputedTextLength ? sub.getComputedTextLength() : 0);
   const cardW = Math.max(72, Math.ceil(textW) + 20);
-  const flip = x + 18 + cardW > 1500;
+  // "A la derecha en pantalla" es +x del mapa en horizontal y +y del mapa en vertical
+  const spec = (typeof FLOOR_SPECS !== 'undefined' && FLOOR_SPECS[node.level]) || { width: 1536, height: 718 };
+  const flip = vertical ? (y + 18 + cardW > spec.height - 16) : (x + 18 + cardW > spec.width - 36);
   const left = flip ? -18 - cardW : 18;
   bg.setAttribute('width', cardW);
   bg.setAttribute('x', left);
@@ -524,11 +529,11 @@ function renderMapOverlay(animate = false) {
     destPinEl.style.display = 'block';
     renderDestinationCard(lastNode, activeSeg);
 
+    // La rotacion del pin la maneja renderDestinationCard (dentro del ancla)
+    destPinEl.removeAttribute('transform');
     if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
-      destPinEl.setAttribute('transform', `rotate(90, ${lastNode.coordinates.x}, ${lastNode.coordinates.y})`);
       if (totemMarkerEl) totemMarkerEl.setAttribute('transform', 'rotate(90, 960, 510)');
     } else {
-      destPinEl.removeAttribute('transform');
       if (totemMarkerEl) totemMarkerEl.removeAttribute('transform');
     }
 

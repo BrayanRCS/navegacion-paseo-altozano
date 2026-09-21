@@ -178,6 +178,7 @@ async function initApp() {
     if (typeof setupEditorDragListeners === 'function') setupEditorDragListeners();
     
     initFromUrlParams();
+    if (typeof resolveDefaultOrientation === 'function') resolveDefaultOrientation();
     if (typeof applyMapOrientation === 'function') applyMapOrientation();
     renderMapOverlay();
 

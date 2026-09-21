@@ -52,6 +52,19 @@ function updateZoomButtonUI() {
   }
 }
 
+// Orientacion inicial: el totem es vertical, asi que el mapa se gira para llenar la pantalla.
+// No aplica en el celular (vista QR) ni en pantallas horizontales. ?orientation=vertical|horizontal la fuerza.
+function resolveDefaultOrientation() {
+  if (document.body.classList.contains('mobile-navigation-mode')) {
+    isVerticalMode = false;
+    return;
+  }
+  const forced = new URLSearchParams(window.location.search).get('orientation');
+  if (forced === 'vertical') isVerticalMode = true;
+  else if (forced === 'horizontal') isVerticalMode = false;
+  else isVerticalMode = window.innerHeight > window.innerWidth;
+}
+
 function toggleMapOrientation() {
   isVerticalMode = !isVerticalMode;
   triggerHaptic('medium');

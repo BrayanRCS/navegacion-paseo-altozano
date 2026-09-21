@@ -180,6 +180,9 @@
 
     /* ===== Mapa minimalista: controles (columna de filtros, niveles, barra de ruta) ===== */
     .mm-hide { display: none !important; }
+    /* La vista de celular (QR) trae sus propios controles: los del totem no aplican ahi */
+    body.mobile-navigation-mode .mm-cats, body.mobile-navigation-mode .mm-levels,
+    body.mobile-navigation-mode .mm-search-pill, body.mobile-navigation-mode .mm-search-sheet { display: none !important; }
     .mm-cats { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); z-index: 25;
       display: flex; flex-direction: column; gap: 10px; max-height: calc(100% - 24px); overflow-y: auto; scrollbar-width: none; }
     .mm-cats::-webkit-scrollbar { display: none; }
