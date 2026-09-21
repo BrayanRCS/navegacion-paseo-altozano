@@ -101,11 +101,53 @@ function calculateReleaseVelocity() {
 }
 
 // 3. Hardware-Accelerated GPU Transform Engine
+// La columna de filtros ocupa el borde izquierdo: el mapa se centra en el espacio libre que queda a su derecha
+function mapViewInsetX() {
+  const cats = document.querySelector('.mm-cats');
+  const container = document.getElementById('map-container');
+  if (!cats || !container || getComputedStyle(cats).display === 'none') return 0;
+  return Math.max(0, (cats.getBoundingClientRect().right - container.getBoundingClientRect().left) / 2);
+}
+
+// ---- Escala de iconos y tarjeta: tamano constante en pantalla, sin importar el zoom ----
+const MAP_ICON_SCREEN_R = 22;   // radio del icono de local en px de pantalla (44 px de diametro)
+const MAP_ICON_BASE_R = 9;      // radio base del icono en unidades del plano
+const MAP_PIN_TEXT_PX = 21;     // alto aproximado del nombre en la tarjeta del destino
+const MAP_PIN_BASE_TEXT = 13;   // tamano base del nombre en unidades del plano
+const MAP_TIER_PPU = [0.7, 1.0, 1.5, 2.2, 3.2]; // px por unidad donde empieza cada nivel de detalle
+let currentPxPerUnit = 1;
+let currentPinK = 1;
+let currentSizeF = 1;   // pantallas angostas (celular) usan iconos menores
+let lastMeasuredCamScale = -1;
+
+function updateMapScaleVars(force = false) {
+  const svg = document.getElementById('map-svg-overlay');
+  if (!svg || typeof currentCamera === 'undefined') return;
+  if (!force && lastMeasuredCamScale > 0 && Math.abs(currentCamera.scale - lastMeasuredCamScale) < 0.02 * lastMeasuredCamScale) return;
+  const ctm = svg.getScreenCTM();
+  if (!ctm) return;
+  lastMeasuredCamScale = currentCamera.scale;
+  const ppu = Math.hypot(ctm.a, ctm.b);
+  if (!ppu || !isFinite(ppu)) return;
+  currentPxPerUnit = ppu;
+
+  const clamp = (v, lo, hi) => Math.max(lo, Math.min(hi, v));
+  currentSizeF = clamp(window.innerWidth / 1080, 0.55, 1);
+  currentPinK = clamp(MAP_PIN_TEXT_PX * currentSizeF / (MAP_PIN_BASE_TEXT * ppu), 0.7, 2.4);
+  svg.style.setProperty('--mm-icon-k', clamp(MAP_ICON_SCREEN_R * currentSizeF / (MAP_ICON_BASE_R * ppu), 0.6, 3).toFixed(3));
+  svg.style.setProperty('--mm-pin-k', currentPinK.toFixed(3));
+
+  let tier = 0;
+  MAP_TIER_PPU.forEach((lower, i) => { if (ppu >= lower) tier = i; });
+  if (svg.getAttribute('data-tier') !== String(tier)) svg.setAttribute('data-tier', String(tier));
+}
+
 function updateCameraTransform() {
   const stage = document.getElementById('map-camera-stage');
   if (!stage) return;
   const rot = currentCamera.rotation || 0;
   stage.style.transform = `translate3d(${currentCamera.panX.toFixed(2)}px, ${currentCamera.panY.toFixed(2)}px, 0) scale(${currentCamera.scale.toFixed(4)}) rotate(${rot.toFixed(2)}deg)`;
+  updateMapScaleVars();
 }
 
 // 4. Unified CinemaKinetic Loop (Single persistent requestAnimationFrame)
@@ -221,7 +263,7 @@ function zoomToCoordinates(x, y, targetScale = null, animate = true, duration = 
   const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
   const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
 
-  const targetScreenX = vp.cw / 2;
+  const targetScreenX = vp.cw / 2 + mapViewInsetX();
   const targetScreenY = vp.ch / 2;
 
   const panX = targetScreenX - rx;
@@ -302,7 +344,7 @@ function zoomToRouteBoundingBox(pathNodes, duration = 500) {
   const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
   const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
 
-  const targetScreenX = vp.cw / 2;
+  const targetScreenX = vp.cw / 2 + mapViewInsetX();
   const targetScreenY = vp.ch / 2;
 
   const panX = targetScreenX - rx;
@@ -347,7 +389,7 @@ function zoomToOverview(animate = true) {
   const rx = (pixelX * targetScale) * Math.cos(rad) - (pixelY * targetScale) * Math.sin(rad);
   const ry = (pixelX * targetScale) * Math.sin(rad) + (pixelY * targetScale) * Math.cos(rad);
 
-  const panX = (vp.cw / 2) - rx;
+  const panX = (vp.cw / 2 + mapViewInsetX()) - rx;
   const panY = (vp.ch / 2) - ry;
 
   cameraPhysics.velocityX = 0;

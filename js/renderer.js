@@ -27,6 +27,40 @@ function positionNavArrowOnNode(node, nextNode, animate = false, duration = 600,
   }
 }
 
+// Prioridad de un local para decidir cual icono se queda cuando dos se enciman (menor = mas importante)
+function nodeIconPriority(n) {
+  if (n.type === 'anchor_store') return 0;
+  const cat = typeof getNodeCategoryGroup === 'function' ? getNodeCategoryGroup(n) : 'other';
+  return { food: 1, coffee: 1, beauty: 2, tech: 2, other: 3, fashion: 4 }[cat] ?? 3;
+}
+
+// Para cada nivel de detalle (ver MAP_TIER_PPU) decide que iconos caben sin encimarse, por prioridad.
+// Devuelve { nodeId: primerNivelDeDetalleEnQueAparece }. Con zoom cercano aparecen todos.
+function computeMinTiers(nodes) {
+  const kinds = ['store', 'anchor_store', 'island'];
+  const cand = nodes
+    .filter(n => kinds.includes(n.type) && (currentCategoryFilter === 'all' || getNodeCategoryGroup(n) === currentCategoryFilter))
+    .sort((a, b) => nodeIconPriority(a) - nodeIconPriority(b) || (a.name || '').localeCompare(b.name || '', 'es'));
+  const seg = routeSegments && routeSegments.find(sg => sg.level === currentLevel);
+  const destId = seg && seg.path.length ? seg.path[seg.path.length - 1].id : null;
+  const minTier = {};
+  MAP_TIER_PPU.forEach((lower, t) => {
+    const minDist = (MAP_ICON_SCREEN_R * currentSizeF * 2 + 4) / lower;  // unidades del plano
+    // los ya visibles en niveles previos siguen ocupando su lugar
+    const placed = cand.filter(n => minTier[n.id] !== undefined).map(n => n.coordinates);
+    cand.forEach(n => {
+      if (minTier[n.id] !== undefined) return;
+      const { x, y } = n.coordinates;
+      const clash = n.id !== destId && placed.some(p => Math.hypot(p.x - x, p.y - y) < minDist);
+      if (!clash) {
+        placed.push({ x, y });
+        minTier[n.id] = t;
+      }
+    });
+  });
+  return minTier;
+}
+
 // Pin de destino con tarjeta (nombre + nivel). El icono sigue la categoria del local.
 function renderDestinationCard(node, seg) {
   const anchor = document.getElementById('dest-pin-anchor');
@@ -43,6 +77,7 @@ function renderDestinationCard(node, seg) {
   // Se hace aqui y no en #svg-dest-pin porque la animacion de aparicion pisa el atributo transform de ese grupo.
   const vertical = isVerticalMode && !document.body.classList.contains('mobile-navigation-mode');
   anchor.setAttribute('transform', `translate(${x}, ${y})${vertical ? ' rotate(90)' : ''}`);
+  if (typeof updateMapScaleVars === 'function') updateMapScaleVars(true);
 
   let iconHref = '#vec-icon-bag';
   let fill = '#0f2b3a';
@@ -71,7 +106,8 @@ function renderDestinationCard(node, seg) {
   const cardW = Math.max(72, Math.ceil(textW) + 20);
   // "A la derecha en pantalla" es +x del mapa en horizontal y +y del mapa en vertical
   const spec = (typeof FLOOR_SPECS !== 'undefined' && FLOOR_SPECS[node.level]) || { width: 1536, height: 718 };
-  const flip = vertical ? (y + 18 + cardW > spec.height - 16) : (x + 18 + cardW > spec.width - 36);
+  const reach = (18 + cardW) * (typeof currentPinK === 'number' ? currentPinK : 1);
+  const flip = vertical ? (y + reach > spec.height - 16) : (x + reach > spec.width - 36);
   const left = flip ? -18 - cardW : 18;
   bg.setAttribute('width', cardW);
   bg.setAttribute('x', left);
@@ -159,6 +195,7 @@ function renderMapOverlay(animate = false) {
 
   // Draw Nodes for current level
   const currentFloorNodes = levelNodes[currentLevel] || {};
+  const minTiers = (MINIMAL_MAP && !isEditorMode) ? computeMinTiers(Object.values(currentFloorNodes)) : {};
   Object.values(currentFloorNodes).forEach(n => {
     const isWaypoint = n.id.startsWith('n_lvl1_c_') || n.id.startsWith('n_lvl2_c_') || n.id.startsWith('n_lvl3_c_') || n.type === 'corridor_waypoint' || n.type === 'waypoint';
 
@@ -267,6 +304,13 @@ function renderMapOverlay(animate = false) {
       const isAnchor = n.type === 'anchor_store';
       const r = isSelected || isConnectSource ? 12 : (isAnchor ? 11 : 9);
 
+      hitArea.setAttribute('r', '26');
+      if (minTiers[n.id]) g.setAttribute('data-mintier', String(minTiers[n.id]));
+      // El icono mantiene un tamano casi constante en pantalla: --mm-icon-k lo ajusta segun el zoom
+      const ico = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      ico.setAttribute('class', 'mm-ico');
+      ico.style.transformOrigin = `${posX}px ${posY}px`;
+
       const disc = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       disc.setAttribute('cx', posX);
       disc.setAttribute('cy', posY);
@@ -284,8 +328,9 @@ function renderMapOverlay(animate = false) {
       const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
       title.textContent = isEditorMode ? `${n.name} (Arrastra para mover o toca para enlazar arista)` : `${n.name} (Toca para trazar ruta)`;
       g.appendChild(title);
-      g.appendChild(disc);
-      g.appendChild(useIcon);
+      ico.appendChild(disc);
+      ico.appendChild(useIcon);
+      g.appendChild(ico);
 
     } else if (n.logo) {
       // OFFICIAL LUXURY BRAND BADGE WITH PURE VECTOR SVG
@@ -505,6 +550,16 @@ function renderMapOverlay(animate = false) {
       g.style.pointerEvents = 'all';
     }
 
+    // Escaleras, elevadores, sanitarios y servicios: mismo criterio de tamano que los locales, un poco menores
+    if (MINIMAL_MAP && !isEditorMode && !isWaypoint && !g.querySelector('.mm-ico')) {
+      hitArea.setAttribute('r', '26');
+      const wrap = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      wrap.setAttribute('class', 'mm-scale-sm');
+      wrap.style.transformOrigin = `${posX}px ${posY}px`;
+      Array.from(g.childNodes).forEach(c => { if (c !== hitArea && c.nodeName !== 'title') wrap.appendChild(c); });
+      g.appendChild(wrap);
+    }
+
     nodesLayer.appendChild(g);
   });
 
@@ -546,6 +601,8 @@ function renderMapOverlay(animate = false) {
     if (chevronsEl) chevronsEl.setAttribute('d', '');
     if (destPinEl) destPinEl.style.display = 'none';
   }
+
+  if (typeof updateMapScaleVars === 'function') updateMapScaleVars(true);
 
   // Position Navigation Arrow on active step
   if (currentSteps.length > 0 && currentSteps[currentStepIndex]) {

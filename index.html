@@ -188,7 +188,7 @@
     .mm-cats::-webkit-scrollbar { display: none; }
     .mm-cat { display: flex; align-items: center; gap: 12px; width: 176px; min-height: 68px; padding: 10px 14px;
       border-radius: 20px; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.15; color: #dbe7f3; cursor: pointer;
-      background: rgba(12, 26, 44, 0.88); border: 1px solid rgba(140, 175, 210, 0.22);
+      background: rgba(12, 26, 44, 0.97); border: 1px solid rgba(140, 175, 210, 0.22);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 14px rgba(0,0,0,0.35);
       transition: transform .12s ease, background .12s ease, color .12s ease; -webkit-tap-highlight-color: transparent; }
     .mm-cat:active { transform: scale(0.97); }
@@ -265,6 +265,17 @@
     .mm-key:active { background: #fdf1db; color: #0f2236; transform: scale(0.96); }
     .mm-key--wide { flex: 1.6; }
     .mm-key--space { font-size: 18px; letter-spacing: .06em; color: #9fb4c9; }
+
+    /* Escala de iconos: tamano casi constante en pantalla; los que se encimarian se ocultan segun el zoom */
+    #map-svg-overlay .mm-ico { transform: scale(var(--mm-icon-k, 1)); }
+    #map-svg-overlay .mm-scale-sm { transform: scale(calc(var(--mm-icon-k, 1) * 0.65)); }
+    #map-svg-overlay .mm-scale-totem { transform: scale(calc(var(--mm-icon-k, 1) * 0.8)); }
+    #map-svg-overlay .mm-scale-arrow { transform: scale(calc(var(--mm-icon-k, 1) * 0.75)); }
+    #map-svg-overlay[data-tier="0"] g[data-mintier="1"], #map-svg-overlay[data-tier="0"] g[data-mintier="2"],
+    #map-svg-overlay[data-tier="0"] g[data-mintier="3"], #map-svg-overlay[data-tier="0"] g[data-mintier="4"],
+    #map-svg-overlay[data-tier="1"] g[data-mintier="2"], #map-svg-overlay[data-tier="1"] g[data-mintier="3"],
+    #map-svg-overlay[data-tier="1"] g[data-mintier="4"], #map-svg-overlay[data-tier="2"] g[data-mintier="3"],
+    #map-svg-overlay[data-tier="2"] g[data-mintier="4"], #map-svg-overlay[data-tier="3"] g[data-mintier="4"] { display: none; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
@@ -567,13 +578,16 @@
 
               <!-- Totem Fixed Marker (📍 Punto 12 on Nivel 1) -->
               <g id="svg-totem-marker" style="display: none;">
-                <circle cx="960" cy="510" r="14" fill="#ef4444" stroke="#ffffff" stroke-width="2.5" style="filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));"></circle>
-                <text x="960" y="514.5" font-size="10" font-weight="extrabold" fill="#ffffff" text-anchor="middle">📍</text>
+                <g class="mm-scale-totem" style="transform-origin: 960px 510px;">
+                  <circle cx="960" cy="510" r="14" fill="#ef4444" stroke="#ffffff" stroke-width="2.5" style="filter: drop-shadow(0 2px 5px rgba(0,0,0,0.8));"></circle>
+                  <text x="960" y="514.5" font-size="10" font-weight="extrabold" fill="#ffffff" text-anchor="middle">📍</text>
+                </g>
               </g>
 
               <!-- Destination Target Pin -->
               <g id="svg-dest-pin" style="display: none;">
                 <g id="dest-pin-anchor" transform="translate(0,0)">
+                  <g id="dest-pin-scale" style="transform: scale(var(--mm-pin-k, 1)); transform-origin: 0 0;">
                   <!-- Tarjeta de destino: nombre y nivel -->
                   <g id="dest-card">
                     <rect id="dest-card-bg" x="18" y="-40" width="120" height="36" rx="9" fill="#fdf1db" stroke="rgba(15,34,54,0.25)" stroke-width="1" style="filter: drop-shadow(0 3px 6px rgba(0,0,0,0.55));"></rect>
@@ -583,18 +597,21 @@
                   <!-- Pin: la punta cae sobre el nodo de entrada -->
                   <path id="dest-pin-shape" d="M 0 0 C -3 -6 -13 -13 -13 -22 A 13 13 0 1 1 13 -22 C 13 -13 3 -6 0 0 Z" fill="#0f2b3a" stroke="#ffffff" stroke-width="2" style="filter: drop-shadow(0 3px 5px rgba(0,0,0,0.7));"></path>
                   <use id="dest-pin-icon" href="#vec-icon-bag" x="0" y="-22" transform="scale(1.1)" style="transform-box: fill-box; transform-origin: center;"></use>
+                  </g>
                 </g>
               </g>
 
               <!-- Dynamic GPS Nav Arrow Cursor Layer -->
               <g id="svg-nav-cursor-layer">
                 <g id="svg-nav-arrow-cursor" style="display: none;" transform="translate(0,0)">
+                  <g class="mm-scale-arrow" style="transform-origin: 0 0;">
                   <!-- Soft Heading Beam Cone -->
                   <path d="M 0 0 L -22 -44 L 22 -44 Z" fill="rgba(56, 189, 248, 0.22)" stroke="rgba(56, 189, 248, 0.45)" stroke-width="1.2" stroke-linejoin="round"></path>
                   <!-- Outer Precision Blue Puck Circle with White Border & Drop Shadow -->
                   <circle cx="0" cy="0" r="13" fill="#1d4ed8" stroke="#ffffff" stroke-width="2.8" style="filter: drop-shadow(0 3px 8px rgba(0,0,0,0.85));"></circle>
                   <!-- Central Crisp Navigation White Chevron Arrow (Google Maps Style) -->
                   <path d="M 0 -9 L 6 6 L 0 3 L -6 6 Z" fill="#ffffff"></path>
+                  </g>
                 </g>
               </g>
             </svg>
