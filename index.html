@@ -176,6 +176,45 @@
       overflow: hidden;
       padding: 0.5rem;
     }
+
+    /* ===== Mapa minimalista: controles (columna de filtros, niveles, barra de ruta) ===== */
+    .mm-hide { display: none !important; }
+    .mm-cats { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); z-index: 25;
+      display: flex; flex-direction: column; gap: 10px; max-height: calc(100% - 24px); overflow-y: auto; scrollbar-width: none; }
+    .mm-cats::-webkit-scrollbar { display: none; }
+    .mm-cat { display: flex; align-items: center; gap: 12px; width: 176px; min-height: 68px; padding: 10px 14px;
+      border-radius: 20px; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.15; color: #dbe7f3; cursor: pointer;
+      background: rgba(12, 26, 44, 0.88); border: 1px solid rgba(140, 175, 210, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 14px rgba(0,0,0,0.35);
+      transition: transform .12s ease, background .12s ease, color .12s ease; -webkit-tap-highlight-color: transparent; }
+    .mm-cat:active { transform: scale(0.97); }
+    .mm-cat--active { background: #fdf1db; color: #0f2236; border-color: #fdf1db; }
+    .mm-cat--active .mm-ic { filter: invert(1) brightness(0.3); }
+    .mm-ic { width: 30px; height: 30px; flex: none; }
+    .mm-levels { position: absolute; right: 12px; bottom: 16px; z-index: 25; display: flex; flex-direction: column; gap: 8px; padding: 8px;
+      border-radius: 24px; background: rgba(12, 26, 44, 0.88); border: 1px solid rgba(140, 175, 210, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 14px rgba(0,0,0,0.35); }
+    .mm-lvl { width: 72px; height: 72px; border-radius: 18px; font-size: 20px; font-weight: 700; color: #9fb4c9; cursor: pointer;
+      background: transparent; transition: transform .12s ease, background .12s ease, color .12s ease; -webkit-tap-highlight-color: transparent; }
+    .mm-lvl:active { transform: scale(0.96); }
+    .mm-lvl--active { background: #fdf1db; color: #0f2236; }
+    .mm-bottom { padding: 0; }
+    .mm-route-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 16px; padding: 14px 18px; border-radius: 26px; color: #eaf2fa;
+      background: rgba(12, 26, 44, 0.92); border: 1px solid rgba(140, 175, 210, 0.22);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 8px 20px rgba(0,0,0,0.40); }
+    .mm-route-icon { width: 60px; height: 60px; border-radius: 18px; flex: none; display: flex; align-items: center; justify-content: center;
+      font-size: 28px; background: rgba(255,255,255,0.08); }
+    .mm-route-text { min-width: 0; flex: 1 1 220px; }
+    .mm-route-instruction { font-size: 22px; font-weight: 700; line-height: 1.2; color: #fff; }
+    .mm-route-title { font-size: 17px; font-weight: 700; color: #cfe0f0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mm-route-metrics { font-size: 15px; color: #f0ac26; font-weight: 600; margin-top: 2px; }
+    .mm-route-actions { display: flex; align-items: stretch; gap: 10px; flex: 1 1 100%; }
+    .mm-route-actions .mm-btn { flex: 1 1 0; justify-content: center; }
+    .mm-btn { display: inline-flex; align-items: center; gap: 10px; min-height: 60px; padding: 0 20px; border-radius: 18px; font-size: 16px;
+      font-weight: 700; cursor: pointer; transition: transform .12s ease; -webkit-tap-highlight-color: transparent; }
+    .mm-btn:active { transform: scale(0.97); }
+    .mm-btn--ghost { color: #dbe7f3; background: transparent; border: 1px solid rgba(140, 175, 210, 0.35); }
+    .mm-btn--solid { color: #0f2236; background: #fdf1db; border: 1px solid #fdf1db; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
@@ -328,7 +367,7 @@
       <div class="bg-slate-900/85 backdrop-blur-xl rounded-3xl p-3 sm:p-3.5 border border-slate-800 relative flex flex-col flex-1 min-h-0 overflow-hidden">
         
         <!-- Header Bar with Map Level & Controls -->
-        <div class="flex items-center justify-between mb-2 text-xs flex-wrap gap-2 flex-none">
+        <div class="mm-hide flex items-center justify-between mb-2 text-xs flex-wrap gap-2 flex-none">
           <div class="flex items-center gap-2">
             <span class="font-bold text-white text-sm" id="map-level-title">Planta 1 · Nivel Principal</span>
             <span class="text-slate-500">|</span>
@@ -537,6 +576,41 @@
             </div>
           </div>
 
+          <!-- Filtros de categoria (columna izquierda) -->
+          <nav id="map-category-filter-chips" class="mm-cats" aria-label="Categorías">
+            <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="mm-cat mm-cat--active">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-bag"/></svg><span>Todos</span>
+            </button>
+            <button onclick="filterMapCategory('food')" id="map-cat-chip-food" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-food"/></svg><span>Comida</span>
+            </button>
+            <button onclick="filterMapCategory('coffee')" id="map-cat-chip-coffee" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-coffee"/></svg><span>Cafés</span>
+            </button>
+            <button onclick="filterMapCategory('fashion')" id="map-cat-chip-fashion" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-shirt"/></svg><span>Moda</span>
+            </button>
+            <button onclick="filterMapCategory('anchor')" id="map-cat-chip-anchor" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-bag"/></svg><span>Anclas</span>
+            </button>
+            <button onclick="filterMapCategory('beauty')" id="map-cat-chip-beauty" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-sparkle"/></svg><span>Belleza</span>
+            </button>
+            <button onclick="filterMapCategory('tech')" id="map-cat-chip-tech" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-laptop"/></svg><span>Tech y Autos</span>
+            </button>
+            <button onclick="filterMapCategory('portal')" id="map-cat-chip-portal" class="mm-cat">
+              <svg class="mm-ic" viewBox="-8 -8 16 16" aria-hidden="true"><use href="#vec-icon-stairs"/></svg><span>Servicios</span>
+            </button>
+          </nav>
+
+          <!-- Selector de niveles (columna derecha) -->
+          <div class="mm-levels" role="group" aria-label="Nivel">
+            <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="mm-lvl">N2</button>
+            <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="mm-lvl mm-lvl--active">N1</button>
+            <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="mm-lvl">PB</button>
+          </div>
+
           <!-- Floating Camera Controls Toolbar (Top-Right) -->
           <div class="absolute top-3 right-3 z-20 flex items-center gap-1.5 bg-slate-900/90 backdrop-blur-md p-1.5 rounded-xl border border-slate-800 shadow-xl flex-wrap">
             <button onclick="toggleMapOrientation()" id="btn-orientation-toggle" title="Alternar Orientación Vertical (Tótem) / Horizontal" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 flex items-center justify-center transition-all border border-slate-700 shadow-md active:scale-95">
@@ -545,7 +619,7 @@
             <button onclick="resetCameraRotation()" id="btn-compass" title="Restablecer al Norte (0°)" class="hidden w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-white flex items-center justify-center transition-all border border-slate-700 shadow-md">
               <i id="compass-needle" class="fa-solid fa-compass text-rose-400 text-sm transition-transform duration-75"></i>
             </button>
-            <button onclick="toggleStoresAndRestaurants()" id="btn-toggle-stores" title="Mostrar u Ocultar Tiendas y Restaurantes" class="px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700">
+            <button onclick="toggleStoresAndRestaurants()" id="btn-toggle-stores" title="Mostrar u Ocultar Tiendas y Restaurantes" class="mm-hide px-3 py-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-sky-400 font-bold text-xs flex items-center gap-1.5 transition-all shadow-md border border-slate-700">
               <i id="btn-toggle-stores-icon" class="fa-solid fa-eye-slash text-xs"></i>
               <span id="btn-toggle-stores-text">Ocultar Tiendas y Restaurantes</span>
             </button>
@@ -604,76 +678,30 @@
       </div>
 
       <!-- BOTTOM NAVIGATION & CONTROL TOOLBAR (ERGONOMIC TOUCH ZONE FOR VERTICAL KIOSK) -->
-      <div class="bg-slate-900/95 backdrop-blur-xl rounded-3xl p-3 sm:p-3.5 border border-slate-800 shadow-2xl flex flex-col gap-2.5 mt-auto flex-shrink-0">
+      <div class="mm-bottom mt-auto flex-shrink-0">
         
-        <!-- Controls Row: Floor Switcher + Category Filter Chips -->
-        <div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-2 pb-2 border-b border-slate-800/80">
-          <div class="flex items-center justify-between sm:justify-start gap-2.5">
-            <!-- Floor Switcher in Map -->
-            <div class="flex bg-slate-800/40 p-1.5 rounded-2xl border border-slate-700/60 gap-1">
-              <button onclick="switchLevel(1)" id="map-bar-btn-lvl-1" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-300 hover:text-white cursor-pointer">
-                PB
-              </button>
-              <button onclick="switchLevel(2)" id="map-bar-btn-lvl-2" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-md cursor-pointer">
-                Nivel 1
-              </button>
-              <button onclick="switchLevel(3)" id="map-bar-btn-lvl-3" class="px-5 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-300 hover:text-white cursor-pointer">
-                Nivel 2
-              </button>
-            </div>
+        <!-- Barra de ruta: instruccion, tiempo y acciones -->
+        <div class="mm-route-bar">
+          <div id="map-target-icon-box" class="mm-route-icon">
+            <span id="map-target-emoji">🎯</span>
           </div>
-
-          <!-- Quick Category Filter Chips in Lower Reach Zone -->
-          <div class="flex items-center gap-2 overflow-x-auto py-1 text-xs select-none scrollbar-none" id="map-category-filter-chips">
-            <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="px-3.5 py-1.5 rounded-xl font-black bg-blue-600 text-white shadow-md cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all scale-105 border border-sky-400">
-              <span>🏢 Todos</span>
-            </button>
-            <button onclick="filterMapCategory('food')" id="map-cat-chip-food" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>🍔 Comida</span>
-            </button>
-            <button onclick="filterMapCategory('coffee')" id="map-cat-chip-coffee" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>☕ Cafés</span>
-            </button>
-            <button onclick="filterMapCategory('fashion')" id="map-cat-chip-fashion" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>👗 Moda</span>
-            </button>
-            <button onclick="filterMapCategory('anchor')" id="map-cat-chip-anchor" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>🏬 Anclas</span>
-            </button>
-            <button onclick="filterMapCategory('beauty')" id="map-cat-chip-beauty" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>✨ Belleza</span>
-            </button>
-            <button onclick="filterMapCategory('tech')" id="map-cat-chip-tech" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>📱 Tech</span>
-            </button>
-            <button onclick="filterMapCategory('portal')" id="map-cat-chip-portal" class="px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all">
-              <span>🛎️ Servicios</span>
-            </button>
+          <div class="mm-route-text">
+            <p id="map-route-instruction" class="mm-route-instruction" style="display:none"></p>
+            <h3 id="map-target-title" class="mm-route-title">Liverpool</h3>
+            <p id="map-target-metrics" class="mm-route-metrics">85 m · ~1 min a pie</p>
           </div>
-        </div>
-
-        <!-- Destination Info Banner & Action Buttons -->
-        <div class="bg-slate-950/90 rounded-2xl p-3 sm:p-3.5 border border-slate-800 flex items-center justify-between gap-3 shadow-inner">
-          <div class="flex items-center gap-3 min-w-0">
-            <div id="map-target-icon-box" class="w-12 h-12 rounded-2xl bg-gradient-to-tr from-sky-600 to-blue-700 flex items-center justify-center text-2xl shadow-md flex-shrink-0">
-              <span id="map-target-emoji">🎯</span>
-            </div>
-            <div class="truncate">
-              <span class="text-[10px] uppercase font-extrabold text-sky-400 tracking-wider block">DESTINO SELECCIONADO</span>
-              <h3 id="map-target-title" class="text-base font-black text-white truncate">Liverpool</h3>
-              <p id="map-target-metrics" class="text-xs text-emerald-400 font-bold mt-0.5">85 m · ~1 min a pie</p>
-            </div>
-          </div>
-
-          <!-- Action Buttons Group (Iniciar Ruta GPS + Llevar a Celular) -->
-          <div class="flex items-center gap-2 flex-shrink-0 flex-wrap">
-            <button id="btn-map-banner-navigate" onclick="toggleWalkSimulation()" class="px-4 py-2.5 rounded-2xl bg-gradient-to-r from-blue-600 via-sky-500 to-teal-400 hover:from-blue-500 hover:to-sky-400 text-white font-extrabold text-xs shadow-lg shadow-sky-500/25 flex items-center gap-2 transition-all active:scale-95 border border-sky-400/40 cursor-pointer">
-              <i id="btn-map-banner-nav-icon" class="fa-solid fa-location-arrow text-sm"></i>
+          <div class="mm-route-actions">
+            <button id="btn-map-banner-navigate" onclick="toggleWalkSimulation()" class="mm-btn mm-btn--ghost">
+              <i id="btn-map-banner-nav-icon" class="fa-solid fa-location-arrow"></i>
               <span id="btn-map-banner-nav-text">Iniciar Ruta (GPS)</span>
             </button>
-            <button onclick="showQrModal()" class="px-3.5 py-2.5 rounded-2xl bg-gradient-to-r from-emerald-600 to-teal-500 hover:from-emerald-500 hover:to-teal-400 text-white font-extrabold text-xs shadow-lg shadow-emerald-500/25 flex items-center gap-2 transition-all active:scale-95 border border-emerald-400/30 flex-shrink-0 cursor-pointer">
-              <i class="fa-solid fa-qrcode text-base"></i>
+            <button onclick="showQrModal()" class="mm-btn mm-btn--ghost">
+              <i class="fa-solid fa-qrcode"></i>
               <span>Llevar en Celular</span>
+            </button>
+            <button id="btn-map-cancel-route" onclick="setTotemRoute(null)" class="mm-btn mm-btn--solid" style="display:none">
+              <i class="fa-solid fa-xmark"></i>
+              <span>Cancelar ruta</span>
             </button>
           </div>
         </div>

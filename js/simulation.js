@@ -197,6 +197,7 @@ function playCurrentFloorSegment() {
       if (matchingStepIdx !== -1 && matchingStepIdx !== lastReportedStepIdx) {
         lastReportedStepIdx = matchingStepIdx;
         currentStepIndex = matchingStepIdx;
+        if (typeof updateRouteInstruction === 'function') updateRouteInstruction();
         updateTotemUI(false);
         updatePlaceCard(activeNode);
       }
@@ -224,6 +225,7 @@ function handleSegmentComplete() {
     const transStepIdx = currentSteps.findIndex(s => s.isTransition && s.level === seg.level);
     if (transStepIdx !== -1) {
       currentStepIndex = transStepIdx;
+        if (typeof updateRouteInstruction === 'function') updateRouteInstruction();
       updateTotemUI(false);
     }
 
@@ -250,6 +252,7 @@ function handleSegmentComplete() {
   // Destination reached!
   if (typeof hideFloorTransitionHUD === 'function') hideFloorTransitionHUD();
   currentStepIndex = currentSteps.length - 1;
+        if (typeof updateRouteInstruction === 'function') updateRouteInstruction();
   const destNode = seg.path[seg.path.length - 1];
   updatePlaceCard(destNode, true);
   updateTotemUI(false);

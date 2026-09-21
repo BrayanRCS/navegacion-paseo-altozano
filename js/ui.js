@@ -119,9 +119,7 @@ function switchLevel(lvl, autoZoom = true) {
     }
     const btnMap = document.getElementById(`map-bar-btn-lvl-${l}`);
     if (btnMap) {
-      btnMap.className = l === lvl
-        ? "px-5 py-2.5 rounded-xl text-sm font-bold transition-all bg-blue-600 text-white shadow-md cursor-pointer"
-        : "px-5 py-2.5 rounded-xl text-sm font-bold transition-all text-slate-300 hover:text-white cursor-pointer";
+      btnMap.className = l === lvl ? "mm-lvl mm-lvl--active" : "mm-lvl";
     }
     const btnMob = document.getElementById(`mob-lvl-${l}`);
     if (btnMob) {
@@ -305,10 +303,14 @@ function showMapView(destId = null) {
       if (targetTitle) targetTitle.innerText = "Explorando Mapa General";
       const targetMetrics = document.getElementById('map-target-metrics');
       if (targetMetrics) targetMetrics.innerText = "Toca cualquier local o servicio para ver detalles o trazar ruta";
-      const targetEmoji = document.getElementById('map-target-emoji');
-      if (targetEmoji) targetEmoji.innerText = "🗺️";
+      const targetIconBox = document.getElementById('map-target-icon-box');
+      if (targetIconBox) {
+        targetIconBox.className = "mm-route-icon";
+        targetIconBox.innerHTML = '<span id="map-target-emoji">🗺️</span>';
+      }
       const btnNav = document.getElementById('btn-map-banner-navigate');
       if (btnNav) btnNav.style.display = 'none';
+      updateRouteInstruction();
 
       // Ensure level 2 (Nivel 1 with Totem) is active
       if (currentLevel !== 2 && typeof switchLevel === 'function') {
@@ -454,11 +456,7 @@ function filterMapCategory(catId) {
   if (chipsContainer) {
     chipsContainer.querySelectorAll('button').forEach(btn => {
       const isTarget = btn.id === `map-cat-chip-${catId}`;
-      if (isTarget) {
-        btn.className = "px-3.5 py-1.5 rounded-xl font-black bg-blue-600 text-white shadow-md cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all scale-105 border border-sky-400";
-      } else {
-        btn.className = "px-3 py-1.5 rounded-xl font-bold bg-slate-950 text-slate-300 hover:text-white border border-slate-800 cursor-pointer flex items-center gap-1.5 flex-shrink-0 transition-all";
-      }
+      btn.className = isTarget ? "mm-cat mm-cat--active" : "mm-cat";
     });
   }
   if (typeof selectedPopupNode !== 'undefined' && selectedPopupNode && currentCategoryFilter !== 'all') {
@@ -470,6 +468,19 @@ function filterMapCategory(catId) {
   if (typeof renderMapOverlay === 'function') {
     renderMapOverlay();
   }
+}
+
+// Instruccion del paso actual en la barra de ruta; muestra "Cancelar ruta" solo si hay ruta activa
+function updateRouteInstruction() {
+  const el = document.getElementById('map-route-instruction');
+  const cancel = document.getElementById('btn-map-cancel-route');
+  const has = Array.isArray(currentSteps) && currentSteps.length > 0;
+  const step = has ? (currentSteps[currentStepIndex] || currentSteps[0]) : null;
+  if (el) {
+    el.textContent = step ? step.title : '';
+    el.style.display = step ? 'block' : 'none';
+  }
+  if (cancel) cancel.style.display = has ? 'inline-flex' : 'none';
 }
 
 function clearSearchInput() {
@@ -930,6 +941,7 @@ function renderStepsList() {
     div.onclick = () => {
       stopWalkSimulation();
       currentStepIndex = idx;
+      if (typeof updateRouteInstruction === 'function') updateRouteInstruction();
       if (step) {
         const sIdx = routeSegments.findIndex(s => s.level === step.level);
         if (sIdx !== -1) {

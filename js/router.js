@@ -557,6 +557,7 @@ function calculateRoute(explicitOrig = null, explicitDest = null) {
   buildStepByStepList();
   currentStepIndex = 0;
   renderRouteSegmentsBar();
+  if (typeof updateRouteInstruction === 'function') updateRouteInstruction();
 
   if (routeSegments.length > 0 && routeSegments[0].level !== currentLevel) {
     switchLevel(routeSegments[0].level, false);
