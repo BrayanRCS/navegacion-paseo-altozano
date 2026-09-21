@@ -306,6 +306,57 @@
     /* Icono seleccionado: aro crema y un poco mas grande */
     #map-svg-overlay .mm-selected .mm-ico { transform: scale(calc(var(--mm-icon-k, 1) * 1.3)); }
     #map-svg-overlay .mm-selected .mm-ico circle { stroke: #fdf1db; stroke-width: 2.6; }
+
+    /* ===== Estudio del grafo ===== */
+    .mm-studio-entry { position: absolute; left: 12px; top: 88px; z-index: 25; display: flex; align-items: center; gap: 10px; min-height: 52px; padding: 0 18px;
+      border-radius: 999px; font-size: 15px; font-weight: 700; color: #0f2236; background: #f0ac26; cursor: pointer; box-shadow: 0 6px 14px rgba(0,0,0,0.35); }
+    .mm-studio-entry.hidden { display: none !important; }
+    body.studio-active #studio-entry-btn, body.studio-active .mm-cats, body.studio-active .mm-search-pill,
+    body.studio-active .mm-search-sheet, body.studio-active .mm-bottom, body.studio-active #btn-orientation-toggle { display: none !important; }
+    .mm-studio { display: flex; flex-direction: column; gap: 10px; padding: 14px 16px; border-radius: 26px; color: #eaf2fa;
+      background: rgba(12, 26, 44, 0.96); border: 1px solid rgba(240, 172, 38, 0.45); box-shadow: 0 8px 20px rgba(0,0,0,0.4); }
+    .mm-studio.hidden, .mm-report.hidden { display: none !important; }
+    .mm-studio-row { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .mm-studio-head { justify-content: space-between; }
+    .mm-studio-title { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; }
+    .mm-studio-badge { padding: 4px 12px; border-radius: 999px; font-size: 12px; font-weight: 800; letter-spacing: .08em; color: #0f2236; background: #f0ac26; }
+    .mm-studio-counts { font-size: 14px; color: #9fb4c9; }
+    .mm-studio-flag { padding: 3px 10px; border-radius: 999px; font-size: 12px; font-weight: 700; color: #9fb4c9; border: 1px solid rgba(140,175,210,0.35); }
+    .mm-studio-flag.hidden { display: none !important; }
+    .mm-studio-flag--warn { color: #f0ac26; border-color: rgba(240,172,38,0.6); }
+    .mm-studio-actions { display: flex; flex-wrap: wrap; gap: 8px; }
+    .mm-sbtn { display: inline-flex; align-items: center; gap: 8px; min-height: 48px; padding: 0 14px; border-radius: 14px; font-size: 14px; font-weight: 700; color: #dbe7f3;
+      border: 1px solid rgba(140,175,210,0.35); cursor: pointer; background: transparent; }
+    .mm-sbtn:disabled { opacity: .4; cursor: default; }
+    .mm-sbtn:not(:disabled):active { transform: scale(0.97); }
+    .mm-sbtn--solid { color: #0f2236; background: #fdf1db; border-color: #fdf1db; }
+    .mm-sbtn--on { color: #0f2236; background: #10b981; border-color: #10b981; }
+    .mm-sbtn--danger { color: #fca5a5; border-color: rgba(248,113,113,0.5); }
+    .mm-sfield { display: flex; flex-direction: column; gap: 3px; font-size: 12px; color: #9fb4c9; }
+    .mm-sfield--grow { flex: 1 1 200px; }
+    .mm-sinput { min-height: 44px; padding: 0 12px; border-radius: 12px; font-size: 15px; color: #eaf2fa; background: rgba(255,255,255,0.08); border: 1px solid rgba(140,175,210,0.3); }
+    .mm-sinput--num { width: 92px; }
+    .mm-studio-inspector { align-items: flex-end; }
+    .mm-studio-label { font-size: 13px; color: #9fb4c9; }
+    .mm-studio-status p { font-size: 14px; color: #dbe7f3; }
+    #editor-hud-delta { color: #9fb4c9; }
+    .mm-studio-help { font-size: 12px; line-height: 1.5; color: #8fa5bb; }
+    .mm-slink { margin-left: 8px; font-size: 12px; color: #f0ac26; text-decoration: underline; cursor: pointer; }
+    .mm-report { position: fixed; inset: 0; z-index: 70; display: flex; align-items: center; justify-content: center; padding: 16px; background: rgba(4, 9, 18, 0.72); }
+    .mm-report-card { width: min(720px, 100%); max-height: 88vh; display: flex; flex-direction: column; gap: 12px; padding: 18px; border-radius: 24px; color: #eaf2fa;
+      background: #0c1a2c; border: 1px solid rgba(140,175,210,0.3); }
+    .mm-report-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .mm-report-head h3 { font-size: 20px; font-weight: 800; }
+    .mm-report-body { overflow-y: auto; display: flex; flex-direction: column; gap: 6px; }
+    .mm-report-body h4 { margin-top: 10px; font-size: 16px; font-weight: 800; }
+    .mm-report-hint { font-size: 13px; color: #9fb4c9; }
+    .mm-report-summary { padding: 10px 14px; border-radius: 14px; font-size: 15px; font-weight: 700; }
+    .mm-report-summary--ok { background: rgba(16,185,129,0.15); color: #6ee7b7; }
+    .mm-report-summary--warn { background: rgba(240,172,38,0.15); color: #fcd34d; }
+    .mm-report-item { text-align: left; padding: 10px 14px; border-radius: 12px; font-size: 14px; color: #eaf2fa; background: rgba(255,255,255,0.06); cursor: pointer; }
+    .mm-report-item:hover { background: rgba(255,255,255,0.12); }
+    .mm-export-text { min-height: 260px; padding: 12px; border-radius: 12px; font: 12px/1.4 ui-monospace, Consolas, monospace; color: #dbe7f3; background: #07111f; border: 1px solid rgba(140,175,210,0.3); }
+    #map-svg-overlay .mm-handle { transform: scale(var(--mm-handle-k, 1)); }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
@@ -699,6 +750,11 @@
             <div id="mm-search-keyboard" class="mm-search-keyboard"></div>
           </div>
 
+          <!-- Entrada al Estudio del grafo: solo aparece con ?studio=1 -->
+          <button id="studio-entry-btn" class="mm-studio-entry hidden" onclick="studioToggle()">
+            <i class="fa-solid fa-diagram-project"></i><span>Estudio</span>
+          </button>
+
           <!-- Filtros de categoria (columna izquierda) -->
           <nav id="map-category-filter-chips" class="mm-cats" aria-label="Categorías">
             <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="mm-cat mm-cat--active">
@@ -800,6 +856,85 @@
       </div>
 
       <!-- BOTTOM NAVIGATION & CONTROL TOOLBAR (ERGONOMIC TOUCH ZONE FOR VERTICAL KIOSK) -->
+      <!-- ESTUDIO DEL GRAFO: barra de herramientas (solo con ?studio=1) -->
+      <div id="editor-hud-bar" class="mm-studio hidden mt-auto flex-shrink-0">
+        <div class="mm-studio-row mm-studio-head">
+          <div class="mm-studio-title">
+            <span class="mm-studio-badge">MODO ESTUDIO</span>
+            <span id="studio-counts" class="mm-studio-counts"></span>
+            <span id="studio-dirty" class="mm-studio-flag mm-studio-flag--warn hidden">Cambios sin exportar</span>
+            <span id="studio-custom" class="mm-studio-flag hidden">Grafo editado guardado en este navegador</span>
+          </div>
+          <div class="mm-studio-actions">
+            <button id="studio-undo" class="mm-sbtn" onclick="studioUndo()" title="Ctrl+Z"><i class="fa-solid fa-rotate-left"></i><span>Deshacer</span></button>
+            <button id="studio-redo" class="mm-sbtn" onclick="studioRedo()" title="Ctrl+Y"><i class="fa-solid fa-rotate-right"></i><span>Rehacer</span></button>
+            <button class="mm-sbtn mm-sbtn--solid" onclick="studioSaveToFile()"><i class="fa-solid fa-floppy-disk"></i><span>Guardar archivo</span></button>
+            <button class="mm-sbtn" onclick="openExportLogoPositionsModal()"><i class="fa-solid fa-code"></i><span>Ver JSON</span></button>
+            <button class="mm-sbtn" onclick="studioToggle()"><i class="fa-solid fa-arrow-right-from-bracket"></i><span>Salir</span></button>
+          </div>
+        </div>
+
+        <div class="mm-studio-row mm-studio-tools">
+          <button class="mm-sbtn" onclick="createNewWaypointAtCenter()"><i class="fa-solid fa-plus"></i><span>Nodo de pasillo</span></button>
+          <button class="mm-sbtn" onclick="createNewEscalatorAtCenter()"><i class="fa-solid fa-stairs"></i><span>Escalera</span></button>
+          <button class="mm-sbtn" onclick="createNewElevatorAtCenter()"><i class="fa-solid fa-elevator"></i><span>Elevador</span></button>
+          <button class="mm-sbtn" onclick="createNewRestroomAtCenter()"><i class="fa-solid fa-restroom"></i><span>Baño</span></button>
+          <button id="btn-editor-connect-mode" class="mm-sbtn" onclick="toggleConnectMode()"><i class="fa-solid fa-link"></i><span>Enlazar</span></button>
+          <button class="mm-sbtn" onclick="cleanOrphanWaypoints()"><i class="fa-solid fa-broom"></i><span>Limpiar huérfanos</span></button>
+          <button class="mm-sbtn" onclick="studioVerify()"><i class="fa-solid fa-clipboard-check"></i><span>Verificar rutas</span></button>
+        </div>
+
+        <div class="mm-studio-row mm-studio-inspector">
+          <label class="mm-sfield mm-sfield--grow"><span>Nombre</span>
+            <input id="editor-node-name-input" class="mm-sinput" type="text" oninput="handleSelectedNodeNameChange(this.value)" placeholder="Selecciona un nodo">
+          </label>
+          <label class="mm-sfield"><span>X</span><input id="editor-node-x-input" class="mm-sinput mm-sinput--num" type="number" onchange="studioApplyXY()"></label>
+          <label class="mm-sfield"><span>Y</span><input id="editor-node-y-input" class="mm-sinput mm-sinput--num" type="number" onchange="studioApplyXY()"></label>
+          <button id="studio-delete" class="mm-sbtn mm-sbtn--danger" onclick="deleteSelectedNode()" disabled><i class="fa-solid fa-trash"></i><span>Eliminar nodo</span></button>
+        </div>
+
+        <div id="editor-portal-floor-presets" class="mm-studio-row mm-studio-portal hidden">
+          <span class="mm-studio-label">Conecta:</span>
+          <button class="mm-sbtn" onclick="setPortalFloorConnection('pb_n1')">PB ↔ N1</button>
+          <button class="mm-sbtn" onclick="setPortalFloorConnection('n1_n2')">N1 ↔ N2</button>
+          <button class="mm-sbtn" onclick="setPortalFloorConnection('all')">PB ↔ N1 ↔ N2</button>
+        </div>
+
+        <div id="editor-portal-twin-container" class="mm-studio-row mm-studio-portal hidden">
+          <span class="mm-studio-label">Código gemelo:</span>
+          <input id="editor-node-twin-code-input" class="mm-sinput" type="text" placeholder="Ej. ESC-LIVERPOOL" onchange="handleSelectedNodeTwinCodeChange(this.value)">
+          <select id="editor-twin-code-select" class="mm-sinput" onchange="handleSelectedNodeTwinCodeChange(this.value)"></select>
+          <span id="editor-twin-status-badge" class="mm-studio-flag"></span>
+        </div>
+
+        <div class="mm-studio-status">
+          <p id="editor-hud-title">Selecciona un nodo</p>
+          <p><span id="editor-hud-coords"></span> <span id="editor-hud-delta"></span></p>
+        </div>
+        <p class="mm-studio-help">Arrastra para mover · Doble clic en el mapa: nodo nuevo · Enlazar: toca dos nodos para unirlos o separarlos · Flechas: ajuste de 1 unidad (Shift: 5) · Supr: eliminar · Ctrl+Z: deshacer.
+          <button id="studio-reset" class="mm-slink" onclick="resetEntireGraphToFactory()">Restablecer grafo original</button></p>
+      </div>
+
+      <!-- Reporte de verificacion -->
+      <div id="studio-report" class="mm-report hidden" role="dialog" aria-label="Verificacion de rutas">
+        <div class="mm-report-card">
+          <div class="mm-report-head"><h3>Verificación de rutas</h3><button class="mm-sbtn" onclick="studioCloseReport()"><i class="fa-solid fa-xmark"></i><span>Cerrar</span></button></div>
+          <div id="studio-report-body" class="mm-report-body"></div>
+        </div>
+      </div>
+
+      <!-- Exportar JSON -->
+      <div id="editor-export-modal" class="mm-report hidden" role="dialog" aria-label="Exportar grafo">
+        <div class="mm-report-card">
+          <div class="mm-report-head"><h3>Exportar mall_graph.json</h3><button class="mm-sbtn" onclick="closeExportLogoPositionsModal()"><i class="fa-solid fa-xmark"></i><span>Cerrar</span></button></div>
+          <textarea id="editor-export-json" class="mm-export-text" readonly></textarea>
+          <div class="mm-studio-actions">
+            <button id="btn-copy-export-json" class="mm-sbtn" onclick="copyExportedJson()">Copiar JSON</button>
+            <button class="mm-sbtn mm-sbtn--solid" onclick="downloadMallGraphJsonFile()">Descargar archivo</button>
+          </div>
+        </div>
+      </div>
+
       <div class="mm-bottom mt-auto flex-shrink-0">
         
         <!-- Barra de ruta: instruccion, tiempo y acciones -->
@@ -1008,18 +1143,19 @@
   <!-- ======================================================== -->
   <!-- MODULAR JAVASCRIPT ARCHITECTURE                          -->
   <!-- ======================================================== -->
-  <script src="js/store_categories.js?v=4.0.3"></script>
-  <script src="js/config.js?v=4.0.3"></script>
-  <script src="js/state.js?v=4.0.3"></script>
-  <script src="js/animator.js?v=4.0.3"></script>
-  <script src="js/camera.js?v=4.0.3"></script>
-  <script src="js/router.js?v=4.0.3"></script>
-  <script src="js/renderer.js?v=4.0.3"></script>
-  <script src="js/simulation.js?v=4.0.3"></script>
-  <script src="js/editor.js?v=4.0.3"></script>
-  <script src="js/ui.js?v=4.0.3"></script>
-  <script src="js/search.js?v=4.0.3"></script>
-  <script src="js/app.js?v=4.0.3"></script>
-  <script src="js/kiosk-bridge.js?v=4.0.3"></script>
+  <script src="js/store_categories.js?v=4.0.4"></script>
+  <script src="js/config.js?v=4.0.4"></script>
+  <script src="js/state.js?v=4.0.4"></script>
+  <script src="js/animator.js?v=4.0.4"></script>
+  <script src="js/camera.js?v=4.0.4"></script>
+  <script src="js/router.js?v=4.0.4"></script>
+  <script src="js/renderer.js?v=4.0.4"></script>
+  <script src="js/simulation.js?v=4.0.4"></script>
+  <script src="js/editor.js?v=4.0.4"></script>
+  <script src="js/ui.js?v=4.0.4"></script>
+  <script src="js/studio.js?v=4.0.4"></script>
+  <script src="js/search.js?v=4.0.4"></script>
+  <script src="js/app.js?v=4.0.4"></script>
+  <script src="js/kiosk-bridge.js?v=4.0.4"></script>
 </body>
 </html>

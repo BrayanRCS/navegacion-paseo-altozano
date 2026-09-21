@@ -1040,6 +1040,8 @@ function updateEditorHudInfo(node, pos, customMsg = null) {
     const neighbors = (levelGraphs[currentLevel] && levelGraphs[currentLevel][node.id]) || [];
     deltaEl.innerText = `Aristas conectadas: ${neighbors.length} | ID: ${node.id}`;
   }
+
+  if (typeof studioSyncInspector === 'function') studioSyncInspector(node, pos);
 }
 
 function resetCurrentFloorLogoPositions() {

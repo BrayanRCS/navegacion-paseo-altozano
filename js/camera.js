@@ -136,6 +136,7 @@ function updateMapScaleVars(force = false) {
   currentPinK = clamp(MAP_PIN_TEXT_PX * currentSizeF / (MAP_PIN_BASE_TEXT * ppu), 0.7, 2.4);
   svg.style.setProperty('--mm-icon-k', clamp(MAP_ICON_SCREEN_R * currentSizeF / (MAP_ICON_BASE_R * ppu), 0.6, 3).toFixed(3));
   svg.style.setProperty('--mm-pin-k', currentPinK.toFixed(3));
+  svg.style.setProperty('--mm-handle-k', clamp(9 / (7 * ppu), 0.8, 3).toFixed(3));  // asas del Estudio: ~9 px de radio
 
   let tier = 0;
   MAP_TIER_PPU.forEach((lower, i) => { if (ppu >= lower) tier = i; });

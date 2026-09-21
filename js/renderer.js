@@ -297,6 +297,32 @@ function renderMapOverlay(animate = false) {
       g.appendChild(rect);
       g.appendChild(useIcon);
 
+    } else if (isEditorMode && (n.type === 'store' || n.type === 'anchor_store' || n.type === 'island' || n.type === 'totem')) {
+      // ESTUDIO: los locales se dibujan como asas simples de color por tipo, faciles de agarrar
+      g.setAttribute('data-graph-node-id', n.id);
+      const handleFill = { store: '#f59e0b', anchor_store: '#f97316', island: '#38bdf8', totem: '#ef4444' }[n.type];
+      if (isSelected) {
+        const ring = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+        ring.setAttribute('cx', posX);
+        ring.setAttribute('cy', posY);
+        ring.setAttribute('r', '13');
+        ring.setAttribute('fill', 'none');
+        ring.setAttribute('stroke', '#fdf1db');
+        ring.setAttribute('stroke-width', '2.5');
+        g.appendChild(ring);
+      }
+      const handle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
+      handle.setAttribute('cx', posX);
+      handle.setAttribute('cy', posY);
+      handle.setAttribute('r', '7.5');
+      handle.setAttribute('fill', isConnectSource ? '#10b981' : handleFill);
+      handle.setAttribute('stroke', '#ffffff');
+      handle.setAttribute('stroke-width', '1.8');
+      const handleTitle = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+      handleTitle.textContent = `${n.name || n.id} (${n.id})`;
+      g.appendChild(handleTitle);
+      g.appendChild(handle);
+
     } else if (MINIMAL_MAP && (n.type === 'store' || n.type === 'anchor_store' || n.type === 'island')) {
       // MAPA MINIMALISTA: circulo con icono de categoria; el logo solo vive en la ficha y el destino
       g.setAttribute('data-graph-node-id', n.id);
@@ -548,6 +574,15 @@ function renderMapOverlay(animate = false) {
       g.style.opacity = '1';
       g.style.filter = 'none';
       g.style.pointerEvents = 'all';
+    }
+
+    // ESTUDIO: todas las asas mantienen un tamano constante en pantalla (--mm-handle-k), aunque se aleje el zoom
+    if (isEditorMode) {
+      const handleWrap = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+      handleWrap.setAttribute('class', 'mm-handle');
+      handleWrap.style.transformOrigin = `${posX}px ${posY}px`;
+      Array.from(g.childNodes).forEach(c => { if (c !== hitArea && c.nodeName !== 'title') handleWrap.appendChild(c); });
+      g.appendChild(handleWrap);
     }
 
     // Escaleras, elevadores, sanitarios y servicios: mismo criterio de tamano que los locales, un poco menores
