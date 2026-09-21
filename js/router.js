@@ -520,7 +520,19 @@ function detectManeuvers(path) {
       curve: g.turns.length > 1
     }))
     .filter(m => Math.abs(m.net) >= TURN_NET_DEG)
-    .map(m => ({ startIdx: m.startIdx, endIdx: m.endIdx, dir: m.net > 0 ? 'right' : 'left', curve: m.curve }));
+    .map(m => ({ startIdx: m.startIdx, endIdx: m.endIdx, net: m.net, dir: m.net > 0 ? 'right' : 'left', curve: m.curve }))
+    // Un giro a un lado y el de regreso al otro en menos de SHORT_LEG_M (una esquina, un pilar) no es una
+    // maniobra: caminando se siente recto. Se descartan ambos.
+    .reduce((out, m, i, all) => {
+      if (out.skip) { out.skip = false; return out; }
+      const next = all[i + 1];
+      if (next && next.dir !== m.dir && pathMeters(path, m.endIdx, next.startIdx) < SHORT_LEG_M && Math.abs(m.net + next.net) < TURN_NET_DEG) {
+        out.skip = true;
+        return out;
+      }
+      out.list.push(m);
+      return out;
+    }, { list: [], skip: false }).list;
 }
 
 // Da a cada paso una instruccion corta estilo GPS ("Gira a la derecha y continua 50 m") y su
