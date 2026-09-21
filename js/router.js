@@ -349,7 +349,8 @@ function buildStepByStepList() {
         icon: "fa-location-arrow",
         actionText: "Comenzar recorrido",
         node: startNode,
-        nextNode: nextNode
+        nextNode: nextNode,
+        kind: 'start', segIdx: sIdx, pathIdx: 0
       });
     }
 
@@ -418,7 +419,8 @@ function buildStepByStepList() {
           icon: turnIcon,
           actionText: `Ya pasé ${curr.context_element || 'este tramo'}`,
           node: curr,
-          nextNode: next
+          nextNode: next,
+          kind: diff > 25 ? 'right' : (diff < -25 ? 'left' : 'straight'), segIdx: sIdx, pathIdx: i
         });
 
         accumulatedDist = 0;
@@ -438,7 +440,8 @@ function buildStepByStepList() {
         node: portalNode,
         nextNode: portalNode,
         isTransition: true,
-        nextLevel: seg.targetLevel
+        nextLevel: seg.targetLevel,
+        kind: 'portal', segIdx: sIdx, pathIdx: p.length - 1
       });
     } else {
       // Final Destination Arrival
@@ -450,14 +453,128 @@ function buildStepByStepList() {
         icon: 'fa-location-dot',
         actionText: 'Finalizar recorrido',
         node: destNode,
-        nextNode: null
+        nextNode: null,
+        kind: 'arrive', segIdx: sIdx, pathIdx: p.length - 1
       });
     }
   });
 
+  addTurnInstructions();
+
   const chipCount = document.getElementById('chip-steps-count');
   if (chipCount) chipCount.innerHTML = `<i class="fa-solid fa-shoe-prints mr-1"></i> ${currentSteps.length} pasos guiados`;
   renderStepsList();
+}
+
+// Metros por unidad del lienzo de 1536 px (misma escala que usa buildStepByStepList)
+const METERS_PER_UNIT = 0.28;
+const TURN_MIN_DEG = 12;      // cambios de rumbo menores se consideran pasillo recto
+const TURN_NET_DEG = 30;      // giro acumulado minimo para dar una instruccion
+const CURVE_MAX_LEG_M = 15;   // nodos seguidos mas cerca que esto y del mismo lado forman una curva
+const SHORT_LEG_M = 8;
+
+function formatLegMeters(m) {
+  if (m < SHORT_LEG_M) return 'unos metros';
+  return `${Math.max(10, Math.round(m / 5) * 5)} m`;
+}
+
+function pathMeters(path, a, b) {
+  let m = 0;
+  for (let k = a; k < b; k++) {
+    m += Math.hypot(
+      path[k + 1].coordinates.x - path[k].coordinates.x,
+      path[k + 1].coordinates.y - path[k].coordinates.y
+    ) * METERS_PER_UNIT;
+  }
+  return m;
+}
+
+// Detecta las maniobras reales de un tramo: agrupa giros seguidos del mismo lado (curvas, rotondas)
+// y descarta zigzags cuyo giro neto es pequeno. Devuelve [{ startIdx, endIdx, dir, curve }]
+function detectManeuvers(path) {
+  const heading = (a, b) => Math.atan2(b.coordinates.y - a.coordinates.y, b.coordinates.x - a.coordinates.x) * 180 / Math.PI;
+  const turns = [];
+  for (let i = 1; i < path.length - 1; i++) {
+    let d = heading(path[i], path[i + 1]) - heading(path[i - 1], path[i]);
+    while (d < -180) d += 360;
+    while (d > 180) d -= 360;
+    if (Math.abs(d) >= TURN_MIN_DEG) turns.push({ idx: i, deg: d });
+  }
+
+  const groups = [];
+  turns.forEach(t => {
+    const g = groups[groups.length - 1];
+    const last = g && g.turns[g.turns.length - 1];
+    if (g && Math.sign(t.deg) === Math.sign(last.deg) && pathMeters(path, last.idx, t.idx) < CURVE_MAX_LEG_M) {
+      g.turns.push(t);
+    } else {
+      groups.push({ turns: [t] });
+    }
+  });
+
+  return groups
+    .map(g => ({
+      startIdx: g.turns[0].idx,
+      endIdx: g.turns[g.turns.length - 1].idx,
+      net: g.turns.reduce((sum, t) => sum + t.deg, 0),
+      curve: g.turns.length > 1
+    }))
+    .filter(m => Math.abs(m.net) >= TURN_NET_DEG)
+    .map(m => ({ startIdx: m.startIdx, endIdx: m.endIdx, dir: m.net > 0 ? 'right' : 'left', curve: m.curve }));
+}
+
+// Da a cada paso una instruccion corta estilo GPS ("Gira a la derecha y continua 50 m") y su
+// distancia hasta la siguiente maniobra. No cambia los nodos ni el orden de los pasos.
+function addTurnInstructions() {
+  const maneuversBySeg = {};
+  const side = d => (d === 'right' ? 'derecha' : 'izquierda');
+
+  currentSteps.forEach(st => {
+    const seg = routeSegments[st.segIdx];
+    if (!seg || typeof st.pathIdx !== 'number') return;
+    const path = seg.path;
+    if (!maneuversBySeg[st.segIdx]) maneuversBySeg[st.segIdx] = detectManeuvers(path);
+    const ms = maneuversBySeg[st.segIdx];
+
+    if (st.kind === 'portal') {
+      const portalName = (st.node && st.node.name ? st.node.name : 'la conexión').replace(/\s*\[[^\]]*\]/g, '').replace(/\s*\([^)]*↔[^)]*\)/g, '').trim();
+      const levelLabel = { 1: 'PB', 2: 'Nivel 1', 3: 'Nivel 2' }[st.nextLevel] || `Nivel ${st.nextLevel}`;
+      const verb = st.nextLevel > seg.level ? 'sube' : 'baja';
+      st.instruction = `Toma ${portalName} y ${verb} a ${levelLabel}`;
+      st.distanceM = 0;
+      return;
+    }
+    if (st.kind === 'arrive') {
+      st.instruction = st.title;
+      st.distanceM = 0;
+      return;
+    }
+
+    const here = ms.find(m => st.pathIdx >= m.startIdx && st.pathIdx <= m.endIdx);
+    const nextM = ms.find(m => m.startIdx > (here ? here.endIdx : st.pathIdx));
+    const endIdx = nextM ? nextM.startIdx : path.length - 1;
+    const meters = pathMeters(path, st.pathIdx, endIdx);
+    st.distanceM = Math.round(meters);
+    const leg = formatLegMeters(meters);
+    const toDestination = !nextM;
+
+    if (here) {
+      st.kind = here.dir;
+      if (here.curve) {
+        st.instruction = `Sigue la curva a la ${side(here.dir)} y continúa ${leg}`;
+      } else if (toDestination && meters < SHORT_LEG_M) {
+        st.instruction = `Gira a la ${side(here.dir)}: tu destino está a unos metros`;
+      } else {
+        st.instruction = `Gira a la ${side(here.dir)} y continúa ${leg}`;
+      }
+    } else if (st.kind === 'start') {
+      const landmark = st.nextNode && st.nextNode.context_element ? ` hacia ${st.nextNode.context_element}` : '';
+      st.instruction = `Avanza ${leg}${landmark}`;
+    } else {
+      st.kind = 'straight';
+      st.instruction = `Continúa recto ${leg}`;
+    }
+  });
 }
 
 function calculateRoute(explicitOrig = null, explicitDest = null) {

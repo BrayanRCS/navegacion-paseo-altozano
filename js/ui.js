@@ -477,8 +477,16 @@ function updateRouteInstruction() {
   const has = Array.isArray(currentSteps) && currentSteps.length > 0;
   const step = has ? (currentSteps[currentStepIndex] || currentSteps[0]) : null;
   if (el) {
-    el.textContent = step ? step.title : '';
-    el.style.display = step ? 'block' : 'none';
+    el.textContent = '';
+    if (step) {
+      const iconByKind = { right: 'fa-arrow-right', left: 'fa-arrow-left', straight: 'fa-arrow-up', start: 'fa-arrow-up', arrive: 'fa-location-dot' };
+      const portalIcon = step.icon === 'fa-elevator' ? 'fa-elevator' : 'fa-stairs';
+      const glyph = document.createElement('i');
+      glyph.className = `fa-solid ${step.kind === 'portal' ? portalIcon : (iconByKind[step.kind] || 'fa-arrow-up')} mm-turn`;
+      el.appendChild(glyph);
+      el.appendChild(document.createTextNode(step.instruction || step.title));
+    }
+    el.style.display = step ? 'flex' : 'none';
   }
   if (cancel) cancel.style.display = has ? 'inline-flex' : 'none';
 }
