@@ -1,7 +1,7 @@
 {
   "mall": "Paseo Altozano",
-  "total_nodes": 429,
-  "total_edges": 942,
+  "total_nodes": 424,
+  "total_edges": 917,
   "nodes": [
     {
       "id": "n_lvl1_store_1",
@@ -828,8 +828,8 @@
       "type": "anchor_store",
       "name": "Liverpool",
       "coordinates": {
-        "x": 185,
-        "y": 506
+        "x": 290,
+        "y": 470
       },
       "context_element": null,
       "logo": "assets/logos/Liverpool/color.svg",
@@ -870,8 +870,8 @@
       "type": "anchor_store",
       "name": "Sanborns",
       "coordinates": {
-        "x": 819,
-        "y": 420
+        "x": 848,
+        "y": 397
       },
       "context_element": null,
       "logo": "assets/logos/Sanborns/color.svg",
@@ -884,8 +884,8 @@
       "type": "anchor_store",
       "name": "H&M",
       "coordinates": {
-        "x": 674,
-        "y": 415
+        "x": 673,
+        "y": 389
       },
       "context_element": null,
       "logo": "assets/logos/H&M/color.svg",
@@ -898,7 +898,7 @@
       "type": "anchor_store",
       "name": "Inter Home",
       "coordinates": {
-        "x": 578,
+        "x": 604,
         "y": 518
       },
       "context_element": null,
@@ -954,8 +954,8 @@
       "type": "store",
       "name": "GNC",
       "coordinates": {
-        "x": 431,
-        "y": 333
+        "x": 454,
+        "y": 361
       },
       "context_element": null
     },
@@ -1049,8 +1049,8 @@
       "type": "store",
       "name": "Dportenis",
       "coordinates": {
-        "x": 672,
-        "y": 227
+        "x": 693,
+        "y": 252
       },
       "context_element": null,
       "logo": "assets/logos/Dportenis/color.svg",
@@ -1063,8 +1063,8 @@
       "type": "store",
       "name": "Sally Beauty",
       "coordinates": {
-        "x": 706,
-        "y": 226
+        "x": 725,
+        "y": 237
       },
       "context_element": null,
       "logo": "assets/logos/Sally Beauty/color.svg",
@@ -1077,8 +1077,8 @@
       "type": "store",
       "name": "Mi Cha",
       "coordinates": {
-        "x": 739,
-        "y": 226
+        "x": 742,
+        "y": 235
       },
       "context_element": null,
       "logo": "assets/logos/Mi Cha/color.svg",
@@ -1091,8 +1091,8 @@
       "type": "store",
       "name": "Dairy Queen",
       "coordinates": {
-        "x": 778,
-        "y": 226
+        "x": 790,
+        "y": 240
       },
       "context_element": null,
       "logo": "assets/logos/Dairy Queen/color.svg",
@@ -1105,8 +1105,8 @@
       "type": "store",
       "name": "Sfera",
       "coordinates": {
-        "x": 854,
-        "y": 221
+        "x": 844,
+        "y": 247
       },
       "context_element": null,
       "logo": "assets/logos/Sfera/color.svg",
@@ -1120,7 +1120,7 @@
       "name": "Honda",
       "coordinates": {
         "x": 936,
-        "y": 230
+        "y": 249
       },
       "context_element": null,
       "logo": "assets/logos/Honda/color.svg",
@@ -1134,7 +1134,7 @@
       "name": "Geely",
       "coordinates": {
         "x": 989,
-        "y": 232
+        "y": 243
       },
       "context_element": null,
       "logo": "assets/logos/Geely/color.svg",
@@ -1148,7 +1148,7 @@
       "name": "Smart Trampoline",
       "coordinates": {
         "x": 1047,
-        "y": 231
+        "y": 241
       },
       "context_element": null,
       "logo": "assets/logos/Smart Trampoline/color.svg",
@@ -1175,8 +1175,8 @@
       "type": "store",
       "name": "Showroom Fame",
       "coordinates": {
-        "x": 1255,
-        "y": 212
+        "x": 1253,
+        "y": 217
       },
       "context_element": null,
       "logo": "assets/logos/Fame - Showroom Fame/color.svg",
@@ -1189,8 +1189,8 @@
       "type": "store",
       "name": "Toyota",
       "coordinates": {
-        "x": 1303,
-        "y": 264
+        "x": 1301,
+        "y": 256
       },
       "context_element": null,
       "logo": "assets/logos/Toyota/color.svg",
@@ -1217,8 +1217,8 @@
       "type": "store",
       "name": "KIA",
       "coordinates": {
-        "x": 1307,
-        "y": 300
+        "x": 1305,
+        "y": 291
       },
       "context_element": null,
       "logo": "assets/logos/KIA/color.svg",
@@ -1245,8 +1245,8 @@
       "type": "store",
       "name": "Dolphy",
       "coordinates": {
-        "x": 998,
-        "y": 359
+        "x": 995,
+        "y": 340
       },
       "context_element": null,
       "logo": "assets/logos/Dolphy/color.svg",
@@ -1259,8 +1259,8 @@
       "type": "store",
       "name": "Flexi",
       "coordinates": {
-        "x": 912,
-        "y": 484
+        "x": 920,
+        "y": 472
       },
       "context_element": null,
       "logo": "assets/logos/Flexi/color.svg",
@@ -1273,8 +1273,8 @@
       "type": "store",
       "name": "New York Coffee",
       "coordinates": {
-        "x": 915,
-        "y": 449
+        "x": 917,
+        "y": 445
       },
       "context_element": null,
       "logo": "assets/logos/New York Coffee/color.svg",
@@ -1301,8 +1301,8 @@
       "type": "store",
       "name": "Vía Uno",
       "coordinates": {
-        "x": 885,
-        "y": 413
+        "x": 900,
+        "y": 412
       },
       "context_element": null,
       "logo": "assets/logos/Vía Uno/color.svg",
@@ -1315,8 +1315,8 @@
       "type": "store",
       "name": "Beau",
       "coordinates": {
-        "x": 854,
-        "y": 413
+        "x": 881,
+        "y": 411
       },
       "context_element": null,
       "logo": "assets/logos/Beau/color.svg",
@@ -1329,8 +1329,8 @@
       "type": "store",
       "name": "Ópticas Kauffman",
       "coordinates": {
-        "x": 793,
-        "y": 404
+        "x": 801,
+        "y": 387
       },
       "context_element": null,
       "logo": "assets/logos/Ópticas Kauffman/color.svg",
@@ -1343,8 +1343,8 @@
       "type": "store",
       "name": "Hill's Collection",
       "coordinates": {
-        "x": 764,
-        "y": 403
+        "x": 774,
+        "y": 383
       },
       "context_element": null,
       "logo": "assets/logos/Hill's Collection/color.svg",
@@ -1357,8 +1357,8 @@
       "type": "store",
       "name": "Nutrisa",
       "coordinates": {
-        "x": 741,
-        "y": 396
+        "x": 753,
+        "y": 375
       },
       "context_element": null,
       "logo": "assets/logos/Nutrisa/color.svg",
@@ -1371,8 +1371,8 @@
       "type": "store",
       "name": "Ópticas Lux",
       "coordinates": {
-        "x": 707,
-        "y": 384
+        "x": 733,
+        "y": 372
       },
       "context_element": null,
       "logo": "assets/logos/Ópticas Lux/color.svg",
@@ -1385,8 +1385,8 @@
       "type": "store",
       "name": "Banana Republic",
       "coordinates": {
-        "x": 588,
-        "y": 444
+        "x": 606,
+        "y": 435
       },
       "context_element": null,
       "logo": "assets/logos/Banana Republic/color.svg",
@@ -1413,8 +1413,8 @@
       "type": "store",
       "name": "GAP",
       "coordinates": {
-        "x": 540,
-        "y": 420
+        "x": 528,
+        "y": 419
       },
       "context_element": null,
       "logo": "assets/logos/GAP/color.svg",
@@ -1483,8 +1483,8 @@
       "type": "store",
       "name": "Starbucks Coffee",
       "coordinates": {
-        "x": 711,
-        "y": 304
+        "x": 727,
+        "y": 311
       },
       "context_element": null,
       "logo": "assets/logos/Starbucks Coffee/color.svg",
@@ -1497,8 +1497,8 @@
       "type": "store",
       "name": "Enki's Barbería",
       "coordinates": {
-        "x": 746,
-        "y": 311
+        "x": 766,
+        "y": 319
       },
       "context_element": null,
       "logo": "assets/logos/Enki's Barbería/color.svg",
@@ -1511,8 +1511,8 @@
       "type": "store",
       "name": "Todomoda",
       "coordinates": {
-        "x": 784,
-        "y": 310
+        "x": 791,
+        "y": 325
       },
       "context_element": null,
       "logo": "assets/logos/Todomoda/color.svg",
@@ -1525,8 +1525,8 @@
       "type": "store",
       "name": "Studio Mix",
       "coordinates": {
-        "x": 819,
-        "y": 310
+        "x": 818,
+        "y": 330
       },
       "context_element": null,
       "logo": "assets/logos/Studio Mix/color.svg",
@@ -1539,8 +1539,8 @@
       "type": "store",
       "name": "Bizzarro",
       "coordinates": {
-        "x": 846,
-        "y": 311
+        "x": 847,
+        "y": 338
       },
       "context_element": null,
       "logo": "assets/logos/Bizzarro/color.svg",
@@ -1553,8 +1553,8 @@
       "type": "store",
       "name": "Ben & Frank",
       "coordinates": {
-        "x": 872,
-        "y": 313
+        "x": 870,
+        "y": 341
       },
       "context_element": null,
       "logo": "assets/logos/Ben & Frank/color.svg",
@@ -1567,8 +1567,8 @@
       "type": "store",
       "name": "Yuscase",
       "coordinates": {
-        "x": 902,
-        "y": 313
+        "x": 894,
+        "y": 347
       },
       "context_element": null,
       "logo": "assets/logos/Yuscase/color.svg",
@@ -1581,8 +1581,8 @@
       "type": "store",
       "name": "Sunglass Hut",
       "coordinates": {
-        "x": 932,
-        "y": 312
+        "x": 917,
+        "y": 352
       },
       "context_element": null,
       "logo": "assets/logos/Sunglass Hut/color.svg",
@@ -1595,8 +1595,8 @@
       "type": "store",
       "name": "Adidas",
       "coordinates": {
-        "x": 922,
-        "y": 285
+        "x": 917,
+        "y": 311
       },
       "context_element": null,
       "logo": "assets/logos/Adidas Performance/color.svg",
@@ -1609,8 +1609,8 @@
       "type": "store",
       "name": "Crocs",
       "coordinates": {
-        "x": 887,
-        "y": 284
+        "x": 884,
+        "y": 312
       },
       "context_element": null,
       "logo": "assets/logos/Crocs/color.svg",
@@ -1623,8 +1623,8 @@
       "type": "store",
       "name": "Taste Top",
       "coordinates": {
-        "x": 852,
-        "y": 284
+        "x": 862,
+        "y": 303
       },
       "context_element": null,
       "logo": "assets/logos/Taste Top/color.svg",
@@ -1637,8 +1637,8 @@
       "type": "store",
       "name": "Di Luca Gelato Gourmet",
       "coordinates": {
-        "x": 820,
-        "y": 284
+        "x": 843,
+        "y": 302
       },
       "context_element": null,
       "logo": "assets/logos/Di Luca Gelato/color.svg",
@@ -1651,8 +1651,8 @@
       "type": "store",
       "name": "Pies & Salud",
       "coordinates": {
-        "x": 789,
-        "y": 282
+        "x": 821,
+        "y": 302
       },
       "context_element": null,
       "logo": "assets/logos/Pies & Salud/color.svg",
@@ -1693,8 +1693,8 @@
       "type": "island",
       "name": "Mingos",
       "coordinates": {
-        "x": 726,
-        "y": 347
+        "x": 719,
+        "y": 333
       },
       "context_element": null,
       "logo": "assets/logos/MINGOS/color.svg",
@@ -1707,8 +1707,8 @@
       "type": "island",
       "name": "Straight A Head",
       "coordinates": {
-        "x": 772,
-        "y": 352
+        "x": 775,
+        "y": 345
       },
       "context_element": null,
       "logo": "assets/logos/Straight A Head/color.svg",
@@ -1735,8 +1735,8 @@
       "type": "island",
       "name": "Obey Yourr Body",
       "coordinates": {
-        "x": 871,
-        "y": 353
+        "x": 863,
+        "y": 366
       },
       "context_element": null,
       "logo": "assets/logos/Obey Your Body/color.svg",
@@ -1749,8 +1749,8 @@
       "type": "island",
       "name": "M&L Joyas",
       "coordinates": {
-        "x": 918,
-        "y": 359
+        "x": 917,
+        "y": 381
       },
       "context_element": null,
       "logo": "assets/logos/M&L Joyas/color.svg",
@@ -1763,8 +1763,8 @@
       "type": "island",
       "name": "Delicrepé",
       "coordinates": {
-        "x": 963,
-        "y": 332
+        "x": 960,
+        "y": 323
       },
       "context_element": null,
       "logo": "assets/logos/Delicrepé/color.svg",
@@ -1791,8 +1791,8 @@
       "type": "island",
       "name": "La Casa de las Carcasas",
       "coordinates": {
-        "x": 963,
-        "y": 451
+        "x": 958,
+        "y": 445
       },
       "context_element": null,
       "logo": "assets/logos/La Casa de las Carcasas/color.svg",
@@ -1805,8 +1805,8 @@
       "type": "island",
       "name": "M-Caps",
       "coordinates": {
-        "x": 960,
-        "y": 484
+        "x": 958,
+        "y": 473
       },
       "context_element": null,
       "logo": "assets/logos/M-Caps/color.svg",
@@ -2516,8 +2516,8 @@
       "type": "corridor_waypoint",
       "level": 2,
       "coordinates": {
-        "x": 658,
-        "y": 374
+        "x": 660,
+        "y": 372
       },
       "context_element": "Starbucks Coffee"
     },
@@ -2527,8 +2527,8 @@
       "type": "corridor_waypoint",
       "level": 2,
       "coordinates": {
-        "x": 942,
-        "y": 260
+        "x": 936,
+        "y": 280
       },
       "context_element": "Sephora"
     },
@@ -2549,8 +2549,8 @@
       "type": "corridor_waypoint",
       "level": 2,
       "coordinates": {
-        "x": 1002,
-        "y": 521
+        "x": 994,
+        "y": 529
       },
       "context_element": "Flexi"
     },
@@ -3057,8 +3057,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 38",
       "coordinates": {
-        "x": 671,
-        "y": 285
+        "x": 679,
+        "y": 288
       }
     },
     {
@@ -3077,8 +3077,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 40",
       "coordinates": {
-        "x": 993,
-        "y": 266
+        "x": 990,
+        "y": 270
       }
     },
     {
@@ -3087,8 +3087,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 41",
       "coordinates": {
-        "x": 1052,
-        "y": 264
+        "x": 1054,
+        "y": 270
       }
     },
     {
@@ -3137,8 +3137,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 46",
       "coordinates": {
-        "x": 1249,
-        "y": 242
+        "x": 1251,
+        "y": 238
       }
     },
     {
@@ -3147,8 +3147,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 47",
       "coordinates": {
-        "x": 1277,
-        "y": 287
+        "x": 1280,
+        "y": 299
       }
     },
     {
@@ -3302,23 +3302,13 @@
       }
     },
     {
-      "id": "n_lvl2_c_wp_mtkoae1w",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 61",
-      "coordinates": {
-        "x": 681,
-        "y": 257
-      }
-    },
-    {
       "id": "n_lvl2_c_wp_mtkoafmf",
       "level": 2,
       "type": "corridor_waypoint",
       "name": "Paso Guía 62",
       "coordinates": {
-        "x": 708,
-        "y": 258
+        "x": 729,
+        "y": 277
       }
     },
     {
@@ -3327,18 +3317,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 63",
       "coordinates": {
-        "x": 742,
-        "y": 257
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkoahna",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 64",
-      "coordinates": {
-        "x": 772,
-        "y": 257
+        "x": 744,
+        "y": 272
       }
     },
     {
@@ -3347,8 +3327,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 65",
       "coordinates": {
-        "x": 860,
-        "y": 256
+        "x": 864,
+        "y": 273
       }
     },
     {
@@ -3358,7 +3338,7 @@
       "name": "Paso Guía 66",
       "coordinates": {
         "x": 894,
-        "y": 257
+        "y": 278
       }
     },
     {
@@ -3367,8 +3347,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 67",
       "coordinates": {
-        "x": 826,
-        "y": 256
+        "x": 844,
+        "y": 272
       }
     },
     {
@@ -3377,8 +3357,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 68",
       "coordinates": {
-        "x": 674,
-        "y": 351
+        "x": 682,
+        "y": 349
       }
     },
     {
@@ -3407,8 +3387,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 71",
       "coordinates": {
-        "x": 633,
-        "y": 372
+        "x": 631,
+        "y": 371
       }
     },
     {
@@ -3427,8 +3407,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 72",
       "coordinates": {
-        "x": 923,
-        "y": 386
+        "x": 928,
+        "y": 397
       }
     },
     {
@@ -3437,8 +3417,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 73",
       "coordinates": {
-        "x": 887,
-        "y": 382
+        "x": 907,
+        "y": 394
       }
     },
     {
@@ -3447,8 +3427,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 74",
       "coordinates": {
-        "x": 856,
-        "y": 379
+        "x": 886,
+        "y": 388
       }
     },
     {
@@ -3457,8 +3437,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 75",
       "coordinates": {
-        "x": 799,
-        "y": 377
+        "x": 808,
+        "y": 369
       }
     },
     {
@@ -3467,8 +3447,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 76",
       "coordinates": {
-        "x": 765,
-        "y": 377
+        "x": 778,
+        "y": 360
       }
     },
     {
@@ -3477,8 +3457,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 77",
       "coordinates": {
-        "x": 747,
-        "y": 367
+        "x": 756,
+        "y": 356
       }
     },
     {
@@ -3487,8 +3467,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 78",
       "coordinates": {
-        "x": 709,
-        "y": 361
+        "x": 735,
+        "y": 352
       }
     },
     {
@@ -3497,88 +3477,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 79",
       "coordinates": {
-        "x": 830,
-        "y": 381
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr7iti",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 80",
-      "coordinates": {
-        "x": 841,
-        "y": 336
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr7krg",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 81",
-      "coordinates": {
-        "x": 813,
-        "y": 332
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr7lmd",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 82",
-      "coordinates": {
-        "x": 747,
-        "y": 333
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr7n4x",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 83",
-      "coordinates": {
-        "x": 785,
-        "y": 334
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr86ou",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 84",
-      "coordinates": {
-        "x": 703,
-        "y": 330
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr88me",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 85",
-      "coordinates": {
-        "x": 871,
-        "y": 335
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr89n8",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 86",
-      "coordinates": {
-        "x": 901,
-        "y": 335
-      }
-    },
-    {
-      "id": "n_lvl2_c_wp_mtkr8eq5",
-      "level": 2,
-      "type": "corridor_waypoint",
-      "name": "Paso Guía 87",
-      "coordinates": {
-        "x": 928,
-        "y": 338
+        "x": 853,
+        "y": 378
       }
     },
     {
@@ -3587,8 +3487,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 88",
       "coordinates": {
-        "x": 949,
-        "y": 352
+        "x": 933,
+        "y": 379
       }
     },
     {
@@ -3597,8 +3497,8 @@
       "type": "corridor_waypoint",
       "name": "Paso Guía 89",
       "coordinates": {
-        "x": 953,
-        "y": 393
+        "x": 979,
+        "y": 340
       }
     },
     {
@@ -3662,8 +3562,8 @@
       "type": "island",
       "name": "Yuscase Isla",
       "coordinates": {
-        "x": 687,
-        "y": 336
+        "x": 696,
+        "y": 331
       },
       "context_element": null,
       "logo": "assets/logos/Casa Carcasa/color.svg",
@@ -3690,8 +3590,8 @@
       "type": "island",
       "name": "Isla Yuscase",
       "coordinates": {
-        "x": 732,
-        "y": 345
+        "x": 749,
+        "y": 341
       },
       "logo": "assets/logos/Yuscase/color.svg",
       "logo_white": "assets/logos/Yuscase/blanco.svg",
@@ -4852,6 +4752,56 @@
         "x": 1260,
         "y": 275
       }
+    },
+    {
+      "id": "n_lvl2_c_wp_muamdtio",
+      "level": 2,
+      "type": "corridor_waypoint",
+      "name": "Paso Guía 82",
+      "coordinates": {
+        "x": 702,
+        "y": 281
+      }
+    },
+    {
+      "id": "n_lvl2_c_wp_muamffbp",
+      "level": 2,
+      "type": "corridor_waypoint",
+      "name": "Paso Guía 83",
+      "coordinates": {
+        "x": 824,
+        "y": 275
+      }
+    },
+    {
+      "id": "n_lvl2_c_wp_muamhsn3",
+      "level": 2,
+      "type": "corridor_waypoint",
+      "name": "Paso Guía 84",
+      "coordinates": {
+        "x": 792,
+        "y": 275
+      }
+    },
+    {
+      "id": "n_lvl2_c_wp_muamp9ak",
+      "level": 2,
+      "type": "corridor_waypoint",
+      "name": "Paso Guía 83",
+      "coordinates": {
+        "x": 714,
+        "y": 348
+      }
+    },
+    {
+      "id": "n_lvl2_c_wp_muamwk03",
+      "level": 2,
+      "type": "corridor_waypoint",
+      "name": "Paso Guía 84",
+      "coordinates": {
+        "x": 942,
+        "y": 349
+      }
     }
   ],
   "edges": [
@@ -5406,16 +5356,6 @@
       "weight": 41.2
     },
     {
-      "from": "n_lvl2_island_8",
-      "to": "n_lvl2_island_9",
-      "weight": 79.1
-    },
-    {
-      "from": "n_lvl2_island_9",
-      "to": "n_lvl2_island_8",
-      "weight": 79.1
-    },
-    {
       "from": "n_lvl2_island_10",
       "to": "n_lvl2_island_11",
       "weight": 55
@@ -5534,26 +5474,6 @@
       "from": "n_lvl2_c_sephora_front",
       "to": "n_lvl2_store_18",
       "weight": 75.28612089887484
-    },
-    {
-      "from": "n_lvl2_store_31",
-      "to": "n_lvl2_island_9",
-      "weight": 39.408120990476064
-    },
-    {
-      "from": "n_lvl2_island_9",
-      "to": "n_lvl2_store_31",
-      "weight": 39.408120990476064
-    },
-    {
-      "from": "n_lvl2_store_31",
-      "to": "n_lvl2_island_10",
-      "weight": 45.254833995939045
-    },
-    {
-      "from": "n_lvl2_island_10",
-      "to": "n_lvl2_store_31",
-      "weight": 45.254833995939045
     },
     {
       "from": "n_lvl2_store_32",
@@ -6966,26 +6886,6 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl2_c_rot_n",
-      "to": "n_lvl2_c_wp_mtkoae1w",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoae1w",
-      "to": "n_lvl2_c_rot_n",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoae1w",
-      "to": "n_lvl2_c_wp_mtkoafmf",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoafmf",
-      "to": "n_lvl2_c_wp_mtkoae1w",
-      "bidirectional": true
-    },
-    {
       "from": "n_lvl2_c_wp_mtkoafmf",
       "to": "n_lvl2_c_wp_mtkoagm2",
       "bidirectional": true
@@ -6993,26 +6893,6 @@
     {
       "from": "n_lvl2_c_wp_mtkoagm2",
       "to": "n_lvl2_c_wp_mtkoafmf",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoagm2",
-      "to": "n_lvl2_c_wp_mtkoahna",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoahna",
-      "to": "n_lvl2_c_wp_mtkoagm2",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoahna",
-      "to": "n_lvl2_c_wp_mtkoalmx",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoalmx",
-      "to": "n_lvl2_c_wp_mtkoahna",
       "bidirectional": true
     },
     {
@@ -7216,16 +7096,6 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl2_c_wp_mtkoahna",
-      "to": "n_lvl2_store_16",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_16",
-      "to": "n_lvl2_c_wp_mtkoahna",
-      "bidirectional": true
-    },
-    {
       "from": "n_lvl2_c_wp_mtkoagm2",
       "to": "n_lvl2_store_15",
       "bidirectional": true
@@ -7243,16 +7113,6 @@
     {
       "from": "n_lvl2_store_14",
       "to": "n_lvl2_c_wp_mtkoafmf",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoae1w",
-      "to": "n_lvl2_store_13",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_13",
-      "to": "n_lvl2_c_wp_mtkoae1w",
       "bidirectional": true
     },
     {
@@ -7376,16 +7236,6 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl2_c_wp_mtkr2j5i",
-      "to": "n_lvl2_c_wp_mtkoc5fl",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoc5fl",
-      "to": "n_lvl2_c_wp_mtkr2j5i",
-      "bidirectional": true
-    },
-    {
       "from": "n_lvl2_c_wp_mtkr2c6n",
       "to": "n_lvl2_c_wp_mtkr4eeh",
       "bidirectional": true
@@ -7413,196 +7263,6 @@
     {
       "from": "n_lvl2_island_9",
       "to": "n_lvl2_portal_esc_chedraui_front",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_58",
-      "to": "n_lvl2_c_wp_mtkr8eq5",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr8eq5",
-      "to": "n_lvl2_store_58",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_57",
-      "to": "n_lvl2_c_wp_mtkr89n8",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr89n8",
-      "to": "n_lvl2_store_57",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_56",
-      "to": "n_lvl2_c_wp_mtkr88me",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr88me",
-      "to": "n_lvl2_store_56",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_55",
-      "to": "n_lvl2_c_wp_mtkr7iti",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7iti",
-      "to": "n_lvl2_store_55",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_54",
-      "to": "n_lvl2_c_wp_mtkr7krg",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7krg",
-      "to": "n_lvl2_store_54",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_53",
-      "to": "n_lvl2_c_wp_mtkr7n4x",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7n4x",
-      "to": "n_lvl2_store_53",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_52",
-      "to": "n_lvl2_c_wp_mtkr7lmd",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7lmd",
-      "to": "n_lvl2_store_52",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_51",
-      "to": "n_lvl2_c_wp_mtkr86ou",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr86ou",
-      "to": "n_lvl2_store_51",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkm6326",
-      "to": "n_lvl2_c_wp_mtkr86ou",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr86ou",
-      "to": "n_lvl2_c_wp_mtkm6326",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr86ou",
-      "to": "n_lvl2_c_wp_mtkr7lmd",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7lmd",
-      "to": "n_lvl2_c_wp_mtkr86ou",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7lmd",
-      "to": "n_lvl2_c_wp_mtkr7n4x",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7n4x",
-      "to": "n_lvl2_c_wp_mtkr7lmd",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7n4x",
-      "to": "n_lvl2_c_wp_mtkr7krg",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7krg",
-      "to": "n_lvl2_c_wp_mtkr7n4x",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7krg",
-      "to": "n_lvl2_c_wp_mtkr7iti",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7iti",
-      "to": "n_lvl2_c_wp_mtkr7krg",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr7iti",
-      "to": "n_lvl2_c_wp_mtkr88me",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr88me",
-      "to": "n_lvl2_c_wp_mtkr7iti",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr88me",
-      "to": "n_lvl2_c_wp_mtkr89n8",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr89n8",
-      "to": "n_lvl2_c_wp_mtkr88me",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr89n8",
-      "to": "n_lvl2_c_wp_mtkr8eq5",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr8eq5",
-      "to": "n_lvl2_c_wp_mtkr89n8",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr8eq5",
-      "to": "n_lvl2_store_31",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_31",
-      "to": "n_lvl2_c_wp_mtkr8eq5",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_31",
-      "to": "n_lvl2_c_wp_mtkr1mfq",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr1mfq",
-      "to": "n_lvl2_store_31",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkoaizt",
-      "to": "n_lvl2_store_17",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_17",
-      "to": "n_lvl2_c_wp_mtkoaizt",
       "bidirectional": true
     },
     {
@@ -7676,16 +7336,6 @@
       "bidirectional": true
     },
     {
-      "from": "n_lvl2_c_wp_mtkoahna",
-      "to": "n_lvl2_store_63",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_63",
-      "to": "n_lvl2_c_wp_mtkoahna",
-      "bidirectional": true
-    },
-    {
       "from": "n_lvl2_c_wp_mtkr1mfq",
       "to": "n_lvl2_c_wp_mtkro42z",
       "bidirectional": true
@@ -7693,16 +7343,6 @@
     {
       "from": "n_lvl2_c_wp_mtkro42z",
       "to": "n_lvl2_c_wp_mtkr1mfq",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkro42z",
-      "to": "n_lvl2_c_wp_mtkr8eq5",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr8eq5",
-      "to": "n_lvl2_c_wp_mtkro42z",
       "bidirectional": true
     },
     {
@@ -7723,26 +7363,6 @@
     {
       "from": "n_lvl2_island_10",
       "to": "n_lvl2_c_wp_mtkrorye",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_store_51",
-      "to": "n_lvl2_c_wp_mtkm6326",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkm6326",
-      "to": "n_lvl2_store_51",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_c_wp_mtkr86ou",
-      "to": "n_lvl2_island_3",
-      "bidirectional": true
-    },
-    {
-      "from": "n_lvl2_island_3",
-      "to": "n_lvl2_c_wp_mtkr86ou",
       "bidirectional": true
     },
     {
@@ -9546,12 +9166,218 @@
       "to": "n_lvl2_c_wp_mtkiytpp"
     },
     {
-      "from": "n_lvl2_island_13",
-      "to": "n_lvl2_c_wp_mtkr7lmd"
-    },
-    {
       "from": "n_lvl3_island_1",
       "to": "n_lvl3_c_wp_mtl1h2qr"
+    },
+    {
+      "from": "n_lvl2_c_wp_muamdtio",
+      "to": "n_lvl2_c_wp_mtkm5zuv",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkm5zuv",
+      "to": "n_lvl2_c_wp_muamdtio",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamdtio",
+      "to": "n_lvl2_c_wp_mtkoafmf",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkoafmf",
+      "to": "n_lvl2_c_wp_muamdtio",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamffbp",
+      "to": "n_lvl2_c_wp_mtkoalmx",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkoalmx",
+      "to": "n_lvl2_c_wp_muamffbp",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_63",
+      "to": "n_lvl2_c_wp_muamffbp",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamffbp",
+      "to": "n_lvl2_store_63",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkoagm2",
+      "to": "n_lvl2_c_wp_muamhsn3",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamhsn3",
+      "to": "n_lvl2_c_wp_mtkoagm2",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamhsn3",
+      "to": "n_lvl2_c_wp_muamffbp",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamffbp",
+      "to": "n_lvl2_c_wp_muamhsn3",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkoc5fl",
+      "to": "n_lvl2_c_wp_muamp9ak",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamp9ak",
+      "to": "n_lvl2_c_wp_mtkoc5fl",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamp9ak",
+      "to": "n_lvl2_c_wp_mtkr2j5i",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr2j5i",
+      "to": "n_lvl2_c_wp_muamp9ak",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_3",
+      "to": "n_lvl2_island_4",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_island_3",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamp9ak",
+      "to": "n_lvl2_island_4",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_4",
+      "to": "n_lvl2_c_wp_muamp9ak",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_51",
+      "to": "n_lvl2_c_wp_muamp9ak",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamp9ak",
+      "to": "n_lvl2_store_51",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkjp89u",
+      "to": "n_lvl2_c_wp_mtkoepri",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkoepri",
+      "to": "n_lvl2_c_wp_mtkjp89u",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_3",
+      "to": "n_lvl2_c_wp_mtkm6326",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkm6326",
+      "to": "n_lvl2_island_3",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkrorye",
+      "to": "n_lvl2_store_31",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_31",
+      "to": "n_lvl2_c_wp_mtkrorye",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_c_wp_mtkrorye",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkrorye",
+      "to": "n_lvl2_island_9",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamwk03",
+      "to": "n_lvl2_c_wp_mtkrorye",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkrorye",
+      "to": "n_lvl2_c_wp_muamwk03",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_9",
+      "to": "n_lvl2_c_wp_muamwk03",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamwk03",
+      "to": "n_lvl2_island_9",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamwk03",
+      "to": "n_lvl2_c_wp_mtkro42z",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkro42z",
+      "to": "n_lvl2_c_wp_muamwk03",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkro42z",
+      "to": "n_lvl2_island_8",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_8",
+      "to": "n_lvl2_c_wp_mtkro42z",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkoalmx",
+      "to": "n_lvl2_store_17",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_17",
+      "to": "n_lvl2_c_wp_mtkoalmx",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkiydjb",
+      "to": "n_lvl2_c_wp_mtkj8xnt",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkj8xnt",
+      "to": "n_lvl2_c_wp_mtkiydjb",
+      "bidirectional": true
     }
   ]
 }

@@ -412,7 +412,30 @@
     }
   });
 
+  // ---------- de donde sale el grafo ----------
+  // Con ?graph=file o ?studio=1 se muestra una etiqueta que dice si se esta usando el archivo o la copia del navegador
+  function showGraphSource() {
+    const param = new URLSearchParams(window.location.search).get('graph');
+    if (!param && !ENABLED) return;
+    let custom = false;
+    try { custom = !!localStorage.getItem('altozano_custom_mall_graph'); } catch (e) { /* sin almacenamiento */ }
+    const fromFile = param === 'file' || !custom;
+    const el = document.createElement('div');
+    el.id = 'graph-source-badge';
+    el.className = 'mm-graph-badge' + (fromFile ? '' : ' mm-graph-badge--copy');
+    el.textContent = `Grafo: ${fromFile ? 'archivo mall_graph.json' : 'copia guardada en este navegador'} · ${mallGraph.nodes.length} nodos · ${mallGraph.edges.length} aristas`;
+    document.body.appendChild(el);
+  }
+
   // ---------- arranque ----------
+  {
+    const waitForGraph = setInterval(() => {
+      if (typeof mallGraph !== 'undefined' && mallGraph && document.querySelector('#svg-nodes-layer g')) {
+        clearInterval(waitForGraph);
+        showGraphSource();
+      }
+    }, 500);
+  }
   if (ENABLED) {
     const entry = $('studio-entry-btn');
     if (entry) entry.classList.remove('hidden');

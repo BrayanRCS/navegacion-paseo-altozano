@@ -41,31 +41,36 @@ function preloadSingleImage(url) {
   });
 }
 
+// Red primero, cache como respaldo: si el archivo cambia, la primera carga ya lo muestra. Sin conexion (o si la
+// red tarda mas de 4 s) se usa la ultima copia guardada, asi que el mapa sigue funcionando offline.
 async function loadCachedJson(key, url) {
   const storageKey = `altozano_${key}_${APP_CACHE_VERSION}`;
-  try {
-    const cached = localStorage.getItem(storageKey);
-    if (cached) {
-      const parsed = JSON.parse(cached);
-      fetch(`${url}?v=${APP_CACHE_VERSION}`)
-        .then(res => res.ok ? res.json() : null)
-        .then(fresh => {
-          if (fresh) {
-            try { localStorage.setItem(storageKey, JSON.stringify(fresh)); } catch (e) {}
-          }
-        })
-        .catch(() => {});
-      return parsed;
+  const readCache = () => {
+    try {
+      const cached = localStorage.getItem(storageKey);
+      return cached ? JSON.parse(cached) : null;
+    } catch (e) {
+      return null;
     }
-  } catch (e) {}
+  };
 
-  const res = await fetch(`${url}?v=${APP_CACHE_VERSION}`);
-  if (!res.ok) throw new Error(`HTTP error ${res.status} fetching ${url}`);
-  const data = await res.json();
+  const controller = new AbortController();
+  const timer = setTimeout(() => controller.abort(), 4000);
   try {
-    localStorage.setItem(storageKey, JSON.stringify(data));
-  } catch (e) {}
-  return data;
+    const res = await fetch(`${url}?v=${APP_CACHE_VERSION}`, { signal: controller.signal, cache: 'no-cache' });
+    clearTimeout(timer);
+    if (!res.ok) throw new Error(`HTTP error ${res.status} fetching ${url}`);
+    const data = await res.json();
+    try {
+      localStorage.setItem(storageKey, JSON.stringify(data));
+    } catch (e) {}
+    return data;
+  } catch (err) {
+    clearTimeout(timer);
+    const cached = readCache();
+    if (cached) return cached;
+    throw err;
+  }
 }
 
 function populateSelects() {

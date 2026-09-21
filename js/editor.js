@@ -8,6 +8,8 @@ let dragOffsetSvgY = 0;
 let editorDragType = 'node'; // 'node' | 'logo'
 
 function initCustomGraph() {
+  // ?graph=file: usa solo mall_graph.json e ignora la copia editada que este navegador tenga guardada
+  if (new URLSearchParams(window.location.search).get('graph') === 'file') return;
   try {
     const saved = localStorage.getItem('altozano_custom_mall_graph');
     if (saved) {
