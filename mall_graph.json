@@ -1,7 +1,7 @@
 {
   "mall": "Paseo Altozano",
   "total_nodes": 424,
-  "total_edges": 917,
+  "total_edges": 935,
   "nodes": [
     {
       "id": "n_lvl1_store_1",
@@ -5516,16 +5516,6 @@
       "weight": 80
     },
     {
-      "from": "n_lvl1_portal_esc_central",
-      "to": "n_lvl2_portal_esc_rotunda_left",
-      "weight": 50
-    },
-    {
-      "from": "n_lvl2_portal_esc_rotunda_left",
-      "to": "n_lvl1_portal_esc_central",
-      "weight": 50
-    },
-    {
       "from": "n_lvl1_portal_elev_central",
       "to": "n_lvl2_portal_elev_chedraui",
       "weight": 80
@@ -9377,6 +9367,106 @@
     {
       "from": "n_lvl2_c_wp_mtkj8xnt",
       "to": "n_lvl2_c_wp_mtkiydjb",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_13",
+      "to": "n_lvl2_c_wp_muamdtio",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamdtio",
+      "to": "n_lvl2_store_13",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_16",
+      "to": "n_lvl2_c_wp_muamhsn3",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamhsn3",
+      "to": "n_lvl2_store_16",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_52",
+      "to": "n_lvl2_c_wp_mtkr2h35",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr2h35",
+      "to": "n_lvl2_store_52",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_53",
+      "to": "n_lvl2_c_wp_mtkr2ett",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr2ett",
+      "to": "n_lvl2_store_53",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_54",
+      "to": "n_lvl2_c_wp_mtkr2c6n",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr2c6n",
+      "to": "n_lvl2_store_54",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_55",
+      "to": "n_lvl2_c_wp_mtkr4eeh",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr4eeh",
+      "to": "n_lvl2_store_55",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_56",
+      "to": "n_lvl2_c_wp_mtkr4eeh",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr4eeh",
+      "to": "n_lvl2_store_56",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_57",
+      "to": "n_lvl2_c_wp_mtkr1orn",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr1orn",
+      "to": "n_lvl2_store_57",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_store_58",
+      "to": "n_lvl2_c_wp_muamwk03",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_muamwk03",
+      "to": "n_lvl2_store_58",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_island_13",
+      "to": "n_lvl2_c_wp_mtkr2h35",
+      "bidirectional": true
+    },
+    {
+      "from": "n_lvl2_c_wp_mtkr2h35",
+      "to": "n_lvl2_island_13",
       "bidirectional": true
     }
   ]
