@@ -217,6 +217,51 @@
     .mm-btn:active { transform: scale(0.97); }
     .mm-btn--ghost { color: #dbe7f3; background: transparent; border: 1px solid rgba(140, 175, 210, 0.35); }
     .mm-btn--solid { color: #0f2236; background: #fdf1db; border: 1px solid #fdf1db; }
+
+    /* ===== Busqueda del mapa ===== */
+    .mm-search-pill { position: absolute; left: 12px; top: 12px; z-index: 25; display: flex; align-items: center; gap: 12px;
+      min-height: 64px; padding: 0 22px; border-radius: 999px; font-size: 16px; font-weight: 600; color: #dbe7f3; cursor: pointer;
+      background: rgba(12, 26, 44, 0.9); border: 1px solid rgba(140, 175, 210, 0.28);
+      box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 14px rgba(0,0,0,0.35); -webkit-tap-highlight-color: transparent; }
+    .mm-search-pill:active { transform: scale(0.97); }
+    .mm-search-sheet { position: absolute; left: 0; right: 0; bottom: 0; z-index: 45; max-height: 100%; display: flex; flex-direction: column; gap: 12px;
+      padding: 16px; border-radius: 28px 28px 0 0; background: rgba(9, 19, 33, 0.98); border-top: 1px solid rgba(140, 175, 210, 0.28);
+      box-shadow: 0 -12px 30px rgba(0,0,0,0.5); transform: translateY(102%); visibility: hidden; pointer-events: none; overflow-y: auto;
+      transition: transform .24s ease, visibility 0s linear .24s; }
+    .mm-search--open { transform: translateY(0); visibility: visible; pointer-events: auto; transition: transform .24s ease; }
+    .mm-search-top { display: flex; gap: 10px; align-items: stretch; }
+    .mm-search-field { flex: 1; min-width: 0; display: flex; align-items: center; gap: 12px; min-height: 64px; padding: 0 16px; border-radius: 20px;
+      background: #eaf2fa; color: #0f2236; font-size: 22px; font-weight: 700; }
+    .mm-search-field > i { color: #5b6b7c; }
+    .mm-search-field > span { flex: 1; min-width: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mm-search-field > span:not(.mm-search-placeholder)::after { content: ''; display: inline-block; width: 2px; height: 1em; margin-left: 2px; vertical-align: -0.12em; background: #0f2236; animation: mmCaret 1s steps(1) infinite; }
+    @keyframes mmCaret { 50% { opacity: 0; } }
+    .mm-search-placeholder { color: #6b7b8c; font-weight: 600; }
+    .mm-search-clear { width: 44px; height: 44px; font-size: 22px; color: #6b7b8c; cursor: pointer; }
+    .mm-search-close { display: inline-flex; align-items: center; gap: 10px; min-height: 64px; padding: 0 20px; border-radius: 20px; font-size: 16px; font-weight: 700;
+      color: #dbe7f3; border: 1px solid rgba(140, 175, 210, 0.35); cursor: pointer; }
+    .mm-search-results { display: flex; flex-direction: column; gap: 8px; flex: 1 1 auto; min-height: 150px; overflow-y: auto; }
+    .mm-search-hint { font-size: 13px; letter-spacing: .08em; text-transform: uppercase; color: #8fa5bb; padding: 0 4px; }
+    .mm-search-row { display: flex; align-items: center; gap: 14px; min-height: 72px; padding: 8px 14px; border-radius: 20px; text-align: left; cursor: pointer;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(140, 175, 210, 0.16); color: #eaf2fa; -webkit-tap-highlight-color: transparent; }
+    .mm-search-row:active { transform: scale(0.985); background: rgba(255,255,255,0.12); }
+    .mm-search-badge { flex: none; width: 52px; height: 52px; border-radius: 16px; display: flex; align-items: center; justify-content: center; }
+    .mm-search-badge--logo { background: #fff; padding: 6px; }
+    .mm-search-badge--logo img { width: 100%; height: 100%; object-fit: contain; }
+    .mm-search-rowtext { flex: 1; min-width: 0; display: flex; flex-direction: column; }
+    .mm-search-name { font-size: 20px; font-weight: 700; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .mm-search-meta { font-size: 14px; color: #9fb4c9; }
+    .mm-search-go { flex: none; display: inline-flex; align-items: center; gap: 8px; font-size: 15px; font-weight: 700; color: #f0ac26; }
+    .mm-search-empty { padding: 14px 4px 4px; font-size: 18px; color: #dbe7f3; }
+    .mm-search-chips { display: flex; flex-wrap: wrap; gap: 10px; padding: 4px; }
+    .mm-search-chip { min-height: 56px; padding: 0 22px; border-radius: 18px; font-size: 17px; font-weight: 700; color: #0f2236; background: #fdf1db; cursor: pointer; }
+    .mm-search-keyboard { display: flex; flex-direction: column; gap: 8px; flex: none; }
+    .mm-key-row { display: flex; gap: 8px; }
+    .mm-key { flex: 1; min-width: 0; height: 66px; border-radius: 16px; font-size: 24px; font-weight: 600; color: #eaf2fa; cursor: pointer; touch-action: manipulation;
+      background: rgba(255,255,255,0.09); border: 1px solid rgba(140, 175, 210, 0.2); -webkit-tap-highlight-color: transparent; user-select: none; }
+    .mm-key:active { background: #fdf1db; color: #0f2236; transform: scale(0.96); }
+    .mm-key--wide { flex: 1.6; }
+    .mm-key--space { font-size: 18px; letter-spacing: .06em; color: #9fb4c9; }
   </style>
 </head>
 <body class="min-h-screen flex flex-col antialiased selection:bg-blue-600 selection:text-white bg-[#070b12]">
@@ -586,6 +631,24 @@
             </div>
           </div>
 
+          <!-- Busqueda: pastilla arriba y hoja con teclado propio -->
+          <button id="mm-search-pill" class="mm-search-pill" onclick="openMapSearch()" aria-label="Buscar tienda o comida">
+            <i class="fa-solid fa-magnifying-glass"></i><span>Buscar tienda o comida</span>
+          </button>
+
+          <div id="mm-search-sheet" class="mm-search-sheet" role="dialog" aria-label="Buscar tienda o comida">
+            <div class="mm-search-top">
+              <div class="mm-search-field">
+                <i class="fa-solid fa-magnifying-glass"></i>
+                <span id="mm-search-text" class="mm-search-placeholder">Buscar tienda o comida</span>
+                <button id="mm-search-clear" class="mm-search-clear" onclick="clearMapSearch()" aria-label="Borrar búsqueda" style="visibility:hidden"><i class="fa-solid fa-circle-xmark"></i></button>
+              </div>
+              <button class="mm-search-close" onclick="closeMapSearch()"><i class="fa-solid fa-xmark"></i><span>Cerrar</span></button>
+            </div>
+            <div id="mm-search-results" class="mm-search-results"></div>
+            <div id="mm-search-keyboard" class="mm-search-keyboard"></div>
+          </div>
+
           <!-- Filtros de categoria (columna izquierda) -->
           <nav id="map-category-filter-chips" class="mm-cats" aria-label="Categorías">
             <button onclick="filterMapCategory('all')" id="map-cat-chip-all" class="mm-cat mm-cat--active">
@@ -906,6 +969,7 @@
   <script src="js/simulation.js?v=3.9.11"></script>
   <script src="js/editor.js?v=3.9.11"></script>
   <script src="js/ui.js?v=3.9.13"></script>
+  <script src="js/search.js?v=4.0.0"></script>
   <script src="js/app.js?v=3.9.13"></script>
   <script src="js/kiosk-bridge.js?v=3.9.13"></script>
 </body>
