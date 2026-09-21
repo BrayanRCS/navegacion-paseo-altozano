@@ -497,7 +497,7 @@ function updateRouteInstruction() {
       const glyph = document.createElement('i');
       glyph.className = `fa-solid ${step.kind === 'portal' ? portalIcon : (iconByKind[step.kind] || 'fa-arrow-up')} mm-turn`;
       el.appendChild(glyph);
-      el.appendChild(document.createTextNode(step.instruction || step.title));
+      el.appendChild(document.createTextNode(typeof getStepInstruction === 'function' ? getStepInstruction(step) : (step.instruction || step.title)));
     }
     el.style.display = step ? 'flex' : 'none';
   }

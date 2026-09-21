@@ -354,6 +354,22 @@ function buildStepByStepList() {
       });
     }
 
+    // Primer paso de un tramo posterior: al llegar al nuevo nivel hay que decir hacia donde seguir
+    if (sIdx > 0) {
+      const arriveNode = p[0];
+      const nextAfter = p.length > 1 ? p[1] : p[0];
+      currentSteps.push({
+        level: seg.level,
+        title: 'Sigue por el pasillo',
+        context: nextAfter.context_element ? `Avanza hacia ${nextAfter.context_element}` : 'Avanza por el pasillo',
+        icon: 'fa-location-arrow',
+        actionText: 'Continuar',
+        node: arriveNode,
+        nextNode: nextAfter,
+        kind: 'start', segIdx: sIdx, pathIdx: 0, afterPortal: true
+      });
+    }
+
     // Waypoints sampled by turn angle & distance
     let accumulatedDist = 0;
     for (let i = 1; i < p.length - 1; i++) {
@@ -535,11 +551,43 @@ function detectManeuvers(path) {
     }, { list: [], skip: false }).list;
 }
 
-// Da a cada paso una instruccion corta estilo GPS ("Gira a la derecha y continua 50 m") y su
-// distancia hasta la siguiente maniobra. No cambia los nodos ni el orden de los pasos.
+// Arma el texto de un paso a partir de sus partes y de los metros que faltan hasta la siguiente maniobra
+function composeInstruction(parts, meters) {
+  const leg = formatLegMeters(meters);
+  const side = parts.dir === 'right' ? 'derecha' : 'izquierda';
+  switch (parts.kind) {
+    case 'right':
+    case 'left':
+      if (parts.curve) return `Sigue la curva a la ${side} y continúa ${leg}`;
+      if (parts.toDestination && meters < SHORT_LEG_M) return `Gira a la ${side}: tu destino está a unos metros`;
+      return `Gira a la ${side} y continúa ${leg}`;
+    case 'start':
+      return `Avanza ${leg}${parts.landmark || ''}`;
+    default:
+      return `Continúa recto ${leg}`;
+  }
+}
+
+// Texto vigente de un paso: durante la caminata simulada usa los metros que faltan, no los del inicio del paso
+function getStepInstruction(st) {
+  if (!st) return '';
+  if (st.parts && typeof st.liveMeters === 'number') return composeInstruction(st.parts, st.liveMeters);
+  return st.instruction || st.title;
+}
+
+// Ultimo paso que ya empezo cuando se va en el nodo pathIdx del tramo segIdx (-1 si ninguno)
+function findStepForPosition(segIdx, pathIdx) {
+  let found = -1;
+  currentSteps.forEach((st, k) => {
+    if (st.segIdx === segIdx && typeof st.pathIdx === 'number' && st.pathIdx <= pathIdx) found = k;
+  });
+  return found;
+}
+
+// Da a cada paso una instruccion corta estilo GPS ("Gira a la derecha y continua 50 m") y su distancia
+// hasta la siguiente maniobra. No cambia los nodos; despues se funden los pasos que repiten el mismo tramo.
 function addTurnInstructions() {
   const maneuversBySeg = {};
-  const side = d => (d === 'right' ? 'derecha' : 'izquierda');
 
   currentSteps.forEach(st => {
     const seg = routeSegments[st.segIdx];
@@ -549,7 +597,7 @@ function addTurnInstructions() {
     const ms = maneuversBySeg[st.segIdx];
 
     if (st.kind === 'portal') {
-      const portalName = (st.node && st.node.name ? st.node.name : 'la conexión').replace(/\s*\[[^\]]*\]/g, '').replace(/\s*\([^)]*↔[^)]*\)/g, '').trim();
+      const portalName = (st.node && st.node.name ? st.node.name : 'la conexión').replace(/\s*\[[^\]]*\]/g, '').replace(/\s*\([^)]*\u2194[^)]*\)/g, '').trim();
       const levelLabel = { 1: 'PB', 2: 'Nivel 1', 3: 'Nivel 2' }[st.nextLevel] || `Nivel ${st.nextLevel}`;
       const verb = st.nextLevel > seg.level ? 'sube' : 'baja';
       st.instruction = `Toma ${portalName} y ${verb} a ${levelLabel}`;
@@ -567,26 +615,43 @@ function addTurnInstructions() {
     const endIdx = nextM ? nextM.startIdx : path.length - 1;
     const meters = pathMeters(path, st.pathIdx, endIdx);
     st.distanceM = Math.round(meters);
-    const leg = formatLegMeters(meters);
-    const toDestination = !nextM;
+    st.endIdx = endIdx;
+    // Pasos con la misma clave describen el mismo tramo: se funden en uno solo
+    st.legKey = here ? `${st.segIdx}:m${here.startIdx}` : `${st.segIdx}:s${nextM ? nextM.startIdx : 'end'}`;
 
+    const parts = { kind: 'straight', toDestination: !nextM };
     if (here) {
       st.kind = here.dir;
-      if (here.curve) {
-        st.instruction = `Sigue la curva a la ${side(here.dir)} y continúa ${leg}`;
-      } else if (toDestination && meters < SHORT_LEG_M) {
-        st.instruction = `Gira a la ${side(here.dir)}: tu destino está a unos metros`;
-      } else {
-        st.instruction = `Gira a la ${side(here.dir)} y continúa ${leg}`;
-      }
+      parts.kind = here.dir;
+      parts.dir = here.dir;
+      parts.curve = here.curve;
     } else if (st.kind === 'start') {
-      const landmark = st.nextNode && st.nextNode.context_element ? ` hacia ${st.nextNode.context_element}` : '';
-      st.instruction = `Avanza ${leg}${landmark}`;
+      parts.kind = 'start';
+      parts.landmark = st.nextNode && st.nextNode.context_element ? ` hacia ${st.nextNode.context_element}` : '';
     } else {
       st.kind = 'straight';
-      st.instruction = `Continúa recto ${leg}`;
     }
+    st.parts = parts;
+    st.instruction = composeInstruction(parts, meters);
   });
+
+  mergeRedundantSteps();
+}
+
+// Quita los pasos que repiten el tramo anterior (misma curva o mismo recto) y el "avanza" trivial
+// al llegar a un nuevo nivel. Portal y llegada nunca se quitan.
+function mergeRedundantSteps() {
+  const kept = [];
+  currentSteps.forEach(st => {
+    const prev = kept[kept.length - 1];
+    if (st.legKey && prev && prev.legKey === st.legKey) return;
+    if (st.afterPortal && st.distanceM < SHORT_LEG_M && st.legKey) {
+      const hasNext = currentSteps.some(o => o.segIdx === st.segIdx && o.pathIdx > st.pathIdx);
+      if (hasNext) return;
+    }
+    kept.push(st);
+  });
+  currentSteps = kept;
 }
 
 function calculateRoute(explicitOrig = null, explicitDest = null) {

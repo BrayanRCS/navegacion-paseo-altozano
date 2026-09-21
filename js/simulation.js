@@ -141,6 +141,8 @@ function playCurrentFloorSegment() {
   // 2. Animate continuously from distance 0 to totalDist
   const progressObj = { dist: 0 };
   let lastReportedStepIdx = -1;
+  let lastLegLabel = null;
+  currentSteps.forEach(st => { if (st.segIdx === simSegIndex) delete st.liveMeters; });
   let lastHeading = segHeadings[0];
 
   if (activeSimAnim) anime.remove(progressObj);
@@ -192,14 +194,30 @@ function playCurrentFloorSegment() {
       }
 
       // Active place card and steps update
-      const activeNode = u > 0.5 ? points[i + 1].node : points[i].node;
-      const matchingStepIdx = currentSteps.findIndex((st) => st.node && st.node.id === activeNode.id && st.level === seg.level);
+      const activePos = u > 0.5 ? i + 1 : i;
+      const activeNode = points[activePos].node;
+      // Los pasos repetidos se funden, asi que se toma el ultimo que ya empezo (no una coincidencia exacta de nodo)
+      const matchingStepIdx = typeof findStepForPosition === 'function'
+        ? findStepForPosition(simSegIndex, activePos)
+        : currentSteps.findIndex((st) => st.node && st.node.id === activeNode.id && st.level === seg.level);
+      const activeStep = matchingStepIdx !== -1 ? currentSteps[matchingStepIdx] : null;
+
+      // Metros que faltan hasta la siguiente maniobra: la instruccion cuenta hacia atras mientras se camina
+      let legChanged = false;
+      if (activeStep && typeof activeStep.endIdx === 'number' && typeof METERS_PER_UNIT !== 'undefined') {
+        activeStep.liveMeters = Math.max(0, cumDist[activeStep.endIdx] - s) * METERS_PER_UNIT;
+        const label = typeof formatLegMeters === 'function' ? formatLegMeters(activeStep.liveMeters) : '';
+        if (label !== lastLegLabel) { lastLegLabel = label; legChanged = true; }
+      }
+
       if (matchingStepIdx !== -1 && matchingStepIdx !== lastReportedStepIdx) {
         lastReportedStepIdx = matchingStepIdx;
         currentStepIndex = matchingStepIdx;
         if (typeof updateRouteInstruction === 'function') updateRouteInstruction();
         updateTotemUI(false);
         updatePlaceCard(activeNode);
+      } else if (legChanged && typeof updateRouteInstruction === 'function') {
+        updateRouteInstruction();
       }
     },
     complete: function() {
