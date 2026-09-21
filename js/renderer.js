@@ -27,6 +27,53 @@ function positionNavArrowOnNode(node, nextNode, animate = false, duration = 600,
   }
 }
 
+// Pin de destino con tarjeta (nombre + nivel). El icono sigue la categoria del local.
+function renderDestinationCard(node, seg) {
+  const anchor = document.getElementById('dest-pin-anchor');
+  const bg = document.getElementById('dest-card-bg');
+  const title = document.getElementById('dest-card-title');
+  const sub = document.getElementById('dest-card-sub');
+  const icon = document.getElementById('dest-pin-icon');
+  const shape = document.getElementById('dest-pin-shape');
+  const card = document.getElementById('dest-card');
+  if (!anchor || !bg || !title || !sub || !icon || !shape || !card) return;
+
+  const { x, y } = node.coordinates;
+  anchor.setAttribute('transform', `translate(${x}, ${y})`);
+
+  let iconHref = '#vec-icon-bag';
+  let fill = '#0f2b3a';
+  if (node.type === 'portal_escalator') iconHref = '#vec-icon-stairs';
+  else if (node.type === 'portal_elevator') iconHref = '#vec-icon-elevator';
+  else if (node.type === 'restroom') iconHref = '#vec-icon-restroom';
+  else if (typeof MINIMAL_CATEGORY_STYLE !== 'undefined' && typeof getNodeTenantCategory === 'function') {
+    const style = MINIMAL_CATEGORY_STYLE[getNodeTenantCategory(node)];
+    if (style) { iconHref = style.icon; fill = style.fill; }
+  }
+  icon.setAttribute('href', iconHref);
+  shape.setAttribute('fill', fill);
+
+  const levelName = { 1: 'Planta Baja', 2: 'Nivel 1', 3: 'Nivel 2' };
+  let levelLabel = levelName[node.level] || `Nivel ${node.level}`;
+  // En un tramo intermedio el pin marca la escalera/elevador, no el destino final
+  if (seg && seg.isFinal === false && seg.targetLevel) {
+    levelLabel = `${seg.targetLevel > node.level ? 'Sube' : 'Baja'} a ${levelName[seg.targetLevel] || `Nivel ${seg.targetLevel}`}`;
+  }
+  const rawName = (node.name || 'Destino').replace(/\s*\[[^\]]*\]/g, '').replace(/\s*\([^)]*↔[^)]*\)/g, '').trim();
+  title.textContent = rawName.length > 24 ? `${rawName.slice(0, 23)}…` : rawName;
+  sub.textContent = levelLabel;
+
+  // Ancho segun el texto; la tarjeta se voltea a la izquierda si no cabe a la derecha del pin
+  const textW = Math.max(title.getComputedTextLength ? title.getComputedTextLength() : 0, sub.getComputedTextLength ? sub.getComputedTextLength() : 0);
+  const cardW = Math.max(72, Math.ceil(textW) + 20);
+  const flip = x + 18 + cardW > 1500;
+  const left = flip ? -18 - cardW : 18;
+  bg.setAttribute('width', cardW);
+  bg.setAttribute('x', left);
+  title.setAttribute('x', left + 10);
+  sub.setAttribute('x', left + 10);
+}
+
 function renderMapOverlay(animate = false) {
   if (!mallGraph) return;
 
@@ -475,16 +522,7 @@ function renderMapOverlay(animate = false) {
     // Position Destination Target Pin
     const lastNode = activeSeg.path[activeSeg.path.length - 1];
     destPinEl.style.display = 'block';
-    const dpOuter = document.getElementById('dest-pin-outer');
-    const dpInner = document.getElementById('dest-pin-inner');
-    const dpLabel = document.getElementById('dest-pin-label');
-    if (dpOuter) { dpOuter.setAttribute('cx', lastNode.coordinates.x); dpOuter.setAttribute('cy', lastNode.coordinates.y); }
-    if (dpInner) { dpInner.setAttribute('cx', lastNode.coordinates.x); dpInner.setAttribute('cy', lastNode.coordinates.y); }
-    if (dpLabel) {
-      dpLabel.setAttribute('x', lastNode.coordinates.x);
-      dpLabel.setAttribute('y', lastNode.coordinates.y - 14);
-      dpLabel.textContent = lastNode.name || 'Destino';
-    }
+    renderDestinationCard(lastNode, activeSeg);
 
     if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
       destPinEl.setAttribute('transform', `rotate(90, ${lastNode.coordinates.x}, ${lastNode.coordinates.y})`);

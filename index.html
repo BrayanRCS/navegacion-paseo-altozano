@@ -143,6 +143,7 @@
     #svg-totem-marker, #svg-dest-pin, #svg-nav-arrow-cursor {
       pointer-events: none;
     }
+    #svg-dest-pin { transform-box: fill-box; transform-origin: 50% 100%; }
 
     /* Ultra-smooth GPU accelerated Directory Scrolling */
     #legend-items-container {
@@ -524,9 +525,17 @@
 
               <!-- Destination Target Pin -->
               <g id="svg-dest-pin" style="display: none;">
-                <circle id="dest-pin-outer" cx="0" cy="0" r="16" fill="#f97316" stroke="#ffffff" stroke-width="2.5" style="filter: drop-shadow(0 3px 6px rgba(0,0,0,0.8));"></circle>
-                <circle id="dest-pin-inner" cx="0" cy="0" r="5" fill="#ffffff"></circle>
-                <text id="dest-pin-label" x="0" y="-20" font-size="11" font-weight="extrabold" fill="#fdba74" text-anchor="middle" style="text-shadow: 0 2px 4px rgba(0,0,0,0.9);">🎯 DESTINO</text>
+                <g id="dest-pin-anchor" transform="translate(0,0)">
+                  <!-- Tarjeta de destino: nombre y nivel -->
+                  <g id="dest-card">
+                    <rect id="dest-card-bg" x="18" y="-40" width="120" height="36" rx="9" fill="#fdf1db" stroke="rgba(15,34,54,0.25)" stroke-width="1" style="filter: drop-shadow(0 3px 6px rgba(0,0,0,0.55));"></rect>
+                    <text id="dest-card-title" x="28" y="-25" font-size="13" font-weight="700" fill="#0f2236"></text>
+                    <text id="dest-card-sub" x="28" y="-11" font-size="10" font-weight="600" fill="#5b6b7c"></text>
+                  </g>
+                  <!-- Pin: la punta cae sobre el nodo de entrada -->
+                  <path id="dest-pin-shape" d="M 0 0 C -3 -6 -13 -13 -13 -22 A 13 13 0 1 1 13 -22 C 13 -13 3 -6 0 0 Z" fill="#0f2b3a" stroke="#ffffff" stroke-width="2" style="filter: drop-shadow(0 3px 5px rgba(0,0,0,0.7));"></path>
+                  <use id="dest-pin-icon" href="#vec-icon-bag" x="0" y="-22" transform="scale(1.1)" style="transform-box: fill-box; transform-origin: center;"></use>
+                </g>
               </g>
 
               <!-- Dynamic GPS Nav Arrow Cursor Layer -->
