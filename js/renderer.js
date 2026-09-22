@@ -630,7 +630,7 @@ function renderMapOverlay(animate = false) {
     nodesLayer.appendChild(g);
   });
 
-  // Draw Modern Pedestrian Dotted Navigation Route
+  // Draw Modern Pedestrian Navigation Route (solid line)
   const activeSeg = routeSegments.find(s => s.level === currentLevel);
   if (activeSeg && activeSeg.path.length > 0 && waterBedEl && pathEl && destPinEl) {
     let d = '';

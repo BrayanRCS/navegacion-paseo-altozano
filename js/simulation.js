@@ -127,13 +127,10 @@ function playCurrentFloorSegment() {
     NavAnimator.arrowState = { x: points[0].x, y: points[0].y, angle: segHeadings[0] };
   }
 
-  // Frame the entire route segment cleanly so the map stays completely rock-solid
+  // Al iniciar la ruta (y en cada tramo nuevo) la camara se enfoca en la flecha de navegacion,
+  // no en el recuadro completo del tramo, para que se sienta como un GPS de verdad.
   if (isFollowingGPS && seg.path && seg.path.length > 0) {
-    if (typeof zoomToRouteBoundingBox === 'function') {
-      zoomToRouteBoundingBox(seg.path, 550);
-    } else {
-      zoomToCoordinates(points[0].x, points[0].y, getDynamicZoomLevel(true), true, 450);
-    }
+    zoomToCoordinates(points[0].x, points[0].y, getDynamicZoomLevel(true), true, 550);
   }
 
   updatePlaceCard(points[0].node);

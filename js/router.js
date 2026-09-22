@@ -758,7 +758,9 @@ function calculateRoute(explicitOrig = null, explicitDest = null) {
   }
   renderMapOverlay(true);
   updateTotemUI(true);
-  zoomToOverview(false);
+  // Arranca la vista de la ruta desde el punto de partida con un zoom sutil y animado
+  // (en vez de saltar de golpe a la vista general) para una sensacion mas inmersiva.
+  zoomToCoordinates(origNode.coordinates.x, origNode.coordinates.y, 1.9, true);
 }
 
 function swapEndpoints() {
