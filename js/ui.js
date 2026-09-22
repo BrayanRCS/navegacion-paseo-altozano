@@ -1184,6 +1184,12 @@ function copyQrLink() {
 }
 
 function openMobileRouteTab() {
+  // Dentro del totem no se abre nada: la vista movil se cargaria en la propia
+  // pantalla del totem y quedaria como pestana huerfana gastando memoria. El QR
+  // es el camino correcto hacia el celular del visitante.
+  if (window.self !== window.top || document.body.classList.contains('is-embedded-in-kiosk')) {
+    return;
+  }
   const url = getMobileRouteUrl();
   window.open(url, '_blank');
 }
