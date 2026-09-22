@@ -314,7 +314,7 @@ function showMapView(destId = null) {
       const targetIconBox = document.getElementById('map-target-icon-box');
       if (targetIconBox) {
         targetIconBox.className = "mm-route-icon";
-        targetIconBox.innerHTML = '<span id="map-target-emoji">🗺️</span>';
+        targetIconBox.innerHTML = '<img src="logo-paseo-altozano.png?v=4.0.10" alt="Paseo Altozano" style="width:76%;height:76%;object-fit:contain;">';
       }
       const btnNav = document.getElementById('btn-map-banner-navigate');
       if (btnNav) btnNav.style.display = 'none';

@@ -171,8 +171,9 @@
     /* La vista de celular (QR) trae sus propios controles: los del totem no aplican ahi */
     body.mobile-navigation-mode .mm-cats, body.mobile-navigation-mode .mm-levels,
     body.mobile-navigation-mode .mm-search-pill, body.mobile-navigation-mode .mm-search-sheet { display: none !important; }
-    .mm-cats { position: absolute; left: 12px; top: 50%; transform: translateY(-50%); z-index: 25;
-      display: flex; flex-direction: column; gap: 10px; max-height: calc(100% - 24px); overflow-y: auto; scrollbar-width: none; }
+    /* Anclados debajo del buscador (no centrados) para que nunca se encimen con el ni se corten filtros sin avisar */
+    .mm-cats { position: absolute; left: 12px; top: 92px; z-index: 25;
+      display: flex; flex-direction: column; gap: 10px; max-height: calc(100% - 108px); overflow-y: auto; scrollbar-width: none; }
     .mm-cats::-webkit-scrollbar { display: none; }
     .mm-cat { display: flex; align-items: center; gap: 12px; width: 176px; min-height: 68px; padding: 10px 14px;
       border-radius: 20px; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.15; color: #dbe7f3; cursor: pointer;
@@ -409,15 +410,18 @@
         <div class="absolute -left-10 -bottom-10 w-56 h-56 bg-emerald-500/10 rounded-full blur-3xl pointer-events-none"></div>
 
         <div class="flex items-center justify-between gap-4 flex-wrap relative z-10">
-          <div>
-            <div class="flex items-center gap-2 mb-1.5">
-              <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
-              <span class="text-xs font-black text-emerald-400 uppercase tracking-widest">Tótem Interactivo Paseo Altozano</span>
+          <div class="flex items-center gap-4">
+            <img src="logo-paseo-altozano.png?v=4.0.10" alt="Paseo Altozano" class="w-14 h-14 sm:w-16 sm:h-16 object-contain flex-shrink-0 drop-shadow-[0_4px_14px_rgba(245,158,11,0.35)]">
+            <div>
+              <div class="flex items-center gap-2 mb-1.5">
+                <span class="w-2.5 h-2.5 rounded-full bg-emerald-400 animate-ping"></span>
+                <span class="text-xs font-black text-emerald-400 uppercase tracking-widest">Tótem Interactivo Paseo Altozano</span>
+              </div>
+              <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">¿A dónde deseas ir hoy?</h2>
+              <p class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">
+                Estás en el <b id="dir-totem-here" class="text-rose-400 px-2 py-0.5 rounded-lg bg-rose-500/15 border border-rose-500/30">📍 Tótem</b> (Frente a Chedraui / M-Caps)
+              </p>
             </div>
-            <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">¿A dónde deseas ir hoy?</h2>
-            <p class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">
-              Estás en el <b id="dir-totem-here" class="text-rose-400 px-2 py-0.5 rounded-lg bg-rose-500/15 border border-rose-500/30">📍 Tótem</b> (Frente a Chedraui / M-Caps)
-            </p>
           </div>
           <button onclick="showMapView()" class="px-5 py-3.5 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white rounded-2xl text-xs sm:text-sm font-black shadow-xl shadow-blue-600/30 flex items-center gap-2.5 transition-all active:scale-95 border border-sky-400/40 cursor-pointer flex-shrink-0">
             <i class="fa-solid fa-map-location-dot text-base"></i>
@@ -1152,7 +1156,7 @@
   <script src="js/renderer.js?v=4.0.9"></script>
   <script src="js/simulation.js?v=4.0.9"></script>
   <script src="js/editor.js?v=4.0.7"></script>
-  <script src="js/ui.js?v=4.0.9"></script>
+  <script src="js/ui.js?v=4.0.10"></script>
   <script src="js/studio.js?v=4.0.7"></script>
   <script src="js/search.js?v=4.0.7"></script>
   <script src="js/app.js?v=4.0.7"></script>
