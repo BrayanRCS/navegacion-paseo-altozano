@@ -105,6 +105,20 @@
     if (y && document.activeElement !== y) y.value = pos.y;
     const del = $('studio-delete');
     if (del) del.disabled = !node;
+    const totemBox = $('editor-totem-container');
+    if (totemBox) {
+      const isTotem = !!node && node.type === 'totem';
+      totemBox.classList.toggle('hidden', !isTotem);
+      if (isTotem) {
+        const dev = $('editor-node-device-input');
+        if (dev && document.activeElement !== dev) dev.value = totemDeviceId(node);
+        const active = node.id === TOTEM_NODE_ID;
+        const status = $('editor-totem-status');
+        if (status) status.textContent = active ? '★ Punto de partida activo' : `?totem=${totemDeviceId(node)}`;
+        const useBtn = $('editor-totem-active-btn');
+        if (useBtn) useBtn.disabled = active;
+      }
+    }
     updateUi();
   };
 
@@ -187,6 +201,93 @@
   window.createNewElevatorAtCenter = () => { const p = viewCenter(); createNewElevator(p.x, p.y); };
   window.createNewEscalatorAtCenter = () => { const p = viewCenter(); createNewEscalator(p.x, p.y); };
 
+  // ---------- totems ----------
+  function uniqueDevice(base, exceptId) {
+    const root = slugifyTotem(base) || 'totem';
+    let candidate = root;
+    let i = 2;
+    while (getTotems().some(t => t.id !== exceptId && totemDeviceId(t) === candidate)) candidate = `${root}-${i++}`;
+    return candidate;
+  }
+
+  window.createNewTotemAtCenter = function () {
+    const p = viewCenter();
+    let name = 'Nuevo';
+    let i = 2;
+    while (getTotems().some(t => slugifyTotem(totemDisplayName(t)) === slugifyTotem(name))) name = `Nuevo ${i++}`;
+    const node = {
+      id: `n_totem_${Date.now().toString(36)}`,
+      level: currentLevel,
+      type: 'totem',
+      name,
+      device: uniqueDevice(name),
+      coordinates: { x: p.x, y: p.y }
+    };
+    mallGraph.nodes.push(node);
+    window.saveCustomGraphToStorage();
+    selectedEditorNodeId = node.id;
+    AltozanoState.selectedEditorNodeId = node.id;
+    renderMapOverlay();
+    updateEditorHudInfo(node, node.coordinates, '📍 Tótem nuevo: ponle nombre, conéctalo a un pasillo con «Enlazar» y elige su identificador');
+  };
+
+  window.studioSetDevice = function (value) {
+    const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId && n.type === 'totem');
+    if (!node) return;
+    const input = $('editor-node-device-input');
+    const slug = slugifyTotem(value);
+    if (!slug) {
+      setStatus('El identificador no puede quedar vacío');
+      if (input) input.value = totemDeviceId(node);
+      return;
+    }
+    const clash = getTotems().find(t => t.id !== node.id && totemDeviceId(t) === slug);
+    if (clash) {
+      setStatus(`«${slug}» ya lo usa el tótem ${totemDisplayName(clash)}`);
+      if (input) input.value = totemDeviceId(node);
+      return;
+    }
+    node.device = slug;
+    window.saveCustomGraphToStorage();
+    updateEditorHudInfo(node, node.coordinates, `Identificador del tótem: ?totem=${slug}`);
+  };
+
+  // Marca este tótem como el punto de partida con el que se ve y se prueba el mapa
+  window.studioUseAsStart = function () {
+    const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId && n.type === 'totem');
+    if (!node) return;
+    setActiveTotemId(node.id, false);
+    const url = new URL(window.location.href);
+    url.searchParams.set('totem', totemDeviceId(node));
+    history.replaceState(null, '', url);
+    renderMapOverlay();
+    updateEditorHudInfo(node, node.coordinates, `★ ${totemDisplayName(node)} es ahora el punto de partida`);
+  };
+
+  // Al renombrar un tótem, la etiqueta del mapa y las listas de origen siguen al nombre
+  const originalRename = window.handleSelectedNodeNameChange;
+  window.handleSelectedNodeNameChange = function () {
+    originalRename.apply(this, arguments);
+    const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
+    if (node && node.type === 'totem') {
+      applyTotemLabels();
+      renderMapOverlay();
+    }
+  };
+
+  // El mapa necesita al menos un tótem; si se borra el activo, pasa a ser el primero que quede
+  const originalDelete = window.deleteSelectedNode;
+  window.deleteSelectedNode = function () {
+    const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
+    if (node && node.type === 'totem' && getTotems().length <= 1) {
+      setStatus('No se puede eliminar el único tótem: el mapa necesita al menos un punto de partida');
+      return;
+    }
+    const wasActive = !!node && node.id === TOTEM_NODE_ID;
+    originalDelete.apply(this, arguments);
+    if (wasActive && !mallGraph.nodes.some(n => n.id === node.id) && getTotems().length) setActiveTotemId(getTotems()[0].id, false);
+  };
+
   // ---------- entrar y salir ----------
   window.studioToggle = function () {
     if (!mallGraph) return;
@@ -265,15 +366,27 @@
       degree.set(e.to, (degree.get(e.to) || 0) + 1);
     });
 
-    const issues = { unreachable: [], noEdges: [], orphans: [], twin: [], long: [], broken: [] };
+    const issues = { unreachable: [], noEdges: [], orphans: [], twin: [], long: [], broken: [], totem: [] };
 
-    nodes.filter(n => DEST_TYPES.includes(n.type)).forEach(n => {
-      let ok = false;
-      try {
-        const r = calculateMultiFloorRoute(TOTEM_NODE_ID, n.id);
-        ok = Array.isArray(r) && r.length > 0 && r.every(s => s.path && s.path.length > 0);
-      } catch (e) { ok = false; }
-      if (!ok) issues.unreachable.push({ id: n.id, text: `${n.name} · ${levelLabel(n.level)}` });
+    const totems = nodes.filter(n => n.type === 'totem');
+    const dests = nodes.filter(n => DEST_TYPES.includes(n.type));
+    if (!totems.length) issues.totem.push({ id: null, text: 'No hay ningún tótem: el mapa necesita al menos un punto de partida' });
+    const seenDevice = new Map();
+    totems.forEach(t => {
+      const device = totemDeviceId(t);
+      if (seenDevice.has(device)) issues.totem.push({ id: t.id, text: `El identificador «${device}» está repetido en ${totemDisplayName(seenDevice.get(device))} y ${totemDisplayName(t)}` });
+      else seenDevice.set(device, t);
+      if (!(degree.get(t.id) > 0)) issues.totem.push({ id: t.id, text: `Tótem ${totemDisplayName(t)} · ${levelLabel(t.level)} sin conexión a un pasillo (el mapa lo une al punto más cercano)` });
+      dests.forEach(n => {
+        let ok = false;
+        try {
+          const r = calculateMultiFloorRoute(t.id, n.id);
+          ok = Array.isArray(r) && r.length > 0 && r.every(s => s.path && s.path.length > 0);
+        } catch (e) { ok = false; }
+        if (!ok) issues.unreachable.push({ id: n.id, text: `${n.name} · ${levelLabel(n.level)}${totems.length > 1 ? ` · desde ${totemDisplayName(t)}` : ''}` });
+      });
+    });
+    dests.forEach(n => {
       if (!(degree.get(n.id) > 0)) issues.noEdges.push({ id: n.id, text: `${n.name} · ${levelLabel(n.level)}` });
     });
 
@@ -314,12 +427,13 @@
   window.studioVerify = function () {
     const issues = findIssues();
     const sections = [
-      ['unreachable', 'Locales a los que no llega una ruta desde el tótem', 'Es lo más grave: un visitante no podría llegar.'],
+      ['unreachable', 'Locales a los que no llega una ruta desde un tótem', 'Es lo más grave: un visitante no podría llegar.'],
       ['noEdges', 'Locales sin ninguna arista', 'El mapa los enlaza solo al pasillo más cercano; conviene conectarlos a mano.'],
       ['twin', 'Escaleras y elevadores con código gemelo incompleto', 'Sin gemela en otro nivel, la ruta nunca cruza por ahí.'],
       ['orphans', 'Puntos de pasillo sin aristas', 'Nodos sueltos: se pueden limpiar con «Limpiar huérfanos».'],
       ['long', `Aristas muy largas (más de ${Math.round(LONG_EDGE_UNITS * 0.28)} m)`, 'Pueden atravesar paredes; revisa si son correctas.'],
-      ['broken', 'Aristas rotas', 'Apuntan a nodos que no existen o a sí mismas.']
+      ['broken', 'Aristas rotas', 'Apuntan a nodos que no existen o a sí mismas.'],
+      ['totem', 'Tótems por revisar', 'Cada tótem necesita un identificador único y al menos una conexión a un pasillo.']
     ];
     const total = sections.reduce((n, [k]) => n + issues[k].length, 0);
     const box = $('studio-report-body');

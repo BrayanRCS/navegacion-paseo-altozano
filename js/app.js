@@ -81,8 +81,12 @@ function populateSelects() {
   originSel.innerHTML = '';
   destSel.innerHTML = '';
 
-  const totemOpt = new Option("📍 Tótem Principal (Punto 12 - Nivel 1)", TOTEM_NODE_ID);
-  originSel.appendChild(totemOpt);
+  const totemList = typeof getTotems === 'function' ? getTotems() : [];
+  if (totemList.length) {
+    totemList.forEach(t => originSel.appendChild(new Option(`📍 Tótem ${totemDisplayName(t)}`, t.id)));
+  } else {
+    originSel.appendChild(new Option("📍 Tótem", TOTEM_NODE_ID));
+  }
 
   const levels = {
     1: { name: "Planta Baja (Nivel Inferior)", nodes: [] },
@@ -176,7 +180,9 @@ async function initApp() {
 
     // 4. Build subgraphs and initialize UI
     buildFloorSubgraphs();
+    if (typeof initTotems === 'function') initTotems();
     populateSelects();
+    if (typeof applyTotemLabels === 'function') applyTotemLabels();
     if (typeof renderCategoryHub === 'function') renderCategoryHub();
     renderLegendList();
     setupInteractiveCameraPan();

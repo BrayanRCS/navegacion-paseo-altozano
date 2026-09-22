@@ -176,6 +176,8 @@
           else if (u === 'L2' || u === 'N2') lvl = 3;
           else lvl = parseInt(lvl) || 2;
         }
+        // El nivel lo manda el propio totem activo, no un valor fijo del kiosco
+        if (typeof window.getActiveTotem === 'function' && window.getActiveTotem()) lvl = window.getActiveTotem().level;
         if (typeof window.switchLevel === 'function') {
           window.switchLevel(lvl, false);
         }
@@ -189,7 +191,7 @@
       }
 
       case 'INIT_TOTEM': {
-        const targetTotemId = totemId || event.data.deviceId || 'n_totem_12';
+        const targetTotemId = totemId || event.data.deviceId;
         if (targetTotemId && typeof window.setActiveTotemId === 'function') {
           window.setActiveTotemId(targetTotemId, false);
         }
@@ -201,6 +203,7 @@
           else if (u === 'L2' || u === 'N2') lvl = 3;
           else lvl = parseInt(lvl) || 2;
         }
+        if (typeof window.getActiveTotem === 'function' && window.getActiveTotem()) lvl = window.getActiveTotem().level;
         if (typeof window.switchLevel === 'function') {
           window.switchLevel(lvl, false);
         }

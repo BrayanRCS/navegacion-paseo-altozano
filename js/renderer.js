@@ -115,6 +115,30 @@ function renderDestinationCard(node, seg) {
   sub.setAttribute('x', left + 10);
 }
 
+// Coloca el marcador "Estas aqui" sobre el totem activo; solo se ve en el nivel de ese totem
+function syncTotemMarker() {
+  const el = document.getElementById('svg-totem-marker');
+  if (!el) return;
+  const t = typeof getActiveTotem === 'function' ? getActiveTotem() : null;
+  if (!t || t.level !== currentLevel || isEditorMode) {
+    el.style.display = 'none';
+    return;
+  }
+  const { x, y } = t.coordinates;
+  el.style.display = 'block';
+  const scaleWrap = el.querySelector('.mm-scale-totem');
+  const disc = el.querySelector('circle');
+  const pin = el.querySelector('text');
+  if (scaleWrap) scaleWrap.style.transformOrigin = `${x}px ${y}px`;
+  if (disc) { disc.setAttribute('cx', x); disc.setAttribute('cy', y); }
+  if (pin) { pin.setAttribute('x', x); pin.setAttribute('y', y + 4.5); }
+  if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
+    el.setAttribute('transform', `rotate(90, ${x}, ${y})`);
+  } else {
+    el.removeAttribute('transform');
+  }
+}
+
 function renderMapOverlay(animate = false) {
   if (!mallGraph) return;
 
@@ -139,15 +163,8 @@ function renderMapOverlay(animate = false) {
   nodesLayer.style.display = (isEditorMode || showStoresAndRestaurants) ? 'block' : 'none';
   edgesLayer.style.display = isEditorMode ? 'block' : 'none';
 
-  // Draw Totem 📍 Pin ONLY on Level 2 (Nivel 1)
-  if (totemMarkerEl) {
-    totemMarkerEl.style.display = currentLevel === 2 ? 'block' : 'none';
-    if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
-      totemMarkerEl.setAttribute('transform', 'rotate(90, 960, 510)');
-    } else {
-      totemMarkerEl.removeAttribute('transform');
-    }
-  }
+  // Marcador "Estas aqui" del totem activo (en el nivel donde este)
+  syncTotemMarker();
 
   // Draw Vector Walkable Corridors & Graph Edges (ONLY when in Editor Mode)
   if (isEditorMode) {
@@ -202,6 +219,10 @@ function renderMapOverlay(animate = false) {
     // In normal mode, waypoints are invisible navigation guides
     // In Editor Mode (Graph SubMode), waypoints are fully interactive draggable nodes!
     if (!isEditorMode && isWaypoint) {
+      return;
+    }
+    // En modo normal solo se muestra el marcador del totem activo, no el nodo de cada totem
+    if (!isEditorMode && n.type === 'totem') {
       return;
     }
 
@@ -310,6 +331,17 @@ function renderMapOverlay(animate = false) {
         ring.setAttribute('stroke', '#fdf1db');
         ring.setAttribute('stroke-width', '2.5');
         g.appendChild(ring);
+      }
+      if (n.type === 'totem') {
+        const isActiveTotem = n.id === TOTEM_NODE_ID;
+        const totemLabel = document.createElementNS('http://www.w3.org/2000/svg', 'text');
+        totemLabel.setAttribute('x', posX + 12);
+        totemLabel.setAttribute('y', posY + 4);
+        totemLabel.setAttribute('font-size', '11');
+        totemLabel.setAttribute('font-weight', '800');
+        totemLabel.setAttribute('fill', isActiveTotem ? '#fdf1db' : '#fca5a5');
+        totemLabel.textContent = `${totemDisplayName(n)}${isActiveTotem ? ' ★' : ''}`;
+        g.appendChild(totemLabel);
       }
       const handle = document.createElementNS('http://www.w3.org/2000/svg', 'circle');
       handle.setAttribute('cx', posX);
@@ -621,11 +653,7 @@ function renderMapOverlay(animate = false) {
 
     // La rotacion del pin la maneja renderDestinationCard (dentro del ancla)
     destPinEl.removeAttribute('transform');
-    if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
-      if (totemMarkerEl) totemMarkerEl.setAttribute('transform', 'rotate(90, 960, 510)');
-    } else {
-      if (totemMarkerEl) totemMarkerEl.removeAttribute('transform');
-    }
+    syncTotemMarker();
 
     if (animate && typeof NavAnimator !== 'undefined') {
       NavAnimator.popInDestinationPin();

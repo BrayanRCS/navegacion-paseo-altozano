@@ -338,8 +338,8 @@ function buildStepByStepList() {
     if (sIdx === 0) {
       const startNode = p[0];
       const nextNode = p.length > 1 ? p[1] : p[0];
-      const startMsg = startNode.id === TOTEM_NODE_ID 
-        ? "Inicia tu recorrido desde este Tótem (Punto 12)" 
+      const startMsg = (startNode.type === 'totem' || startNode.id === TOTEM_NODE_ID)
+        ? `Inicia tu recorrido desde el tótem ${totemDisplayName(startNode)}`
         : `Inicia tu recorrido desde ${startNode.name}`;
 
       currentSteps.push({

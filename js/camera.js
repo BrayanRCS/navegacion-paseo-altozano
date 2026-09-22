@@ -423,14 +423,13 @@ function zoomToOverview(animate = true) {
 }
 
 function zoomToTotem(animate = true, scale = 2.6, duration = 650) {
-  let totemNode = null;
-  const totemId = window.TOTEM_NODE_ID || 'n_totem_12';
-  if (window.mallGraph && Array.isArray(window.mallGraph.nodes)) {
-    totemNode = window.mallGraph.nodes.find(n => n.id === totemId);
+  const totemNode = typeof getActiveTotem === 'function' ? getActiveTotem() : null;
+  // Si el totem esta en otro nivel del que se ve, se encuadra el plano completo en lugar de un punto sin sentido
+  if (!totemNode || totemNode.level !== currentLevel) {
+    zoomToOverview(animate);
+    return;
   }
-  const x = totemNode ? totemNode.coordinates.x : 960;
-  const y = totemNode ? totemNode.coordinates.y : 510;
-  zoomToCoordinates(x, y, scale, animate, duration);
+  zoomToCoordinates(totemNode.coordinates.x, totemNode.coordinates.y, scale, animate, duration);
 }
 window.zoomToTotem = zoomToTotem;
 
@@ -469,9 +468,9 @@ function centerOnNavArrow() {
     const p = routeSegments[0].path;
     nextNode = p.length > 1 ? p[1] : p[0];
     targetLevel = targetNode.level;
-  } else if (levelNodes[2] && levelNodes[2][TOTEM_NODE_ID]) {
-    targetNode = levelNodes[2][TOTEM_NODE_ID];
-    targetLevel = 2;
+  } else if (typeof getActiveTotem === 'function' && getActiveTotem()) {
+    targetNode = getActiveTotem();
+    targetLevel = targetNode.level;
   }
 
   if (!targetNode) return;

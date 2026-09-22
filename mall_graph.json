@@ -1936,7 +1936,8 @@
       "id": "n_totem_12",
       "level": 2,
       "type": "totem",
-      "name": "📍 Tótem Punto 12",
+      "name": "Atlas",
+      "device": "atlas",
       "coordinates": {
         "x": 960,
         "y": 510

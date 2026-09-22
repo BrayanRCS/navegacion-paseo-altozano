@@ -106,7 +106,7 @@ function applyMapOrientation() {
   renderMapOverlay();
   updateCameraTransform();
   updateCompassUI();
-  if (currentLevel === 2 && (!routeSegments || routeSegments.length === 0)) {
+  if (currentLevel === getActiveTotemLevel() && (!routeSegments || routeSegments.length === 0)) {
     if (typeof zoomToTotem === 'function') zoomToTotem(true, 2.6);
     else zoomToOverview(true);
   } else {
@@ -171,7 +171,7 @@ function switchLevel(lvl, autoZoom = true) {
   renderMapOverlay();
   updateSegmentButtons();
   if (autoZoom) {
-    if (lvl === 2 && (!routeSegments || routeSegments.length === 0)) {
+    if (lvl === getActiveTotemLevel() && (!routeSegments || routeSegments.length === 0)) {
       if (typeof zoomToTotem === 'function') zoomToTotem(true, 2.6);
       else zoomToOverview(true);
     } else {
@@ -325,9 +325,9 @@ function showMapView(destId = null) {
       if (btnNav) btnNav.style.display = 'none';
       updateRouteInstruction();
 
-      // Ensure level 2 (Nivel 1 with Totem) is active
-      if (currentLevel !== 2 && typeof switchLevel === 'function') {
-        switchLevel(2, false);
+      // Ensure the active totem's level is shown
+      if (currentLevel !== getActiveTotemLevel() && typeof switchLevel === 'function') {
+        switchLevel(getActiveTotemLevel(), false);
       }
     }
 
@@ -535,8 +535,8 @@ function getPlaceVisualInfo(node) {
   if (type === 'portal_elevator' || name.includes('elevador')) {
     return { emoji: '🛗', category: 'ELEVADOR PANORÁMICO', bgGradient: 'from-blue-600 to-indigo-800', name: node.name || 'Elevador Panorámico', detail: 'Acceso accesible y directo entre niveles' };
   }
-  if (id === TOTEM_NODE_ID || name.includes('tótem')) {
-    return { emoji: '📍', category: 'TÓTEM INTERACTIVO', bgGradient: 'from-rose-600 to-red-800', name: 'Tótem Principal (Punto 12)', detail: 'Ubicado en pasillo frente a Chedraui / M-Caps' };
+  if (type === 'totem' || id === TOTEM_NODE_ID || name.includes('tótem')) {
+    return { emoji: '📍', category: 'TÓTEM INTERACTIVO', bgGradient: 'from-rose-600 to-red-800', name: `Tótem ${totemDisplayName(node)}`, detail: node.context_element ? `Junto a ${node.context_element}` : 'Punto de partida' };
   }
 
   if (name.includes('starbucks')) return { emoji: '☕', category: 'CAFETERÍA & BEBIDAS', bgGradient: 'from-emerald-700 to-green-900', name: 'Starbucks Coffee', detail: 'Bebidas artesanales y café de especialidad' };
@@ -1195,7 +1195,9 @@ function openMobileRouteTab() {
 
 function initFromUrlParams() {
   const params = new URLSearchParams(window.location.search);
-  const orig = params.get('orig') || params.get('origin') || params.get('totem');
+  // ?totem= elige el totem activo (ver totems.js); solo se toma como origen si no corresponde a ningun totem
+  const totemParam = params.get('totem');
+  const orig = params.get('orig') || params.get('origin') || (totemParam && !resolveTotem(totemParam) ? totemParam : null);
   const dest = params.get('dest') || params.get('destination');
   const mode = params.get('mode');
   const view = params.get('view');

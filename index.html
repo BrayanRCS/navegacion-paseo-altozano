@@ -428,7 +428,7 @@
             </div>
             <h2 class="text-2xl sm:text-3xl font-black text-white tracking-tight">¿A dónde deseas ir hoy?</h2>
             <p class="text-xs sm:text-sm text-slate-300 mt-1 font-medium">
-              Estás en el <b class="text-rose-400 px-2 py-0.5 rounded-lg bg-rose-500/15 border border-rose-500/30">📍 Punto 12 · Nivel 1</b> (Frente a Chedraui / M-Caps)
+              Estás en el <b id="dir-totem-here" class="text-rose-400 px-2 py-0.5 rounded-lg bg-rose-500/15 border border-rose-500/30">📍 Tótem</b> (Frente a Chedraui / M-Caps)
             </p>
           </div>
           <button onclick="showMapView()" class="px-5 py-3.5 bg-gradient-to-r from-blue-600 to-sky-500 hover:from-blue-500 hover:to-sky-400 text-white rounded-2xl text-xs sm:text-sm font-black shadow-xl shadow-blue-600/30 flex items-center gap-2.5 transition-all active:scale-95 border border-sky-400/40 cursor-pointer flex-shrink-0">
@@ -520,7 +520,7 @@
           </div>
 
           <div class="flex items-center gap-3 text-[11px] flex-wrap">
-            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500 border border-white"></span> 📍 Tótem (Punto 12)</span>
+            <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-rose-500 border border-white"></span> <span id="legend-totem-label">📍 Tótem</span></span>
             <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-full bg-blue-600 border border-white"></span> ➤ Flecha GPS</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-emerald-500"></span> Tienda</span>
             <span class="flex items-center gap-1.5"><span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Isla</span>
@@ -882,6 +882,7 @@
           <button class="mm-sbtn" onclick="createNewEscalatorAtCenter()"><i class="fa-solid fa-stairs"></i><span>Escalera</span></button>
           <button class="mm-sbtn" onclick="createNewElevatorAtCenter()"><i class="fa-solid fa-elevator"></i><span>Elevador</span></button>
           <button class="mm-sbtn" onclick="createNewRestroomAtCenter()"><i class="fa-solid fa-restroom"></i><span>Baño</span></button>
+          <button class="mm-sbtn" onclick="createNewTotemAtCenter()"><i class="fa-solid fa-location-dot"></i><span>Tótem</span></button>
           <button id="btn-editor-connect-mode" class="mm-sbtn" onclick="toggleConnectMode()"><i class="fa-solid fa-link"></i><span>Enlazar</span></button>
           <button class="mm-sbtn" onclick="cleanOrphanWaypoints()"><i class="fa-solid fa-broom"></i><span>Limpiar huérfanos</span></button>
           <button class="mm-sbtn" onclick="studioVerify()"><i class="fa-solid fa-clipboard-check"></i><span>Verificar rutas</span></button>
@@ -894,6 +895,13 @@
           <label class="mm-sfield"><span>X</span><input id="editor-node-x-input" class="mm-sinput mm-sinput--num" type="number" onchange="studioApplyXY()"></label>
           <label class="mm-sfield"><span>Y</span><input id="editor-node-y-input" class="mm-sinput mm-sinput--num" type="number" onchange="studioApplyXY()"></label>
           <button id="studio-delete" class="mm-sbtn mm-sbtn--danger" onclick="deleteSelectedNode()" disabled><i class="fa-solid fa-trash"></i><span>Eliminar nodo</span></button>
+        </div>
+
+        <div id="editor-totem-container" class="mm-studio-row mm-studio-portal hidden">
+          <span class="mm-studio-label">Tótem · identificador en la URL:</span>
+          <input id="editor-node-device-input" class="mm-sinput" type="text" placeholder="atlas" onchange="studioSetDevice(this.value)">
+          <button id="editor-totem-active-btn" class="mm-sbtn" onclick="studioUseAsStart()"><i class="fa-solid fa-star"></i><span>Usar como punto de partida</span></button>
+          <span id="editor-totem-status" class="mm-studio-flag"></span>
         </div>
 
         <div id="editor-portal-floor-presets" class="mm-studio-row mm-studio-portal hidden">
@@ -1146,19 +1154,20 @@
   <!-- ======================================================== -->
   <!-- MODULAR JAVASCRIPT ARCHITECTURE                          -->
   <!-- ======================================================== -->
-  <script src="js/store_categories.js?v=4.0.6"></script>
-  <script src="js/config.js?v=4.0.6"></script>
-  <script src="js/state.js?v=4.0.6"></script>
-  <script src="js/animator.js?v=4.0.6"></script>
-  <script src="js/camera.js?v=4.0.6"></script>
-  <script src="js/router.js?v=4.0.6"></script>
-  <script src="js/renderer.js?v=4.0.6"></script>
-  <script src="js/simulation.js?v=4.0.6"></script>
-  <script src="js/editor.js?v=4.0.6"></script>
-  <script src="js/ui.js?v=4.0.6"></script>
-  <script src="js/studio.js?v=4.0.6"></script>
-  <script src="js/search.js?v=4.0.6"></script>
-  <script src="js/app.js?v=4.0.6"></script>
-  <script src="js/kiosk-bridge.js?v=4.0.6"></script>
+  <script src="js/store_categories.js?v=4.0.7"></script>
+  <script src="js/totems.js?v=4.0.7"></script>
+  <script src="js/config.js?v=4.0.7"></script>
+  <script src="js/state.js?v=4.0.7"></script>
+  <script src="js/animator.js?v=4.0.7"></script>
+  <script src="js/camera.js?v=4.0.7"></script>
+  <script src="js/router.js?v=4.0.7"></script>
+  <script src="js/renderer.js?v=4.0.7"></script>
+  <script src="js/simulation.js?v=4.0.7"></script>
+  <script src="js/editor.js?v=4.0.7"></script>
+  <script src="js/ui.js?v=4.0.7"></script>
+  <script src="js/studio.js?v=4.0.7"></script>
+  <script src="js/search.js?v=4.0.7"></script>
+  <script src="js/app.js?v=4.0.7"></script>
+  <script src="js/kiosk-bridge.js?v=4.0.7"></script>
 </body>
 </html>
