@@ -213,6 +213,11 @@ function renderMapOverlay(animate = false) {
   // Draw Nodes for current level
   const currentFloorNodes = levelNodes[currentLevel] || {};
   const minTiers = (MINIMAL_MAP && !isEditorMode) ? computeMinTiers(Object.values(currentFloorNodes)) : {};
+  // Mientras se camina la ruta (Iniciar Ruta/GPS), solo se ve la tienda destino: el resto se
+  // esconde para no distraer. No aplica solo con elegir destino, nada mas al arrancar la caminata.
+  const navigatingDestId = isSimulating && routeSegments.length
+    ? routeSegments[routeSegments.length - 1].goal.id
+    : null;
   Object.values(currentFloorNodes).forEach(n => {
     const isWaypoint = n.id.startsWith('n_lvl1_c_') || n.id.startsWith('n_lvl2_c_') || n.id.startsWith('n_lvl3_c_') || n.type === 'corridor_waypoint' || n.type === 'waypoint';
 
@@ -231,6 +236,11 @@ function renderMapOverlay(animate = false) {
 
     // Si hay un filtro activo y el nodo no pertenece a esa categoría, ocultarlo por completo (no mostrar con transparencia)
     if (!isEditorMode && !isCategoryMatch) {
+      return;
+    }
+
+    // Caminando la ruta: se esconden los demas locales (no las escaleras/elevadores/servicios)
+    if (navigatingDestId && ['store', 'anchor_store', 'island'].includes(n.type) && n.id !== navigatingDestId) {
       return;
     }
 

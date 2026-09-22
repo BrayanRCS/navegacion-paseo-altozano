@@ -61,6 +61,8 @@ function startWalkSimulation() {
   if (currentLevel !== routeSegments[0].level) {
     switchLevel(routeSegments[0].level, false);
   }
+  // Vuelve a dibujar los nodos ya con isSimulating=true (esconde los demas locales)
+  if (typeof renderMapOverlay === 'function') renderMapOverlay();
 
   playCurrentFloorSegment();
 }
@@ -345,4 +347,7 @@ function stopWalkSimulation() {
 
   const nodesLayer = document.getElementById('svg-nodes-layer');
   if (nodesLayer) nodesLayer.style.display = showStoresAndRestaurants ? 'block' : 'none';
+
+  // Al pausar/detener (isSimulating ya en false) vuelven a verse todos los locales
+  if (typeof renderMapOverlay === 'function') renderMapOverlay();
 }
