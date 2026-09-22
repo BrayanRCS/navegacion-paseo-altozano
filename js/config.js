@@ -2,7 +2,7 @@
  * Paseo Altozano · Configuration & Constants Module
  */
 
-const APP_CACHE_VERSION = 'v4.0.5';
+const APP_CACHE_VERSION = 'v4.1.0';
 let TOTEM_NODE_ID = 'n_totem_12';   // totem activo; lo fija initTotems() / setActiveTotemId() (ver js/totems.js)
 const LOCAL_NETWORK_IP = '192.168.1.121';
 const WALK_STEP_DURATION = 550;
