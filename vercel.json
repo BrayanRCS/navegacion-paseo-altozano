@@ -4,7 +4,10 @@
   "redirects": [
     {
       "source": "/",
-      "missing": [{ "type": "query", "key": "studio" }],
+      "missing": [
+        { "type": "query", "key": "studio" },
+        { "type": "query", "key": "view" }
+      ],
       "destination": "/?studio=1",
       "permanent": false
     }
