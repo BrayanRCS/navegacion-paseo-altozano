@@ -126,18 +126,20 @@
 
     switch (type) {
       case 'SET_DESTINATION': {
+        // mallGraph es 'let' en state.js, no vive en window: hay que leer el identificador tal cual
+        const graph = typeof mallGraph !== 'undefined' && mallGraph ? mallGraph : window.mallGraph;
         const query = (localId || storeId || storeName || '').trim();
-        if (!query || !window.mallGraph || !Array.isArray(window.mallGraph.nodes)) return;
+        if (!query || !graph || !Array.isArray(graph.nodes)) return;
 
         // 1. Direct ID match
-        let targetNode = window.mallGraph.nodes.find(n => n.id === query);
+        let targetNode = graph.nodes.find(n => n.id === query);
 
         // 2. Normalized name match
         if (!targetNode) {
           const cleanQ = query.toLowerCase();
-          targetNode = window.mallGraph.nodes.find(n => (n.name || '').toLowerCase() === cleanQ);
+          targetNode = graph.nodes.find(n => (n.name || '').toLowerCase() === cleanQ);
           if (!targetNode) {
-            targetNode = window.mallGraph.nodes.find(n => (n.name || '').toLowerCase().includes(cleanQ));
+            targetNode = graph.nodes.find(n => (n.name || '').toLowerCase().includes(cleanQ));
           }
         }
 
@@ -165,9 +167,25 @@
       case 'FOCUS_TOTEM':
       case 'RESET_ROUTE': {
         if (typeof window.stopWalkSimulation === 'function') window.stopWalkSimulation();
-        window.routeSegments = [];
-        window.currentSteps = [];
-        window.currentStepIndex = 0;
+        // routeSegments/currentSteps/currentStepIndex son 'let' en state.js: asignar via
+        // window.X creaba una propiedad fantasma que nadie leia y la ruta nunca se borraba de verdad
+        if (typeof routeSegments !== 'undefined') routeSegments = [];
+        if (typeof currentSteps !== 'undefined') currentSteps = [];
+        if (typeof currentStepIndex !== 'undefined') currentStepIndex = 0;
+        // Deja la tarjeta de destino como al explorar libremente (si no, se quedaba con el
+        // nombre/logo del ultimo destino aunque la ruta ya estuviera borrada)
+        const targetTitleEl = document.getElementById('map-target-title');
+        if (targetTitleEl) targetTitleEl.innerText = 'Explorando Mapa General';
+        const targetMetricsEl = document.getElementById('map-target-metrics');
+        if (targetMetricsEl) targetMetricsEl.innerText = 'Toca cualquier local o servicio para ver detalles o trazar ruta';
+        const targetIconBoxEl = document.getElementById('map-target-icon-box');
+        if (targetIconBoxEl) {
+          targetIconBoxEl.className = 'mm-route-icon';
+          targetIconBoxEl.innerHTML = '<img src="logo-paseo-altozano.png?v=4.0.10" alt="Paseo Altozano" style="width:76%;height:76%;object-fit:contain;">';
+        }
+        const btnNavEl = document.getElementById('btn-map-banner-navigate');
+        if (btnNavEl) btnNavEl.style.display = 'none';
+        if (typeof window.updateRouteInstruction === 'function') window.updateRouteInstruction();
         let lvl = kioskLevel || 2;
         if (typeof lvl === 'string') {
           const u = lvl.toUpperCase();
