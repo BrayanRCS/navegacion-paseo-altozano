@@ -171,19 +171,24 @@
     /* La vista de celular (QR) trae sus propios controles: los del totem no aplican ahi */
     body.mobile-navigation-mode .mm-cats, body.mobile-navigation-mode .mm-levels,
     body.mobile-navigation-mode .mm-search-pill, body.mobile-navigation-mode .mm-search-sheet { display: none !important; }
-    /* Anclados debajo del buscador (no centrados) para que nunca se encimen con el ni se corten filtros sin avisar */
+    /* Anclados debajo del buscador (no centrados) para que nunca se encimen con el ni se corten filtros sin avisar.
+       Si de todos modos no caben los 8 en pantallas mas bajas, el scroll queda VISIBLE (nunca oculto)
+       para que se note que hay mas categorias abajo en vez de que parezcan haber desaparecido. */
     .mm-cats { position: absolute; left: 12px; top: 92px; z-index: 25;
-      display: flex; flex-direction: column; gap: 10px; max-height: calc(100% - 108px); overflow-y: auto; scrollbar-width: none; }
-    .mm-cats::-webkit-scrollbar { display: none; }
-    .mm-cat { display: flex; align-items: center; gap: 12px; width: 176px; min-height: 68px; padding: 10px 14px;
-      border-radius: 20px; text-align: left; font-size: 15px; font-weight: 600; line-height: 1.15; color: #dbe7f3; cursor: pointer;
+      display: flex; flex-direction: column; gap: 8px; max-height: calc(100% - 104px); overflow-y: auto;
+      scrollbar-width: thin; scrollbar-color: rgba(140, 175, 210, 0.45) transparent; }
+    .mm-cats::-webkit-scrollbar { width: 6px; }
+    .mm-cats::-webkit-scrollbar-track { background: transparent; }
+    .mm-cats::-webkit-scrollbar-thumb { background: rgba(140, 175, 210, 0.45); border-radius: 3px; }
+    .mm-cat { display: flex; align-items: center; gap: 12px; width: 176px; min-height: 58px; padding: 8px 14px;
+      border-radius: 18px; text-align: left; font-size: 14px; font-weight: 600; line-height: 1.15; color: #dbe7f3; cursor: pointer;
       background: rgba(12, 26, 44, 0.97); border: 1px solid rgba(140, 175, 210, 0.22);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 14px rgba(0,0,0,0.35);
-      transition: transform .12s ease, background .12s ease, color .12s ease; -webkit-tap-highlight-color: transparent; }
+      transition: transform .12s ease, background .12s ease, color .12s ease; -webkit-tap-highlight-color: transparent; flex-shrink: 0; }
     .mm-cat:active { transform: scale(0.97); }
     .mm-cat--active { background: #fdf1db; color: #0f2236; border-color: #fdf1db; }
     .mm-cat--active .mm-ic { filter: invert(1) brightness(0.3); }
-    .mm-ic { width: 30px; height: 30px; flex: none; }
+    .mm-ic { width: 26px; height: 26px; flex: none; }
     .mm-levels { position: absolute; right: 12px; bottom: 16px; z-index: 25; display: flex; flex-direction: column; gap: 8px; padding: 8px;
       border-radius: 24px; background: rgba(12, 26, 44, 0.88); border: 1px solid rgba(140, 175, 210, 0.22);
       box-shadow: inset 0 1px 0 rgba(255,255,255,0.10), 0 6px 14px rgba(0,0,0,0.35); }
