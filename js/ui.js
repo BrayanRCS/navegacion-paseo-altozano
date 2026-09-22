@@ -170,14 +170,9 @@ function switchLevel(lvl, autoZoom = true) {
   closeNodePopup();
   renderMapOverlay();
   updateSegmentButtons();
-  if (autoZoom) {
-    if (lvl === getActiveTotemLevel() && (!routeSegments || routeSegments.length === 0)) {
-      if (typeof zoomToTotem === 'function') zoomToTotem(true, 2.6);
-      else zoomToOverview(true);
-    } else {
-      zoomToOverview(true);
-    }
-  }
+  // El cambio de piso ya no mueve el zoom/encuadre: se queda donde el usuario lo dejo,
+  // solo cambia que capa de nodos/plano se ve. (autoZoom ya no se usa, se deja el
+  // parametro por compatibilidad con quien todavia lo pasa.)
 }
 
 function showFloorTransitionHUD(fromLvl, toLvl, portalNode = null) {
