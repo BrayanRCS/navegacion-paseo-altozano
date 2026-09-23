@@ -167,6 +167,7 @@
       case 'FOCUS_TOTEM':
       case 'RESET_ROUTE': {
         if (typeof window.stopWalkSimulation === 'function') window.stopWalkSimulation();
+        if (typeof window.showMapView === 'function') window.showMapView();
         // routeSegments/currentSteps/currentStepIndex son 'let' en state.js: asignar via
         // window.X creaba una propiedad fantasma que nadie leia y la ruta nunca se borraba de verdad
         if (typeof routeSegments !== 'undefined') routeSegments = [];
