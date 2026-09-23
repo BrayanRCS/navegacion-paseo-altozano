@@ -127,11 +127,11 @@ function syncTotemMarker() {
   const { x, y } = t.coordinates;
   el.style.display = 'block';
   const scaleWrap = el.querySelector('.mm-scale-totem');
-  const disc = el.querySelector('circle');
+  const discs = el.querySelectorAll('circle');
   const pin = el.querySelector('text');
   if (scaleWrap) scaleWrap.style.transformOrigin = `${x}px ${y}px`;
-  if (disc) { disc.setAttribute('cx', x); disc.setAttribute('cy', y); }
-  if (pin) { pin.setAttribute('x', x); pin.setAttribute('y', y + 4.5); }
+  discs.forEach(c => { c.setAttribute('cx', x); c.setAttribute('cy', y); });
+  if (pin) { pin.setAttribute('x', x); pin.setAttribute('y', y + 3.5); }
   if (isVerticalMode && !document.body.classList.contains('mobile-navigation-mode')) {
     el.setAttribute('transform', `rotate(90, ${x}, ${y})`);
   } else {
