@@ -1036,6 +1036,16 @@ function nextNavStep() {
   updateTotemUI(true);
 }
 
+const DEFAULT_ALTOZANO_BANNER = {
+  id: 'pz48o3AzaFjBGFRh7FoZ',
+  title: 'Paseo Altozano',
+  name: 'Naranti prueba',
+  bannerUrl: 'https://firebasestorage.googleapis.com/v0/b/naranti-smartcity.firebasestorage.app/o/campaigns%2F1789775362837_PANTALLA_PARA_MUPI1.mp4?alt=media&token=15974a9a-6bf4-40cd-97dd-049c4e52964a',
+  mediaUrl: 'https://firebasestorage.googleapis.com/v0/b/naranti-smartcity.firebasestorage.app/o/campaigns%2F1789775362837_PANTALLA_PARA_MUPI1.mp4?alt=media&token=15974a9a-6bf4-40cd-97dd-049c4e52964a',
+  isVideo: true,
+  badge: 'PASEO ALTOZANO'
+};
+
 function getMobileRouteUrl() {
   const origId = document.getElementById('origin-select')?.value || TOTEM_NODE_ID;
   const destId = document.getElementById('dest-select')?.value || 'n_lvl2_14';
@@ -1049,14 +1059,20 @@ function getMobileRouteUrl() {
   const protocol = window.location.protocol === 'https:' ? 'https:' : 'http:';
   let url = `${protocol}//${host}/?orig=${encodeURIComponent(origId)}&dest=${encodeURIComponent(destId)}&mode=mobile`;
 
-  // Sincronización 1:1 con la campaña publicitaria activa del tótem
-  const ad = window.activeTotemCampaign;
+  // Sincronización 1:1 con la campaña publicitaria activa del tótem (EXCLUSIVO BANNER HORIZONTAL)
+  const ad = window.activeTotemCampaign || DEFAULT_ALTOZANO_BANNER;
+  const bannerMedia = (ad && (ad.bannerUrl || ad.horizontalUrl || ad.mediaUrl)) || DEFAULT_ALTOZANO_BANNER.bannerUrl;
+  const isVideo = ad && (ad.isVideo ?? (Boolean(bannerMedia && /\.(mp4|webm|mov)(\?|$)/i.test(bannerMedia))));
+
   if (ad && typeof ad === 'object') {
     if (ad.id) url += `&adId=${encodeURIComponent(ad.id)}`;
     if (ad.title || ad.name) url += `&adTitle=${encodeURIComponent(ad.title || ad.name)}`;
     if (ad.promo) url += `&adPromo=${encodeURIComponent(ad.promo)}`;
-    if (ad.mediaUrl) url += `&adImg=${encodeURIComponent(ad.mediaUrl)}`;
     if (ad.badge) url += `&adBadge=${encodeURIComponent(ad.badge)}`;
+  }
+  if (bannerMedia) {
+    url += `&adBanner=${encodeURIComponent(bannerMedia)}&adImg=${encodeURIComponent(bannerMedia)}`;
+    url += `&adIsVideo=${isVideo ? 1 : 0}`;
   }
 
   return url;
@@ -1287,10 +1303,14 @@ function renderMobileAdBannerFromParams() {
   if (!bannerContainer) return;
 
   const params = new URLSearchParams(window.location.search);
-  const adTitle = params.get('adTitle');
-  const adPromo = params.get('adPromo');
-  const adImg = params.get('adImg');
-  const adBadge = params.get('adBadge') || 'ANUNCIO DESTACADO';
+  const DEFAULT_ALTOZANO_BANNER = "https://firebasestorage.googleapis.com/v0/b/naranti-smartcity.firebasestorage.app/o/campaigns%2F1789775362837_PANTALLA_PARA_MUPI1.mp4?alt=media&token=15974a9a-6bf4-40cd-97dd-049c4e52964a";
+
+  const adBanner = params.get('adBanner') || params.get('adImg') || (window.activeTotemCampaign && (window.activeTotemCampaign.bannerUrl || window.activeTotemCampaign.horizontalUrl || window.activeTotemCampaign.mediaUrl));
+  const bannerMedia = adBanner || DEFAULT_ALTOZANO_BANNER;
+
+  const adTitle = params.get('adTitle') || (window.activeTotemCampaign && (window.activeTotemCampaign.title || window.activeTotemCampaign.name)) || 'Paseo Altozano';
+  const isVideoParam = params.get('adIsVideo');
+  const isVideo = isVideoParam === '1' || (isVideoParam !== '0' && (/\.(mp4|webm|mov)(\?|$)/i.test(bannerMedia) || (window.activeTotemCampaign && window.activeTotemCampaign.isVideo)));
 
   function escapeHtml(str) {
     if (!str) return '';
@@ -1302,67 +1322,55 @@ function renderMobileAdBannerFromParams() {
       .replace(/'/g, '&#039;');
   }
 
-  // 1. Si viene una campaña publicitaria activa sincronizada del tótem
-  if (adTitle || adImg) {
-    const titleText = escapeHtml(adTitle || 'Paseo Altozano');
-    const promoText = escapeHtml(adPromo || 'Descubre los beneficios y promociones exclusivas en tu visita');
-    const badgeText = escapeHtml(adBadge);
+  // Estilo idéntico al banner superior del tótem: franja horizontal con esquinas redondeadas
+  bannerContainer.className = "w-full relative overflow-hidden rounded-2xl shadow-xl border border-slate-800 bg-slate-900 aspect-[16/5.8] flex items-center justify-center";
 
-    let mediaHtml = '';
-    if (adImg) {
-      mediaHtml = `
-        <div class="w-16 h-16 rounded-2xl overflow-hidden bg-slate-900 border border-amber-400/40 flex items-center justify-center shadow-inner flex-shrink-0">
-          <img src="${escapeHtml(adImg)}" alt="${titleText}" class="w-full h-full object-cover" onerror="this.parentElement.innerHTML='<i class=\\'fa-solid fa-store text-amber-300 text-xl\\'></i>'" />
-        </div>
-      `;
-    } else {
-      mediaHtml = `
-        <div class="w-12 h-12 rounded-2xl bg-amber-950/80 border border-amber-400/40 flex items-center justify-center shadow-inner flex-shrink-0">
-          <i class="fa-solid fa-tag text-amber-300 text-xl"></i>
-        </div>
-      `;
-    }
-
-    bannerContainer.className = "rounded-3xl p-4 text-white relative overflow-hidden border border-amber-500/30 shadow-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-amber-950/50";
+  if (isVideo) {
     bannerContainer.innerHTML = `
-      <div class="ad-shimmer-layer absolute inset-0 pointer-events-none"></div>
-      <div class="flex justify-between items-start gap-3 relative z-10">
-        <div class="flex-1 min-w-0">
-          <div class="flex items-center gap-1.5 mb-1.5 flex-wrap">
-            <span class="text-[9px] font-black tracking-widest uppercase bg-amber-500/20 text-amber-300 px-2.5 py-0.5 rounded-full border border-amber-500/30 flex items-center gap-1">
-              <i class="fa-solid fa-bolt text-[9px]"></i> ${badgeText}
-            </span>
-          </div>
-          <h3 class="text-base font-black leading-tight text-white">${titleText}</h3>
-          <p class="text-[11px] font-semibold text-amber-200/90 mt-1">${promoText}</p>
-        </div>
-        ${mediaHtml}
-      </div>
-      <div class="mt-3 pt-2 border-t border-slate-800/80 flex items-center justify-between text-[10px] text-slate-400 font-bold relative z-10">
-        <span class="flex items-center gap-1.5 text-amber-300">
-          <i class="fa-solid fa-mobile-screen"></i> Sincronizado desde el Tótem
-        </span>
-        <span class="text-amber-400 font-extrabold uppercase tracking-wide">Paseo Altozano</span>
+      <video src="${escapeHtml(bannerMedia)}" autoplay loop muted playsinline webkit-playsinline class="w-full h-full object-cover block"></video>
+      <div class="absolute bottom-1 right-2 bg-black/60 backdrop-blur-xs text-[9px] font-bold text-white/80 px-1.5 py-0.5 rounded pointer-events-none tracking-wider uppercase">
+        Publicidad
       </div>
     `;
-    return;
+    const vid = bannerContainer.querySelector('video');
+    if (vid) {
+      vid.play().catch(() => {
+        vid.muted = true;
+        vid.play().catch(() => {});
+      });
+      vid.onerror = () => {
+        if (bannerMedia !== DEFAULT_ALTOZANO_BANNER) {
+          vid.src = DEFAULT_ALTOZANO_BANNER;
+          vid.play().catch(() => {});
+        }
+      };
+    }
+  } else {
+    bannerContainer.innerHTML = `
+      <img src="${escapeHtml(bannerMedia)}" alt="${escapeHtml(adTitle)}" class="w-full h-full object-cover block" />
+      <div class="absolute bottom-1 right-2 bg-black/60 backdrop-blur-xs text-[9px] font-bold text-white/80 px-1.5 py-0.5 rounded pointer-events-none tracking-wider uppercase">
+        Publicidad
+      </div>
+    `;
+    const img = bannerContainer.querySelector('img');
+    if (img) {
+      img.onerror = () => {
+        if (bannerMedia !== DEFAULT_ALTOZANO_BANNER) {
+          bannerContainer.innerHTML = `
+            <video src="${DEFAULT_ALTOZANO_BANNER}" autoplay loop muted playsinline class="w-full h-full object-cover block"></video>
+            <div class="absolute bottom-1 right-2 bg-black/60 backdrop-blur-xs text-[9px] font-bold text-white/80 px-1.5 py-0.5 rounded pointer-events-none tracking-wider uppercase">
+              Publicidad
+            </div>
+          `;
+          const fallbackVid = bannerContainer.querySelector('video');
+          if (fallbackVid) fallbackVid.play().catch(() => {});
+        }
+      };
+    }
   }
-
-  // 2. Fallback institucional de Paseo Altozano si se abre sin parámetros de anuncio
-  bannerContainer.className = "rounded-3xl p-4 text-white relative overflow-hidden border border-sky-500/30 shadow-2xl bg-gradient-to-br from-slate-900 via-slate-950 to-sky-950/50";
-  bannerContainer.innerHTML = `
-    <div class="ad-shimmer-layer absolute inset-0 pointer-events-none"></div>
-    <div class="flex justify-between items-start gap-3 relative z-10">
-      <div class="flex-1 min-w-0">
-        <div class="flex items-center gap-1.5 mb-1">
-          <span class="text-[9px] font-extrabold tracking-widest uppercase bg-sky-500/20 text-sky-300 px-2.5 py-0.5 rounded-full border border-sky-500/30">PASEO ALTOZANO</span>
-        </div>
-        <h3 class="text-base font-black leading-tight text-white">Tu destino de compras y moda</h3>
-        <p class="text-[11px] font-semibold text-sky-200/90 mt-0.5">Explora las mejores tiendas, restaurantes y entretenimiento</p>
-      </div>
-      <div class="w-11 h-11 rounded-2xl bg-sky-950/80 border border-sky-400/40 flex items-center justify-center p-1 shadow-inner flex-shrink-0">
-        <i class="fa-solid fa-bag-shopping text-sky-300 text-lg"></i>
-      </div>
-    </div>
-  `;
 }
+
+window.renderMobileAdBannerFromParams = renderMobileAdBannerFromParams;
+window.showQrModal = showQrModal;
+window.closeQrModal = closeQrModal;
+

@@ -264,11 +264,50 @@
           if (typeof window.updateQrUrlIfOpen === 'function') {
             window.updateQrUrlIfOpen();
           }
+          if (typeof window.renderMobileAdBannerFromParams === 'function') {
+            window.renderMobileAdBannerFromParams();
+          }
+        }
+        break;
+      }
+
+      case 'SHOW_QR_MODAL': {
+        if (typeof showQrModal === 'function') {
+          showQrModal();
+        } else if (typeof window.showQrModal === 'function') {
+          window.showQrModal();
+        }
+        break;
+      }
+
+      case 'CLOSE_QR_MODAL': {
+        if (typeof closeQrModal === 'function') {
+          closeQrModal();
+        } else if (typeof window.closeQrModal === 'function') {
+          window.closeQrModal();
         }
         break;
       }
     }
   });
+
+  // Sincronizar anuncio desde parámetros de URL inicial si existen
+  try {
+    const sp = new URLSearchParams(window.location.search);
+    const initialBanner = sp.get('adBanner') || sp.get('adImg');
+    if (initialBanner && !window.activeTotemCampaign) {
+      window.activeTotemCampaign = {
+        id: sp.get('adId') || '',
+        bannerUrl: initialBanner,
+        mediaUrl: initialBanner,
+        title: sp.get('adTitle') || 'Paseo Altozano',
+        name: sp.get('adTitle') || 'Paseo Altozano',
+        promo: sp.get('adPromo') || '',
+        badge: sp.get('adBadge') || 'PASEO ALTOZANO',
+        isVideo: sp.get('adIsVideo') === '1' || /\.(mp4|webm|mov)(\?|$)/i.test(initialBanner)
+      };
+    }
+  } catch (e) {}
 
   // 4. Send handshake to parent frame when loaded
   document.addEventListener('DOMContentLoaded', function () {

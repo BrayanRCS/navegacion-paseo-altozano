@@ -529,8 +529,8 @@
   // ---------- de donde sale el grafo ----------
   // Con ?graph=file o ?studio=1 se muestra una etiqueta que dice si se esta usando el archivo o la copia del navegador
   function showGraphSource() {
+    if (!ENABLED) return;
     const param = new URLSearchParams(window.location.search).get('graph');
-    if (!param && !ENABLED) return;
     let custom = false;
     try { custom = !!localStorage.getItem('altozano_custom_mall_graph'); } catch (e) { /* sin almacenamiento */ }
     const fromFile = param === 'file' || !custom;
