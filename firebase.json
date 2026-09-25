@@ -33,7 +33,7 @@
           ]
         },
         {
-          "source": "mall_graph.json",
+          "source": "mall_graph*.json",
           "headers": [
             {
               "key": "Cache-Control",

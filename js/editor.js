@@ -7,11 +7,18 @@ let dragOffsetSvgX = 0;
 let dragOffsetSvgY = 0;
 let editorDragType = 'node'; // 'node' | 'logo'
 
+function getGraphStorageKey() {
+  const totem = (new URLSearchParams(window.location.search).get('totem') || '').toLowerCase().trim();
+  if (totem === 'argos') return 'altozano_custom_mall_graph_argos';
+  if (totem === 'helios') return 'altozano_custom_mall_graph_helios';
+  return 'altozano_custom_mall_graph';
+}
+
 function initCustomGraph() {
-  // ?graph=file: usa solo mall_graph.json e ignora la copia editada que este navegador tenga guardada
+  // ?graph=file: usa solo el JSON correspondiente e ignora la copia editada que este navegador tenga guardada
   if (new URLSearchParams(window.location.search).get('graph') === 'file') return;
   try {
-    const saved = localStorage.getItem('altozano_custom_mall_graph');
+    const saved = localStorage.getItem(getGraphStorageKey());
     if (saved) {
       const parsed = JSON.parse(saved);
       if (parsed && Array.isArray(parsed.nodes) && Array.isArray(parsed.edges)) {
@@ -94,7 +101,7 @@ function saveCustomGraphToStorage() {
     if (mallGraph) {
       mallGraph.total_nodes = mallGraph.nodes.length;
       mallGraph.total_edges = mallGraph.edges.length;
-      localStorage.setItem('altozano_custom_mall_graph', JSON.stringify(mallGraph));
+      localStorage.setItem(getGraphStorageKey(), JSON.stringify(mallGraph));
       AltozanoState.mallGraph = mallGraph;
       if (typeof buildFloorSubgraphs === 'function') buildFloorSubgraphs();
     }
@@ -1109,7 +1116,7 @@ function downloadMallGraphJsonFile() {
   const url = URL.createObjectURL(blob);
   const a = document.createElement('a');
   a.href = url;
-  a.download = 'mall_graph.json';
+  a.download = window.currentGraphFileName || 'mall_graph.json';
   document.body.appendChild(a);
   a.click();
   document.body.removeChild(a);

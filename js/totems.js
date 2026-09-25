@@ -64,6 +64,17 @@ function applyTotemLabels() {
   const set = (id, text) => { const el = document.getElementById(id); if (el) el.textContent = text; };
   set('legend-totem-label', `📍 Tótem ${name}`);
   set('dir-totem-here', `📍 Tótem ${name} · ${lvl}`);
+  set('dir-totem-context', t && t.context_element ? `(${t.context_element})` : '');
+
+  // Actualizar etiqueta (Tótem) en los botones de piso del directorio
+  const activeLevel = t ? t.level : 2;
+  const btnPB = document.getElementById('dir-floor-btn-1');
+  const btnN1 = document.getElementById('dir-floor-btn-2');
+  const btnN2 = document.getElementById('dir-floor-btn-3');
+  if (btnPB) btnPB.textContent = activeLevel === 1 ? '📍 PB (Tótem)' : '🌿 PB';
+  if (btnN1) btnN1.textContent = activeLevel === 2 ? '📍 Nivel 1 (Tótem)' : '🌿 Nivel 1';
+  if (btnN2) btnN2.textContent = activeLevel === 3 ? '📍 Nivel 2 (Tótem)' : '✨ Nivel 2';
+
   const sel = document.getElementById('origin-select');
   if (sel) {
     // Un opcion por totem (los agregados desde el Estudio aparecen sin recargar) y con el nombre vigente

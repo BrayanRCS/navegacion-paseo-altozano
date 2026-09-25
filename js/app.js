@@ -137,9 +137,21 @@ async function initApp() {
     registerServiceWorker();
     setPreloaderProgress(15, "Descargando planos y grafos de navegación...");
     
-    // 1. Fetch core graph and legends
+    // 1. Fetch core graph and legends (aislamiento de grafo por tótem)
+    const totemParam = (new URLSearchParams(window.location.search).get('totem') || '').toLowerCase().trim();
+    let graphFileName = 'mall_graph.json';
+    let graphCacheKey = 'graph';
+    if (totemParam === 'argos') {
+      graphFileName = 'mall_graph_argos.json';
+      graphCacheKey = 'graph_argos';
+    } else if (totemParam === 'helios') {
+      graphFileName = 'mall_graph_helios.json';
+      graphCacheKey = 'graph_helios';
+    }
+    window.currentGraphFileName = graphFileName;
+
     const [dataGraph, legData] = await Promise.all([
-      loadCachedJson('graph', 'mall_graph.json'),
+      loadCachedJson(graphCacheKey, graphFileName),
       loadCachedJson('legends', 'gemini-code-1787086839436.json')
     ]);
     

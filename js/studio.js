@@ -101,8 +101,10 @@
   window.studioSyncInspector = function (node, pos) {
     const x = $('editor-node-x-input');
     const y = $('editor-node-y-input');
+    const lvl = $('editor-node-level-select');
     if (x && document.activeElement !== x) x.value = pos.x;
     if (y && document.activeElement !== y) y.value = pos.y;
+    if (lvl && node && document.activeElement !== lvl) lvl.value = String(node.level);
     const del = $('studio-delete');
     if (del) del.disabled = !node;
     const totemBox = $('editor-totem-container');
@@ -120,6 +122,32 @@
       }
     }
     updateUi();
+  };
+
+  window.studioChangeNodeLevel = function (newLevel) {
+    if (!selectedEditorNodeId || !mallGraph) return;
+    const node = mallGraph.nodes.find(n => n.id === selectedEditorNodeId);
+    if (!node || node.level === newLevel) return;
+
+    // Desconectar aristas que conectaban con nodos del piso anterior si no son portales
+    mallGraph.edges = mallGraph.edges.filter(e => {
+      if (e.from === node.id || e.to === node.id) {
+        const otherId = e.from === node.id ? e.to : e.from;
+        const other = mallGraph.nodes.find(n => n.id === otherId);
+        return other && other.level === newLevel;
+      }
+      return true;
+    });
+
+    node.level = newLevel;
+    window.saveCustomGraphToStorage();
+    if (typeof buildFloorSubgraphs === 'function') buildFloorSubgraphs();
+
+    // Cambiar la vista de la cámara automáticamente al nuevo piso
+    if (typeof switchLevel === 'function') switchLevel(newLevel, false);
+    renderMapOverlay();
+    const lvlName = { 1: 'PB', 2: 'Nivel 1', 3: 'Nivel 2' }[newLevel] || `Nivel ${newLevel}`;
+    updateEditorHudInfo(node, node.coordinates, `📍 "${node.name}" trasladado a ${lvlName}`);
   };
 
   window.studioApplyXY = function () {
@@ -531,13 +559,15 @@
   function showGraphSource() {
     if (!ENABLED) return;
     const param = new URLSearchParams(window.location.search).get('graph');
+    const storageKey = typeof getGraphStorageKey === 'function' ? getGraphStorageKey() : 'altozano_custom_mall_graph';
     let custom = false;
-    try { custom = !!localStorage.getItem('altozano_custom_mall_graph'); } catch (e) { /* sin almacenamiento */ }
+    try { custom = !!localStorage.getItem(storageKey); } catch (e) { /* sin almacenamiento */ }
+    const fileName = window.currentGraphFileName || 'mall_graph.json';
     const fromFile = param === 'file' || !custom;
     const el = document.createElement('div');
     el.id = 'graph-source-badge';
     el.className = 'mm-graph-badge' + (fromFile ? '' : ' mm-graph-badge--copy');
-    el.textContent = `Grafo: ${fromFile ? 'archivo mall_graph.json' : 'copia guardada en este navegador'} · ${mallGraph.nodes.length} nodos · ${mallGraph.edges.length} aristas`;
+    el.textContent = `Grafo: ${fromFile ? 'archivo ' + fileName : 'copia guardada en este navegador'} · ${mallGraph.nodes.length} nodos · ${mallGraph.edges.length} aristas`;
     document.body.appendChild(el);
   }
 
