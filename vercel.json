@@ -7,9 +7,10 @@
       "missing": [
         { "type": "query", "key": "studio" },
         { "type": "query", "key": "view" },
-        { "type": "query", "key": "mode" }
+        { "type": "query", "key": "mode" },
+        { "type": "query", "key": "totem" }
       ],
-      "destination": "/?view=map&totem=atlas&orientation=vertical",
+      "destination": "/?view=map&orientation=vertical",
       "permanent": false
     }
   ],

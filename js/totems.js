@@ -110,6 +110,11 @@ window.getActiveTotem = getActiveTotem;
 function initTotems() {
   const requested = new URLSearchParams(window.location.search).get('totem');
   const t = resolveTotem(requested) || resolveTotem(DEFAULT_TOTEM_ID) || getTotems()[0];
-  if (t) TOTEM_NODE_ID = t.id;
+  if (t) {
+    TOTEM_NODE_ID = t.id;
+    if (typeof switchLevel === 'function') {
+      switchLevel(t.level, false);
+    }
+  }
   applyTotemLabels();
 }
